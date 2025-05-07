@@ -20,7 +20,7 @@
         position: absolute;
         right: 35px;
         font-size: 25px;
-        top: -15px;
+        top: -10px;
         color: #ff0000b5;
     }
     span.select2.select_width
@@ -72,7 +72,7 @@
         margin-bottom: 0px;
     }
     .total_table {
-        width: 22% !important;
+        width: 24% !important;
     
     }
     .select_prod_add td{
@@ -105,6 +105,10 @@
    
         line-height: 18px;
     }
+    .total_table tr {
+   
+    border: 1px solid black;
+}
 </style>
 
 
@@ -1351,7 +1355,7 @@
 
         
         /*add form*/
-        $(function() {
+        /*$(function() {
             var form = $('#add_po_form');
             
             form.validate({
@@ -1416,7 +1420,78 @@
                    
                 }
             });
-        });
+        });*/
+
+
+        /*new one*/
+
+        $(function() {
+    var form = $('#add_po_form');
+    var refreshIntervalId; // Declare outside for proper scope
+
+    form.validate({
+        rules: {
+            required: 'required',
+        },
+        messages: {
+            required: 'This field is required',
+        },
+        errorPlacement: function(error, element) {}, // To Hide Validation Messages
+        submitHandler: function(currentForm) {
+            if ($('#add_po_form').attr('data_fill') == "true") {
+
+                var formData = new FormData($('#add_po_form')[0]);
+                var image = $('.image_file').prop('files')[0]; // Get the file from input field
+                formData.append('image', image); // Append the file to FormData object
+
+                $('.once_form_submit').attr('disabled', true); // Disable this input.
+
+                // Submit the form for the current tab
+                $.ajax({
+                    url: "<?php echo base_url(); ?>Procurement/PurchaseOrder/Add",
+                    method: "POST",
+                    data: formData,
+                    processData: false, // Don't process the data
+                    contentType: false, // Don't set content type
+                    success: function(data) {
+
+                        $('#AddPurchaseOrder').modal('hide');
+
+                        alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                        datatable.ajax.reload(null, false);
+
+                        $('#po_mrn_reff_id option').remove();
+                    }
+                });
+
+            } else {
+                alertify.error('Please Select Products').delay(3).dismissOthers();
+
+                // Clear any previous blinking
+                if (refreshIntervalId) clearInterval(refreshIntervalId);
+
+                $('#blink').css('visibility', 'visible'); // ensure it starts visible
+
+                refreshIntervalId = setInterval(function() {
+                    var elem = $('#blink');
+                    if (elem.css('visibility') === 'hidden') {
+                        elem.css('visibility', 'visible');
+                    } else {
+                        elem.css('visibility', 'hidden');
+                    }
+                }, 200);
+
+                setTimeout(function() {
+                    clearInterval(refreshIntervalId);
+                    $('#blink').css('visibility', 'visible'); // reset to visible
+                }, 1000);
+            }
+
+        }
+    });
+});
+
 
 
         /*#####*/

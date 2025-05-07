@@ -523,9 +523,9 @@ class PurchaseOrder extends BaseController
                                             <td><input type="text" name="" value="'.$product->so_reffer_no.'" class="form-control text-center" readonly></td>
                                             <td style="text-align: left;padding:10px 10px;">'.$product->product_details.'</td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->mrp_unit.'" class="form-control text-center" readonly></td>
-                                            <td><input type="number" name="pop_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center" ></td>
+                                            <td><input type="text" name="pop_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"></td>
                                             <td><input type="text" name="pop_rate[]" value=""  class="form-control add_prod_rate text-end" required></td>
-                                            <td><input type="number" name="pop_discount[]" value=""  class="form-control add_discount text-center" min="0" max="100" onkeyup="MinMax(this)" required></td>
+                                            <td><input type="text" name="pop_discount[]" value="" step="0.01" class="form-control add_discount text-center" min="0" max="100" onkeyup="MinMax(this)" required></td>
                                             <td><input type="text" name="pop_amount[]" value=""  class="form-control add_prod_amount text-end" readonly></td>
                                             <input type="hidden" name="pop_sales_order[]" value="'.$product->so_id.'" class="form-control" readonly>
                                             <input type="hidden" name="pop_prod_desc[]" value="'.$product->mrp_product_desc.'">
@@ -535,7 +535,7 @@ class PurchaseOrder extends BaseController
                                             <input type="hidden" name="" class="check_total_qty" value="'.$product->mrp_qty.'">
                                                  
                                                     
-                                                </tr>';
+                                            </tr>';
                                                 
                                                 } $i++;
 
@@ -1142,43 +1142,44 @@ class PurchaseOrder extends BaseController
 
            exit();
         }
-        
-        $cond = array('po_id' => $this->request->getPost('ID'));
 
-        $purchase = $this->common_model->SingleRow('pro_purchase_order',$cond);
-
-        $purchase_products = $this->common_model->FetchWhere('pro_purchase_order_product', array('pop_purchase_order' => $this->request->getPost('ID')));
-        
-        $qty =0;
-
-        foreach($purchase_products  as $pur_prod){
-              
-           $purchase_qty =  $pur_prod->pop_qty + $qty;
-
-           $pur_prod->pop_material_req_prod_id;
-
-           $material_req_single = $this->common_model->SingleRow('pro_material_requisition_prod', array('mrp_id' => $pur_prod->pop_material_req_prod_id));
-
-           $delivered_qty = $material_req_single->mrp_delivered_qty;
-
-           $current_qty =  $delivered_qty -  $purchase_qty;
-
-           $this->common_model->EditData(array('mrp_delivered_qty' => $current_qty), array('mrp_id' => $material_req_single->mrp_id ),'pro_material_requisition_prod');
-
-
-        }
-
-       // $purchase_vouchers = $this->common_model->FetchWhere('pro_purchase_voucher',array('pv_vendor_name' => $vendor_id));
-
-       
-
-        $this->common_model->EditData(array('mrp_pur_status' => 0), array('mrp_mr_id' => $purchase->po_mrn_reff),'pro_material_requisition_prod');
-        
-        $this->common_model->EditData(array('mr_pur_status' => 0), array('mr_id' => $purchase->po_mrn_reff),'pro_material_requisition');
-        
         $material_received = $this->common_model->FetchWhere('pro_material_received_note',array('mrn_purchase_order' => $this->request->getPost('ID')));
-        
+
         if(empty($material_received)){
+        
+            $cond = array('po_id' => $this->request->getPost('ID'));
+
+            $purchase = $this->common_model->SingleRow('pro_purchase_order',$cond);
+
+            $purchase_products = $this->common_model->FetchWhere('pro_purchase_order_product', array('pop_purchase_order' => $this->request->getPost('ID')));
+            
+            $qty =0;
+
+            foreach($purchase_products  as $pur_prod){
+                
+            $purchase_qty =  $pur_prod->pop_qty + $qty;
+
+            $pur_prod->pop_material_req_prod_id;
+
+            $material_req_single = $this->common_model->SingleRow('pro_material_requisition_prod', array('mrp_id' => $pur_prod->pop_material_req_prod_id));
+
+            $delivered_qty = $material_req_single->mrp_delivered_qty;
+
+            $current_qty =  $delivered_qty -  $purchase_qty;
+
+            $this->common_model->EditData(array('mrp_delivered_qty' => $current_qty), array('mrp_id' => $material_req_single->mrp_id ),'pro_material_requisition_prod');
+
+
+            }
+
+        
+            $this->common_model->EditData(array('mrp_pur_status' => 0), array('mrp_mr_id' => $purchase->po_mrn_reff),'pro_material_requisition_prod');
+            
+            $this->common_model->EditData(array('mr_pur_status' => 0), array('mr_id' => $purchase->po_mrn_reff),'pro_material_requisition');
+        
+       
+        
+        
            
             $this->common_model->DeleteData('pro_purchase_order_product', array('pop_purchase_order' => $this->request->getPost('ID')));
         
@@ -1377,7 +1378,7 @@ class PurchaseOrder extends BaseController
 
             }
             th, td {
-                padding-top: 5px;
+                padding-top: 10px !important;
                
                 padding-left: 5px;
                 padding-right: 5px;
@@ -1401,27 +1402,16 @@ class PurchaseOrder extends BaseController
             </style>
            
            
-            <table>
-        
-                <tr>
-                    
-                    <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
-        
-                    <td>
-                
-                    <h2>Al Fuzail Engineering Services WLL</h2>
-                    <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
-                    <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
-                    
-                    
-                    </td>
-                
-                </tr>
-        
-            </table>
-        
-        
-            <table width="100%" style="margin-top:-10px;">
+           
+            <table><tr><td></td></tr></table>
+
+            <table><tr><td></td></tr></table>
+
+            <table><tr><td></td></tr></table>
+            
+            <table><tr><td></td></tr></table>
+    
+            <table width="100%" style="margin-top:90px;">
             
         
             <tr width="100%">
@@ -1447,7 +1437,7 @@ class PurchaseOrder extends BaseController
     
         <tr>
         
-        <td>Customer</td>
+        <td> Vendor </td>
         
             
         <td >Tel : '.$purchase_order->cc_telephone.', Fax : '.$purchase_order->cc_fax.', Email : '.$purchase_order->cc_email.'</td>
@@ -1459,7 +1449,7 @@ class PurchaseOrder extends BaseController
         
         <td ></td>
         
-        <td >Post Box :  '.$purchase_order->cc_post_box.' ,  '.$customers->country_name.'</td>
+        <td >Post Box :  '.$purchase_order->cc_post_box.' , '.$customers->cc_city.' , '.$customers->cc_country.'</td>
         
         </tr>
     
@@ -1482,9 +1472,9 @@ class PurchaseOrder extends BaseController
         
             <tr>
             
-                <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
+                <th align="center" style="border-bottom:1px solid;"width="8%">Item No</th>
             
-                <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
+                <th align="center" style="border-bottom:1px solid;"width="47%">Description</th>
             
                 <th align="center" style="border-bottom:1px solid;">Qty</th>
             
@@ -1510,73 +1500,48 @@ class PurchaseOrder extends BaseController
 
                 <table style="width:100%">
             
-                <tr>
-                    <td>Notes</td>
-
-                    <td ></td>
-
-                    <td style="font-weight: bold;width: 17%;" >Net Order Value</td>
+                    <tr  style="width:100%";>
         
-                    <td>'.format_currency($purchase_order->po_amount).'</td>
+                        <td>Amount in words</td>
+                    
+                        <td style="width: 50%;">'.currency_to_words($purchase_order->po_amount).'</td>
+
+
+                        <td style="font-weight: bold;width: 20%;" >Net Order Value</td>
+            
+                        <td>'.format_currency($purchase_order->po_amount).'</td>
 
                     
-                   
-                </tr>
+                    </tr>
 
-                <tr>
-    
-                    <td></td>
-                
-                    <td></td>
-                    
-                    
-                    
-                
-                </tr>
-
-
-                
-
-
-                <tr  style="width:100%";>
-    
-                    <td>Amount in words</td>
-                
-                    <td style="width: 60%;">'.currency_to_words($purchase_order->po_amount).'</td>
-
-                   
-                   
-                
-                </tr>
-
-            </table>
+                </table>
 
 
             <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
             
             <tr>
-                <td style="width:12%">Order Terms</td>
+                <td style="width:12%" rowspan="2">Order Terms</td>
 
                 <td style="width:15%">Payment</td>
 
                 <td style="width:29%">'.$purchase_order->po_payment_term.'</td>
 
-               <td style="width:10%">Vendor Ref:</td>
+                <td style="width:10%">Vendor Ref:</td>
 
                 <td style="">'.$purchase_order->po_vendor_ref.'</td>
                 
             </tr>
 
             <tr>
-                <td style="width:12%"></td>
-
-                <td style="width:15%">Delivery</td>
+                <td style="width:15%" rowspan="2">Delivery</td>
 
                 <td style="width:29%">'.$delivery_date.'</td>
 
-                
+                <td style=""></td>
+  
 
             </tr>
+
             
             </table>
 
@@ -1585,8 +1550,8 @@ class PurchaseOrder extends BaseController
 
             <tr>
             
-               <td>Ubais Usman - Accounts Assistant, Mob : +974 5013 0377</td>
-               <td></td><td></td><td></td><td></td><td></td><td></td>
+               <td style="width:55%">Procurement Executive - Accounts Assistant, Mob : +974 5013 0377</td>
+               
                <td>Justin Jose - Operations Manager</td>
               
 
@@ -1595,12 +1560,138 @@ class PurchaseOrder extends BaseController
 
             <tr>
             
-                <td>Muhammed Raphy - Chief Accountant, Mob : +974 7743 4520</td>
-                <td></td><td></td><td></td><td></td><td></td><td></td>
+                <td style="width:55%">Finance Manager  - Chief Accountant, Mob : +974 7743 4520</td>
+                
                 <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
            
 
             </tr>
+
+
+            <tr>
+            
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+            
+
+            </tr>
+
+
+            <tr>
+        
+            <td></td>
+
+            <td></td>
+
+            <td></td>
+
+            <td></td>
+
+            <td></td>
+
+            <td></td>
+
+            <td></td>
+
+            
+
+        </tr>
+
+
+        <tr>
+    
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        
+
+    </tr>
+
+
+    <tr>
+    
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        
+
+    </tr>
+
+
+    <tr>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+    
+
+    </tr>
+
+
+    <tr>
+    
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        <td></td>
+
+        
+
+    </tr>
 
 
             

@@ -132,6 +132,10 @@ class CustomerCreation extends BaseController
 
         $insert_data['cc_added_date'] = date('Y-m-d'); 
 
+        $insert_data['cc_credit_limit'] = str_replace(',', '', $insert_data['cc_credit_limit']);
+
+        
+
         $id = $this->common_model->InsertData('crm_customer_creation',$insert_data);
 
         $data['customer_creation_id'] = $id;
@@ -287,6 +291,8 @@ class CustomerCreation extends BaseController
         }       
 
         $update_data['cc_modified_date'] = date('Y-m-d'); 
+
+        $update_data['cc_credit_limit'] = str_replace(',', '', $update_data['cc_credit_limit']);
 
         $this->common_model->EditData($update_data,$cond,'crm_customer_creation');
 

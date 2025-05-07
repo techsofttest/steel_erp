@@ -285,13 +285,52 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="ven_credit_limit" class="form-control view_credit_limit" readonly>
+                                                                        <input type="text" name="ven_credit_limit" class="form-control view_credit_limit" readonly>
                                                                     </div>
 
                                                                 </div>
                                                             </div> 
 
                                                             <!-- ### -->
+
+                                                            
+                                                            <!--Single Row Start-->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2 margin_zero">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">City</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" class="form-control view_city" required>
+                                                                    </div>
+
+                                                                </div>
+                                                            
+                                                            </div>
+                                                             <!-- ### -->
+
+
+
+                                                            <!--Single Row Start-->
+                                                            <div class="col-lg-12">
+                                                                <div class="row align-items-center mb-2 margin_zero">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Country</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    
+                                                                        
+                                                                        <input type="text" name="view_cc_country" class="form-control view_country" required>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                             <!-- ### -->
 
                                                            
 
@@ -681,6 +720,10 @@
                     $('.view_credit_period').val(data.credit_period);
                     
                     $('.view_credit_limit').val(data.credit_limit);
+
+                    $('.view_city').val(data.city);
+
+                    $('.view_country').val(data.cc_country);
 
                     //contact
                     

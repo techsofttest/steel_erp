@@ -21,7 +21,7 @@
 
 color: black !important;
 margin-bottom: 0px;
-width: 100% !important;
+/*width: 100% !important;*/
 padding: 0px;
 display: block;
 border-radius: 4px;
@@ -38,7 +38,7 @@ height: 37px !important;
 
 color: black !important;
 margin-bottom: 0px;
-width: 100% !important;
+/*width: 100% !important;*/
 padding: 0px;
 display: block;
 border-radius: 4px;
@@ -273,7 +273,7 @@ span.select2.customer_width, span.select2 {
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select contact_person_clz input_length " name="pf_contact_person" id="contact_person_id" required>
+                                                                        <select class="form-select contact_person_clz input_length" name="pf_contact_person" id="contact_person_id" required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
@@ -300,7 +300,7 @@ span.select2.customer_width, span.select2 {
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_payment_terms" class="form-control payment_term_clz input_length " required>
+                                                                        <input type="text" name="pf_payment_terms" class="form-control payment_term_clz input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -1916,7 +1916,7 @@ span.select2.customer_width, span.select2 {
 
         /**/
 
-        function InitProductSelectEdit() {
+        /*function InitProductSelectEdit() {
                 $('body .edit_cost_product_det').each(function() {
                 $(this).select2({
                     placeholder: "Select Product",
@@ -1957,6 +1957,58 @@ span.select2.customer_width, span.select2 {
 
 
         }
+
+        InitProductSelectEdit();*/
+
+        function InitProductSelectEdit() {
+    $('body .edit_cost_product_det').each(function() {
+        const $input = $(this);
+        const $parentRow = $input.closest('.prod_row');
+
+        // Warn if the expected parent is not found
+        if ($parentRow.length === 0) {
+            console.warn('No .prod_row found for:', $input);
+        }
+
+        $(this).select2({
+            placeholder: "Select Product",
+            theme: "default form-control- droup_color select_width", // simplified theme
+            dropdownParent: $parentRow.length, // only set if exists
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: false,
+                data: function(params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.product_id,
+                                text: item.product_details
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },
+            }
+        });
+    });
+}
+
+InitProductSelectEdit();
+
+
 
         /**/
 
@@ -2525,6 +2577,22 @@ span.select2.customer_width, span.select2 {
        
 
     });
+
+
+
+    $("body").on("blur", ".current_cliam_clz", function () {
+            var rawValue = $(this).val().replace(/,/g, ''); // remove existing commas
+            var number = parseFloat(rawValue);
+
+            if (!isNaN(number)) {
+                var formattedValue = number.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $(this).val(formattedValue); // set the formatted value
+            }
+        });
 
 
     /*claim section end*/
@@ -3226,6 +3294,21 @@ span.select2.customer_width, span.select2 {
        });
 
 
+       $("body").on("blur", ".edit_current_claim", function () {
+            var rawValue = $(this).val().replace(/,/g, ''); // remove existing commas
+            var number = parseFloat(rawValue);
+
+            if (!isNaN(number)) {
+                var formattedValue = number.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $(this).val(formattedValue); // set the formatted value
+            }
+        });
+
+
        function EditTotalAmount()
        {
 
@@ -3493,6 +3576,8 @@ span.select2.customer_width, span.select2 {
 
     
     function currentClaim() {  
+
+        
         var current_claim_lenght = $(".current_cliam_clz").length;
         var current_claim = $('.current_cliam_clz').val();
 
@@ -3510,6 +3595,8 @@ span.select2.customer_width, span.select2 {
                     minimumFractionDigits: 2, 
                     maximumFractionDigits: 2 
                 });
+
+                
 
                 $('.claim_qar').val(formattedPrice);
             } 

@@ -211,12 +211,49 @@
                                                 </div>
 
                                                 <div class="col-col-md-9 col-lg-9">
-                                                    <input type="number" name="cc_credit_limit" class="form-control edit_credit_limit" required>
+                                                    <input type="text" name="cc_credit_limit" class="form-control edit_credit_limit" required>
                                                 </div>
 
                                             </div>
                                         </div> 
 
+                                        <!-- ### -->
+
+
+
+                                        <!--Single Row Start-->
+                                        <div class="col-lg-12">
+                                            <div class="row align-items-center mb-2 margin_zero">
+
+                                                <div class="col-col-md-3 col-lg-3">
+                                                    <label for="basicInput" class="form-label">City</label>
+                                                </div>
+
+                                                <div class="col-col-md-9 col-lg-9">
+                                                    <input type="text" name="cc_city" class="form-control edit_city" required>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                         <!-- ### -->
+
+
+                                         <!--Single Row Start-->
+                                        <div class="col-lg-12">
+                                            <div class="row align-items-center mb-2 margin_zero">
+
+                                                <div class="col-col-md-3 col-lg-3">
+                                                    <label for="basicInput" class="form-label">Country</label>
+                                                </div>
+
+                                                <div class="col-col-md-9 col-lg-9">
+                                                    
+                                                    
+                                                    <input type="text" name="cc_country" class="form-control edit_country" required>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                         <!-- ### -->
 
                                         <input type="hidden" name="cc_id" class="edit_vendor_id">
@@ -1094,6 +1131,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                     $('.edit_vendor_id').val(data.vendor_id);
 
+                    $('.edit_city').val(data.city);
+
+                    $('.edit_country').val(data.country);
+
                     //contact
 
                     $('.edit_contact').html(data.contact);
@@ -1214,6 +1255,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
     /*edit section end*/
+
+
+    /*credit limit start*/
+
+    $("body").on("blur", ".edit_credit_limit", function () {
+            var rawValue = $(this).val().replace(/,/g, ''); // remove existing commas
+            var number = parseFloat(rawValue);
+
+            if (!isNaN(number)) {
+                var formattedValue = number.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $(this).val(formattedValue); // set the formatted value
+            }
+        });
+
+
+    /*credit limit end*/
 
 
 

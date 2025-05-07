@@ -1453,7 +1453,7 @@ span.select2.customer_width, span.select2 {
         /*add section*/    
         $(function() {
             var form = $('#add_form1');
-            
+            var refreshIntervalId; // Declare outside for proper scope
             form.validate({
                 rules: {
                     required: 'required',
@@ -1511,7 +1511,7 @@ span.select2.customer_width, span.select2 {
                     }
                     else
                     {
-                        alertify.error('Please Select Products').delay(3).dismissOthers();
+                        /*alertify.error('Please Select Products').delay(3).dismissOthers();
 
                         $('#blink').each(function() {
                             var elem = $(this);
@@ -1528,7 +1528,30 @@ span.select2.customer_width, span.select2 {
                             
                             clearInterval(refreshIntervalId);
                             
-                        }, 1000)
+                        }, 1000)*/
+
+                        alertify.error('Please Select Products').delay(3).dismissOthers();
+
+                        // Clear any previous blinking
+                        if (refreshIntervalId) clearInterval(refreshIntervalId);
+
+                        $('#blink').css('visibility', 'visible'); // ensure it starts visible
+
+                        refreshIntervalId = setInterval(function() {
+                            var elem = $('#blink');
+                            if (elem.css('visibility') === 'hidden') {
+                                elem.css('visibility', 'visible');
+                            } else {
+                                elem.css('visibility', 'hidden');
+                            }
+                        }, 200);
+
+                        setTimeout(function() {
+                            clearInterval(refreshIntervalId);
+                            $('#blink').css('visibility', 'visible'); // reset to visible
+                        }, 1000);
+
+
                     }
 
 
@@ -1661,8 +1684,7 @@ span.select2.customer_width, span.select2 {
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-
-                
+                    
                     $(".lpo_ref").val(data.ci_lpo);
 
                     $(".project_clz").val(data.ci_project);
@@ -2303,6 +2325,8 @@ span.select2.customer_width, span.select2 {
 
            var multipliedTotal = parsedRate * parsedQuantity;
 
+           console.log(multipliedTotal);
+
            var per_amount = (discount/100)*multipliedTotal;
           
            var orginalPrice = multipliedTotal - per_amount;
@@ -2335,23 +2359,39 @@ span.select2.customer_width, span.select2 {
 
            $('body .amount_clz_id').each(function()
            {
-               var sub_tot = parseFloat($(this).val());
+               //var sub_tot = parseFloat($(this).val());
 
-               total += parseFloat(sub_tot.toFixed(2))||0;
+               //total += parseFloat(sub_tot.toFixed(2))||0;
               //total = Number(total).toFixed(2)
+
+              var value = $(this).val().replace(/,/g, ""); 
+
+              var sub_tot = parseFloat(value) || 0;
+
+              total += sub_tot; 
+
            });
 
-          total = total.toFixed(2);
+         // total = total.toFixed(2);
 
-          $('.amount_total').val(total);
+          //$('.amount_total').val(total);
 
-          //var resultSalesOrder= numberToWords.toWords(total);
 
-           //$(".performa_amount_in_word").text(resultSalesOrder);
 
-           //$(".performa_amount_in_word_val").val(resultSalesOrder);
-           
-           //currentClaim()
+          /** */
+
+          var rawPrice = total.toFixed(2);
+
+// Format with commas
+// var formattedPrice = rawPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+var formattedPrice = rawPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+// Set formatted value in input
+$(".amount_total").val(formattedPrice);
+
+          /** */
+
+          
        }
 
        /*total amount calculation end*/

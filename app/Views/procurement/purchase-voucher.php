@@ -78,7 +78,7 @@
         font-size: 25px;
         color: #ff0000b5;
         position: absolute;
-        right: 5px;
+        right: 0px;
         top: -10px;
     }
     .add_more_icon {
@@ -96,7 +96,7 @@
         margin-bottom: 0px;
     }
     .total_table {
-        width: 22% !important;
+        width: 14% !important;
     
     }
     .select_prod_add td{
@@ -114,12 +114,14 @@
         /*padding:10px 10px;*/
         vertical-align: middle;
         text-align: center;
+        padding: 0px 5px;
     }
     .edit_prod_data td{
 
         /*padding:10px 10px;*/
         vertical-align: middle;
         text-align: center;
+        padding: 0px 5px;
     }
     .edit_single_prod td{
        
@@ -132,11 +134,7 @@
         color: #ff0000b5;
         font-size: 20px;
     }
-    .select_width1{
-
-        border: unset !important;
-
-    }
+    
     .select_data_style{
         /*height: 100% !important;*/
         overflow: visible;
@@ -148,8 +146,35 @@
     }*/
     .select2-container--default .select2-selection--single .select2-selection__rendered {
    
-   line-height: 18px;
-}
+        line-height: 18px;
+    }
+    td.total_label {
+        width: 44%;
+    
+    }
+    
+
+    .modal-xxl {
+        max-width: 95% !important; /* Or use 100%, or a fixed px like 1400px */
+    }
+
+    .results__options {
+        
+        text-align: left !important;
+    }
+    .select_width1{
+
+        border: unset !important;
+        
+
+
+    }
+
+    .total_table tr{
+
+        border: 1px solid black;
+    }
+
 </style>
 
  <!--add product modal start-->
@@ -173,7 +198,7 @@
                         
                         <!--add purchse voucher modal start-->
                         <div class="modal fade" id="AddPurchaseVoucher" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog modal-xl">
+	                        <div class="modal-dialog modal-xxl">
 		                        <form  class="Dashboard-form class" id="purchase_form" data_fill="false">
 			                        <div class="modal-content">
                                         <div class="modal-header">
@@ -416,7 +441,13 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_delivery_note" class="form-control input_length delivery_note_clz" value="">
+                                                                        <!--<input type="text" name="purchase_delivery_note" class="form-control input_length delivery_note_clz" value="">-->
+
+                                                                        <select class="form-select delivery_note_clz input_length" name="purchase_delivery_note" id="">
+                                                                            
+                                                                            <option value="" selected="" disabled="">Select Delivery Order</option>
+
+                                                                        </select>
                                                                     </div>
 
                                                                 </div> 
@@ -470,15 +501,15 @@
                                                             
                                                             <tr>
                                                                 
-                                                                <td style="width:10%">Sales Order</td>
+                                                                <td style="width:8%">Sales Order</td>
                                                                 <td >Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
-                                                                <td style="width:15%">Debit A/C</td>
-                                                                <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Unit</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:7%">Discount</td>
-                                                                <td style="width:9%">Amount</td>
-                                                                <td style="width:6%;display:none" class="show_action">Action</td> 
+                                                                <td style="width:20%">Debit A/C</td>
+                                                                <td style="width:3%">Qty</td>
+                                                                <td style="width:3%">Unit</td>
+                                                                <td style="width:4%">Rate</td>
+                                                                <td style="width:4%">Discount</td>
+                                                                <td style="width:5%">Amount</td>
+                                                                <td style="width:5%;display:none" class="show_action">Action</td> 
 
                                                             </tr>
                                                             
@@ -564,7 +595,7 @@
 
                         <!--view modal section start--->
                         <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
+                            <div class="modal-dialog modal-xxl">
                                 <form class="Dashboard-form class" id="">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -787,14 +818,14 @@
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 <td class="text-center" style="width: 4%;">SI</td>
-                                                                <td class="text-center" style="width: 10%;">Sales Order</td>
+                                                                <td class="text-center" style="width: 8%;">Sales Order</td>
                                                                 <td class="text-center">Product Description</td>
-                                                                <td class="text-center" style="width: 8%;">Debit A/C</td>
-                                                                <td class="text-center" style="width: 6%;">Qty</td>
-                                                                <td class="text-center" style="width: 6%;">Unit</td>
-                                                                <td class="text-center" style="width: 6%;">Rate</td>
-                                                                <td class="text-center" style="width: 7%;">Discount</td>
-                                                                <td class="text-center" style="width: 9%;">Amount</td>
+                                                                <td class="text-center" style="width: 20%;">Debit A/C</td>
+                                                                <td class="text-center" style="width: 3%;">Qty</td>
+                                                                <td class="text-center" style="width: 3%;">Unit</td>
+                                                                <td class="text-center" style="width: 4%;">Rate</td>
+                                                                <td class="text-center" style="width: 4%;">Discount</td>
+                                                                <td class="text-center" style="width: 5%;">Amount</td>
 
 
 
@@ -860,7 +891,7 @@
 
                         <!--Edit modal section start--->
                         <div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
+                            <div class="modal-dialog modal-xxl">
                                 <form class="Dashboard-form class" id="edit_purchase_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -1035,7 +1066,10 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="pv_delivery_note" class="form-control edit_delivery_note input_length">
+                                                                        <!--<input type="text" name="pv_delivery_note" class="form-control edit_delivery_note input_length">-->
+                                                                        <select class="form-select edit_delivery_note input_length" name="pv_delivery_note" id="" required></select>
+                                                                    
+
 
                                                                     </div>
 
@@ -1083,15 +1117,17 @@
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 
-                                                                <td style="width: 10%;">Sales Order</td>
-                                                                <td>Product Description</td>
-                                                                <td style="width: 10%;">Debit A/C</td>
-                                                                <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Unit</td>
-                                                                <td style="width: 6%;">Rate</td>
-                                                                <td style="width: 7%;">Discount</td>
-                                                                <td style="width: 9%;">Amount</td>
-                                                                <td style="width: 10%;" class="edit_action">Action</td>
+                                                            <td style="width:8%">Sales Order</td>
+                                                            <td >Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
+                                                            <td style="width:20%">Debit A/C</td>
+                                                            <td style="width:3%">Qty</td>
+                                                            <td style="width:3%">Unit</td>
+                                                            <td style="width:4%">Rate</td>
+                                                            <td style="width:4%">Discount</td>
+                                                            <td style="width:5%">Amount</td>
+                                                            <td style="width:5%;display:none" class="edit_action">Action</td> 
+
+                                                            
                                                                
                                                             </tr>
 
@@ -1229,7 +1265,7 @@
                                     <tr>
                                         <td style="width:4%">SI</td>
                                         <td>Product Description</td>
-                                        <td style="width:11%">MRN Ref </td>
+                                        <td style="width:13%">MRN Ref </td>
                                         <td style="width:4%">Tick</td>
                                     </tr>
                                                             
@@ -1445,10 +1481,11 @@
         $(function() {
             var form = $('#purchase_form');
             
+            
             form.validate({
-                rules: {
+                /*rules: {
                     required: 'required',
-                },
+                },*/
                 messages: {
                     required: 'This field is required',
                 },
@@ -1667,6 +1704,37 @@
         });
 
 
+        $("body").on('change', '.purchase_order', function(){ 
+	        
+            var purchaseId = $(this).val();
+
+            $.ajax({
+ 
+                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/DeliveryNote",
+ 
+                method : "POST",
+ 
+                data: {ID: purchaseId},
+ 
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                     
+                   console.log(data.delivery_note);
+
+                    $('.delivery_note_clz').html(data.delivery_note)
+
+                   
+ 
+                }
+ 
+ 
+            });
+ 
+ 
+        });
+
+
         /**/
 
 
@@ -1808,6 +1876,8 @@
            
             $(".purchase_order").val("").trigger( "change" );
             $('.add_prod_row').remove();
+            $(".show_action").hide();
+            $('.delivery_note_clz').prop('required',false);
 
             $.ajax({
 
@@ -1897,7 +1967,7 @@
          /*sales order droup drown search*/
          function InitSalesSelectAdd(){
             $(".add_sales_order:last").select2({
-                placeholder: "Select Product",
+                placeholder: "Select Sales Order",
                 theme : "default form-control- droup_color",
                 dropdownParent: $($('.add_sales_order:last').closest('.add_prod_row')),
                 ajax: {
@@ -1968,6 +2038,8 @@
         }*/
 
         /***/
+
+
         function InitProductSelectAdd() {
     var $select = $(".add_products:last");
 
@@ -2000,14 +2072,17 @@
                 };
             }
         }
-    }).on('select2:open', function () {
+    })/*.on('select2:open', function () {
         // Optional: style dropdown when it opens
         $('.select2-dropdown').attr('style', 'font-size: 14px; max-height: 200px;');
-    });
+    });*/
 
     // Add inline style to the visible select2 container
-    $select.next('.select2-container').attr('style', 'width: 100% !important; font-size: 14px;height: unset !important;');
+    $select.next('.select2-container').attr('style', 'width: 100% !important; font-size: 13px;height: unset !important;');
 }
+
+
+
 
 
         /***/
@@ -2054,6 +2129,90 @@
         }
 
         InitDebitSelectAdd();
+
+
+
+        /*####*/
+
+
+        /*function InitDebitSelectAdd1(){
+            $(".debit_account1").select2({
+                placeholder: "Select Debit",
+                theme : "default form-control- droup_color",
+                dropdownParent: $($('.debit_account1').closest('.add_prod_row')),
+                ajax: {
+                    url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchDebit",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
+        }
+
+        InitDebitSelectAdd1();*/
+
+        function InitDebitSelectAdd1() {
+    $('.debit_account1').each(function () {
+        $(this).select2({
+            placeholder: "Select Debit",
+            theme: "default form-control- droup_color results__options",
+            dropdownParent: $(this).closest('.add_prod_row'),
+          
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchDebit",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return { id: item.ca_id, text: item.ca_name }
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },
+            }
+        });
+    });
+}
+
+InitDebitSelectAdd1()
+
+
+
+        
+
+
 
 
         /*debit froup down end*/
@@ -2183,7 +2342,9 @@
 
                     $('.add_product2').hide();
 
-                    InitDebitSelectAdd();
+                    //InitDebitSelectAdd();
+
+                    InitDebitSelectAdd1();
 
 
                 }
@@ -2482,8 +2643,6 @@
 
             //var order = parseFloat(orderSelectElement.val()) || 0;
 
-            
-
 
             if(total > order)
             {   
@@ -2740,10 +2899,27 @@
             pp++;
             
            
-           // $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-            
-           $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+           
+          //$(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
               
+          /*$(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'>
+          <td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td>
+          <td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td>
+          <td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td>
+          <td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td>
+          <td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td>
+          <td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td>
+          <td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td>
+          <td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td>
+          <td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+          */ 
+         
+          
+          $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td ><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+             
+          
+              
+         
 
             }
 
@@ -3105,7 +3281,7 @@
 
                         $('.edit_purchase_order').val(data.purchase_order);
 
-                        console.log(data.purchase_order);
+                       
 
                         if (data.purchase_order && data.purchase_order.trim() !== "") {
                                 
@@ -3116,7 +3292,9 @@
 
                         $('.edit_vendor_inv_ref').val(data.vendor_inv);
 
-                        $('.edit_delivery_note').val(data.delivery_note);
+                        $('.edit_delivery_note').html(data.delivery_note);
+
+                        console.log(data.delivery_note);
 
                         $('.edit_payment_term').val(data.payment_term);
 
@@ -3340,7 +3518,7 @@
         /**/
 
 
-        function ProductSelect2Edit() {
+        /*function ProductSelect2Edit() {
                 $('body .product_select2_edit').each(function() {
                 $(this).select2({
                     placeholder: "Select Product",
@@ -3377,11 +3555,60 @@
                     }
                 })
 
+                
+
             });
 
 
             
+        }*/
+
+
+
+        function ProductSelect2Edit() {
+            $('body .product_select2_edit').each(function () {
+                var $select = $(this); // <-- define $select first
+
+                $select.select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width1",
+                    dropdownParent: $select.closest('.edit_single_prod_row'),
+                    ajax: {
+                        url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchProdDes",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function (params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function (data, params) {
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function (item) {
+                                    return {
+                                        id: item.product_details,
+                                        text: item.product_details
+                                    };
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        }
+                    }
+                });
+
+                // Inline-style fix
+                $select.next('.select_width1').attr('style', 'height:100% !important;text-align: left;');
+               
+            });
         }
+
 
 
 
@@ -3390,6 +3617,7 @@
         
         function DebitSelect2Edit() {
                 $('body .debit_select2_edit').each(function() {
+                var $select = $(this);    
                 $(this).select2({
                     placeholder: "Select Product",
                     theme: "default form-control- select_width1 ",
@@ -3424,6 +3652,12 @@
                         },
                     }
                 })
+
+
+                // Inline-style fix
+                $select.next('.select_width1').attr('style', 'height:100% !important;');
+
+
 
             });
 
@@ -3538,12 +3772,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         $('#AddProdModal').modal('show');
 
+        $('#EditModal').modal('hide');
+
     });
 
 
-     /*close product modal (open enquiry modal)*/
+    /*close product modal (open enquiry modal)*/
 
-     $('#AddProdModal').on('hidden.bs.modal', function () {
+    $('#AddProdModal').on('hidden.bs.modal', function () {
 
         $('#AddPurchaseVoucher').modal('show')
 

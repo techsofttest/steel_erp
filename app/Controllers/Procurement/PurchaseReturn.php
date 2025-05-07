@@ -235,8 +235,8 @@ class PurchaseReturn extends BaseController
                             'prp_rate'                =>  preg_replace('/[,]/', '',$_POST['prp_rate'][$j]),
                             'prp_discount'            =>  $_POST['prp_discount'][$j],
                             'prp_amount'              =>  preg_replace('/[,]/', '',$_POST['prp_amount'][$j]),
-                            //'prp_voucher_prod_id'     =>  $_POST['prp_id'][$j],
-                            //'prp_voucher_id'          =>  $_POST['prp_voucher_id'][$j],
+                            'prp_voucher_prod_id'     =>  $_POST['prp_id'][$j],
+                            'prp_voucher_id'          =>  $_POST['prp_voucher_id'][$j],
                             'prp_purchase_return_id'  =>  $this->request->getPost('pr_id'),
                         );
 
@@ -252,8 +252,24 @@ class PurchaseReturn extends BaseController
                         
                         $this->common_model->EditData(array('pr_total_amount' => preg_replace('/[,]/', '',$_POST['pr_total_amount'])), array('pr_id' => $purchase_return_prod->prp_purchase_return_id),'pro_purchase_return');
                         
+                        /****/
 
-                        /*$this->common_model->EditData(array('pvp_status' => 1), array('pvp_id' => $purchase_return_prod->prp_voucher_prod_id),'pro_purchase_voucher_prod');
+                       // $this->common_model->EditData(array('pvp_status' => 1), array('pvp_id' => $purchase_return_prod->prp_voucher_prod_id),'pro_purchase_voucher_prod');
+
+                       $purchase_voucher1 = $this->common_model->SingleRow('pro_purchase_voucher_prod',array('pvp_id' => $purchase_return_prod->prp_voucher_prod_id));
+
+
+
+                       $this->common_model->EditData(array('pvp_delivered_qty' => $_POST['prp_qty'][$j] + $purchase_voucher1->pvp_delivered_qty), array('pvp_id' => $purchase_return_prod->prp_voucher_prod_id),'pro_purchase_voucher_prod');
+
+                       $purchase_voucher = $this->common_model->SingleRow('pro_purchase_voucher_prod',array('pvp_id' => $purchase_return_prod->prp_voucher_prod_id));
+                        
+                       
+                       if($purchase_voucher->pvp_qty  == $purchase_voucher->pvp_delivered_qty){
+                           
+                            $this->common_model->EditData(array('pvp_status' => 1), array('pvp_id' => $purchase_return_prod->prp_voucher_prod_id),'pro_purchase_voucher_prod');
+
+                       }
                         
                         $pur_vou1 = $this->common_model->FetchWhere('pro_purchase_voucher_prod' ,array('pvp_reffer_id' =>  $purchase_return_prod->prp_voucher_id));
 
@@ -264,7 +280,9 @@ class PurchaseReturn extends BaseController
                         if(count($pur_vou1) === count($pur_vou2)){
 
                             $this->common_model->EditData(array('pv_flag_status' => 1), array('pv_id' => $purchase_return_prod->prp_voucher_id),'pro_purchase_voucher');
-                        }*/
+                        }
+
+                        /****/
 
                         $data['vendor_id'] = $purchase_return->pr_vendor_name;
                         
@@ -422,20 +440,12 @@ class PurchaseReturn extends BaseController
        
         $purchase_return = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $this->request->getPost('ID')));
         
-        /*$joins = array(
-            
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'pop_prod_desc',
-            ),
-           
-
-        );*/
-
-        //$products = $this->common_model->FetchWhereJoin('pro_purchase_order_product',array('pop_purchase_order' => $purchase_order->po_id),$joins);
+        
        
-        $products = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $purchase_return->pv_id));
+        //$products = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $purchase_return->pv_id));
+
+        $products = $this->pro_model->FetchWhereNotIn('pro_purchase_voucher_prod',array('pvp_reffer_id' => $purchase_return->pv_id),'pvp_status',1);
+        
         
 
         $i = 1; 
@@ -497,26 +507,37 @@ class PurchaseReturn extends BaseController
             
             $j = 1;
             foreach($products as $product){
+                
+                $current_qty = $product->pvp_qty - $product->pvp_delivered_qty;
+                
+                $multipliedTotal = $product->pvp_rate *  $current_qty;
+
+                $per_amount = ($product->pvp_discount / 100) * $multipliedTotal;
+
+                $originalPrice = $multipliedTotal - $per_amount;
+
 
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->pvp_id.'">
                                             <td class="si_no text-center">'.$j.'</td>
                                             <td><input type="text" name="prp_sales_order[]" value="'.$product->pvp_sales_order.'" class="form-control text-center" readonly></td>
                                             <td style="text-align:left;">'.$product->pvp_prod_dec.'</td>
-                                            <td><input type="text" name="prp_debit[]" value="'.$product->ca_name.'" class="form-control text-center" readonly></td>
-                                            <td><input type="number" name="prp_qty[]" value="'.$product->pvp_qty.'"  class="form-control add_prod_qty text-center" readonly required></td>
+                                            <td style="text-align:left;">'.$product->ca_name.'</td>
+                                            <td><input type="number" name="prp_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center"  required></td>
                                             <td><input type="text" name="prp_unit[]" value="'.$product->pvp_unit.'" class="form-control text-center" required readonly></td>
                                             <td><input type="text" name="prp_rate[]" value="'.format_currency($product->pvp_rate).'"  class="form-control add_prod_rate text-end" required readonly></td>
-                                            <td><input type="text" name="prp_discount[]" value="'.$product->pvp_discount.'"  class="form-control add_discount text-center" required readonly></td>
-                                            <td><input type="text" name="prp_amount[]" value="'.format_currency($product->pvp_amount).'"  class="form-control add_prod_amount text-end" required readonly></td>
+                                            <td><input type="text" name="prp_discount[]" value="'.format_currency($product->pvp_discount).'"  class="form-control add_discount text-center" required readonly></td>
+                                            <td><input type="text" name="prp_amount[]" value="'.format_currency($originalPrice).'"  class="form-control add_prod_amount text-end" required readonly></td>
                                             <input type="hidden" name="prp_id[]" value="'.$product->pvp_id.'">
                                             <input type="hidden" name="prp_voucher_id[]" value="'.$product->pvp_reffer_id.'">
                                             <input type="hidden" name="prp_prod_desc[]" value="'.$product->pvp_prod_dec.'">
+                                            <input type="hidden" name="prp_debit[]" value="'.$product->ca_name.'" class="form-control text-center" readonly>
+                                            <input type="hidden" name="" value="'.$current_qty.'" class="add_prod_final_qty">
                                         </tr>';
  
                                     
                                      $j++;
 
-                    $new_amount =    $new_amount += $product->pvp_amount;   
+                    $new_amount =    $new_amount += $originalPrice;   
                     
                     //echo $new_amount."<br>"; 
                     
@@ -599,7 +620,7 @@ class PurchaseReturn extends BaseController
     public function VendorInv()
     {   
       
-        $purchase_voucher = $this->pro_model->FetchWhereNotIn('pro_purchase_voucher',array('pv_vendor_name' => $this->request->getPost('ID')),'pv_status','2');
+        $purchase_voucher = $this->pro_model->FetchWhereNotIn3('pro_purchase_voucher',array('pv_vendor_name' => $this->request->getPost('ID')),'pv_status','2',array('pv_flag_status' => 0));
        
         $data['vendor_inv'] ="";
 
@@ -611,6 +632,19 @@ class PurchaseReturn extends BaseController
            
             $data['vendor_inv'] .='>' .$pur_vou->pv_vendor_inv. '</option>'; 
         }
+
+        //contact section start
+        
+        $vendor_contacts = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation' => $this->request->getPost('ID')));
+
+        $data['contact_data'] = '<option value="" selected disabled>Select Contact Person</option>';
+
+        foreach($vendor_contacts as $ven_contact)
+        {
+            $data['contact_data'] .='<option value='.$ven_contact->contact_id.'>'.$ven_contact->contact_person.'</option>';
+        }
+
+        /*####*/
         
 
         echo json_encode($data);
@@ -627,6 +661,13 @@ class PurchaseReturn extends BaseController
                 'pk'    => 'contact_id',
                 'fk'    => 'pv_contact_person',
             ),
+
+            array(
+
+                'table' => 'pro_material_received_note',
+                'pk'    => 'mrn_id',
+                'fk'    => 'pv_delivery_note',
+            ),
             
         );
 
@@ -635,6 +676,8 @@ class PurchaseReturn extends BaseController
         $data['contact_person'] = $purchase_voucher->contact_person;
 
         $data['payment_term']   = $purchase_voucher->pv_payment_term;
+
+        $data['delivery_note']   = $purchase_voucher->	mrn_delivery_note;
 
 
         echo json_encode($data);
@@ -708,6 +751,12 @@ class PurchaseReturn extends BaseController
                 'fk'    => 'pr_vendor_inv',
             ),
 
+            array(
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
+                'fk'    => 'pr_contact_person',
+            ),
+
         );
 
 
@@ -724,7 +773,7 @@ class PurchaseReturn extends BaseController
 
         $data['lpo']            = $purchase_return->pr_lpo;
 
-        $data['contact_person'] = $purchase_return->pr_contact_person;
+        $data['contact_person'] = $purchase_return->contact_person;
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
 
@@ -835,13 +884,35 @@ class PurchaseReturn extends BaseController
 
         $data['lpo']            = $purchase_return->pr_lpo;
 
-        $data['contact_person'] = $purchase_return->pr_contact_person;
+        //$data['contact_person'] = $purchase_return->pr_contact_person;
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
 
         $data['total_amount']   = format_currency($purchase_return->pr_total_amount);
 
         $purchase_return_prod = $this->common_model->FetchWhere('pro_purchase_return_prod',array('prp_purchase_return_id' => $this->request->getPost('ID')));
+
+        /*contact person start*/
+
+        $contacts = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation' => $purchase_return->pr_vendor_name));
+
+        $data['contact_person'] = '';
+
+        foreach($contacts as $contact)
+        {  
+            
+            $data['contact_person'] .= '<option value="' .$contact->contact_id.'"'; 
+
+            if($purchase_return->pr_contact_person == $contact->contact_id)
+            {
+                $data['contact_person'] .= ' selected'; 
+            }
+
+		    $data['contact_person'] .= '>' . $contact->contact_person.'</option>';
+        }
+
+
+        /*contact person end*/
         
         $i=1;
 
@@ -910,7 +981,24 @@ class PurchaseReturn extends BaseController
 
            exit();
         }
+
+        $purchase_return = $this->common_model->FetchWhere('pro_purchase_return_prod',array('prp_purchase_return_id' => $this->request->getPost('ID')));
+
+        foreach($purchase_return as $pur_data){
+            
+            $this->common_model->EditData(array('pv_flag_status' => 0), array('pv_id' => $pur_data->prp_voucher_id), 'pro_purchase_voucher');
+
+            $purchase_voucher_prd = $this->common_model->SingleRow('pro_purchase_voucher_prod',array('pvp_id' => $pur_data->prp_voucher_prod_id));
+
+            $current_qty = $purchase_voucher_prd->pvp_delivered_qty - $pur_data->prp_qty;
+
+            $this->common_model->EditData(array('pvp_status' => 0,'pvp_delivered_qty' => $current_qty), array('pvp_id' => $pur_data->prp_voucher_prod_id), 'pro_purchase_voucher_prod');
+
+        }
         
+        
+        
+
         $this->common_model->DeleteData('pro_purchase_return_prod', array('prp_purchase_return_id' => $this->request->getPost('ID')));
 
         $this->common_model->DeleteData('pro_purchase_return', array('pr_id' => $this->request->getPost('ID')));

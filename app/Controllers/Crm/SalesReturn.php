@@ -528,7 +528,7 @@ class SalesReturn extends BaseController
 
         $data['credit_account'] = $cash_invoice->sr_credit_account;
 
-        $data['total_amount'] = $cash_invoice->sr_total;
+        $data['total_amount'] = format_currency($cash_invoice->sr_total);
        
 
 
@@ -628,21 +628,40 @@ class SalesReturn extends BaseController
     {
         $cond = array('ci_customer' => $this->request->getPost('ID'));
 
+        //$cash_invoices = $this->common_model->FetchReturnsales('crm_cash_invoice',$cond,array('ci_status'=>0));
+
+        //print_r($cash_invoices); exit();
+         
+        /*$sales_order = []; 
+        foreach($cash_customer as $cash_cust){
+
+            $sales_order[] = $cash_customer->ci_sales_order;
+        }*/
+
+        //print_r($cash_customer); exit();
+
         $cash_invoices = $this->common_model->FetchSalesReturns1('crm_cash_invoice',$cond,array('ci_status'=>0));
 
         
-        $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
+       // $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
         
-        
+       $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_status'=>0));
+
+       
+
         $data['invoice_no'] ='<option value="" selected disabled>Select Unpaid Invoices</option>';
 
 
         foreach($cash_invoices as $cash_invoice)
         {   
-            
-            $data['invoice_no'] .='<option value='.$cash_invoice->ci_reffer_no.'';
+            //foreach($cash_invoice->sales_return as $sales_ret){
+                 
+                $data['invoice_no'] .='<option value='.$cash_invoice->ci_reffer_no.'';
            
-            $data['invoice_no'] .='>' .$cash_invoice->ci_reffer_no. '</option>'; 
+                $data['invoice_no'] .='>' .$cash_invoice->ci_reffer_no. '</option>'; 
+
+            //} 
+            
         }
 
         foreach($credit_invoices as $credit_invoice)
@@ -1176,6 +1195,14 @@ class SalesReturn extends BaseController
                     foreach($sales_order_details as $sales_det)
                     {   
                         $qty = $sales_det->cipd_qtn - $sales_det->cipd_delivered_qty;
+                        
+                        $multipled = $sales_det->cipd_rate *  $qty;
+
+                        $per_amount = ($sales_det->cipd_discount/100)*$multipled;
+
+                        $orginalPrice = $multipled - $per_amount;
+
+
 
                         $data['product_detail'] .='<tr class="prod_row sales_return_remove" id="'.$sales_det->cipd_id.'">
                                                         <td class="si_no text-center">'.$i.'</td>
@@ -1184,7 +1211,7 @@ class SalesReturn extends BaseController
                                                         <td><input type="number" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id text-center" required></td>
                                                         <td><input type="text" name="srp_rate[]" value="'.format_currency($sales_det->cipd_rate).'"  class="form-control rate_clz_id text-end"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.format_currency($sales_det->cipd_discount).'" class="form-control discount_clz_id text-center" readonly></td>
-                                                        <td><input type="text" name="srp_amount[]" value="'.format_currency($sales_det->cipd_amount).'" class="form-control amount_clz_id text-end" required readonly></td>
+                                                        <td><input type="text" name="srp_amount[]" value="'.format_currency($orginalPrice).'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="srp_prod_det[]" value="'.$sales_det->product_id.'">
                                                         <input type="hidden" name="cash_id[]" value="'.$sales_det->cipd_id.'"> 
                                                         <input type="hidden" name="cash_main_table[]" value="'.$sales_det->cipd_cash_invoice.'">
@@ -1192,7 +1219,7 @@ class SalesReturn extends BaseController
                                                         
                                                     </tr>';
 
-                        $new_amount =    $new_amount += $sales_det->cipd_amount;   
+                        $new_amount =    $new_amount += $orginalPrice;   
                                                         
                     }
 
@@ -1205,6 +1232,12 @@ class SalesReturn extends BaseController
                     {
                         $new_qty = $sale_det->ipd_quantity - $sale_det->ipd_delivered_qty;
 
+                        $multipled = $sale_det->ipd_rate *  $new_qty;
+
+                        $per_amount = ($sale_det->ipd_discount/100)*$multipled;
+
+                        $orginalPrice = $multipled - $per_amount;
+
                         $data['product_detail'] .='<tr class="prod_row sales_return_remove" id="'.$sale_det->ipd_id.'">
                                                         <td class="si_no text-center">'.$i.'</td>
                                                         <td style="text-align:left">'.$sale_det->product_details.'</td>
@@ -1212,14 +1245,14 @@ class SalesReturn extends BaseController
                                                         <td><input type="number" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id text-center" required></td>
                                                         <td><input type="text" name="srp_rate[]" value="'.format_currency($sale_det->ipd_rate).'"  class="form-control rate_clz_id text-end"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.format_currency($sale_det->ipd_discount).'" class="form-control discount_clz_id text-center" readonly></td>
-                                                        <td><input type="text" name="srp_amount[]" value="'.format_currency($sale_det->ipd_amount).'" class="form-control amount_clz_id text-end" required readonly></td>
+                                                        <td><input type="text" name="srp_amount[]" value="'.format_currency($orginalPrice).'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="srp_prod_det[]" value="'.$sale_det->product_id.'">
                                                         <input type="hidden" name="credit_id[]" value="'.$sale_det->ipd_id.'"> 
                                                         <input type="hidden" name="credit_main_table[]" value="'.$sale_det->ipd_credit_invoice.'">  
                                                         <input type="hidden" name="reffer_id[]" value="'.$sale_det->ipd_reffer_no.'" class="ret_cash_inv_reff"> 
                                                     </tr>';
 
-                                                    $new_amount =    $new_amount += $sale_det->ipd_amount;   
+                                                    $new_amount =    $new_amount += $orginalPrice;   
                                                         
                     }
 
@@ -1351,7 +1384,7 @@ class SalesReturn extends BaseController
 
             $data['invoice_no']      = $cash_invoice->sr_invoice;
 
-            $data['total_amount']    = $cash_invoice->sr_total;
+            $data['total_amount']    = format_currency($cash_invoice->sr_total);
 
             // customer craetion
             $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');

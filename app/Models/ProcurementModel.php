@@ -48,7 +48,29 @@ class ProcurementModel extends Model
 
             ->get();
 
-        //echo $this->db->getLastQuery();
+           /// echo $this->db->getLastQuery();
+
+        //exit();
+
+        return $query->getResult();
+    }
+
+
+    public function FetchWhereNotIn3($table, $cond, $id_coloum, $id,$cond2)
+    {
+        $query = $this->db->table($table)
+
+            ->select('*')
+
+            ->whereNotIn($id_coloum, (array)$id)
+
+            ->where($cond)
+
+            ->where($cond2)
+
+            ->get();
+
+            //echo $this->db->getLastQuery();
 
         //exit();
 

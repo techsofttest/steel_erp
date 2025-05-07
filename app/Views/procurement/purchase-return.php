@@ -77,6 +77,21 @@
    
    line-height: 18px;
 }
+
+.modal-xxl {
+        max-width: 95% !important; /* Or use 100%, or a fixed px like 1400px */
+    }
+
+    .total_table {
+    width: 14% !important;
+    margin-top: -16px;
+}
+
+.total_table tr {
+    
+    border: 1px solid black;
+}
+
 </style>
 
 <div class="tab-content text-muted">
@@ -94,7 +109,7 @@
                         
                         <!--add enquiry modal start-->
                         <div class="modal fade" id="AddPurchaseReturn" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog modal-xl">
+	                        <div class="modal-dialog modal-xxl">
 		                        <form  class="Dashboard-form class" id="purchase_form" data_fill="false">
 			                        <div class="modal-content">
                                         <div class="modal-header">
@@ -187,7 +202,7 @@
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         
-                                                                        <label for="basicInput" class="form-label">Vendor Inv Ref <span class="add_more_icon add_contact ri-add-line"></span></label>
+                                                                        <label for="basicInput" class="form-label">Vendor Inv Ref <span class="add_more_icon add_contact ri-add-line" id="blink"></span></label>
                                                                     
                                                                     </div>
 
@@ -232,7 +247,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="pr_lpo" class="form-control input_length" value="" required>   
+                                                                        <input type="text" name="pr_lpo" class="form-control input_length lpo_clz" value="" required>   
 
                                                                     </div>
 
@@ -252,7 +267,11 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pr_contact_person" class="form-control  add_contact_person input_length" value="" required>
+                                                                        <!--<input type="text" name="pr_contact_person" class="form-control  add_contact_person input_length" value="" required>-->
+
+                                                                        <select class="form-select add_contact_person input_length" name="pr_contact_person" id="" required></select>
+                                                                    
+                                                                    
                                                                     </div>
 
                                                                 </div> 
@@ -307,14 +326,14 @@
                                                             
                                                             <tr>
                                                                 <td style="width:4%">SI</td>
-                                                                <td style="width:11%">Sales Order</td>
+                                                                <td style="width:8%">Sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:11%">Debit A/C</td>
-                                                                <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Unit</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:7%">Discount</td>
-                                                                <td style="width:9%">Amount</td>
+                                                                <td style="width:12%">Credit A/C</td>
+                                                                <td style="width:4%">Qty</td>
+                                                                <td style="width:3%">Unit</td>
+                                                                <td style="width:5%">Rate</td>
+                                                                <td style="width:5%">Discount</td>
+                                                                <td style="width:7%">Amount</td>
                                                             </tr>
                                                             
                                                             
@@ -322,7 +341,7 @@
 
                                                         <tbody  class="travelerinfo product-more2"></tbody>
 
-                                                        <tbody>
+                                                        <!--<tbody>
                                                             <tr>
                                                                
                                                                 <td colspan="7" class="sales_order_amount_in_word"></td>
@@ -331,8 +350,21 @@
                                                                 <td><input type="text" name="pr_total_amount" class="amount_total form-control text-end" readonly=""></td>
                                                             </tr>
 
-                                                        </tbody>
+                                                        </tbody>--->
                                                         
+                                                    </table>
+
+                                                    <table class="total_table" style="display:none">
+
+                                                        <tbody>
+
+                                                            <tr>
+                                                                
+                                                                <td align="right" class="total_label">Total</td>
+                                                                <td><input type="text" name="pr_total_amount" class=" form-control amount_total text-end" readonly=""></td>
+                                                            </tr>
+
+                                                        </tbody>
                                                     </table>
                                                 </div>
 
@@ -603,7 +635,7 @@
   <!---view modal start--->
 
 <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl">
+	<div class="modal-dialog modal-xxl">
         <form  class="Dashboard-form class" id="">
             <div class="modal-content">
                 <div class="modal-header">
@@ -809,16 +841,16 @@
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
                                         
-                                        <td class="text-center" style="width: 4%;">SI</td>
-                                        <td class="text-center" style="width: 10%;">Sales Order</td>
-                                        <td class="text-center">Product Description</td>
-                                        <td class="text-center" style="width: 8%;">Credit A/C</td>
-                                        <td class="text-center" style="width: 6%;">Qty</td>
-                                        <td class="text-center" style="width: 6%;">Unit</td>
-                                        <td class="text-center" style="width: 8%;">Rate</td>
-                                        <td class="text-center" style="width: 7%;">Discount</td>
-                                        <td class="text-center" style="width: 9%;">Amount</td>
-                                       
+                                        <td style="width:4%">SI</td>
+                                        <td style="width:8%">Sales Order</td>
+                                        <td>Product Description</td>
+                                        <td style="width:12%">Credit A/C</td>
+                                        <td style="width:4%">Qty</td>
+                                        <td style="width:3%">Unit</td>
+                                        <td style="width:5%">Rate</td>
+                                        <td style="width:5%">Discount</td>
+                                        <td style="width:7%">Amount</td>
+                                        
                                     </tr>
                                     
                                     
@@ -826,7 +858,7 @@
                                 
                                 <tbody  class="travelerinfo view_prod_data"></tbody>
 
-                                <tbody>
+                                <!--<tbody>
                                     <tr>
                                         
                                         <td colspan="7" class=""></td>
@@ -834,10 +866,27 @@
                                         <td><input type="text" name="" class="view_total_prod form-control text-end" readonly=""></td>
                                     </tr>
 
-                                </tbody>
+                                </tbody>--->
 
                                 
                             </table>
+
+                            <table class="total_table">
+
+                                <tbody>
+
+                                    <tr>
+                                                                
+                                        <td align="right" class="total_label">Total</td>
+                                        <td><input type="text" name="" class=" form-control view_total_prod text-end" readonly=""></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+
+
+
                         </div>
 
 
@@ -876,7 +925,7 @@
 <!--edit modal start-->
 
 <div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl">
+	<div class="modal-dialog modal-xxl">
         <form  class="Dashboard-form class" id="edit_form">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1010,7 +1059,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <input type="text" name="edit_lpo_ref" class="form-control edit_lpo_ref input_length" >
+                                                <input type="text" name="edit_lpo_ref" class="form-control edit_lpo_ref input_length" readonly>
                                             
                                             </div>
 
@@ -1033,7 +1082,8 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <input type="text" name="" class="form-control edit_contact_person input_length" readonly>
+                                                <!--<input type="text" name="" class="form-control edit_contact_person input_length" readonly>--->
+                                                <select class="form-select edit_contact_person input_length" name="" required="" aria-required="true"></select>
                                                 
                                             </div>
 
@@ -1082,16 +1132,16 @@
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
                                         
-                                        <td style="width: 4%;">SI</td>
-                                        <td style="width: 10%;">Sales Order</td>
+                                        <td style="width:4%">SI</td>
+                                        <td style="width:8%">Sales Order</td>
                                         <td>Product Description</td>
-                                        <td style="width: 8%;">Credit A/C</td>
-                                        <td style="width: 6%;">Qty</td>
-                                        <td style="width: 6%;">Unit</td>
-                                        <td style="width: 8%;">Rate</td>
-                                        <td style="width: 7%;">Discount</td>
-                                        <td style="width: 9%;">Amount</td>
-                                       
+                                        <td style="width:12%">Credit A/C</td>
+                                        <td style="width:4%">Qty</td>
+                                        <td style="width:3%">Unit</td>
+                                        <td style="width:5%">Rate</td>
+                                        <td style="width:5%">Discount</td>
+                                        <td style="width:7%">Amount</td>
+                                        
                                     </tr>
                                     
                                     
@@ -1099,7 +1149,7 @@
                                 
                                 <tbody  class="travelerinfo edit_prod_data"></tbody>
 
-                                <tbody>
+                                <!--<tbody>
                                     <tr>
                                         
                                         <td colspan="7" class=""></td>
@@ -1107,9 +1157,23 @@
                                         <td><input type="text" name="" class="edit_total_prod form-control text-end" readonly=""></td>
                                     </tr>
 
-                                </tbody>
+                                </tbody>--->
 
                                 
+                            </table>
+
+                            <table class="total_table">
+
+                                <tbody>
+
+                                    <tr>
+                                                                
+                                        <td align="right" class="total_label">Total</td>
+                                        <td><input type="text" name="" class=" form-control edit_total_prod text-end" readonly=""></td>
+                                    
+                                    </tr>
+
+                                </tbody>
                             </table>
                         </div>
 
@@ -1158,6 +1222,7 @@
         /*add form*/
         $(function() {
             var form = $('#purchase_form');
+            var refreshIntervalId; // Declare outside for proper scope
             
             form.validate({
                 rules: {
@@ -1180,7 +1245,7 @@
 
                                 $('#AddPurchaseReturn').modal('hide');
 
-                                $('#paymentModal').modal('show');
+                                //$('#paymentModal').modal('show');
                             
                                 alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             
@@ -1216,7 +1281,7 @@
                     }
                     else
                     {
-                        alertify.error('Please Select Products').delay(3).dismissOthers();
+                        /*alertify.error('Please Select Products').delay(3).dismissOthers();
 
                         
                         $('#blink').each(function() {
@@ -1233,7 +1298,29 @@
                         setTimeout(function(){
                             clearInterval(refreshIntervalId);
                             
-                        }, 1000)
+                        }, 1000)*/
+
+
+                        alertify.error('Please Select Products').delay(3).dismissOthers();
+
+                        // Clear any previous blinking
+                        if (refreshIntervalId) clearInterval(refreshIntervalId);
+
+                        $('#blink').css('visibility', 'visible'); // ensure it starts visible
+
+                        refreshIntervalId = setInterval(function() {
+                            var elem = $('#blink');
+                            if (elem.css('visibility') === 'hidden') {
+                                elem.css('visibility', 'visible');
+                            } else {
+                                elem.css('visibility', 'hidden');
+                            }
+                        }, 200);
+
+                        setTimeout(function() {
+                            clearInterval(refreshIntervalId);
+                            $('#blink').css('visibility', 'visible'); // reset to visible
+                        }, 1000);
                     }
                    
                 }
@@ -1677,6 +1764,10 @@
 
                     $('#purchase_form').attr('data_fill','true');
 
+                    $(".total_table").show();
+
+                    
+
                 }
 
             });
@@ -1782,6 +1873,83 @@
         /*add current delivery end*/
 
 
+        /*calculation section start*/
+
+        /*$("body").on('keyup', '.add_prod_qty', function() { 
+
+            var $discountSelect = $(this);
+
+            var discount = parseFloat($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
+
+            var $discountSelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_rate');
+            var rate = parseFloat($discountSelectElement.val().replace(/,/g, "")) || 0;
+
+            var $quantitySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
+            var quantity = parseFloat($quantitySelectElement.val()) || 0;
+
+            var $totalqtySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_final_qty');
+            var total_qty = parseFloat($totalqtySelectElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var per_amount = (discount / 100) * multipliedTotal;
+            var originalPrice = multipliedTotal - per_amount;
+
+            var formattedPrice = Number(originalPrice.toFixed(2)).toLocaleString("en-US", { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+
+            var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
+            $amountElement.val(formattedPrice);
+
+
+            if (rate > total_qty) {
+                $quantitySelectElement.val("");  
+                alertify.error('Quantity should not be greater than ' + total_qty).dismissOthers();
+            }
+
+
+        });*/
+
+
+        $("body").on('keyup', '.add_prod_qty', function() { 
+    var $discountSelect = $(this);
+
+    var discount = parseFloat($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
+
+    var $discountSelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_rate');
+    var rate = parseFloat($discountSelectElement.val().replace(/,/g, "")) || 0;
+
+    var $quantitySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
+    var quantity = parseFloat($quantitySelectElement.val()) || 0;
+
+    var $totalqtySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_final_qty');
+    var total_qty = parseFloat($totalqtySelectElement.val()) || 0;
+
+    var multipliedTotal = rate * quantity;
+    var per_amount = (discount / 100) * multipliedTotal;
+    var originalPrice = multipliedTotal - per_amount;
+
+    var formattedPrice = Number(originalPrice.toFixed(2)).toLocaleString("en-US", { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+    });
+
+    var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
+    $amountElement.val(formattedPrice);
+
+    // ✅ Fixed this: Compare quantity with total_qty
+    if (quantity > total_qty) {
+        $quantitySelectElement.val("");  
+        alertify.error('Quantity should not be greater than ' + total_qty).dismissOthers();
+    }
+});
+
+
+
+        /*calculation section end*/
+
+
         /*vendor new modal start*/
         
         $("body").on('click', '.vendor_new_modal', function(){ 
@@ -1857,6 +2025,8 @@
                     console.log(data.vendor_inv)
 
                     $('.vendor_inv_ref').html(data.vendor_inv);
+
+                    $('.add_contact_person').html(data.contact_data);
                   
                 }
 
@@ -1888,9 +2058,11 @@
                 
                     var data = JSON.parse(data);
 
-                    $('.add_contact_person').val(data.contact_person);
+                    //$('.add_contact_person').val(data.contact_person);
 
                     $('.add_payment_term').val(data.payment_term);
+
+                    $('.lpo_clz').val(data.delivery_note);
                   
                 }
 
@@ -2145,7 +2317,7 @@
 
                         $('.edit_lpo_ref').val(data.lpo);
 
-                        $('.edit_contact_person').val(data.contact_person);
+                        $('.edit_contact_person').html(data.contact_person);
 
                         $('.edit_payment_term').val(data.payment_term);
 
