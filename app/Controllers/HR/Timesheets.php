@@ -648,7 +648,7 @@ class TimeSheets extends BaseController
 
     $data['table'] .='
 
-    <tr class="day_row '.$day->td_date.'">
+    <tr class="day_row '.$day->td_date.' '.date('d',strtotime($day->td_date)).'">
 
     <td width="15%">'.date('d M Y',strtotime($day->td_date)).'</td>
 

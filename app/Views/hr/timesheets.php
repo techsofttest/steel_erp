@@ -725,38 +725,40 @@
             
                     <div class="row align-items-start form_sec" id="employee_sec">
 
+
                     <!-- Section 1 -->
 
-                    <div class="col-lg-6">
-
-
+                    <div class="col-lg-12">
 
                     <div class="row align-items-center mb-2">
 
-                    <div class="col-col-md-3 col-lg-3">
+
+                    <div class="col-6">
+
+                    <div class="row align-items-start justify-content-end">
+
+                    <!-- <div class="col-col-md-3 col-lg-3">
 
                     <label for="basiInput" class="form-label">Employee Name</label>
 
-                    </div>
+                    </div> -->
 
                     <div class="col-col-md-9 col-lg-9" id="add_te_parent">
 
-                   <select class="form-control add_te" name="employee" required>
+                    <select class="form-control add_te" name="employee" required>
 
+                    </select>
 
-                   </select>
+                    </div>
 
                     </div>
 
                     </div>
 
 
+                    <div class="col-6">
 
-                    <div class="row align-items-center mb-2" id="add_ah_parent">
-
-                    <div class="col-col-md-3 col-lg-3">
-                        <label for="basicInput" class="form-label">Month</label>
-                    </div>
+                    <div class="row align-items-start justify-content-start">
 
                     <div class="col-col-md-4 col-lg-4">
                        
@@ -811,7 +813,6 @@
                         
                     </div>
 
-
                     <div class="col-col-md-4 col-lg-4">
                        
                     <select class="form-select " name="year"  required>
@@ -830,32 +831,27 @@
                     </div>
 
 
-                    </div> 
-                    
+                    </div>
+
+                    </div>
+
+
 
                     </div> <!-- Section 1 end -->
 
 
-                        <div class="col-lg-6">
+                        <div class="row text-center">
 
+                        <div class="col-lg-12">
 
+                        <div style="">
+
+                        <button class="submit_btn btn btn-success" type="submit">Record</button>
+                                
                         </div>
 
 
-                        <div class="col-lg-6">
-
-
-                        <div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                    
-                                                        <tr>
-                                                            <td><button class="submit_btn" type="submit">Record</button></td>
-                                                    
-                                                        </tr>
-                                                        
-                                                    </table>
                         </div>
-
 
                         </div>
 
@@ -2380,6 +2376,9 @@
                             alertify.success('Fill details of the month').delay(3).dismissOthers();
                             // $('#add_form').attr('data-empid',data);
                             //$('.added_id').val(data);
+
+                            $('.form_sec').hide();
+
                             $('#month_days_row').html(data.table);
 
                             $('#add_form').validate().form();
@@ -2788,6 +2787,8 @@
             $('#add_form')[0].reset();
 
             $('.add_form')[0].reset();
+
+            $('.form_sec').show();
 
             $('#month_days_row').html('');
 
@@ -3281,6 +3282,11 @@
 
                 
             });
+
+
+            if ($('.31').length > 0) {
+            console.log("The element exists!");
+            } 
 
 
             

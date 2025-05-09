@@ -815,6 +815,8 @@
                                 // $('#add_form').attr('data-empid',data);
                                 //$('.added_id').val(data);
 
+                                $('#employee_sec').hide();
+
                                 $('#timesheets_row').html(data.table);
 
                                 $('#staff_salary_add').html(data.staff_salary);
@@ -1172,6 +1174,8 @@
             $('#add_form')[0].reset();
 
             $('.add_form')[0].reset();
+
+            $('#employee_sec').show();
 
             $('#timesheet_sec').hide();
 

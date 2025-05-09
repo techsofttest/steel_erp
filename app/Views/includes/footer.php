@@ -115,7 +115,7 @@
         }
 
 
-document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function () {
 
 
             document.querySelectorAll(".number_format").forEach(function (input) {
