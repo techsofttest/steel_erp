@@ -1055,7 +1055,7 @@
  <!-- View Modal Start -->
 
    <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
             
         <div class="modal-content">
             <div class="modal-header">
@@ -1104,6 +1104,7 @@
             <th>Home Country Contact</th>
 
             <td colspan="2" id="view_home_contact"></td>
+            
 
 
             </tr>
