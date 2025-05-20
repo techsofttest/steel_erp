@@ -535,7 +535,6 @@ class Payments extends BaseController
 
             <td><input name='linked_pv_paid[$invoice->pd_id][]' type='number' step='0.01' max='".$max_payable."' value='".$dl->pdi_payment_amount."' class='form-control text-end'></td>
             
-            <td></td>
 
             </tr>";
 

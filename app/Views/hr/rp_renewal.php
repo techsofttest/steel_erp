@@ -281,7 +281,7 @@
                     </div>
 
 
-                    <div class="col-col-md-8 col-lg-8">
+                    <div class="col-col-md-8 col-lg-8 select2-center">
                        
                     <select id="debit_account" class="account_select2" name="debit_account" required>
 
@@ -356,7 +356,7 @@
                     </div>
 
 
-                    <div class="col-col-md-8 col-lg-8">
+                    <div class="col-col-md-8 col-lg-8 select2-center">
                     
                     <select id="credit_account" class="account_select2" name="credit_account" required>
 
@@ -653,7 +653,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text" id="uid"  class="form-control" readonly>
+                            <input type="text" id="uid" name="juid" class="form-control" required>
 
                             </div>
 
@@ -1038,9 +1038,19 @@
 
         $('#save_to_jv_btn').click(function(){
 
+             //Fetch the date from the date_view element and convert it to year only
+            var dateText = $('#date').val();
+            var date = '';
+            if (dateText) {
+                var parsedDate = new Date(dateText);
+                if (!isNaN(parsedDate)) {
+                    date = parsedDate.getFullYear();
+                }
+            }
+
             $.ajax({
 
-            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference",
+            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/e/"+date+"",
 
             method : "GET",
 

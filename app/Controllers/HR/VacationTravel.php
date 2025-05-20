@@ -220,7 +220,7 @@ class VacationTravel extends BaseController
 
             $data['jv_rows'] .='
 
-              <tr class="jv_row">
+            <tr class="jv_row">
 
                                         <th class="sl_no">'.++$jv_sl.'</th>
 
@@ -248,7 +248,7 @@ class VacationTravel extends BaseController
 
             $data['status'] = 1;
 
-             return json_encode($data);
+            return json_encode($data);
      
          }
 
@@ -281,7 +281,7 @@ class VacationTravel extends BaseController
 
         {
         
-            $serializedData = $this->request->getPost('journal_form');
+            $serializedData = $this->request->getPost('journal_form');  
             $formData = [];
             parse_str($serializedData, $formData);
 
@@ -289,7 +289,11 @@ class VacationTravel extends BaseController
 
             $debit_account = $this->request->getPost('debit_account');
 
-            $date = date('Y-m-d',strtotime($this->request->getPost('date')));
+            $jvid = $this->request->getPost('jv_uid');
+
+            $dfull = date('Y-m-d',strtotime($this->request->getPost('date')));
+
+            $year = date('Y',strtotime($this->request->getPost('date')));
 
             $credit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $credit_account));
 
@@ -297,9 +301,17 @@ class VacationTravel extends BaseController
 
             $employees = $this->common_model->FetchAll('hr_employees');
 
-            $gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $credit_account, $time_frame="",$range_from="",$range_to="");
+            //$gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $credit_account, $time_frame="",$range_from="",$range_to="");
         
-            $data['current_balance'] = $gl_balance['balance'];
+            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date="",$account_head="",$account_type="",$debit_account,$time_frame="",$range_from="",$range_to="");
+
+            $total_credit = array_sum(array_column($account_ledger,'credit_amount'));
+
+            $total_debit = array_sum(array_column($account_ledger,'debit_amount'));
+
+            $gl_balance = number_format($total_debit-$total_credit,2,'.','');
+            
+            $data['current_balance'] = $gl_balance;
 
             $data['emp_row'] = "";
 
@@ -344,7 +356,7 @@ class VacationTravel extends BaseController
 
         //Insert Vacation Travel
 
-        $insert_vacation_travel['vt_date'] =  $date;
+        $insert_vacation_travel['vt_date'] =  $dfull;
 
         $insert_vacation_travel['vt_debit_account'] =  $debit_account;
 
@@ -356,17 +368,17 @@ class VacationTravel extends BaseController
         
 
         //Insert Journal voucher
+        
+        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers','jv_voucher_no',"JV-{$year}-",$year);
 
-
-        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
-
-        $insert_journal['jv_voucher_no'] = $juid;
+        $insert_journal['jv_voucher_no'] = $jvid;
 
         $insert_journal['jv_date'] = date('Y-m-d',strtotime($formData['jv_date']));
 
         $insert_journal['jv_debit_total'] = $data['total_amount'];
 
         $insert_journal['jv_credit_total'] = $data['total_amount'];
+
 
         $insert_journal['jv_added_date'] = date('Y-m-d');
 

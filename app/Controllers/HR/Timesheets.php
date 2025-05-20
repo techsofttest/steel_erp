@@ -123,7 +123,7 @@ class TimeSheets extends BaseController
              $end = ($page - 1) * $resultCount;       
              $start = $end + $resultCount;
            
-             $data['result'] = $this->hr_model->FetchWhereLimit('hr_employees','emp_name','asc',$term,$start,$end,array('emp_status' => 'Active'));
+             $data['result'] = $this->hr_model->FetchWhereLimit('hr_employees','emp_uid','asc',$term,$start,$end,array('emp_status' => 'Active'));
      
              $data['total_count'] =count($data['result']);
      
@@ -326,7 +326,7 @@ class TimeSheets extends BaseController
 
                         $data['table'] .='
 
-                        <tr class="day_row '.$date["date"].'">
+                        <tr class="day_row '.$date["date"].' '.date('d',strtotime($date["date"])).'">
 
                         <td width="15%">'.$date["date"].'</td>
 
@@ -827,9 +827,9 @@ class TimeSheets extends BaseController
 
            <td></td>
 
-           <td align="right"><b>'.$total_hours.'</b></td>
+           <td align="right"><b></b></td>
 
-           <td align="right"><b>'.$total_normal_hours.'</b></td>
+           <td align="right"><b></b></td>
 
            <td align="right"><b>'.$total_normal_ot.'</b></td>
 
@@ -837,6 +837,15 @@ class TimeSheets extends BaseController
 
            </tr>
            ';
+
+
+           //  <td align="right"><b>'.$total_hours.'</b></td>
+
+           //<td align="right"><b>'.$total_normal_hours.'</b></td>
+
+           //<td align="right"><b>'.$total_normal_ot.'</b></td>
+
+           //<td align="right"><b>'.$total_friday_ot.'</b></td>
 
 
 

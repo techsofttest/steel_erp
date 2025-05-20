@@ -311,6 +311,34 @@ class DashboardModel extends Model
 
 
 
+   public function getExpiringDocuments()
+{
+    return $this->db->query("
+        SELECT emp_id, emp_name, 'Passport' AS item, emp_passport_expiry AS expiry_date
+        FROM ".$this->db->getPrefix()."hr_employees
+        WHERE emp_passport_expiry IS NOT NULL
+        AND emp_passport_expiry BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+
+        UNION
+
+        SELECT emp_id, emp_name, 'QID' AS item, emp_qatar_id_expiry AS expiry_date
+        FROM ".$this->db->getPrefix()."hr_employees
+        WHERE emp_qatar_id_expiry IS NOT NULL
+        AND emp_qatar_id_expiry BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 15 DAY)
+
+        UNION
+
+        SELECT emp_id, emp_name, 'Contract' AS item, emp_contract_expiry AS expiry_date
+        FROM ".$this->db->getPrefix()."hr_employees
+        WHERE emp_contract_expiry IS NOT NULL
+        AND emp_contract_expiry BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 15 DAY)
+
+        ORDER BY expiry_date ASC
+    ")->getResultArray();
+}
+
+
+
     
 
   

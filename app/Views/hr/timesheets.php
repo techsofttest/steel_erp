@@ -743,7 +743,7 @@
 
                     </div> -->
 
-                    <div class="col-col-md-9 col-lg-9" id="add_te_parent">
+                    <div class="col-col-md-9 col-lg-9 select2-center" id="add_te_parent">
 
                     <select class="form-control add_te" name="employee" required>
 
@@ -3284,8 +3284,11 @@
             });
 
 
-            if ($('.31').length > 0) {
-            console.log("The element exists!");
+            if ($('body .31').length > 0) {
+            if(vacation_days>0)
+            {
+            vacation_days--;
+            }
             } 
 
 
@@ -3494,6 +3497,11 @@
 
 
         total_leave = $('#leave').val();
+
+        if(total_leave>30)
+        {
+        total_leave=30;
+        }
 
         var total_leave_deduction = basic_salary/30*total_leave;
 

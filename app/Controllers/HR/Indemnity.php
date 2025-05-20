@@ -133,9 +133,15 @@ class Indemnity extends BaseController
 
             $employees = $this->common_model->FetchAll('hr_employees');
 
-            $gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $credit_account, $time_frame="",$range_from="",$range_to="");
-        
-            $data['current_balance'] = $gl_balance['balance'];
+            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date_to="",$account_head="",$account_type="",$credit_account,$time_frame="",$range_from="",$range_to="");
+
+            $total_credit = array_sum(array_column($account_ledger,'credit_amount'));
+
+            $total_debit = array_sum(array_column($account_ledger,'debit_amount'));
+
+            $gl_balance = number_format($total_debit-$total_credit,2,'.','');
+
+            $data['current_balance'] = $gl_balance;
 
             $data['emp_row'] = "";
 
@@ -195,7 +201,7 @@ class Indemnity extends BaseController
         //Insert Journal voucher
 
 
-        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
+        $juid = $this->request->getPost('juid');
 
         $insert_journal['jv_voucher_no'] = $juid;
 

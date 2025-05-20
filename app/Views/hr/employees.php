@@ -40,6 +40,8 @@
 
         background:#e0dbdb !important;
 
+        color:black !important; 
+
         }
 
        
@@ -108,13 +110,13 @@
 
             <div class="row align-items-center">
 
-            <div class="col-6 mx-auto text-center">
+            <div class="col-12 my-3 mx-auto text-center">
 
-            <button class="sec_btn active" data-sec="employee_sec">Employee</button>
+            <button class="sec_btn btn btn-primary active" data-sec="employee_sec">Employee</button>
             
-            <button class="sec_btn" data-sec="salary_sec">Salary</button>
+            <button class="sec_btn btn btn-primary" data-sec="salary_sec">Salary</button>
             
-            <button class="sec_btn" data-sec="document_sec">Documents</button>
+            <button class="sec_btn btn btn-primary" data-sec="document_sec">Documents</button>
 
             </div>
 
@@ -165,10 +167,12 @@
                     <div class="row align-items-center mb-2" id="add_ah_parent">
 
                     <div class="col-col-md-3 col-lg-3">
+
                         <label for="basicInput" class="form-label">Account Head</label>
+
                     </div>
 
-                    <div class="col-col-md-9 col-lg-9">
+                    <div class="col-col-md-9 col-lg-9 select2-center">
                         <select class="form-select  account_head_clz add_account_head_select" name="account_head"  required>
 
 
@@ -346,7 +350,7 @@
 
                 <label for="basiInput" class="form-label">Division</label>
 
-                </div>
+                </div>  
 
                 <div class="col-col-md-9 col-lg-9">
 
@@ -419,17 +423,11 @@
                     <div class="col-lg-6">
 
 
-                    <div style="float: right;">
-                                                <table class="table table-bordered table-striped enq_tab_submit menu">
+                    
                                                 
-                                                    <tr>
-                                                        <td><button class="submit_btn" type="submit">Save</button></td>
+                    <button class="submit_btn btn btn-success" type="submit">Save</button>
                                                 
-                                                    </tr>
-                                                    
-                                                </table>
-                    </div>
-
+                             
 
                     </div>
 
@@ -786,32 +784,13 @@
 
 
 
-
-
                             <div class="row">
 
+                            <div class="col-lg-12 text-center">
 
-
-                            <div class="col-lg-6">
-
+                            <button class="submit_btn btn btn-success" type="submit">Save</button>
 
                             </div>
-
-
-                            <div class="col-lg-6">
-
-
-                            <div style="float: right;">
-                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        
-                                                            <tr>
-                                                                <td><button class="submit_btn" type="submit">Save</button></td>
-                                                        
-                                                            </tr>
-                                                            
-                                                        </table>
-                            </div>
-
 
                             </div>
 
@@ -962,14 +941,14 @@
 
 <div class="col-col-md-3 col-lg-3">
 
-<input type="text"  name="contract_expiry" class="form-control datepicker" placeholder="Contract Expiry" readonly>
+<input type="text"  name="contract_expiry" class="form-control datepicker" placeholder="Contract Expiry" readonly required>
 
 </div>
 
 
 <div class="col-col-md-3 col-lg-3">
 
-<input placeholder="Contract File" type="file"  name="contract_file" class="form-control">
+<input placeholder="Contract File" type="file"  name="contract_file" class="form-control" required>
 
 </div>
 
@@ -986,24 +965,16 @@
 
 
 
-        <div class="col-lg-6">
+        <div class="col-lg-12">
 
 
         </div>
 
 
-        <div class="col-lg-6">
+        <div class="col-lg-12 text-center">
 
-
-        <div style="float: right;">
-                                    <table class="table table-bordered table-striped enq_tab_submit menu">
+        <button class="submit_btn btn btn-success" type="submit">Save</button></td>
                                     
-                                        <tr>
-                                            <td><button class="submit_btn" type="submit">Save</button></td>
-                                    
-                                        </tr>
-                                        
-                                    </table>
         </div>
 
 
