@@ -650,12 +650,24 @@
                     
 
 
-                               
+                               <style>
+                                .dash_table td
+                                {
+                                  font-size:12px;
+                                   padding: 6px 7px !important;
+                                }
 
-                                <div class="row">
+                                .dash_table .card-body
+                                {
+                                    padding:0px !important;
+                                }
+
+                               </style>
+
+                                <div class="row dash_table">
 
 
-                                    <div class="col-xl-6">
+                                    <div class="col-xl-4">
                                         <div class="card">
                                             <div class="card-header align-items-center d-flex">
                                                 <h4 class="card-title mb-0 flex-grow-1">Pending For Action - Quotation</h4>
@@ -692,7 +704,7 @@
                                                                 <td>
                                                                 <div class="d-flex align-items-center">
                                                                         <div class="flex-shrink-0 me-2">
-                                                                   <?php echo date('d-F-Y',strtotime($qs->enquiry_date)); ?>
+                                                                   <?php echo date('d-M-Y',strtotime($qs->enquiry_date)); ?>
                                                                 </div>
                                                             </div>
                                                                 </td>
@@ -720,7 +732,7 @@
 
 
 
-                                    <div class="col-xl-6">
+                                    <div class="col-xl-4">
                                         <div class="card">
                                             <div class="card-header align-items-center d-flex">
                                                 <h4 class="card-title mb-0 flex-grow-1">Pending For Action - Delivery</h4>
@@ -798,6 +810,54 @@
 
                                                           
                                                         </tbody>
+                                                    </table>
+                                                </div>
+
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="col-xl-4">
+                                        <div class="card">
+                                            <div class="card-header align-items-center d-flex">
+                                                <h4 class="card-title mb-0 flex-grow-1">Expiring Soon</h4>
+                                               
+                                            </div><!-- end card header -->
+
+                                            <div class="card-body" style="max-height: 250px;overflow: auto;">
+                                                <div class="table-responsive table-card m-1">
+                                                    <table style="max-height: 380px;" class="table table-hover">
+
+                                                    <thead>
+
+                                                        <tr>
+
+                                                        <th>Employee</th>
+
+                                                        <th>Item</th>
+
+                                                        <th>Expiry Date</th>
+
+                                                        </tr>
+
+                                                    </thead>
+
+                                                        <?php if (!empty($expiring_docs)) : ?>
+                                                        <?php foreach ($expiring_docs as $emp) : ?>
+                                                            <tr>
+                                                                <td><?= esc($emp['emp_name']) ?></td>
+                                                                <td><?= esc($emp['item']) ?></td>
+                                                                <td><?= date('d-M-Y', strtotime($emp['expiry_date'])) ?></td>
+                                                            </tr>
+                                                        <?php endforeach; ?>
+                                                        <?php else : ?>
+                                                        <tr><td colspan="3">No expiring documents found.</td></tr>
+                                                        <?php endif; ?>
+
                                                     </table>
                                                 </div>
 

@@ -176,6 +176,9 @@ class Home extends BaseController
 
        $data['pfa_delivery_due'] = $this->dash_model->PFADeliveryDue();
 
+       $data['expiring_docs'] = $this->dash_model->getExpiringDocuments();
+
+
         return view('index',$data);
 
     }

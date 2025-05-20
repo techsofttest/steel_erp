@@ -1164,7 +1164,6 @@
                                                             <th>Invoice</th>
                                                             <th>Narration</th>
                                                             <th>Amount</th>
-                                                            <th>Actions</th>
                                                         </tr>
                                                     </thead>
 

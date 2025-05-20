@@ -123,9 +123,17 @@ class VacationPay extends BaseController
 
             $employees = $this->common_model->FetchWhere('hr_employees',array('emp_status' => 'Active'));
 
-            $gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
+            //$account_ledger = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
         
-            $data['current_balance'] = $gl_balance['balance'];
+            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date="",$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
+
+            $total_credit = array_sum(array_column($account_ledger,'credit_amount'));
+
+            $total_debit = array_sum(array_column($account_ledger,'debit_amount'));
+
+            $gl_balance = number_format($total_debit-$total_credit,2,'.','');
+
+            $data['current_balance'] = $gl_balance;
 
             $data['emp_row'] = "";
 
@@ -138,9 +146,10 @@ class VacationPay extends BaseController
 
                 $slno++;
                 
-                $total_years = abs(strtotime($emp->emp_date_of_join) - strtotime($date));
-
-                $total_years = floor($total_years / (365*60*60*24));
+                $date1 = new \DateTime($emp->emp_date_of_join);
+                $date2 = new \DateTime($date);
+                $interval = $date1->diff($date2);
+                $total_years = $interval->y;
 
 
                 $days_per_year = $this->calculateLeave($date,$emp->emp_date_of_join);
@@ -159,7 +168,7 @@ class VacationPay extends BaseController
 
                 $entitlement = number_format($entitlement,2,'.');
 
-                $amount = $emp->emp_basic_salary*12/365*$entitlement;
+                $amount = $emp->emp_basic_salary*12/365*$entitlement; 
 
 
                 $data['emp_row'] .="
@@ -360,9 +369,15 @@ class VacationPay extends BaseController
 
             $employees = $this->common_model->FetchWhere('hr_employees',array('emp_status' => 'Active'));
 
-            $gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $credit_account, $time_frame="",$range_from="",$range_to="");
-        
-            $data['current_balance'] = $gl_balance['balance'];
+            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date_to="",$account_head="",$account_type="",$credit_account,$time_frame="",$range_from="",$range_to="");
+
+            $total_credit = array_sum(array_column($account_ledger,'credit_amount'));
+
+            $total_debit = array_sum(array_column($account_ledger,'debit_amount'));
+
+            $gl_balance = number_format($total_debit-$total_credit,2,'.','');
+
+            $data['current_balance'] = $gl_balance;
 
             $data['emp_row'] = "";
 
@@ -433,9 +448,8 @@ class VacationPay extends BaseController
 
         //Insert Journal voucher
 
-
-        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
-
+        $juid = $this->request->getPost('jv_uid');
+       
         $insert_journal['jv_voucher_no'] = $juid;
 
         $insert_journal['jv_date'] = date('Y-m-d',strtotime($formData['jv_date']));

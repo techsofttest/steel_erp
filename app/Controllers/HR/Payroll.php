@@ -311,7 +311,7 @@ class Payroll extends BaseController
         
          <tr>
 
-                        <th colspan="2">Total</th>
+                        <th colspan="3">Total</th>
 
                         <th class="text-end">'.format_currency($basic_salary).'</th>
 
@@ -332,6 +332,7 @@ class Payroll extends BaseController
                         <th class="text-end">'.format_currency($total_salary).'</th>
 
                         </tr>
+                        
         ';
 
 

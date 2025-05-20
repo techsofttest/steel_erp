@@ -1825,12 +1825,12 @@
 
     document.addEventListener("DOMContentLoaded", function(event) {
 
+
         /* ADD Receipt Scripts Start*/
 
         var added_id_var;
 
-
-        /* Main Receipt Add STart */
+        /* Main Receipt Add Start */
 
         $(function() {
             $('#add_form').validate({
@@ -1912,7 +1912,7 @@
 
 
 
-
+        // Main receipt total calculation start
         $('body').on('input', '.credit_amount', function() {
 
             value = rmv_comma($(this).val());
@@ -1963,119 +1963,30 @@
 
         });
 
+        //Main receipt total calculation end
 
+       
 
-        /* Balance Adjust Calculaion */
-
-
-
-
-        // $("body").on('input change', '.invoice_receipt_amount', function(event) {
-
-
-        //     /*
-        //     event.preventDefault(); 
-
-        //     val = $(this).val();
-
-        //     if(balance<val)
-        //     {
-
-        //         alertify.error('Cannot be greater than balance amount!').delay(3).dismissOthers();
-
-        //         $(this).val(0);
-
-        //         CalcBalance();
-
-        //         return false;
-
-        //     }
-
-        //     else
-        //     {
-
-        //     $(this).val(val);
-
-        //     */
-
-
-        //     val = parseFloat($(this).val()) || 0;
-
-        //     max = $(this).attr('maxlength');
-
-        //     if (val > max) {
-
-        //         $(this).val(max);
-
-        //         $(this).trigger('change');
-
-        //     }
-
-
-        //     var invoice_total = 0;
-
-        //     //var receipt_total = parseInt($('#fifo_add').attr('data-total'))||0;
-
-        //     var receipt_total = parseInt($('#fifo_add').data('total')) || 0;
-
-        //     var max_receipt = parseInt(parent.find('.invoice_total_amount').val()) || 0;
-
-        //     var receipt_amount = $(this).val();
-
-        //     parent = $(this).closest('tr');
-
-        //     if (max_receipt != receipt_amount) {
-        //         parent.find('.invoice_add_check').prop('checked', false);
-        //     } else {
-        //         parent.find('.invoice_add_check').prop('checked', true);
-        //     }
-
-        //     // $('.invoice_receipt_amount').each(function(){
-
-        //     // parent =  $(this).closest('tr');
-
-        //     // invoice_total += parseInt(parent.find('.invoice_receipt_amount').val())||0;
-
-        //     // })
-
-        //     // balance = (parseFloat(receipt_total)||0) - (parseFloat(invoice_total)||0);
-
-        //     // balance = Math.max(0,balance);
-
-        //     // $('.invoice_balance').html(balance);
-
-        //     // $('.invoice_adjusted').html(invoice_total);
-
-        //     //}
-
-        //     CalcBalance();
-
-        // });
-
-
-        /* ## */
+        // Invoice SSelection total calculation
 
         $(document).on('input change', '#invoices_sec .invoice_receipt_amount', function(event) {
             let val = rmv_comma($(this).val());
             if (isNaN(val) || val < 0) {
                 val = 0; // Default to 0 if the value is invalid or negative
             }
-            // Debugging: Check if the function is called and with correct element
-       
 
             event = event || window.event;
 
             parent = $(this).closest('tr');
 
             var receipt_total = parseFloat($('#fifo_add').data('total')) || 0; // Initial balance
+
             var max_receipt = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
              // Current value entered
             var max = parseFloat($(this).attr('data-max')) || max_receipt; // Use data-max for proper validation
             // If the entered value exceeds the maximum allowed value, cap it at the maximum
             if (val > max) {
-            
-
             // Ensure the value doesn't exceed the maximum allowed for the field
             if (val > max) {
                 $(this).val(max);
@@ -2120,6 +2031,7 @@
 
             // Update balance and other totals if necessary
             CalcBalance();
+            
         });
 
 
