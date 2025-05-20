@@ -4,33 +4,33 @@
 
 
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="Employees") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Employees" >Employee</a>
+        <a class="nav-link <?php if($uri->getSegment(2)=="Employees") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Employees" >Employee</a>
     </li>
 
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="Timesheets") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Timesheets">Timesheet</a>
+        <a class="nav-link <?php if($uri->getSegment(2)=="Timesheets") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Timesheets">Timesheet</a>
     </li>
 
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="Payroll") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Payroll">Payroll</a>
+        <a class="nav-link <?php if($uri->getSegment(2)=="Payroll") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Payroll">Payroll</a>
     </li>
 
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="VacationTravel") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/VacationTravel">Vacation Travel</a>
+        <a class="nav-link <?php if($uri->getSegment(2)=="VacationTravel") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/VacationTravel">Vacation Travel</a>
     </li>
 
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="VacationPay") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/VacationPay">Vacation Pay</a>
-    </li>
-
-
-    <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="Indemnity") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Indemnity">Indemnity</a>
+        <a class="nav-link <?php if($uri->getSegment(2)=="VacationPay") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/VacationPay">Vacation Pay</a>
     </li>
 
 
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="RPRenewal") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/RPRenewal">RP Renewal</a>
+        <a class="nav-link <?php if($uri->getSegment(2)=="Indemnity") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Indemnity">Indemnity</a>
+    </li>
+
+
+    <li class="nav-item waves-effect waves-light">
+        <a class="nav-link <?php if($uri->getSegment(2)=="RPRenewal") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/RPRenewal">RP Renewal</a>
     </li>
   
 
