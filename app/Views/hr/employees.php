@@ -965,12 +965,6 @@
 
 
 
-        <div class="col-lg-12">
-
-
-        </div>
-
-
         <div class="col-lg-12 text-center">
 
         <button class="submit_btn btn btn-success" type="submit">Save</button></td>
@@ -982,14 +976,6 @@
 
 
         </div>
-
-
-
-
-
-
-
-</div>
 
 
 
@@ -1054,7 +1040,7 @@
 
  <!-- View Modal Start -->
 
-   <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
             
         <div class="modal-content">
@@ -1382,7 +1368,7 @@
                 <th>Visa File</th>
 
                 <td colspan="2" id="">
-                    <a href="" id="view_visa_file" target="_blank">View</a>
+                    <a href="#" id="view_visa_file" target="_blank">View</a>
                 </td>
 
 
@@ -1480,7 +1466,6 @@
         </div>
         </form>
 
-    </div>
 </div>
 
 
@@ -2493,6 +2478,8 @@
     <!-- container-fluid -->
 </div>
 <!-- End Page-content -->
+
+</div> <!-- main-content -->
 
 
 <!--footer section start-->
