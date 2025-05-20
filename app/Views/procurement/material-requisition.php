@@ -182,7 +182,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                    <select class="form-select add_assigned_to input_length" name="mr_assigned_to"  required>
+                                                                    <select class="form-select add_assigned_to input_length" name="mr_assigned_to" style="padding: 0px 5px !important;"  required>
                                                                         <option value="" selected disabled>Assigned To</option>
                                                                         <?php foreach($employees as $employ){?> 
                                                                             <option value="<?php echo $employ->as_id;?>"><?php echo $employ->as_name;?></option>
@@ -568,7 +568,7 @@
                                                                     <div class="col-col-md-9 col-lg-9">
 
                                                                       <!--<input type="text" name="mr_time_frame" class="form-control edit_assigned_to" value="" required>--->
-                                                                      <select class="form-select edit_assigned_to input_length" name="mr_assigned_to" required="" aria-required="true"></select>
+                                                                      <select class="form-select edit_assigned_to input_length" name="mr_assigned_to" required="" aria-required="true" style="padding: 0px 5px !important;"></select>
                                                                
                                                                     </div>
 

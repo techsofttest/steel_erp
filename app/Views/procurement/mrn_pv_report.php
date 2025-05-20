@@ -111,7 +111,7 @@
                                                                             <tr>
                                                                                 
                                                                                 <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px;margin-top: 15px;">From</td>
-                                                                                <td ><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
                                                                                 <td>
                                                                                     <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width">
@@ -125,8 +125,8 @@
                                                                         <tbody class="travelerinfo">
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Vendor</td>
-                                                                            <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;" class="center_padding">Vendor</td>
+                                                                                <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select" id="vendor" name="vendor">
                                                                                         <option value="" selected disabled>Select Vendor</option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
@@ -156,8 +156,8 @@
 
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Product</td>
-                                                                            <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;" class="center_padding">Product</td>
+                                                                                <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select" value="" name="product">
                                                                                         <option value="" selected disabled>Select product</option>
                                                                                         <?php foreach ($products as $product) { ?>
@@ -178,7 +178,7 @@
 
                                                                             <tr>
                                                                               
-                                                                                        <td style="width: 30%;" class="center_padding">Linked </td>
+                                                                                        <td style="width: 30%;" class="center_padding">Linked</td>
                                                                                             <td> <input class="" type="checkbox" name="linked">
                                                                                             </td>
                                                                                      

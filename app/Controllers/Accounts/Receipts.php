@@ -1427,13 +1427,15 @@ class Receipts extends BaseController
 
     //Main Invoices
 
+    $ri_amount = format_currency($invoice->ri_amount);
+
     $data['invoices'] .="<tr>
     <input type='hidden' name='rec_inv_id[]' value='".$invoice->ri_id."'>
     <td>{$invoice->ca_name}</td>
     <td>Debit</td>
     <td>-</td>
     <td class='px-0'><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
-    <td width='10%' class='px-0'><input name='rec_inv_amount[]' type='number' step='0.01' value='".$invoice->ri_amount."' class='form-control text-end'></td>
+    <td width='10%' class='px-0'><input name='rec_inv_amount[]' type='number' step='0.01' value='".format_currency($ri_amount)."' class='form-control text-end'></td>
     
     </tr>";
 
