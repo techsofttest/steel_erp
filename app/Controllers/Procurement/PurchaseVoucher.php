@@ -1425,34 +1425,55 @@ class PurchaseVoucher extends BaseController
         if(!empty($purchase_voucher->pv_purchase_order)){
  
             $purchase_voucher_prod = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')));
+
+            $purchase_return = $this->common_model->SingleRow('pro_purchase_return',array('pr_vendor_inv' =>$purchase_voucher->pv_id));
+
+           
+
+            if(empty($purchase_return)){
             
-            foreach($purchase_voucher_prod as $pur_vou_prod){
-                
-                $material_received_note_prod = $this->common_model->SingleRow('pro_material_received_note_prod',array('rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id));
+                foreach($purchase_voucher_prod as $pur_vou_prod){
+                    
+                    $material_received_note_prod = $this->common_model->SingleRow('pro_material_received_note_prod',array('rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id));
 
-                if(!empty($material_received_note_prod->rnp_material_received_note)){
+                    if(!empty($material_received_note_prod->rnp_material_received_note)){
 
-                    $this->common_model->EditData(array('rnp_status' => 0), array('	rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id), 'pro_material_received_note_prod');
+                        $this->common_model->EditData(array('rnp_status' => 0), array('	rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id), 'pro_material_received_note_prod');
 
-                    $this->common_model->EditData(array('mrn_status' => 0), array('	mrn_id' => $material_received_note_prod->rnp_material_received_note), 'pro_material_received_note');
-    
+                        $this->common_model->EditData(array('mrn_status' => 0), array('	mrn_id' => $material_received_note_prod->rnp_material_received_note), 'pro_material_received_note');
+        
+                    }
+
+
                 }
 
+             
+
+                $this->common_model->DeleteData('pro_purchase_voucher',$cond);
+
+                $cond2 = array('pvp_reffer_id' => $this->request->getPost('ID'));
+        
+                $this->common_model->DeleteData('pro_purchase_voucher_prod',$cond2);
+
+                $data['status'] = 1;
+           
+                $data['msg'] ="Data Deleted Successfully";
 
             }
+            else{
+
+                $data['status'] = 0;
+           
+                $data['msg'] ="data in use can't delete";
+            }
+
 
         }
- 
- 
-        $this->common_model->DeleteData('pro_purchase_voucher',$cond);
-
-        $cond2 = array('pvp_reffer_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('pro_purchase_voucher_prod',$cond2);
-
-        $data['status'] = 1;
-           
-        $data['msg'] ="Data Deleted Successfully";
+        
+        
+         
+       
+        
 
         echo json_encode($data);
 
