@@ -274,7 +274,7 @@
 
                                                                 <td>Balance</td>
 
-                                                                <td class="invoice_balance"></td>
+                                                                <td colspan="2" class="invoice_balance"></td>
                                                             </tr>
 
 
@@ -1818,9 +1818,9 @@
 
             $('.invoice_receipt_amount').each(function() {
 
-                parent = $(this).closest('tr');
+                var parent = $(this).closest('tr');
 
-                invoice_total = parent.find('.invoice_total_amount').val();
+                var invoice_total = parent.find('.invoice_total_amount').val();
 
                 var fill_amount = Math.min(total, invoice_total);
 

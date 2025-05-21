@@ -1,4 +1,4 @@
-<?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
+<?php  $uri = service('request')->uri; ?>
 
 <ul class="nav nav-pills nav-custom-outline nav-primary mb-3" role="tablist">
 
