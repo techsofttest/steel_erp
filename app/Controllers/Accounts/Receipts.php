@@ -1379,7 +1379,12 @@ class Receipts extends BaseController
         $data['rc'] = $this->common_model->SingleRowJoin('accounts_receipts',$cond,$joins);
 
 
-        $data['rc']->r_date = date('d-F-Y',strtotime($data['rc']->r_date));
+        $data['rc']->r_date = date('d M Y',strtotime($data['rc']->r_date));
+
+        if(!empty($data['rc']->r_cheque_date))
+        {   
+        $data['rc']->cheque_date = date('d M Y',strtotime($data['rc']->r_cheque_date));
+        }
 
         $invoice_cond = array('ri_receipt' => $data['rc']->r_id);
 
