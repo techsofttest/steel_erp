@@ -710,7 +710,7 @@ class Receipts extends BaseController
      <th>'.format_currency($remaining_amount).'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th class="p-0 text-center"><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="text" value=""></th>
+     <th class="p-0 text-center"><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" data-link-max="'.$reciept_amount.'" type="text" value=""></th>
      
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">
@@ -760,7 +760,7 @@ class Receipts extends BaseController
      <th>'.format_currency($remaining_amount).'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th class="p-0 text-center"><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="text" value=""></th>
+     <th class="p-0 text-center"><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-link-max="'.$reciept_amount.'" type="text" value=""></th>
     
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->cci_total_amount.'">
@@ -1435,7 +1435,7 @@ class Receipts extends BaseController
     <td>Debit</td>
     <td>-</td>
     <td class='px-0'><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
-    <td width='10%' class='px-0'><input name='rec_inv_amount[]' type='number' step='0.01' value='".format_currency($ri_amount)."' class='form-control text-end'></td>
+    <td width='10%' class='px-0'><input name='rec_inv_amount[]' type='number' step='0.01' value='".$ri_amount."' class='form-control text-end'></td>
     
     </tr>";
 
@@ -1773,6 +1773,8 @@ class Receipts extends BaseController
 
 
         //$update_data['r_amount'] = array_sum($_POST['rec_inv_amount']);
+
+        //updatedata['sigma']=array('ball')
 
     
 
