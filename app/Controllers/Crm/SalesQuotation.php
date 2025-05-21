@@ -469,7 +469,7 @@ class SalesQuotation extends BaseController
             {
 
                 $data['cost_details'] .='<tr>
-                <td><input type="text"  value="'.$j.'" class="form-control text-center" readonly></td>
+                <td style="padding:0px 0px;"><input type="text"  value="'.$j.'" class="form-control text-center" readonly></td>
                 <td colspan="2">'.$cost_cal_data->product_details.'</td>
                 <td class="text-center">'.$cost_cal_data->qc_unit.'</td>
                 <td class="text-center">'.$cost_cal_data->qc_qty.'</td>

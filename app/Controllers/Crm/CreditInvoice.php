@@ -1416,348 +1416,190 @@ class CreditInvoice extends BaseController
         }
 
 
-        public function Pdf($id)
-        {   
-            if(!empty($id))
-            {   
-                
-    
-                $joins1 = array(
-                
-                    array(
-                        'table' => 'crm_products',
-                        'pk'    => 'product_id',
-                        'fk'    => 'ipd_prod_detl',
-                    ),
-                   
-                );
+    public function Pdf($id)
+    {   
 
-                $product_details = $this->common_model->FetchWhereJoin('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$id),$joins1);
-                    
-                
-                $pdf_data = "";
-                $k =1;
-                foreach($product_details as $prod_det)
-                {   
-                    $rate = format_currency($prod_det->ipd_rate);
+        if (!empty($id)) {   
 
-                    $amount = format_currency($prod_det->ipd_amount);
-    
-                    $disc = number_format($prod_det->ipd_discount, 2);
+            $joins1 = array(
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'ipd_prod_detl',
+                ),
+            );
 
+            $product_details = $this->common_model->FetchWhereJoin('crm_credit_invoice_prod_det', array('ipd_credit_invoice' => $id), $joins1);
 
-                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
+            $pdf_data = "";
+            $k = 1;
+            foreach ($product_details as $prod_det) {
+                $rate = format_currency($prod_det->ipd_rate);
+                $amount = format_currency($prod_det->ipd_amount);
+                $disc = number_format($prod_det->ipd_discount, 2);
 
-                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
-
-                    $pdf_data .= '<td align="center">'.$prod_det->ipd_quantity.'</td>';
-
-                    $pdf_data .= '<td align="center">'.$prod_det->ipd_unit.'</td>';
-
-                    $pdf_data .= '<td align="right">'.$rate.'</td>';
-
-                    $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
-
-                    $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
-
+                $pdf_data .= '<tr><td align="center">' . $k . '</td>';
+                $pdf_data .= '<td align="left">' . $prod_det->product_details . '</td>';
+                $pdf_data .= '<td align="center">' . $prod_det->ipd_quantity . '</td>';
+                $pdf_data .= '<td align="center">' . $prod_det->ipd_unit . '</td>';
+                $pdf_data .= '<td align="right">' . $rate . '</td>';
+                $pdf_data .= '<td align="center" style="color: red;"><i>' . $disc . '</i></td>';
+                $pdf_data .= '<td align="right">' . $amount . '</td></tr>';
                 $k++;
+            }
+
+            $join = array(
+                array(
+                    'table' => 'crm_customer_creation',
+                    'pk'    => 'cc_id',
+                    'fk'    => 'cci_customer',
+                ),
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'cci_sales_order',
+                ),
+                array(
+                    'table' => 'crm_contact_details',
+                    'pk'    => 'contact_id',
+                    'fk'    => 'cci_contact_person',
+                ),
+            );
+
+            $credit_invoice = $this->common_model->SingleRowJoin('crm_credit_invoice', array('cci_id' => $id), $join);
+
+            $joins1 = array(
+                array(
+                    'table' => 'master_country',
+                    'pk'    => 'country_id',
+                    'fk'    => 'cc_country',
+                ),
+            );
+
+            $customers = $this->common_model->SingleRowJoin('crm_customer_creation', array('cc_id' => $credit_invoice->cci_customer), $joins1);
+
+            $credit_prod = $this->common_model->SingleRow('crm_credit_invoice_prod_det', array('ipd_credit_invoice' => $id));
+            $credit_prod_id = $credit_prod->ipd_delivery_prod_id;
+
+            $delivery_prod_id = $this->common_model->SingleRow('crm_delivery_product_details', array('dpd_id' => $credit_prod_id));
+            $delivery_reffer = $this->common_model->pdf_credit_fetch(array('ipd_credit_invoice' => $id));
+
+            $del_data = [];
+            foreach ($delivery_reffer as $del_reff) {
+                $del_data[] = $del_reff->dn_reffer_no;
+            }
+            $del_data_string = implode(", ", $del_data);
+
+            $date = date('d-M-Y', strtotime($credit_invoice->cci_date));
+            $title = 'CRN - ' . $credit_invoice->cci_reffer_no;
+
+            $mpdf = new \Mpdf\Mpdf([
+                'margin_top' => 5,
+                'margin_bottom' => 5,
+                'margin_left' => 5,
+                'margin_right' => 5,
+            ]);
+
+            $mpdf->SetTitle($title);
+
+            $html = '
+            <style>
+                th, td {
+                    padding-top: 5px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
                 }
-
-                $join =  array(
-                    
-                    array(
-                        'table' => 'crm_customer_creation',
-                        'pk'    => 'cc_id',
-                        'fk'    => 'cci_customer',
-                    ),
-
-                    array(
-                        'table' => 'crm_sales_orders',
-                        'pk'    => 'so_id',
-                        'fk'    => 'cci_sales_order',
-                    ),
-
-                    array(
-                        'table' => 'crm_contact_details',
-                        'pk'    => 'contact_id',
-                        'fk'    => 'cci_contact_person',
-                    ),
-
-                   
-
-                );
-                
-
-                $credit_invoice = $this->common_model->SingleRowJoin('crm_credit_invoice',array('cci_id'=>$id),$join);
-
-                $joins1 = array(
-
-                    array(
-                        'table' => 'master_country',
-                        'pk'    => 'country_id',
-                        'fk'    => 'cc_country',
-                    ),
-                    
-                );
-    
-                $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $credit_invoice->cci_customer),$joins1);
-                
-                $credit_prod = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$id));
-
-                $credit_prod_id = $credit_prod->ipd_delivery_prod_id;
-
-                $delivery_prod_id = $this->common_model->SingleRow('crm_delivery_product_details',array('dpd_id' =>$credit_prod_id));
-
-                //$delivery_reffer_id = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
-
-                $delivery_reffer = $this->common_model->pdf_credit_fetch(array('ipd_credit_invoice' =>$id));
-
-                //$delivery_reffer_id = $this->common_model->FetchWhere('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
-
-                $del_data = [];
-
-               foreach($delivery_reffer as $del_reff){
-                
-
-                    // $del_data .= "'.$del_reff->dn_reffer_no.'";
-
-                    $del_data[]  =  $del_reff->dn_reffer_no;
+                p {
+                    font-size: 12px;
+                    margin-bottom: 13px;
                 }
-
-                $del_data_string = implode(", ", $del_data); 
-
-                 
-                $date = date('d-M-Y',strtotime($credit_invoice->cci_date));
-
-                $title = 'CRN - '.$credit_invoice->cci_reffer_no;
-
-                $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 5,     // Reduce top margin
-                    'margin_bottom' => 5,  // Reduce bottom margin
-                    'margin_left' => 5,    // Reduce left margin
-                    'margin_right' => 5,   // Reduce right margin
-                ]);
-
-                $mpdf->SetTitle($title); // Set the title
-    
-                $html ='
-            
-                <style>
-            th, td {
-                padding-top: 5px;
-               
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-            }
-            p{
-                
-                font-size: 12px;
-                margin-bottom: 13px;
-
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
-            
+                .dec_width { width:30% }
+                .disc_color { color:red; }
             </style>
-            
-               
-                <table><tr><td></td></tr></table>
 
-                <table><tr><td></td></tr></table>
+            <table><tr><td></td></tr></table>
+            <table><tr><td></td></tr></table>
+            <table><tr><td></td></tr></table>
+            <table><tr><td></td></tr></table>
 
-                <table><tr><td></td></tr></table>
-               
-                <table><tr><td></td></tr></table>
-            
-            
-                <table width="100%" style="margin-top:90px;">
-                
+            <table width="100%" style="margin-top:90px;">
                 <tr width="100%">
-                <td width="9%"></td>
-                <td >Date : '.$date.'</td>
-                <td>'.$credit_invoice->cci_reffer_no.'</td>
-                <td align="right"><h2>Credit Invoice</h2></td>
-            
+                    <td width="9%"></td>
+                    <td>Date : ' . $date . '</td>
+                    <td>' . $credit_invoice->cci_reffer_no . '</td>
+                    <td align="right"><h2>Credit Invoice</h2></td>
                 </tr>
-            
-                </table>
-
-            <table  width="100%" style="margin-top:2px;border-top:1px solid;">
-        
-                <tr>
-                
-                    <td > </td>
-                    
-                    <td >'.$credit_invoice->cc_customer_name.'</td>
-                
-                </tr>
-        
-        
-            <tr>
-            
-            <td>Customer</td>
-            
-                
-            <td >Tel : '.$credit_invoice->cc_telephone.', Fax : '.$credit_invoice->cc_fax.', Email : '.$credit_invoice->cc_email.'</td>
-            
-            </tr>
-        
-        
-            <tr>
-            
-            <td ></td>
-            
-            
-
-             <td>Post Box: ' . $credit_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
-            
-            </tr>
-        
-        
-            <tr>
-            
-            <td >Attention</td>
-            
-            <td > '.$credit_invoice->contact_person.' - '.$credit_invoice->contact_designation.', Mobile:-'.$credit_invoice->contact_mobile.', Email: - '.$credit_invoice->contact_email.'</td>
-            
-            </tr>
-        
-        
             </table>
-    
-               
-            
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
-                
-            
+
+            <table width="100%" style="margin-top:2px;border-top:1px solid;">
+                <tr><td></td><td>' . $credit_invoice->cc_customer_name . '</td></tr>
+                <tr><td>Customer</td><td>Tel : ' . $credit_invoice->cc_telephone . ', Fax : ' . $credit_invoice->cc_fax . ', Email : ' . $credit_invoice->cc_email . '</td></tr>
+                <tr><td></td><td>Post Box: ' . $credit_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td></tr>
+                <tr><td>Attention</td><td>' . $credit_invoice->contact_person . ' - ' . $credit_invoice->contact_designation . ', Mobile:-' . $credit_invoice->contact_mobile . ', Email: - ' . $credit_invoice->contact_email . '</td></tr>
+            </table>
+
+            <table width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
                 <tr>
-                
                     <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
-                
                     <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
-                
                     <th align="center" style="border-bottom:1px solid;">Qty</th>
-                
                     <th align="center" style="border-bottom:1px solid;">Unit</th>
-                
                     <th align="center" style="border-bottom:1px solid;">Rate</th>
-        
                     <th align="center" style="border-bottom:1px solid;">Disc%</th>
-        
                     <th align="center" style="border-bottom:1px solid;">Amount</th>
-        
-                
                 </tr>
-
-
-                '.$pdf_data.'
-    
-                 
-                
+                ' . $pdf_data . '
             </table>';
-            
-            $footer = '
-        
-                <table style="border-bottom:1px solid;width:100%">
-                
-                    <tr>
-                        <td></td>
 
-                        <td>IBAN : QA97CBQA000000004570407137001</td>
-
-                        <td style="font-weight: bold;width: 18%;">Total Invoice value</td>
-            
-                        <td>'.format_currency($credit_invoice->cci_total_amount).'</td>
-                    
-                        
-                
-                    </tr>
-    
-                    <tr>
-        
-                        <td>Bank Details</td>
-                    
-                        <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
-
-                    
-                    </tr>
-
-
-                    <tr>
-        
-                        <td></td>
-                    
-                        <td>SWIFT : CBQAQAQA</td>
-                       
-                        <td></td>
-            
-                        <td></td>
-                    
-                    </tr>
-    
-    
-                    <tr>
-        
-                        <td>Amount in words</td>
-                    
-                        <td style="width: 60%;">'.currency_to_words($credit_invoice->cci_total_amount).'</td>
-            
-                        
-                    
-                    </tr>
-    
-                </table>
-    
-    
-               <table>
-               
-                    <tr>
-                        <td style="width:15%"></td>
-
-                        <td style="width:15%">LPO Ref</td>
-
-                        <td style="width:30%">'.$credit_invoice->cci_lpo_reff.'</td>
-
-                       <td style="width:10%">Payment:</td>
-
-                        <td>'.$credit_invoice->cci_payment_term.'</td>
-                    
-                    </tr>
-
-
-                    <tr>
-                        
-                        <td style="width:15%">Invoice Terms</td>
-                        <td style="width:15%">Project:</td>
-                        <td style="width:30%">'.$credit_invoice->cci_project.'</td>
-                        <td style="width:10%">DN No:</td>
-                        <td>'.$del_data_string.'</td>
-                    
-                    </tr>
-
-
-                    <tr>
-                        
-                        <td style="width:15%"></td>
-                        <td style="width:15%">Sales Order:</td>
-                        <td style="width:30%">'.$credit_invoice->so_reffer_no.'</td>
-                        
-                
-                    </tr>
-                
-               </table>
-    
-    
-                <table style="border-top:1px solid;">
-    
+            // Define footer here
+            $html .= '
+            <htmlpagefooter name="lastpage">
+            <table style="border-bottom:1px solid;width:100%;border-top:1px solid;">
                 <tr>
+                    <td></td>
+                    <td>IBAN : QA97CBQA000000004570407137001</td>
+                    <td style="font-weight: bold;width: 18%;">Total Invoice value</td>
+                    <td>' . format_currency($credit_invoice->cci_total_amount) . '</td>
+                </tr>
+                <tr>
+                    <td>Bank Details</td>
+                    <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>SWIFT : CBQAQAQA</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Amount in words</td>
+                    <td style="width: 60%;">' . currency_to_words($credit_invoice->cci_total_amount) . '</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td style="width:15%"></td>
+                    <td style="width:15%">LPO Ref</td>
+                    <td style="width:30%">' . $credit_invoice->cci_lpo_reff . '</td>
+                    <td style="width:10%">Payment:</td>
+                    <td>' . $credit_invoice->cci_payment_term . '</td>
+                </tr>
+                <tr>
+                    <td style="width:15%">Invoice Terms</td>
+                    <td style="width:15%">Project:</td>
+                    <td style="width:30%">' . $credit_invoice->cci_project . '</td>
+                    <td style="width:10%">DN No:</td>
+                    <td>' . $del_data_string . '</td>
+                </tr>
+                <tr>
+                    <td style="width:15%"></td>
+                    <td style="width:15%">Sales Order:</td>
+                    <td style="width:30%">' . $credit_invoice->so_reffer_no . '</td>
+                </tr>
+            </table>
+            <table style="border-top:1px solid;">
+                 <tr>
                 
                     <td><i>Received by: </i></td>
 
@@ -1777,8 +1619,7 @@ class CreditInvoice extends BaseController
     
                 </tr>
 
-
-                <tr>
+                 <tr>
                 
                     <td></td>
 
@@ -1840,21 +1681,22 @@ class CreditInvoice extends BaseController
                   
     
                 </tr>
-    
-                
-                </table>';
-            
-               // echo $html . $footer; exit();
 
-                $mpdf->WriteHTML($html);
-                $mpdf->SetFooter($footer);
-                $this->response->setHeader('Content-Type', 'application/pdf');
-                $mpdf->Output($title . '.pdf', 'I');
-            
-            }
-    
-           
+            </table>
+            </htmlpagefooter>';
+
+            // Write the full HTML, including the footer definition
+            $mpdf->WriteHTML($html);
+
+            // Now apply the footer on last page only
+            $mpdf->SetHTMLFooterByName('lastpage', true);
+
+            // Output PDF
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
         }
+    }
+
         
 
     
