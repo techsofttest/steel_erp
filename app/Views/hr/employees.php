@@ -1539,13 +1539,13 @@
 
             <div class="row align-items-center">
 
-            <div class="col-6 mx-auto text-center">
+            <div class="col-12 my-3 mx-auto text-center">
 
-            <button class="sec_btn_edit active" data-sec="employee_sec_edit">Employee</button>
+            <button class="sec_btn_edit btn btn-primary active" data-sec="employee_sec_edit">Employee</button>
             
-            <button class="sec_btn_edit" data-sec="salary_sec_edit">Salary</button>
+            <button class="sec_btn_edit btn btn-primary" data-sec="salary_sec_edit">Salary</button>
             
-            <button class="sec_btn_edit" data-sec="document_sec_edit">Documents</button>
+            <button class="sec_btn_edit btn btn-primary" data-sec="document_sec_edit">Documents</button>
 
             </div>
 
@@ -1803,26 +1803,12 @@
                     <div class="row">
 
 
+                    <div class="col-lg-12 text-center">
 
-                    <div class="col-lg-6">
-
-
-                    </div>
-
-
-                    <div class="col-lg-6">
-
-
-                    <div style="float: right;">
-                                                <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                
-                                                    <tr>
                                                     
-                                                    <td><button class="submit_btn" type="submit">Update</button></td>
-                                                
-                                                    </tr>
-                                                    
-                                                </table>
+                        <button class="submit_btn btn btn-success" type="submit">Update</button>
+                                            
+                                                   
                     </div>
 
 
@@ -2170,35 +2156,19 @@
 
 
 
-                            <div class="row">
+                    <div class="row">
 
 
+                    <div class="col-lg-12 text-center">
 
-                            <div class="col-lg-6">
-
-
-                            </div>
-
-
-                            <div class="col-lg-6">
-
-
-                            <div style="float: right;">
-                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        
-                                                            <tr>
-                                                                <td><button class="submit_btn" type="submit">Update</button></td>
-                                                        
-                                                            </tr>
-                                                            
-                                                        </table>
-                            </div>
+                                                    
+                        <button class="submit_btn btn btn-success" type="submit">Update</button>
+                                            
+                                                   
+                    </div>
 
 
-                            </div>
-
-
-                            </div>
+                    </div>
 
 
 
@@ -2364,35 +2334,19 @@
 
 
 
-        <div class="row">
+                    <div class="row">
 
 
+                    <div class="col-lg-12 text-center">
 
-        <div class="col-lg-6">
-
-
-        </div>
-
-
-        <div class="col-lg-6">
-
-
-        <div style="float: right;">
-                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                    
-                                        <tr>
-                                            <td><button class="submit_btn" type="submit">Update</button></td>
-                                    
-                                        </tr>
-                                        
-                                    </table>
-        </div>
+                                                    
+                    <button class="submit_btn btn btn-success" type="submit">Update</button>
+                                            
+                                                   
+                    </div>
 
 
-        </div>
-
-
-        </div>
+                    </div>
 
 
 

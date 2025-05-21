@@ -1830,7 +1830,7 @@
 
         var added_id_var;
 
-        /* Main Receipt Add Start */
+        /* Main Receipt Add Start Dont Do*/
 
         $(function() {
             $('#add_form').validate({
@@ -4710,6 +4710,20 @@
 
 
 
+    });
+
+
+
+    $(document).on('change', '.add_so_advance_tick', function () {
+    var $row = $(this).closest('tr');
+    var totalAmount = $row.find('td').eq(3).text().trim().replace(/,/g, '');
+    var $input = $row.find('.so_receipt_amount');
+
+    if ($(this).is(':checked')) {
+        $input.val(parseFloat(totalAmount).toFixed(2));
+    } else {
+        $input.val('0.00');
+    }
     });
 
 

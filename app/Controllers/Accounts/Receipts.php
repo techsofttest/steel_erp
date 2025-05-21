@@ -158,7 +158,7 @@ class Receipts extends BaseController
         $ruid = $this->request->getPost('r_ref_no');
 
         $ruid_check = $this->common_model->SingleRow('accounts_receipts',array('r_ref_no' => $ruid));
-
+        //Not sure
                 if(!empty($ruid_check))
                 {
                     $return['status'] = 0;        
