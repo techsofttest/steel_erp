@@ -1678,14 +1678,125 @@ class SalesOrder extends BaseController
 
             //$mpdf = new \Mpdf\Mpdf();
 
-            
-            $mpdf = new \Mpdf\Mpdf([
-                'margin_top' => 5,     // Reduce top margin
-                'margin_bottom' => 5,  // Reduce bottom margin
-                'margin_left' => 5,    // Reduce left margin
-                'margin_right' => 5,   // Reduce right margin
-            ]);
 
+             $footer = '
+    
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
+            
+                <tr>
+                    <td>Promised Date</td>
+
+                    <td >'.$delivery_date.'</td>
+
+                    <td style="font-weight: bold;width: 17%;" >Net Order Value</td>
+        
+                    <td style="font-weight: bold;" >'.format_currency($sales_order->so_amount_total).'</td>
+
+                    
+                   
+                </tr>
+
+                <tr>
+    
+                    <td></td>
+                
+                    <td></td>
+                    
+                    
+                    
+                
+                </tr>
+
+
+                
+
+
+                <tr  style="width:100%";>
+    
+                    <td>Amount in words</td>
+                
+                    <td style="width: 60%;">'.currency_to_words($sales_order->so_amount_total).'</td>
+
+                   
+                   
+                
+                </tr>
+
+            </table>
+
+
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
+            
+            <tr>
+                <td style="width:12%" rowspan="2">Order Terms</td>
+
+                <td style="width:15%">LPO Reference</td>
+
+                <td style="width:29%">'.$sales_order->so_lpo.'</td>
+
+               <td style="width:9%">Payment:</td>
+
+                <td style="">'.$sales_order->so_payment_term.'</td>
+                
+            </tr>
+
+            <tr>
+                <td style="width:15%" rowspan="2">Quote Reference</td>
+
+                <td style="width:29%">'.$sales_order->qd_reffer_no.'</td>
+
+                
+                
+
+            </tr>
+            
+            </table>
+
+
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
+
+            <tr>
+            
+               <td>Antony Raphel - Production In-charge</td>
+               <td></td><td></td><td></td><td></td><td></td><td></td>
+               <td>Justin Jose - Operations Manager</td>
+              
+
+            </tr>
+
+
+            <tr>
+            
+                <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
+                <td></td><td></td><td></td><td></td><td></td><td></td>
+                <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+           
+
+            </tr>
+
+
+            
+            
+            
+            </table>
+        
+        
+            ';
+
+            // Calculate dynamic margin bottom based on footer line count
+        $footer_line_count = substr_count($footer, '<tr>');
+        $line_height_mm = 7;  // Approximate height per footer line in mm, tweak if needed
+        $margin_bottom = ($footer_line_count * $line_height_mm) + 5; // 5mm extra padding
+
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_top' => 5,
+            'margin_left' => 5,
+            'margin_right' => 5,
+            'margin_bottom' => $margin_bottom, // Dynamic margin bottom
+        ]);
+
+            
+           
             $mpdf->SetTitle($title); // Set the title
 
             $html ='
@@ -1832,114 +1943,12 @@ class SalesOrder extends BaseController
             
         </table>';
         
-        $footer = '
-    
-            <table style="width:100%">
-            
-                <tr>
-                    <td>Promised Date</td>
-
-                    <td >'.$delivery_date.'</td>
-
-                    <td style="font-weight: bold;width: 17%;" >Net Order Value</td>
-        
-                    <td style="font-weight: bold;" >'.format_currency($sales_order->so_amount_total).'</td>
-
-                    
-                   
-                </tr>
-
-                <tr>
-    
-                    <td></td>
-                
-                    <td></td>
-                    
-                    
-                    
-                
-                </tr>
-
-
-                
-
-
-                <tr  style="width:100%";>
-    
-                    <td>Amount in words</td>
-                
-                    <td style="width: 60%;">'.currency_to_words($sales_order->so_amount_total).'</td>
-
-                   
-                   
-                
-                </tr>
-
-            </table>
-
-
-            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-            
-            <tr>
-                <td style="width:12%" rowspan="2">Order Terms</td>
-
-                <td style="width:15%">LPO Reference</td>
-
-                <td style="width:29%">'.$sales_order->so_lpo.'</td>
-
-               <td style="width:9%">Payment:</td>
-
-                <td style="">'.$sales_order->so_payment_term.'</td>
-                
-            </tr>
-
-            <tr>
-                <td style="width:15%" rowspan="2">Quote Reference</td>
-
-                <td style="width:29%">'.$sales_order->qd_reffer_no.'</td>
-
-                
-                
-
-            </tr>
-            
-            </table>
-
-
-            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-
-            <tr>
-            
-               <td>Antony Raphel - Production In-charge</td>
-               <td></td><td></td><td></td><td></td><td></td><td></td>
-               <td>Justin Jose - Operations Manager</td>
-              
-
-            </tr>
-
-
-            <tr>
-            
-                <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
-                <td></td><td></td><td></td><td></td><td></td><td></td>
-                <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
-           
-
-            </tr>
-
-
-            
-            
-            
-            </table>
-        
-        
-            ';
+       
         
             //echo $html . $footer; exit();
 
             $mpdf->WriteHTML($html);
-            $mpdf->SetFooter($footer);
+            $mpdf->SetHTMLFooter($footer, 'EOD'); // Footer only on last page
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
         

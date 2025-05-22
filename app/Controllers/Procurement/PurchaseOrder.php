@@ -1368,144 +1368,7 @@ class PurchaseOrder extends BaseController
 
             //$mpdf = new \Mpdf\Mpdf();
 
-            
-            $mpdf = new \Mpdf\Mpdf([
-                'margin_top' => 5,     // Reduce top margin
-                'margin_bottom' => 5,  // Reduce bottom margin
-                'margin_left' => 5,    // Reduce left margin
-                'margin_right' => 5,   // Reduce right margin
-            ]);
-
-            $mpdf->SetTitle($title); // Set the title
-
-            $html ='
-        
-            <style>
-            tbody  td{
-            
-               padding-top: unset;
-
-            }
-            th, td {
-                padding-top: 10px !important;
-               
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-            }
-            p{
-                
-                font-size: 12px;
-                margin-bottom: 13px;
-
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
-            
-            </style>
-           
-           
-           
-            <table><tr><td></td></tr></table>
-
-            <table><tr><td></td></tr></table>
-
-            <table><tr><td></td></tr></table>
-            
-            <table><tr><td></td></tr></table>
-    
-            <table width="100%" style="margin-top:90px;">
-            
-        
-            <tr width="100%">
-            <td width="9%"></td>
-            <td width="20%">Date : '.$date.'</td>
-            <td align="center">'.$purchase_order->po_reffer_no.'</td>
-            <td align="right"><h2>Purchase Order</h2></td>
-        
-            </tr>
-        
-            </table>
-
-        <table  width="100%" style="margin-top:2px;border-top:1px solid;line-height:8px;">
-    
-            <tr>
-            
-                <td > </td>
-                
-                <td >'.$purchase_order->cc_customer_name.'</td>
-            
-            </tr>
-    
-    
-        <tr>
-        
-        <td> Vendor </td>
-        
-            
-        <td >Tel : '.$purchase_order->cc_telephone.', Fax : '.$purchase_order->cc_fax.', Email : '.$purchase_order->cc_email.'</td>
-        
-        </tr>
-    
-    
-        <tr>
-        
-        <td ></td>
-        
-        <td >Post Box :  '.$purchase_order->cc_post_box.' , '.$customers->cc_city.' , '.$customers->cc_country.'</td>
-        
-        </tr>
-    
-    
-        <tr>
-        
-        <td >Attention</td>
-        
-         <td >'.$purchase_order->contact_person.' - '.$purchase_order->contact_designation.', Mobile:-'.$purchase_order->contact_mobile.', Email: - '.$purchase_order->contact_email.'</td>
-        
-        </tr>
-    
-    
-        </table>
-
-           
-        
-        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
-            
-        
-            <tr>
-            
-                <th align="center" style="border-bottom:1px solid;"width="8%">Item No</th>
-            
-                <th align="center" style="border-bottom:1px solid;"width="47%">Description</th>
-            
-                <th align="center" style="border-bottom:1px solid;">Qty</th>
-            
-                <th align="center" style="border-bottom:1px solid;">Unit</th>
-            
-                <th align="center" style="border-bottom:1px solid;">Rate</th>
-    
-                <th align="center" style="border-bottom:1px solid;">Disc%</th>
-    
-                <th align="center" style="border-bottom:1px solid;">Amount</th>
-    
-            
-            </tr>
-
-
-            '.$pdf_data.'
-
-             
-            
-        </table>';
-        
-        $footer = '
+             $footer = '
 
                 <table style="width:100%">
             
@@ -1712,6 +1575,152 @@ class PurchaseOrder extends BaseController
         
         
             ';
+
+            // Calculate dynamic margin bottom based on footer line count
+            $footer_line_count = substr_count($footer, '<tr>');
+            $line_height_mm = 7;  // Approximate height per footer line in mm, tweak if needed
+            $margin_bottom = ($footer_line_count * $line_height_mm) + 5; // 5mm extra padding
+
+            $mpdf = new \Mpdf\Mpdf([
+                'margin_top' => 5,
+                'margin_left' => 5,
+                'margin_right' => 5,
+                'margin_bottom' => $margin_bottom, // Dynamic margin bottom
+            ]);
+
+            
+           
+
+            $mpdf->SetTitle($title); // Set the title
+
+            $html ='
+        
+            <style>
+            tbody  td{
+            
+               padding-top: unset;
+
+            }
+            th, td {
+                padding-top: 10px !important;
+               
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+                margin-bottom: 13px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+           
+           
+           
+            <table><tr><td></td></tr></table>
+
+            <table><tr><td></td></tr></table>
+
+            <table><tr><td></td></tr></table>
+            
+            <table><tr><td></td></tr></table>
+    
+            <table width="100%" style="margin-top:90px;">
+            
+        
+            <tr width="100%">
+            <td width="9%"></td>
+            <td width="20%">Date : '.$date.'</td>
+            <td align="center">'.$purchase_order->po_reffer_no.'</td>
+            <td align="right"><h2>Purchase Order</h2></td>
+        
+            </tr>
+        
+            </table>
+
+        <table  width="100%" style="margin-top:2px;border-top:1px solid;line-height:8px;">
+    
+            <tr>
+            
+                <td > </td>
+                
+                <td >'.$purchase_order->cc_customer_name.'</td>
+            
+            </tr>
+    
+    
+        <tr>
+        
+        <td> Vendor </td>
+        
+            
+        <td >Tel : '.$purchase_order->cc_telephone.', Fax : '.$purchase_order->cc_fax.', Email : '.$purchase_order->cc_email.'</td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td ></td>
+        
+        <td >Post Box :  '.$purchase_order->cc_post_box.' , '.$customers->cc_city.' , '.$customers->cc_country.'</td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td >Attention</td>
+        
+         <td >'.$purchase_order->contact_person.' - '.$purchase_order->contact_designation.', Mobile:-'.$purchase_order->contact_mobile.', Email: - '.$purchase_order->contact_email.'</td>
+        
+        </tr>
+    
+    
+        </table>
+
+           
+        
+        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
+            
+        
+            <tr>
+            
+                <th align="center" style="border-bottom:1px solid;"width="8%">Item No</th>
+            
+                <th align="center" style="border-bottom:1px solid;"width="47%">Description</th>
+            
+                <th align="center" style="border-bottom:1px solid;">Qty</th>
+            
+                <th align="center" style="border-bottom:1px solid;">Unit</th>
+            
+                <th align="center" style="border-bottom:1px solid;">Rate</th>
+    
+                <th align="center" style="border-bottom:1px solid;">Disc%</th>
+    
+                <th align="center" style="border-bottom:1px solid;">Amount</th>
+    
+            
+            </tr>
+
+
+            '.$pdf_data.'
+
+             
+            
+        </table>';
+        
+       
         
             //echo $html . $footer; exit();
 

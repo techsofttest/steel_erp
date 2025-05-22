@@ -1417,9 +1417,9 @@ class CreditInvoice extends BaseController
 
 
         /**/
-        public function Pdf($id)
-{   
-    if (!empty($id)) {   
+ public function Pdf($id)
+{
+    if (!empty($id)) {
 
         $joins1 = array(
             array(
@@ -1498,81 +1498,6 @@ class CreditInvoice extends BaseController
         $date = date('d-M-Y', strtotime($credit_invoice->cci_date));
         $title = 'CRN - ' . $credit_invoice->cci_reffer_no;
 
-        $mpdf = new \Mpdf\Mpdf([
-            'margin_top' => 5,
-            'margin_left' => 5,
-            'margin_right' => 5,
-            'margin_bottom' => 40, // leave space for footer
-        ]);
-
-        $mpdf->SetTitle($title);
-
-        $html = '
-        <style>
-            th, td {
-                padding-top: 5px;
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-                 word-wrap: break-word;
-                white-space: normal;
-               
-            }
-            p {
-                font-size: 12px;
-                margin-bottom: 13px;
-            }
-            .dec_width { width:30% }
-            .disc_color { color:red; }
-             table {
-                page-break-inside: auto;
-            }
-                tr {
-page-break-inside: auto;
-}
-                
-                 table {
-    page-break-inside: auto;
-    border-collapse: collapse;
-    width: 100%;
-}
-            
-        </style>
-
-        <table><tr><td></td></tr></table>
-        <table><tr><td></td></tr></table>
-        <table><tr><td></td></tr></table>
-        <table><tr><td></td></tr></table>
-
-        <table width="100%" style="margin-top:90px;">
-            <tr width="100%">
-                <td width="9%"></td>
-                <td>Date : ' . $date . '</td>
-                <td>' . $credit_invoice->cci_reffer_no . '</td>
-                <td align="right"><h2>Credit Invoice</h2></td>
-            </tr>
-        </table>
-
-        <table width="100%" style="margin-top:2px;border-top:1px solid;">
-            <tr><td></td><td>' . $credit_invoice->cc_customer_name . '</td></tr>
-            <tr><td>Customer</td><td>Tel : ' . $credit_invoice->cc_telephone . ', Fax : ' . $credit_invoice->cc_fax . ', Email : ' . $credit_invoice->cc_email . '</td></tr>
-            <tr><td></td><td>Post Box: ' . $credit_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td></tr>
-            <tr><td>Attention</td><td>' . $credit_invoice->contact_person . ' - ' . $credit_invoice->contact_designation . ', Mobile:-' . $credit_invoice->contact_mobile . ', Email: - ' . $credit_invoice->contact_email . '</td></tr>
-        </table>
-
-        <table width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
-            <tr>
-                <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
-                <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
-                <th align="center" style="border-bottom:1px solid;">Qty</th>
-                <th align="center" style="border-bottom:1px solid;">Unit</th>
-                <th align="center" style="border-bottom:1px solid;">Rate</th>
-                <th align="center" style="border-bottom:1px solid;">Disc%</th>
-                <th align="center" style="border-bottom:1px solid;">Amount</th>
-            </tr>
-            ' . $pdf_data . '
-        </table>';
-
         // Footer HTML
         $footer = '
         <table style="border-bottom:1px solid;width:100%;border-top:1px solid;">
@@ -1620,82 +1545,123 @@ page-break-inside: auto;
         </table>
         <table style="border-top:1px solid;">
              <tr>
-            
                 <td><i>Received by: </i></td>
-
                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-
                 <td><i>Prepared by:</i></td>
-
                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-
                 <td><i>Finance Dept:</i></td>
-
                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-
                 <td><i>Workshop Manager</i></td>
-
             </tr>
-
              <tr>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
             </tr>
-
             <tr>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
             </tr>
-
             <tr>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
                 <td></td>
-
             </tr>
-
         </table>
         ';
+
+        // Calculate dynamic margin bottom based on footer line count
+        $footer_line_count = substr_count($footer, '<tr>');
+        $line_height_mm = 7;  // Approximate height per footer line in mm, tweak if needed
+        $margin_bottom = ($footer_line_count * $line_height_mm) + 5; // 5mm extra padding
+
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_top' => 5,
+            'margin_left' => 5,
+            'margin_right' => 5,
+            'margin_bottom' => $margin_bottom, // Dynamic margin bottom
+        ]);
+
+        $mpdf->SetTitle($title);
+
+        $html = '
+        <style>
+            th, td {
+                padding-top: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+                word-wrap: break-word;
+                white-space: normal;
+            }
+            p {
+                font-size: 12px;
+                margin-bottom: 13px;
+            }
+            .dec_width { width:30% }
+            .disc_color { color:red; }
+            table {
+                page-break-inside: auto;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            tr {
+                page-break-inside: auto;
+            }
+        </style>
+
+        <table><tr><td></td></tr></table>
+        <table><tr><td></td></tr></table>
+        <table><tr><td></td></tr></table>
+        <table><tr><td></td></tr></table>
+
+        <table width="100%" style="margin-top:90px;">
+            <tr width="100%">
+                <td width="9%"></td>
+                <td>Date : ' . $date . '</td>
+                <td>' . $credit_invoice->cci_reffer_no . '</td>
+                <td align="right"><h2>Credit Invoice</h2></td>
+            </tr>
+        </table>
+
+        <table width="100%" style="margin-top:2px;border-top:1px solid;">
+            <tr><td></td><td>' . $credit_invoice->cc_customer_name . '</td></tr>
+            <tr><td>Customer</td><td>Tel : ' . $credit_invoice->cc_telephone . ', Fax : ' . $credit_invoice->cc_fax . ', Email : ' . $credit_invoice->cc_email . '</td></tr>
+            <tr><td></td><td>Post Box: ' . $credit_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td></tr>
+            <tr><td>Attention</td><td>' . $credit_invoice->contact_person . ' - ' . $credit_invoice->contact_designation . ', Mobile:-' . $credit_invoice->contact_mobile . ', Email: - ' . $credit_invoice->contact_email . '</td></tr>
+        </table>
+
+        <table width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
+            <tr>
+                <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
+                <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
+                <th align="center" style="border-bottom:1px solid;">Qty</th>
+                <th align="center" style="border-bottom:1px solid;">Unit</th>
+                <th align="center" style="border-bottom:1px solid;">Rate</th>
+                <th align="center" style="border-bottom:1px solid;">Disc%</th>
+                <th align="center" style="border-bottom:1px solid;">Amount</th>
+            </tr>
+            ' . $pdf_data . '
+        </table>';
+
         $mpdf->AddPage();
         $mpdf->WriteHTML($html);
-        $mpdf->SetHTMLFooter($footer, 'EOD'); // Footer only on last page
+
+        // Footer only on last page
+        $mpdf->SetHTMLFooter($footer, 'EOD');
 
         // Output PDF
         $this->response->setHeader('Content-Type', 'application/pdf');

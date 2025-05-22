@@ -1732,13 +1732,142 @@ class DeliverNote extends BaseController
                 
                 //$mpdf = new \Mpdf\Mpdf();
 
-                $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 5,     // Reduce top margin
-                    'margin_bottom' => 5,  // Reduce bottom margin
-                    'margin_left' => 5,    // Reduce left margin
-                    'margin_right' => 5,   // Reduce right margin
-                ]);
+                 $footer = '
+        
                 
+    
+    
+                <table style="style="border-top:1px solid; border-collapse: collapse; width: 100%;"">
+                
+                <tr>
+                    <td rowspan="2">Order Terms</td>
+    
+                    <td style="width:15%">LPO Ref:</td>
+    
+                    <td style="width:30%">'.$delivery_note->dn_lpo_reference.'</td>
+
+                    <td style="width:12%">Payment:</td>
+    
+                    <td >'.$delivery_note->dn_payment_terms.'</td>
+                    
+                </tr>
+    
+                <tr>
+                    <td>Project:</td>
+    
+                    <td style="">'.$delivery_note->dn_project.'</td>
+    
+                    <td style="">Sales Order:</td>
+
+                    <td style="">'.$delivery_note->so_reffer_no.'</td>
+    
+                    <td ></td>
+    
+                </tr>
+                
+                </table>
+    
+    
+                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
+    
+                <tr>
+                
+                    <td><i>Received by: </i></td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                   
+
+                   
+    
+                    <td>Driver:</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+    
+                    <td><i>Store Keeper</i></td>
+    
+                  
+    
+                </tr>
+
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+                 <tr>
+                
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+
+                 <tr>
+                
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+    
+                  
+    
+                </tr>
+    
+    
+                
+                
+                
+                </table>
+            
+            
+            
+                ';
+
+                // Calculate dynamic margin bottom based on footer line count
+                $footer_line_count = substr_count($footer, '<tr>');
+                $line_height_mm = 7;  // Approximate height per footer line in mm, tweak if needed
+                $margin_bottom = ($footer_line_count * $line_height_mm) + 5; // 5mm extra padding
+
+                $mpdf = new \Mpdf\Mpdf([
+                    'margin_top' => 5,
+                    'margin_left' => 5,
+                    'margin_right' => 5,
+                    'margin_bottom' => $margin_bottom, // Dynamic margin bottom
+                ]);
+
+
+              
 
                 $mpdf->SetTitle($title); // Set the title
     
@@ -1863,127 +1992,7 @@ class DeliverNote extends BaseController
                 
             </table>';
             
-            $footer = '
-        
-                
-    
-    
-                <table>
-                
-                <tr>
-                    <td rowspan="2">Order Terms</td>
-    
-                    <td style="width:15%">LPO Ref:</td>
-    
-                    <td style="width:30%">'.$delivery_note->dn_lpo_reference.'</td>
-
-                    <td style="width:12%">Payment:</td>
-    
-                    <td >'.$delivery_note->dn_payment_terms.'</td>
-                    
-                </tr>
-    
-                <tr>
-                    <td>Project:</td>
-    
-                    <td style="">'.$delivery_note->dn_project.'</td>
-    
-                    <td style="">Sales Order:</td>
-
-                    <td style="">'.$delivery_note->so_reffer_no.'</td>
-    
-                    <td ></td>
-    
-                </tr>
-                
-                </table>
-    
-    
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-    
-                <tr>
-                
-                    <td><i>Received by: </i></td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-                   
-
-                   
-    
-                    <td>Driver:</td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-    
-                    <td><i>Store Keeper</i></td>
-    
-                  
-    
-                </tr>
-
-
-
-                <tr>
-                
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-    
-                  
-    
-                </tr>
-
-
-                 <tr>
-                
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-    
-                  
-    
-                </tr>
-
-
-
-                 <tr>
-                
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-    
-                  
-    
-                </tr>
-    
-    
-                
-                
-                
-                </table>
-            
-            
-            
-                ';
+           
             
                 //echo $html . $footer;
 
