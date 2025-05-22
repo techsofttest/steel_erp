@@ -2337,7 +2337,7 @@
                                 
                             </table>
 
-                            <table class="total_table">
+                            <table class="total_table" style="width: 27% !important;">
                                 <tbody>
                                     <tr>
                                        
@@ -5369,7 +5369,7 @@
            //var quotation_total = parseFloat($('.amount_total').val());
 
            var cost_total = parseFloat($('.total_cost_cal').val().replace(/,/g, ''));
-           
+
            var quotation_total = parseFloat($('.amount_total').val().replace(/,/g, ''));
 
 
