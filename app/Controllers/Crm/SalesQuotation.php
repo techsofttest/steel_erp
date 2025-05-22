@@ -2278,7 +2278,7 @@ class SalesQuotation extends BaseController
 
                     <td width="63%">'.$quotation_details->qd_validity.'</td>
 
-                    <td style="font-weight: bold;width: 15%;";>Net Order Value</td>
+                    <td style="font-weight: bold;width: 15%;";>Net Quote Value</td>
         
                     <td>'.format_currency($quotation_details->qd_sales_amount).'</td>
                 

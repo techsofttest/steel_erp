@@ -1495,7 +1495,6 @@ class CreditInvoice extends BaseController
 
             $mpdf = new \Mpdf\Mpdf([
                 'margin_top' => 5,
-                'margin_bottom' => 5,
                 'margin_left' => 5,
                 'margin_right' => 5,
             ]);
@@ -1516,6 +1515,13 @@ class CreditInvoice extends BaseController
                 }
                 .dec_width { width:30% }
                 .disc_color { color:red; }
+                tr {
+                    page-break-inside: avoid;
+                    page-break-after: auto;
+                }
+                    table {
+                    page-break-inside: auto;
+                }
             </style>
 
             <table><tr><td></td></tr></table>

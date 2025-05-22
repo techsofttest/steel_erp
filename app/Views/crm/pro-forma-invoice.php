@@ -55,7 +55,7 @@ height: 37px !important;
     margin-bottom: 0px;
 }
 .total_table {
-    width: 22% !important;
+    width: 24% !important;
    
 }
 span.select2.customer_width, span.select2 {

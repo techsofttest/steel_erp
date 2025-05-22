@@ -2110,7 +2110,7 @@ class CashInvoice extends BaseController
 
                         <td style="font-weight: bold;width: 20%;">Total Invoice value</td>
             
-                        <td  align="right">'.format_currency($cash_invoice->ci_total_amount).'</td>
+                        <td  align="right" style="font-weight: bold;">'.format_currency($cash_invoice->ci_total_amount).'</td>
                     
                         
                     </tr>

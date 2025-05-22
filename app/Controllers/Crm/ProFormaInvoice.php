@@ -1508,7 +1508,7 @@ class ProFormaInvoice extends BaseController
 
                         <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
 
-                        <td align="right">'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
+                        <td align="right" style="font-weight: bold;">'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
                         
                        
                         

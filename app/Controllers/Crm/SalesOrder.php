@@ -1843,7 +1843,7 @@ class SalesOrder extends BaseController
 
                     <td style="font-weight: bold;width: 17%;" >Net Order Value</td>
         
-                    <td>'.format_currency($sales_order->so_amount_total).'</td>
+                    <td style="font-weight: bold;" >'.format_currency($sales_order->so_amount_total).'</td>
 
                     
                    
