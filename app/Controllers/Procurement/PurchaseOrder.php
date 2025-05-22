@@ -145,7 +145,8 @@ class PurchaseOrder extends BaseController
     // add account head
     Public function Add()
     {   
-        
+        $data['print'] = "";
+
         if(empty($this->request->getPost('po_id')))
         {   
             //$uid = $this->common_model->FetchNextId('pro_purchase_order',"PO");
@@ -301,6 +302,14 @@ class PurchaseOrder extends BaseController
                         if(count($material_req_prod1) == count($material_req_prod2)){
                            
                             $this->common_model->EditData(array('mr_pur_status' => 1), array('mr_id' =>$_POST['material_req'][$j]), 'pro_material_requisition');
+                        }
+
+
+                        if(!empty($_POST['print_btn']))
+                        {
+                            
+                            $data['print'] =  $purchase_id;
+
                         }
 
                     } 

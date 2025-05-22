@@ -5364,17 +5364,17 @@
         {
            
             
-           //var cost_total = parseFloat($('.total_cost_cal').val());
+            //var cost_total = parseFloat($('.total_cost_cal').val());
 
-           //var quotation_total = parseFloat($('.amount_total').val());
+            //var quotation_total = parseFloat($('.amount_total').val());
 
-           var cost_total = parseFloat($('.total_cost_cal').val().replace(/,/g, ''));
+            var cost_total = parseFloat($('.total_cost_cal').val().replace(/,/g, ''));
 
-           var quotation_total = parseFloat($('.amount_total').val().replace(/,/g, ''));
+            var quotation_total = parseFloat($('.amount_total').val().replace(/,/g, ''));
 
 
-           if ( (!isNaN(cost_total)) && (!isNaN(quotation_total)) && (quotation_total !== 0)) 
-           {
+            if ( (!isNaN(cost_total)) && (!isNaN(quotation_total)) && (quotation_total !== 0)) 
+            {
                 var result = cost_total / quotation_total;
 
                 var percentage = result * 100
