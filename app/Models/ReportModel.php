@@ -287,7 +287,6 @@ class ReportModel extends Model
 
 
 
-    /*
     public function FetchGLTransactions($date_from, $date_to, $account_head, $account_type, $account, $time_frame,$range_from,$range_to)
 {
     $receipt_table = "{$this->db->getPrefix()}accounts_receipts";
@@ -1152,7 +1151,6 @@ $query .= ")";
 
 //Journal Start
 
-/*
 
 $query .= "UNION ALL 
 (SELECT 
@@ -1249,9 +1247,7 @@ $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_t
 
 $query .= ")";
 
-END SUB COMMENT */
 
-/*
 $query .= "UNION ALL 
 (SELECT 
     ji_id AS id,
@@ -2298,10 +2294,10 @@ return $query->get()->getResult();
 
 
 }
-*/
 
 
 
+/*
 public function FetchGLTransactions(
     $date_from = null,
     $date_to = null,
@@ -2332,7 +2328,9 @@ public function FetchGLTransactions(
     // Execute the query and return the result
     return $this->db->query($final_query)->getResult();
 }
+    */
 
+/*
 private function buildPaymentQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
 {
     $query = "
@@ -2511,6 +2509,7 @@ private function buildWhereClause($date_column, $date_from, $date_to, $account_h
     // Combine conditions into a WHERE clause
     return !empty($conditions) ? " WHERE " . implode(" AND ", $conditions) : "";
 }
+    */
 
 
 
@@ -2585,6 +2584,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
       
 
     }
+    
 
 
 
