@@ -1912,7 +1912,7 @@
         });*/
 
 
-        $("body").on('keyup', '.add_prod_qty', function() { 
+$("body").on('keyup', '.add_prod_qty', function() { 
     var $discountSelect = $(this);
 
     var discount = parseFloat($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
@@ -1943,7 +1943,32 @@
         $quantitySelectElement.val("");  
         alertify.error('Quantity should not be greater than ' + total_qty).dismissOthers();
     }
+
+     TotalAmount();
 });
+
+
+
+    function TotalAmount() {
+        
+        var total = 0;
+
+        $(".add_prod_amount").each(function () {
+            var value = $(this).val().replace(/,/g, ""); // Remove commas
+            var sub_tot = parseFloat(value) || 0; // Parse safely
+            total += sub_tot; // Add to total
+        });
+
+        // Keep raw value with two decimal places
+        var rawPrice = total.toFixed(2);
+
+        // Format with commas
+        var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
+        // Set formatted value in input
+        $(".amount_total").val(formattedPrice);
+    }
 
 
 

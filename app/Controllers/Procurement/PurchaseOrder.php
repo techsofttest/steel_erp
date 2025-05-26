@@ -1652,9 +1652,9 @@ class PurchaseOrder extends BaseController
     
             <tr>
             
-                <td > </td>
+                <td> </td>
                 
-                <td >'.$purchase_order->cc_customer_name.'</td>
+                <td>'.$purchase_order->cc_customer_name.'</td>
             
             </tr>
     
@@ -1664,14 +1664,14 @@ class PurchaseOrder extends BaseController
         <td> Vendor </td>
         
             
-        <td >Tel : '.$purchase_order->cc_telephone.', Fax : '.$purchase_order->cc_fax.', Email : '.$purchase_order->cc_email.'</td>
+        <td>Tel : '.$purchase_order->cc_telephone.', Fax : '.$purchase_order->cc_fax.', Email : '.$purchase_order->cc_email.'</td>
         
         </tr>
     
     
         <tr>
         
-        <td ></td>
+        <td></td>
         
         <td >Post Box :  '.$purchase_order->cc_post_box.' , '.$customers->cc_city.' , '.$customers->cc_country.'</td>
         
