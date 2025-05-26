@@ -1151,7 +1151,7 @@ $query .= ")";
 
 //Journal Start
 
-
+/*
 $query .= "UNION ALL 
 (SELECT 
     {$journal_table}.ji_id AS id,
@@ -1244,8 +1244,8 @@ $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_t
 
 }
 
-
-$query .= ")";
+ 
+$query .= ")"; */
 
 
 $query .= "UNION ALL 
@@ -2241,9 +2241,9 @@ $query .= " ORDER BY transaction_date ASC,id ASC";
     
     $result = $this->db->query($query)->getResult();
 
-    //  $query = $this->db->getLastQuery();
-    //  echo (string)$query;
-    //  exit;
+      //$query = $this->db->getLastQuery();
+        //echo (string)$query;
+      //exit;
 
     return $result;
 }
