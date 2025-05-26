@@ -1155,7 +1155,7 @@ class CrmReportModel extends Model
     }
 
    
-    public function invoice_report($from_date,$to_date,$customer,$sales_order_data,$product_data)
+    /*public function invoice_report($from_date,$to_date,$customer,$sales_order_data,$product_data)
     {
         $cash_invoice = "{$this->db->getPrefix()}crm_cash_invoice";
         $credit_invoice = "{$this->db->getPrefix()}crm_credit_invoice";
@@ -1274,6 +1274,142 @@ class CrmReportModel extends Model
             
            
             )
+            
+        ) AS combined_results";
+    
+        // Prepare conditions
+        $conditions = [];
+    
+       
+        if (!empty($from_date) && !empty($to_date)) {
+
+            $conditions[] = "(combined_results.date BETWEEN '{$from_date}' AND '{$to_date}')";
+        }
+    
+       
+        if (!empty($customer)) {
+
+            $conditions[] = "combined_results.customer_id = '{$customer}'";
+
+        }
+    
+       
+        if (!empty($sales_order)) {
+
+            $conditions[] = "combined_results.so_id LIKE '%{$sales_order_data}%'";
+        }
+        
+        
+        if (!empty($product_data)) {
+
+            $conditions[] = "combined_results.product_id = '{$product_data}'";
+        }
+
+    
+       
+        if (!empty($conditions)) {
+
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
+    
+        // Order by date
+        $query .= " ORDER BY combined_results.date,combined_results.reference";
+    
+        // Execute the query
+        $result = $this->db->query($query)->getResult();
+    
+        return $result;
+    }*/
+
+
+    // added sales return condition above comment
+    public function invoice_report($from_date,$to_date,$customer,$sales_order_data,$product_data)
+    {
+        $cash_invoice = "{$this->db->getPrefix()}crm_cash_invoice";
+        $credit_invoice = "{$this->db->getPrefix()}crm_credit_invoice";
+        $customer_creation = "{$this->db->getPrefix()}crm_customer_creation";
+        $sales_executive = "{$this->db->getPrefix()}executives_sales_executive";
+        $sales_order = "{$this->db->getPrefix()}crm_sales_orders";
+        $delivery_note = "{$this->db->getPrefix()}crm_delivery_note";
+        $cash_invoice_prod = "{$this->db->getPrefix()}crm_cash_invoice_prod_det";
+        $credit_invoice_prod = "{$this->db->getPrefix()}crm_credit_invoice_prod_det";
+        $products = "{$this->db->getPrefix()}crm_products";
+        //$sales_return = "{$this->db->getPrefix()}crm_sales_return";
+       // $sales_return_prod = "{$this->db->getPrefix()}crm_sales_return_prod_det";
+
+
+        // Base query
+        $query = "SELECT * FROM (
+            (SELECT 
+                {$cash_invoice}.ci_date AS date,
+                {$cash_invoice}.ci_reffer_no AS reference,
+                {$cash_invoice}.ci_id  AS reffer_id,
+                'cash invoice' as link,
+                'cash invoice' as amount_check,
+                {$customer_creation}.cc_customer_name as customer_name,
+                {$customer_creation}.cc_id  AS customer_id,
+                null as delivery_reff,
+                null as delivery_id,
+                {$sales_order}.so_reffer_no as sales_order,
+                {$sales_order}.so_id as so_id,
+                {$sales_order}.so_lpo as sales_lpo,
+                {$products}.product_details  as product,
+                {$products}.product_id  as product_id,
+                {$cash_invoice_prod}.cipd_qtn  as quantity,
+                {$cash_invoice_prod}.cipd_rate  as rate,
+                {$cash_invoice_prod}.cipd_discount  as discount,
+                {$cash_invoice_prod}.cipd_amount  as prod_amount,
+                {$cash_invoice}.ci_total_amount AS amount
+            FROM {$cash_invoice}
+            LEFT JOIN {$customer_creation} 
+                ON {$customer_creation}.cc_id = {$cash_invoice}.ci_customer
+            LEFT JOIN {$sales_order} 
+                ON {$sales_order}.so_id = {$cash_invoice}.ci_sales_order
+            LEFT JOIN {$cash_invoice_prod} 
+                ON {$cash_invoice_prod}.cipd_cash_invoice  = {$cash_invoice}.ci_id
+            LEFT JOIN {$products} 
+                ON {$products}.product_id  = {$cash_invoice_prod}.cipd_prod_det
+            
+            
+            )
+
+            UNION ALL 
+            (SELECT 
+                {$credit_invoice}.cci_date AS date,
+                {$credit_invoice}.cci_reffer_no AS reference,
+                {$credit_invoice}.cci_id  AS reffer_id,
+                'credit invoice' as link,
+                'credit invoice' as amount_check,
+                {$customer_creation}.cc_customer_name as customer_name,
+                {$customer_creation}.cc_id  AS customer_id,
+                {$delivery_note}.dn_reffer_no  as delivery_reff,
+                {$delivery_note}.dn_id  as delivery_id,
+                {$sales_order}.so_reffer_no as sales_order,
+                {$sales_order}.so_id as so_id,
+                {$sales_order}.so_lpo as sales_lpo,
+                {$products}.product_details  as product,
+                {$products}.product_id  as product_id,
+                {$credit_invoice_prod}.ipd_quantity  as quantity,
+                {$credit_invoice_prod}.ipd_rate  as rate,
+                {$credit_invoice_prod}.ipd_discount  as discount,
+                {$credit_invoice_prod}.ipd_amount  as prod_amount,
+                {$credit_invoice}.cci_total_amount AS amount
+            FROM {$credit_invoice}
+            LEFT JOIN {$customer_creation} 
+                ON {$customer_creation}.cc_id = {$credit_invoice}.cci_customer
+            LEFT JOIN {$delivery_note} 
+                ON {$delivery_note}.dn_id = {$credit_invoice}.cci_delivery_id
+            LEFT JOIN {$sales_order} 
+                ON {$sales_order}.so_id = {$credit_invoice}.cci_sales_order
+            LEFT JOIN {$credit_invoice_prod} 
+                ON {$credit_invoice_prod}.ipd_credit_invoice  = {$credit_invoice}.cci_id 
+            LEFT JOIN {$products} 
+                ON {$products}.product_id  = {$credit_invoice_prod}.ipd_prod_detl
+            
+           
+            )
+            
+           
             
         ) AS combined_results";
     

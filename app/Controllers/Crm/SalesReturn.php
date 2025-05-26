@@ -301,6 +301,63 @@ class SalesReturn extends BaseController
 
         $sales_return_id = $this->common_model->SingleRow('crm_sales_return',array('sr_id' => $sales_return_id));
 
+        /*calculation start*/
+        
+        $credit_data = $this->common_model->SingleRow('crm_credit_invoice',array('cci_reffer_no' => $sales_return_id->sr_invoice));
+
+        
+
+        $cash_data = $this->common_model->SingleRow('crm_cash_invoice',array('ci_reffer_no' => $sales_return_id->sr_invoice));
+
+        if(!empty($credit_data)){
+
+           
+            $sr_total = $this->request->getPost('sr_total');
+            $sr_total = floatval(str_replace(',', '', $sr_total));
+            $paid_amount = floatval($credit_data->cci_paid_amount) + $sr_total;
+
+            
+
+           $this->common_model->EditData(array('cci_paid_amount'=>$paid_amount),array('cci_id'=>$credit_data->cci_id),'crm_credit_invoice');
+
+           $credit_single2 = $this->common_model->SingleRow('crm_credit_invoice',array('cci_id' => $credit_data->cci_id));
+
+            if($credit_single2->cci_paid_amount == str_replace(',', '', $this->request->getPost('sr_total'))){
+
+                $this->common_model->EditData(array('cci_paid_status'=>2),array('cci_id'=>$credit_data->cci_id),'crm_credit_invoice');
+
+
+            }
+
+        
+        }
+
+        if(!empty($cash_data)){
+
+
+            $sr_total = $this->request->getPost('sr_total');
+            $sr_total = floatval(str_replace(',', '', $sr_total));
+            $paid_amount = floatval($cash_data->ci_paid_amount) + $sr_total;
+
+            
+
+           $this->common_model->EditData(array('ci_paid_amount'=>$paid_amount),array('ci_id'=>$cash_data->ci_id),'crm_cash_invoice');
+
+           $cash_single2 = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_data->ci_id));
+
+            if($cash_single2->ci_total_amount == str_replace(',', '', $this->request->getPost('sr_total'))){
+
+                $this->common_model->EditData(array('ci_paid_status'=>2),array('ci_id'=>$cash_data->ci_id),'crm_cash_invoice');
+
+
+            }
+
+
+        }
+       
+
+        /*calculation end*/
+
         $data['cash_invoice'] = $sales_return_id->sr_invoice;
 
         $data["cash_return_id"] = $sales_return_id->sr_id;
@@ -360,10 +417,7 @@ class SalesReturn extends BaseController
                         {
                             $this->common_model->EditData(array('ci_status'=>1),array('ci_id'=>$_POST['cash_main_table'][$j]),'crm_cash_invoice');
                         }
-
-
-                       
-                       
+        
                        
                     }
 
@@ -397,10 +451,15 @@ class SalesReturn extends BaseController
                         if(count($credit_invoice) == count($credit_invoices))
                         {
                             $this->common_model->EditData(array('cci_status'=>1),array('cci_id'=>$_POST['credit_main_table'][$j]),'crm_credit_invoice');
+                            
                         }
 
                        
+                        
+                       
                     }
+
+                   
 
                 
                     
@@ -1191,7 +1250,11 @@ class SalesReturn extends BaseController
                 $products = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
                 if(!empty($sales_order_details))
-                {
+                {   
+                    $cash_single_data = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_reffer_no' => $number));
+
+                    $cash_invoice_parent = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_single_data->cipd_cash_invoice));
+
                     foreach($sales_order_details as $sales_det)
                     {   
                         $qty = $sales_det->cipd_qtn - $sales_det->cipd_delivered_qty;
@@ -1224,10 +1287,32 @@ class SalesReturn extends BaseController
                     }
 
                     $data['total_amount'] = format_currency($new_amount);
+
+                    $balance_amount = $cash_invoice_parent->ci_total_amount - $cash_invoice_parent->ci_paid_amount;
+
+
+                    $data['pending_amount_alert'] = "Only " . number_format($balance_amount, 2) . " can be returned.";
+
+                    $data['pending_amount'] = $balance_amount;
+
+                    if($new_amount >  $balance_amount){
+
+                            $data['button_status'] =  1;
+                    }
+
                 }
 
                 if(!empty($sales_order_details2))
-                {
+                {  
+                    $credit_single_data = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_reffer_no' => $number));
+
+                    $credit_invoice_parent = $this->common_model->SingleRow('crm_credit_invoice',array('cci_id' => $credit_single_data->ipd_credit_invoice));
+
+                    //$credit_invoice_parent->cci_id;
+                    
+                    //$credit_invoice_receipt = $this->common_model->CheckTwiceCond('accounts_receipt_invoice_data',array('rid_invoice' => $credit_invoice_parent->cci_id),array('rid_invoice_type' =>'credit_invoice'));
+                    
+                   
                     foreach($sales_order_details2 as $sale_det)
                     {
                         $new_qty = $sale_det->ipd_quantity - $sale_det->ipd_delivered_qty;
@@ -1252,17 +1337,43 @@ class SalesReturn extends BaseController
                                                         <input type="hidden" name="reffer_id[]" value="'.$sale_det->ipd_reffer_no.'" class="ret_cash_inv_reff"> 
                                                     </tr>';
 
-                                                    $new_amount =    $new_amount += $orginalPrice;   
+                                                    $new_amount =    $new_amount += $orginalPrice;
+
+                                                   //$new_amount += $orginalPrice;
+                                                    
+                                                    
+
+                                                    
                                                         
                     }
 
                     $data['total_amount'] = format_currency($new_amount);
+
+                    //if(!empty($credit_invoice_parent)){
+                                                       
+                        $balance_amount = $credit_invoice_parent->cci_total_amount - $credit_invoice_parent->cci_paid_amount;
+
+
+                        $data['pending_amount_alert'] = "Only " . number_format($balance_amount, 2) . " can be returned.";
+
+                        $data['pending_amount'] = $balance_amount;
+
+                        if($new_amount >  $balance_amount){
+
+                            $data['button_status'] =  1;
+                        }
+
+                                                        
+                    //}
                 }
 
 
                 
                 $i++;
             }
+
+
+
 
             // Output JSON encoded data
             echo json_encode($data);

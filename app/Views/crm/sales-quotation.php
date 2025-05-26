@@ -2337,7 +2337,7 @@
                                 
                             </table>
 
-                            <table class="total_table">
+                            <table class="total_table" style="width: 27% !important;">
                                 <tbody>
                                     <tr>
                                        
@@ -3331,48 +3331,6 @@
 
             TotalAmount();
         });
-
-
-
-
-
-       
-       /*$("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
-
-            var $discountSelect = $(this);
-
-            var discount = parseFloat($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
-            
-            var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
-
-            var rate = $discountSelectElement.val();
-
-            var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
-
-            var quantity = parseFloat($quantitySelectElement.val())||0;
-
-            var parsedRate = parseFloat(rate);
-
-            var parsedQuantity = quantity; 
-
-            var multipliedTotal = parsedRate * parsedQuantity;
-
-            var per_amount = (discount/100)*multipliedTotal;
-           
-            var orginalPrice = multipliedTotal - per_amount;
-
-            var  rawPrice  = orginalPrice.toFixed(2); 
-
-            var formattedPrice = Number(rawPrice).toLocaleString();
-            
-            var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
-
-            $amountElement.val(formattedPrice);
-
-            TotalAmount();
-
-           
-        });*/
 
 
 
@@ -5406,15 +5364,22 @@
         {
            
             
-           var cost_total = parseFloat($('.total_cost_cal').val());
+            //var cost_total = parseFloat($('.total_cost_cal').val());
 
-           var quotation_total = parseFloat($('.amount_total').val());
+            //var quotation_total = parseFloat($('.amount_total').val());
 
-           if ( (!isNaN(cost_total)) && (!isNaN(quotation_total)) && (quotation_total !== 0)) 
-           {
+            var cost_total = parseFloat($('.total_cost_cal').val().replace(/,/g, ''));
+
+            var quotation_total = parseFloat($('.amount_total').val().replace(/,/g, ''));
+
+
+            if ( (!isNaN(cost_total)) && (!isNaN(quotation_total)) && (quotation_total !== 0)) 
+            {
                 var result = cost_total / quotation_total;
 
                 var percentage = result * 100
+
+                console.log(percentage);
 
                 var percent =  percentage.toFixed(2)
 

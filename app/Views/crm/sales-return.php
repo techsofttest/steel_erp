@@ -330,6 +330,8 @@ span.select2.customer_width, span.select2 {
                                                             <input type="hidden" class="hidden_sales_return" name="sr_id">
 
                                                             <input type="hidden" class="sales_order_hidden" name="sales_order">
+
+                                                            <input type="hidden" class="pending_amount" name="">
                                                              
 
 
@@ -399,7 +401,8 @@ span.select2.customer_width, span.select2 {
                                                     </div>
                                                     <div class="col-lg-6">
                                                     <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success" type="submit">Save</button>
+                                                        <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
+                                                        <button class="btn btn btn-success cancel_btn"  style="display:none;">cancel</button>
                                                     </div>
                                                     </div>
                                                     
@@ -1826,7 +1829,7 @@ span.select2.customer_width, span.select2 {
                     
                     var data = JSON.parse(data);
 
-                    console.log(data); 
+                    //console.log(data); 
 
                     if(qty > data.total_qty)
                     {        
@@ -2325,7 +2328,7 @@ span.select2.customer_width, span.select2 {
 
            var multipliedTotal = parsedRate * parsedQuantity;
 
-           console.log(multipliedTotal);
+           //console.log(multipliedTotal);
 
            var per_amount = (discount/100)*multipliedTotal;
           
@@ -2352,47 +2355,43 @@ span.select2.customer_width, span.select2 {
 
        /*total amount calculation start*/
 
-       function TotalAmount()
-       {
+        function TotalAmount()
+        {
 
-           var total= 0;
+            var total= 0;
 
-           $('body .amount_clz_id').each(function()
-           {
-               //var sub_tot = parseFloat($(this).val());
+            $('body .amount_clz_id').each(function()
+            {
+                var value = $(this).val().replace(/,/g, ""); 
 
-               //total += parseFloat(sub_tot.toFixed(2))||0;
-              //total = Number(total).toFixed(2)
+                var sub_tot = parseFloat(value) || 0;
 
-              var value = $(this).val().replace(/,/g, ""); 
+                total += sub_tot; 
 
-              var sub_tot = parseFloat(value) || 0;
+            });
 
-              total += sub_tot; 
+            var rawPrice = total.toFixed(2);
 
-           });
+            var formattedPrice = rawPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            
+            $(".amount_total").val(formattedPrice);
 
-         // total = total.toFixed(2);
+            var pending_amount = $('.pending_amount').val();
 
-          //$('.amount_total').val(total);
-
-
-
-          /** */
-
-          var rawPrice = total.toFixed(2);
-
-// Format with commas
-// var formattedPrice = rawPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-var formattedPrice = rawPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-// Set formatted value in input
-$(".amount_total").val(formattedPrice);
-
-          /** */
-
-          
-       }
+            
+            if (parseFloat(rawPrice)  >  pending_amount){
+                
+                alertify.error("Only " +pending_amount+" can be returned.").delay(3).dismissOthers();
+                $('.once_form_submit').attr('disabled', true); 
+                var sales_return = $('.hidden_sales_return').val();
+                $('.cancel_btn').show().attr('data-id', sales_return);
+            }
+            else{
+                
+                $('.once_form_submit').attr('disabled', false); 
+                $('.cancel_btn').hide()
+            }
+        }
 
        /*total amount calculation end*/
 
@@ -2422,6 +2421,8 @@ $(".amount_total").val(formattedPrice);
                 {
                 
                     var data = JSON.parse(data);
+
+                    
                                     
                     $('.product-more2').html(data.product_detail);
 
@@ -2433,12 +2434,30 @@ $(".amount_total").val(formattedPrice);
 
                     $('.total_table').show();
 
+                    if(data.pending_amount_alert && data.pending_amount_alert.trim() !== ''){
+
+                        alertify.error(data.pending_amount_alert).delay(3).dismissOthers();
+
+                        if(data.button_status === 1){
+
+                            $('.once_form_submit').attr('disabled', true); // Disable this input.
+
+                            var sales_return = $('.hidden_sales_return').val();
+
+                            $('.cancel_btn').show().attr('data-id', sales_return);
+
+                            $('.pending_amount').val(data.pending_amount);
+
+                        }
+
+                    }
+
 
                     checkedIds.length = 0;
 
                     $('.amount_total').val(data.total_amount);
 
-                    console.log(data.total_amount);
+                    //console.log(data.total_amount);
                 }
 
             });

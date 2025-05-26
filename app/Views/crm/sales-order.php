@@ -48,7 +48,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 22% !important;
+    width: 24% !important;
    
 }
 .view_product_data td{

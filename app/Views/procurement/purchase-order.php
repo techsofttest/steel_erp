@@ -107,8 +107,8 @@
     }
     .total_table tr {
    
-    border: 1px solid black;
-}
+        border: 1px solid black;
+    }
 </style>
 
 
@@ -436,6 +436,7 @@
 
                                         <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
+                                            <span><button class="btn btn btn-success once_form_submit" name="print_btn" type="submit" value="1">Preview</button></span>
                                         </div>
 
 
@@ -1454,7 +1455,8 @@
                     processData: false, // Don't process the data
                     contentType: false, // Don't set content type
                     success: function(data) {
-
+                        var data = JSON.parse(data);
+                        
                         $('#AddPurchaseOrder').modal('hide');
 
                         alertify.success('Data Added Successfully').delay(3).dismissOthers();
@@ -1462,6 +1464,20 @@
                         datatable.ajax.reload(null, false);
 
                         $('#po_mrn_reff_id option').remove();
+
+                        console.log(data);
+
+                        if(data.print!="")
+                        {
+                            //window.open(data.print, '_blank');
+                            console.log(data.print); 
+                            var id = data.print;
+                            
+                            var pdfWindow = window.open('<?= base_url()?>Procurement/PurchaseOrder/Pdf/'+id, '_blank');
+                            pdfWindow.onload = function() {
+                                pdfWindow.print();
+                            };
+                        }
                     }
                 });
 

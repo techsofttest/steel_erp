@@ -158,10 +158,9 @@
                                                                         <label for="basicInput" class="form-label">Customer Name <span class="add_more_icon cust_more_modal  ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9 ">
+                                                                    <div class="col-col-md-9 col-lg-9">
                                                                         <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
                                                                             <option value="" selected disabled>Select Customer</option>
-                                                               
                                                                         </select>
                                                                     </div>
 
@@ -191,6 +190,7 @@
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
                                                                         <select class="form-select"  name="enquiry_contact_person" id="contact_person_id"  required>
+                                                                            
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
