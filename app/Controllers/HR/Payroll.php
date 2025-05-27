@@ -720,7 +720,7 @@ class Payroll extends BaseController
 
             {
 
-    $data['total_credit'] = $data['total_credit']+=$ts->ts_cur_month_salary;
+    $data['total_credit'] = $data['total_credit']+=$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave;
 
      $emp_journal .='
             
