@@ -738,7 +738,7 @@ class Payroll extends BaseController
 
                                <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="" readonly></th>
 
-                               <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$ts->ts_cur_month_salary.'" readonly></th>
+                               <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave.'" readonly></th>
 
     </tr>
 
