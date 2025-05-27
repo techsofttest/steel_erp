@@ -21,6 +21,22 @@
    width: 1%;
 }
 
+.day_row td
+{
+    vertical-align:middle;
+    text-align:center;
+}
+
+.day_row input,select
+{
+    text-align:center;
+}
+
+.month_header th
+{
+    text-align:center;
+}
+
     </style>
     
 
@@ -138,8 +154,7 @@
                         
                         <h3>Monthly Data</h3>
 
-
-                        <thead>
+                        <thead class="month_header">
 
 
                         <th>Date</th>
@@ -883,8 +898,11 @@
 
 
                         <table class="table table-bordered">
+                        
+                        <a class="btn btn-success" id="test_btn" href="javascript:void(0);">Test Fill</a>
 
-                        <tr>
+
+                        <tr class="month_header">
 
                         <th>Date</th>
 
@@ -920,7 +938,7 @@
                         <div class="row align-items-center mb-2">
 
 
-<div class="col-lg-4">
+    <div class="col-lg-4">
 
     <div class="row align-items-center mb-2">
 
@@ -3792,7 +3810,12 @@ $(document).ajaxError(function(){
 
 
 
+$('#test_btn').click(function(){
 
+$('.time_from').val('07:00').trigger('change');
+$('.time_to').val('16:00').trigger('change');
+    
+})
 
 
 

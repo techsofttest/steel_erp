@@ -263,11 +263,11 @@ class Payroll extends BaseController
 
         $telephone_allow+=$ts->ts_telephone_allowance;
 
-        $food_allow+=$ts->ts_food_allowance;
+        //$food_allow+=$ts->ts_food_allowance;
 
-        $other_allow+=$ts->ts_other_allowance;
+        //$other_allow+=$ts->ts_other_allowance;
 
-        $total_salary+=$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
+        $total_salary+=$ts->ts_cur_month_salary;
 
         $data['table'] .='
 
@@ -291,7 +291,7 @@ class Payroll extends BaseController
 
                         <td class="text-end">'.format_currency($ts->ts_telephone_allowance).'</td>
 
-                        <td class="text-end">'.format_currency($ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance).'</td>
+                        <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
 
 
                         </tr>
@@ -720,7 +720,7 @@ class Payroll extends BaseController
 
             {
 
-    $data['total_credit'] = $data['total_credit']+=$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave;
+    $data['total_credit'] = $data['total_credit']+=$ts->ts_cur_month_salary;
 
      $emp_journal .='
             
@@ -738,7 +738,7 @@ class Payroll extends BaseController
 
                                <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="" readonly></th>
 
-                               <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave.'" readonly></th>
+                               <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$ts->ts_cur_month_salary.'" readonly></th>
 
     </tr>
 
