@@ -238,20 +238,20 @@ class Payroll extends BaseController
         if($ts->emp_division==2)
         {
         //staff_salary 
-        $staff_salary+= $ts->ts_cur_month_basic_salary-$leave;
+        $staff_salary+= $ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave;
         }
 
 
         if($ts->emp_division==1)
         {
-        $salaries_wages+=$ts->ts_cur_month_basic_salary-$leave;
+        $salaries_wages+=$ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave;
         }
 
         $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
 
         $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
 
-        $basic_salary+=$ts->ts_cur_month_basic_salary;
+        $basic_salary+=$ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
 
         $total_ot+=$ot;
 
@@ -263,9 +263,9 @@ class Payroll extends BaseController
 
         $telephone_allow+=$ts->ts_telephone_allowance;
 
-        $food_allow+=$ts->ts_food_allowance;
+        //$food_allow+=$ts->ts_food_allowance;
 
-        $other_allow+=$ts->ts_other_allowance;
+        //$other_allow+=$ts->ts_other_allowance;
 
         $total_salary+=$ts->ts_cur_month_salary;
 
@@ -279,7 +279,7 @@ class Payroll extends BaseController
 
                         <td>'.$ts->div_name.'</td>
 
-                        <td class="text-end">'.format_currency($ts->ts_cur_month_basic_salary).'</td>
+                        <td class="text-end">'.format_currency($ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance).'</td>
 
                         <td class="text-end">'.format_currency($leave).'</td>
 
@@ -291,13 +291,8 @@ class Payroll extends BaseController
 
                         <td class="text-end">'.format_currency($ts->ts_telephone_allowance).'</td>
 
-                        <td class="text-end">'.format_currency($ts->ts_food_allowance).'</td>
-
-                        <td class="text-end">'.format_currency($ts->ts_other_allowance).'</td>
-
                         <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
 
-                        
 
                         </tr>
 
@@ -325,10 +320,6 @@ class Payroll extends BaseController
 
                         <th class="text-end">'.format_currency($telephone_allow).'</th>
 
-                        <th class="text-end">'.format_currency($food_allow).'</th>
-
-                        <th class="text-end">'.format_currency($other_allow).'</th>
-
                         <th class="text-end">'.format_currency($total_salary).'</th>
 
                         </tr>
@@ -348,9 +339,9 @@ class Payroll extends BaseController
 
         $data['tel_allow'] = format_currency($telephone_allow);
 
-        $data['food_allow'] = format_currency($food_allow);
+        //$data['food_allow'] = format_currency($food_allow);
 
-        $data['other_allow'] = format_currency($other_allow);
+        //$data['other_allow'] = format_currency($other_allow);
 
         $data['total_salary'] = format_currency($total_salary);
 
@@ -417,8 +408,8 @@ class Payroll extends BaseController
              $house_rent_allow=0;
              $transport_allow=0;
              $telephone_allow=0;
-             $food_allow=0;
-             $other_allow=0;
+             //$food_allow=0;
+             //$other_allow=0;
              $total_salary=0;
 
              $staff_salary=0;
@@ -440,7 +431,7 @@ class Payroll extends BaseController
     
                     $basic_salary+=$ts->ts_cur_month_basic_salary-$leave;
 
-                    $ts_basic_salary = $ts->ts_cur_month_basic_salary-$leave;
+                    $ts_basic_salary = $ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave;
 
                     if($ts->emp_division==2)
                     {
@@ -463,9 +454,9 @@ class Payroll extends BaseController
 
                     $telephone_allow+=$ts->ts_telephone_allowance;
 
-                    $food_allow+=$ts->ts_food_allowance;
+                    //$food_allow+=$ts->ts_food_allowance;
 
-                    $other_allow+=$ts->ts_other_allowance;
+                    //$other_allow+=$ts->ts_other_allowance;
 
                     $total_salary+=$ts->ts_cur_month_salary;
 
@@ -481,7 +472,7 @@ class Payroll extends BaseController
 
             $data['total_credit'] = 0;
 
-            $data['total_debit'] = $staff_salary+$salaries_wages+$total_ot+$house_rent_allow+$transport_allow+$telephone_allow+$food_allow+$other_allow;
+            $data['total_debit'] = $staff_salary+$salaries_wages+$total_ot+$house_rent_allow+$transport_allow+$telephone_allow;
 
             $jv_sl=0;
 
@@ -546,7 +537,7 @@ class Payroll extends BaseController
 
                                       <th class="select2_parent" width="35%"> 
                                           
-                                      <input type="text" class="form-control" name="jv_account[]" value="Overtime" readonly>
+                                      <input type="text" class="form-control" name="jv_account[]" value="Overtime Charges" readonly>
 
                                       </th>
                                       
@@ -661,6 +652,7 @@ class Payroll extends BaseController
 
 
 
+        /*
     if(!empty($food_allow))
 
     {
@@ -718,8 +710,7 @@ class Payroll extends BaseController
     ';
 
     }
-
-
+    */
 
 
      //Employee Credit Journal
@@ -849,8 +840,8 @@ class Payroll extends BaseController
                     $house_rent_allow=0;
                     $transport_allow=0;
                     $telephone_allow=0;
-                    $food_allow=0;
-                    $other_allow=0;
+                    //$food_allow=0;
+                    //$other_allow=0;
                     $total_salary=0;
 
                     $staff_salary=0;
@@ -862,20 +853,20 @@ class Payroll extends BaseController
                     if($ts->emp_division==2)
                     {
                     //staff_salary 
-                    $staff_salary+= $ts->ts_cur_month_basic_salary;
+                    $staff_salary+= $ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
                     }
 
 
                     if($ts->emp_division==1)
                     {
-                    $salaries_wages+=$ts->ts_cur_month_basic_salary;
+                    $salaries_wages+=$ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
                     }
 
                     $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
 
                     $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
 
-                    $basic_salary+=$ts->ts_cur_month_basic_salary;
+                    $basic_salary+=$ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
 
                     $total_ot+=$ot;
 
@@ -887,11 +878,12 @@ class Payroll extends BaseController
 
                     $telephone_allow+=$ts->ts_telephone_allowance;
 
-                    $food_allow+=$ts->ts_food_allowance;
+                    //$food_allow+=$ts->ts_food_allowance;
 
-                    $other_allow+=$ts->ts_other_allowance;
+                    //$other_allow+=$ts->ts_other_allowance;
 
-                    $total_salary+=$ts->ts_cur_month_salary;
+                    $total_salary+=$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
+
                     }
         }
 
@@ -905,8 +897,8 @@ class Payroll extends BaseController
         $insert_payroll['pr_hra'] = $house_rent_allow; // House Rent Allowance
         $insert_payroll['pr_transport_allow'] = $transport_allow; // Transportation Allowance
         $insert_payroll['pr_telephone_allow'] = $telephone_allow; // Telephone Allowance
-        $insert_payroll['pr_food_allow'] = $food_allow; // Food Allowance
-        $insert_payroll['pr_other_allow'] = $other_allow; // Other Allowance
+        //$insert_payroll['pr_food_allow'] = $food_allow; // Food Allowance
+        //$insert_payroll['pr_other_allow'] = $other_allow; // Other Allowance
         $insert_payroll['pr_total_salary'] = $total_salary;
         $insert_payroll['pr_added_date'] = date('Y-m-d H:i:s'); // Current date and time
 
@@ -918,7 +910,9 @@ class Payroll extends BaseController
 
         //Insert Journal voucher
 
-        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
+        //$juid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
+
+        $juid = $this->request->getPost('juid');
 
         $insert_journal['jv_voucher_no'] = $juid;
 

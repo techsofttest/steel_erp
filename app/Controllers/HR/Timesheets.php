@@ -953,6 +953,50 @@ class TimeSheets extends BaseController
 
 
 
+    public function Print(){
+
+
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'Letter',
+        'default_font_size' => 9, 
+        'margin_left' => 5, 
+        'margin_right' => 5,
+        'fontDir' => array_merge($fontDirs, [
+            __DIR__ . '/fonts'
+        ]),
+        'fontdata' => $fontData + [
+            'bentonsans' => [
+                'R' => 'FreeSerif.ttf',
+                'B' => 'FreeSerifBold.ttf',
+            ],
+        ],
+        'default_font' => 'bentonsans'
+        
+    ]);
+
+    $html ="";
+    $footer="";
+
+    $mpdf->falseBoldWeight = 0;
+
+    $mpdf->WriteHTML($html);
+    $mpdf->SetFooter($footer);
+
+    $this->response->setHeader('Content-Type', 'application/pdf');
+
+    $mpdf->Output();
+
+    }
+
+
+
 
 
 

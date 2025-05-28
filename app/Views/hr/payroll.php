@@ -289,9 +289,11 @@
 
                         <th class="text-end">Telephone Allowance</th>
 
+                        <?php /*
                         <th class="text-end">Food Allowance</th>
 
                         <th class="text-end">Other Allowance</th>
+                        */ ?>
 
                         <th class="text-end">Total Salary</th>
 
@@ -371,6 +373,7 @@
                                 </tr>
 
 
+                                <?php /*
                                 <tr>
 
                                 <td align="right">Food Allowance</td>
@@ -387,6 +390,8 @@
                                 <th class="text-end" id="other_allow_add"></th>
 
                                 </tr>
+                                */
+                                ?>
 
 
 
@@ -614,7 +619,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text" id="uid"  class="form-control" readonly>
+                            <input type="text" id="uid" name="juid" class="form-control" required>
 
                             </div>
 
@@ -831,9 +836,9 @@
 
                                 $('#telephone_allow_add').html(data.tel_allow);
 
-                                $('#food_allow_add').html(data.food_allow);
+                                //$('#food_allow_add').html(data.food_allow);
 
-                                $('#other_allow_add').html(data.other_allow);
+                                //$('#other_allow_add').html(data.other_allow);
 
                                 $('#total_salary_add').html(data.total_salary);
 
