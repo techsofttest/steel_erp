@@ -601,7 +601,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Cost Calculation</h5>
-                                            <button type="button" class="btn-close close_sub_modal" aria-label="Close"></button>
+                                            <!--<button type="button" class="btn-close close_sub_modal" aria-label="Close"></button>-->
                                         </div>
 
 				                        <div class="modal-body">
