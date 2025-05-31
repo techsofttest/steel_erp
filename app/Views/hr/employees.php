@@ -466,7 +466,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number"  name="basic_salary" class="form-control sal_calc" step=".01" min="0" required>
+                        <input type="text"  name="basic_salary" class="number_format form-control sal_calc" required>
 
                         </div>
 
@@ -483,7 +483,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number"  name="house_rent_allow" class="form-control sal_calc" step=".01" min="0" required>
+                        <input type="text"  name="house_rent_allow" class="number_format form-control sal_calc" required>
 
                         </div>
 
@@ -500,7 +500,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number"  name="transport_allow" class="form-control sal_calc" step=".01" min="0" required>
+                        <input type="text"  name="transport_allow" class="number_format form-control sal_calc"  required>
 
                         </div>
 
@@ -517,7 +517,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number"  name="telephone_allow" class="form-control sal_calc" step=".01" min="0" required>
+                        <input type="text"  name="telephone_allow" class="number_format form-control sal_calc" required>
 
                         </div>
 
@@ -534,7 +534,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number"  name="food_allowance" class="form-control sal_calc" step=".01" min="0" required>
+                        <input type="text"  name="food_allowance" class="number_format form-control sal_calc" required>
 
                         </div>
 
@@ -551,7 +551,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number"  name="other_allow" class="form-control sal_calc" step=".01" min="0" required>
+                        <input type="text"  name="other_allow" class="number_format form-control sal_calc" required>
 
                         </div>
 
@@ -568,7 +568,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="add_total_salary" type="number"  name="total_salary" class="form-control" step=".01" min="0" required readonly>
+                        <input id="add_total_salary" type="text"  name="total_salary" class="number_format form-control" required readonly>
 
                         </div>
 
@@ -675,7 +675,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number" step="0.01" name="budgeted_air_ticket" class="form-control" required>
+                        <input type="text"  name="budgeted_air_ticket" class="number_format blur_comma form-control" required>
 
                         </div>
 
@@ -748,7 +748,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number" step="0.01" name="indemnity_advance" class="form-control" required>
+                        <input type="text" name="indemnity_advance" class=" blur_comma number_format form-control" required>
 
                         </div>
 
@@ -766,7 +766,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number" step="0.01" name="id_charges_deduction" class="form-control" required>
+                        <input type="text" name="id_charges_deduction" class="form-control number_format blur_comma" required>
 
                         </div>
 
@@ -1847,7 +1847,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="basic_salary_edit" type="number"  name="basic_salary" class="form-control sal_calc_edit" step=".01" min="0" required>
+                        <input id="basic_salary_edit" type="text"  name="basic_salary" class="number_format form-control sal_calc_edit" required>
 
                         </div>
 
@@ -1864,7 +1864,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="hra_edit" type="number"  name="house_rent_allow" class="form-control sal_calc_edit" step=".01" min="0" required>
+                        <input id="hra_edit" type="text"  name="house_rent_allow" class="number_format form-control  sal_calc_edit" required>
 
                         </div>
 
@@ -1881,7 +1881,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="transport_allow_edit" type="number"  name="transport_allow" class="form-control sal_calc_edit" step=".01" min="0" required>
+                        <input id="transport_allow_edit" type="text"  name="transport_allow" class="number_format form-control sal_calc_edit" required>
 
                         </div>
 
@@ -1898,7 +1898,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number" id="telephone_allow_edit"  name="telephone_allow" class="form-control sal_calc_edit" step=".01" min="0" required>
+                        <input type="text" id="telephone_allow_edit"  name="telephone_allow" class="format_number form-control sal_calc_edit" min="0" required>
 
                         </div>
 
@@ -1915,7 +1915,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number" id="food_allowance_edit"  name="food_allowance" class="form-control sal_calc_edit" step=".01" min="0" required>
+                        <input type="text" id="food_allowance_edit"  name="food_allowance" class="number_format form-control sal_calc_edit" required>
 
                         </div>
 
@@ -1932,7 +1932,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="number" id="other_allowance_edit"  name="other_allow" class="form-control sal_calc_edit" step=".01" min="0" required>
+                        <input type="text" id="other_allowance_edit"  name="other_allow" class="number_format form-control sal_calc_edit" required>
 
                         </div>
 
@@ -1949,7 +1949,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="edit_total_salary" type="number"  name="total_salary" class="form-control" step=".01" min="0" required readonly>
+                        <input id="edit_total_salary" type="text"  name="total_salary" class="form-control number_format" required readonly>
 
                         </div>
 
@@ -2055,7 +2055,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="budgeted_air_ticket_edit" type="text"  name="budgeted_air_ticket" class="form-control" required>
+                        <input id="budgeted_air_ticket_edit" type="text"  name="budgeted_air_ticket" class="blur_comma number_format form-control" required>
 
                         </div>
 
@@ -2126,7 +2126,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="indemnity_advance_edit" type="number" step="0.01" name="indemnity_advance" class="form-control" required>
+                        <input id="indemnity_advance_edit" type="text" name="indemnity_advance" class="blur_comma form-control" required>
 
                         </div>
 
@@ -2143,7 +2143,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="id_charges_edit" type="number" step="0.01" name="id_charges" class="form-control" required>
+                        <input id="id_charges_edit" type="text"  name="id_charges" class="blur_comma form-control number_format" required>
 
                         </div>
 
@@ -2445,6 +2445,27 @@
 <script>
 
      document.addEventListener("DOMContentLoaded", function(event) { 
+
+
+
+        /* Comma Add Start*/
+
+        // Function to format numbers with commas and always show two decimal places
+        
+        $("body").on("blur", ".sal_calc,.sal_calc_edit,.blur_comma", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = add_comma(rawValue);
+                $this.val(formattedValue);
+            }
+        });
+
+
+        /* Comma Add End */
+
+
     
 
         $('.sec_btn').click(function(){
@@ -2486,10 +2507,10 @@
         let total = 0;
         $('.sal_calc').each(function() {
             // Parse the value as a float and add to total
-            total += parseFloat($(this).val()) || 0;
+            total += rmv_comma($(this).val());
         });
         // Set the total in the input with ID add_total_salary
-        $('#add_total_salary').val(total.toFixed(2));
+        $('#add_total_salary').val(add_comma(total));
 
 
         });
@@ -2501,10 +2522,10 @@
         let total = 0;
         $('.sal_calc_edit').each(function() {
             // Parse the value as a float and add to total
-            total += parseFloat($(this).val()) || 0;
+            total += rmv_comma($(this).val());
         });
         // Set the total in the input with ID add_total_salary
-        $('#edit_total_salary').val(total.toFixed(2));
+        $('#edit_total_salary').val(add_comma(total));
 
 
         });
@@ -2778,19 +2799,19 @@
                         //Salary Sec
 
 
-                        $('#basic_salary_edit').val(data.emp.emp_basic_salary);
+                        $('#basic_salary_edit').val(add_comma(data.emp.emp_basic_salary));
 
-                        $('#hra_edit').val(data.emp.emp_house_rent_allow);
+                        $('#hra_edit').val(add_comma(data.emp.emp_house_rent_allow));
 
-                        $('#transport_allow_edit').val(data.emp.emp_transport_allow);
+                        $('#transport_allow_edit').val(add_comma(data.emp.emp_transport_allow));
 
-                        $('#telephone_allow_edit').val(data.emp.emp_tel_allow);
+                        $('#telephone_allow_edit').val(add_comma(data.emp.emp_tel_allow));
 
-                        $('#food_allowance_edit').val(data.emp.emp_food_allow);
+                        $('#food_allowance_edit').val(add_comma(data.emp.emp_food_allow));
 
-                        $('#other_allowance_edit').val(data.emp.emp_other_allow);
+                        $('#other_allowance_edit').val(add_comma(data.emp.emp_other_allow));
 
-                        $('#edit_total_salary').val(data.emp.emp_total_salary);
+                        $('#edit_total_salary').val(add_comma(data.emp.emp_total_salary));
 
                         $('#mop_edit').val(data.emp.emp_mode_of_payment);
 
@@ -2822,12 +2843,16 @@
 
                         $('#vacation_pay_due_edit').val(data.emp.emp_vacation_pay_due_from);
 
-                        $('#indemnity_advance_edit').val(data.emp.emp_indemnity_advance);
+                        $('#indemnity_advance_edit').val(add_comma(data.emp.emp_indemnity_advance));
+
+                        $('#id_charges_edit').val(add_comma(data.emp.emp_id_charges_deduction));
+
+                        
 
 
                         $('#air_ticket_per_year_edit').val(data.emp.emp_air_ticket_per_year);
 
-                        $('#budgeted_air_ticket_edit').val(data.emp.emp_budgeted_ticket_amount);
+                        $('#budgeted_air_ticket_edit').val(add_comma(data.emp.emp_budgeted_ticket_amount));
 
 
                         //Doc Sec
@@ -2853,7 +2878,7 @@
                         }
                         else
                         {
-                        $('#visa_expiry_edit').val("").datepicker("refresh"); ;
+                        $('#visa_expiry_edit').val("").datepicker("refresh");
                         }
 
                         $('#qatar_id_edit').val(data.emp.emp_qatar_id_no);

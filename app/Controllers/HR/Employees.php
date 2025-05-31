@@ -197,12 +197,12 @@ class Employees extends BaseController
 
             $id = $this->request->getPost('emp_id');
 
-            $update_data['emp_basic_salary'] = $this->request->getPost('basic_salary');
-            $update_data['emp_house_rent_allow'] = $this->request->getPost('house_rent_allow');
-            $update_data['emp_transport_allow'] = $this->request->getPost('transport_allow');
-            $update_data['emp_tel_allow'] = $this->request->getPost('telephone_allow');
-            $update_data['emp_food_allow'] = $this->request->getPost('food_allowance');
-            $update_data['emp_other_allow'] = $this->request->getPost('other_allow');
+            $update_data['emp_basic_salary'] = str_replace(",","",$this->request->getPost('basic_salary'));
+            $update_data['emp_house_rent_allow'] = str_replace(",","",$this->request->getPost('house_rent_allow'));
+            $update_data['emp_transport_allow'] = str_replace(",","",$this->request->getPost('transport_allow'));
+            $update_data['emp_tel_allow'] = str_replace(",","",$this->request->getPost('telephone_allow'));
+            $update_data['emp_food_allow'] = str_replace(",","",$this->request->getPost('food_allowance'));
+            $update_data['emp_other_allow'] = str_replace(",","",$this->request->getPost('other_allow'));
 
             $update_data['emp_total_salary'] = array_sum($update_data);
 
@@ -212,7 +212,7 @@ class Employees extends BaseController
             $update_data['emp_account_number'] = $this->request->getPost('account_number');
             $update_data['emp_bank'] = $this->request->getPost('bank_name');
             $update_data['emp_air_ticket_per_year'] = $this->request->getPost('air_ticket_per_year');
-            $update_data['emp_budgeted_ticket_amount'] = $this->request->getPost('budgeted_air_ticket');
+            $update_data['emp_budgeted_ticket_amount'] = str_replace(",", "", $this->request->getPost('budgeted_air_ticket'));
 
             
             $update_data['emp_vacation_taken'] = $this->request->getPost('vacation_taken');
@@ -223,7 +223,7 @@ class Employees extends BaseController
             if(!empty($this->request->getPost('vacation_pay_due_from')))
             $update_data['emp_vacation_pay_due_from']= date('Y-m-d',strtotime($this->request->getPost('vacation_pay_due_from')));
 
-            $update_data['emp_indemnity_advance']= $this->request->getPost('indemnity_advance');
+            $update_data['emp_indemnity_advance'] = str_replace(",", "", $this->request->getPost('indemnity_advance'));
 
             $update_data['emp_id_charges_deduction']= $this->request->getPost('id_charges_deduction');
 
@@ -393,12 +393,12 @@ class Employees extends BaseController
 
             $id = $this->request->getPost('emp_id');
 
-            $update_data['emp_basic_salary'] = $this->request->getPost('basic_salary');
-            $update_data['emp_house_rent_allow'] = $this->request->getPost('house_rent_allow');
-            $update_data['emp_transport_allow'] = $this->request->getPost('transport_allow');
-            $update_data['emp_tel_allow'] = $this->request->getPost('telephone_allow');
-            $update_data['emp_food_allow'] = $this->request->getPost('food_allowance');
-            $update_data['emp_other_allow'] = $this->request->getPost('other_allow');
+            $update_data['emp_basic_salary'] = str_replace(",", "", $this->request->getPost('basic_salary'));
+            $update_data['emp_house_rent_allow'] = str_replace(",", "", $this->request->getPost('house_rent_allow'));
+            $update_data['emp_transport_allow'] = str_replace(",", "", $this->request->getPost('transport_allow'));
+            $update_data['emp_tel_allow'] = str_replace(",", "", $this->request->getPost('telephone_allow'));
+            $update_data['emp_food_allow'] = str_replace(",", "", $this->request->getPost('food_allowance'));
+            $update_data['emp_other_allow'] = str_replace(",", "", $this->request->getPost('other_allow'));
 
             $update_data['emp_total_salary'] = array_sum($update_data);
 
@@ -408,7 +408,7 @@ class Employees extends BaseController
             $update_data['emp_account_number'] = $this->request->getPost('account_number');
             $update_data['emp_bank'] = $this->request->getPost('bank_name');
             $update_data['emp_air_ticket_per_year'] = $this->request->getPost('air_ticket_per_year');
-            $update_data['emp_budgeted_ticket_amount'] = $this->request->getPost('budgeted_air_ticket');
+            $update_data['emp_budgeted_ticket_amount'] = str_replace(",", "", $this->request->getPost('budgeted_air_ticket'));
 
             $update_data['emp_vacation_taken'] = $this->request->getPost('vacation_taken');
 
@@ -418,8 +418,11 @@ class Employees extends BaseController
             if(!empty($this->request->getPost('vacation_pay_due_from')))
             $update_data['emp_vacation_pay_due_from']= date('Y-m-d',strtotime($this->request->getPost('vacation_pay_due_from')));
 
-            $update_data['emp_indemnity_advance']= $this->request->getPost('indemnity_advance');
+            $update_data['emp_indemnity_advance'] = str_replace(",", "", $this->request->getPost('indemnity_advance'));
             
+
+            $update_data['emp_indemnity_advance'] = str_replace(",", "", $this->request->getPost('indemnity_advance'));
+
 
             $emp_cond = array('emp_id' => $id);
 

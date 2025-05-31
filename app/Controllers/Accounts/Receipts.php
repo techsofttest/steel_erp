@@ -698,6 +698,13 @@ class Receipts extends BaseController
      $remaining_amount = max($remaining_amount,0);   
 
      if($remaining_amount !=0 ){
+
+     $tick = "";
+
+     if($reciept_amount>$remaining_amount)
+     {
+     $tick = '<input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">';
+     }
      
      $data['invoices'].='<tr id="'.$inv->ci_id.'">
      
@@ -713,7 +720,7 @@ class Receipts extends BaseController
      <th class="p-0 text-center"><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" data-link-max="'.$reciept_amount.'" type="text" value=""></th>
      
      <th>
-     <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">
+     '.$tick.'
      </th>
      </tr>';
     
@@ -749,6 +756,13 @@ class Receipts extends BaseController
      $remaining_amount = max($remaining_amount,0);
 
      if($remaining_amount !=0 ){
+
+     $tick = "";
+
+     if($reciept_amount>$remaining_amount)
+     {
+     $tick = '<input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->cci_id.'">';
+     }
      
      $data['invoices'].='<tr id="'.$inv->cci_id.'">
      <input type="hidden" name="type[]" value="credit_invoice">
@@ -763,7 +777,7 @@ class Receipts extends BaseController
      <th class="p-0 text-center"><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-link-max="'.$reciept_amount.'" type="text" value=""></th>
     
      <th>
-     <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->cci_total_amount.'">
+     '.$tick.'
      </th>
      </tr>';
  
@@ -981,6 +995,8 @@ class Receipts extends BaseController
 
         $credit_id = $this->request->getPost('creditid');
 
+        $balance = $this->request->getPost('balance');
+
         $sales_orders = $this->account_model->FetchAdvanceSalesOrder($customer);
 
         $data['status'] = 0;
@@ -999,6 +1015,21 @@ class Receipts extends BaseController
         $advance_paid = $this->account_model->SalesAdvancePaid($so->so_id);
 
         $balance_total = $so->so_amount_total-$advance_paid;
+
+        if($balance_total<=0)
+        {
+        continue;
+        }
+
+        
+        $tick = "";
+
+        if($balance>$balance_total)
+        {
+
+        $tick = '<input type="checkbox" class="add_so_advance_tick" >';
+
+        }
 
         $sl++;
 
@@ -1025,12 +1056,13 @@ class Receipts extends BaseController
         </td>
 
         <td class="p-0">
+        <input type="hidden" class="advance_total_amount" value="'.$balance_total.'">
         <input type="text" class="form-control so_receipt_amount number_format" maxlength="'.$balance_total.'" name="so_receipt_amount[]">
         </td>
 
 
         <td class="p-0">
-        <input type="checkbox" class="add_so_advance_tick" >
+        '.$tick.'
         </td>
 
 
@@ -1440,7 +1472,7 @@ class Receipts extends BaseController
     <td>Debit</td>
     <td>-</td>
     <td class='px-0'><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
-    <td width='10%' class='px-0'><input name='rec_inv_amount[]' type='number' step='0.01' value='".$ri_amount."' class='form-control text-end'></td>
+    <td width='10%' class='px-0'><input name='rec_inv_amount[]' type='text' step='0.01' value='".$ri_amount."' class='form-control text-end number_format'></td>
     
     </tr>";
 
@@ -1465,6 +1497,8 @@ class Receipts extends BaseController
 
         $ridReceipt = htmlspecialchars($inv_data->rid_receipt, ENT_QUOTES, 'UTF-8');
 
+        $ridReceiptFormatted = format_currency($ridReceipt);
+
         $max_payable = $this->InvoiceMaxAmount($inv_data->rid_invoice,$inv_data->rid_invoice_type,$ridReceipt);
 
         $formattedDate = htmlspecialchars(date('d M Y', strtotime($invoiceDate)), ENT_QUOTES, 'UTF-8');
@@ -1484,7 +1518,7 @@ class Receipts extends BaseController
             <td class='px-0'>
                 <input type='hidden' name='linked_invoice_id[$invoice->ri_id][]' value='{$invoice->ri_id}'>
                 <input type='hidden' name='linked_receipt_id[$invoice->ri_id][]' value='{$ridId}'>
-                <input width='10%' name='linked_receipt_amount[$invoice->ri_id][]' class='form-control text-end linked_amount_edit' type='number' step='0.01' max='{$max_payable}' value='{$ridReceipt}'>
+                <input width='10%' name='linked_receipt_amount[$invoice->ri_id][]' class='number_format form-control text-end linked_amount_edit ' type='text' step='0.01' max='{$max_payable}' value='{$ridReceiptFormatted}'>
             </td>
 
             <!--<td></td>-->
@@ -1515,10 +1549,10 @@ class Receipts extends BaseController
     <td>Advance</td>
     <td>".$advance->so_reffer_no."</td>
     <td></td>
-    <td>
+    <td class='px-0'>
     <input type='hidden' name='advance_invoice_id[$invoice->ri_id][]' value='$advance->rso_id'>
     <input type='hidden' name='advance_so_id[$invoice->ri_id][]' value='$advance->so_id'>
-    <input width='10%' type='number' step='0.01' name='advance_receipt_amount[$invoice->ri_id][]' class='form-control text-end' max='".$max_so_payable."' value='".$advance->rso_receipt_amount."'></td>
+    <input width='10%' type='text' step='0.01' name='advance_receipt_amount[$invoice->ri_id][]' class='number_format form-control receipt_advance_amount_edit text-end' max='".$max_so_payable."' value='".format_currency($advance->rso_receipt_amount)."'></td>
     <!--<td></td>-->
     </tr>";
 

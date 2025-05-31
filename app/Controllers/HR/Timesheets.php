@@ -71,6 +71,7 @@ class TimeSheets extends BaseController
 
         $action = '<a href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="'.$record->ts_id.'" ><i class="ri-eye-fill"></i> </a> 
         <a  href="javascript:void(0)" class="d-none edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->ts_id.'"><i class="ri-pencil-fill"></i> </a> 
+        <a href="javascript:void(0);" data-id="'.$record->ts_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
         <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
            
            $data[] = array( 
@@ -953,7 +954,18 @@ class TimeSheets extends BaseController
 
 
 
-    public function Print(){
+    public function Print($id){
+
+    $this->hr_model = new \App\Models\HRModel();
+
+    $timesheet_cond = array('ts_id' => $id);
+
+    $ts = $this->hr_model->FetchSingleTimesheet($id);
+
+
+    $total_deductions = 0.00;
+
+    $total_deductions = $ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation+$ts->ts_cur_month_leave;
 
 
     $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
@@ -968,6 +980,7 @@ class TimeSheets extends BaseController
         'default_font_size' => 9, 
         'margin_left' => 5, 
         'margin_right' => 5,
+        'margin_top' => 2,
         'fontDir' => array_merge($fontDirs, [
             __DIR__ . '/fonts'
         ]),
@@ -981,7 +994,425 @@ class TimeSheets extends BaseController
         
     ]);
 
-    $html ="";
+    $html ='
+
+    <html lang="en">
+    <head>
+  
+    <style>
+    body {
+      font-family: bentonsans, sans-serif;
+      margin: 40px;
+      font-size:12px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .logo-text {
+      font-size: 25px;
+      margin: 0;
+      color:grey;
+    }
+
+    p
+    {
+    
+    }
+
+    .seperator {
+      border: 0;
+      height: 2px;
+      background: #999;
+      margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    tr
+    {
+    border: 1px solid #999;
+    }
+    
+    td
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    .basic-info th, .basic-info td{
+      padding: 2px;
+      text-align: left;
+    }
+
+
+    .no-border-r
+    {
+    border-right: 0px solid #999;
+    }
+
+    .no-border-l
+    {
+    border-left: 0px solid #999;
+    }
+
+    .no-border-y
+    {
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    }
+
+    .no-border
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    }
+
+    .no-border-table
+    {
+    border:0px;
+    }
+
+
+    .no-border-table tr, .no-border-table td, .no-border-table th
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    border:0px;
+    }
+    
+    .head
+    {
+    background:#a8a8a8;
+    }
+
+    .head th
+    {
+    border-right: 1px solid #999;
+    text-align:center;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 1.1em;
+    }
+
+    .no-border {
+      border: none !important;
+    }
+
+
+    .account-details td,.signature-sec td
+    {
+    
+    height:100px;
+
+    }
+
+    .signature-section td {
+      height: 80px;
+      vertical-align: bottom;
+      text-align: center;
+    }
+
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+    }
+
+  </style>
+</head>
+<body>
+
+
+<table class="no-border-table">
+
+<tr>
+
+<td rowspan="2" width="10%">
+<img src="'.base_url().'assets/images/logo-sm.png">
+</td>
+
+<td width="90%">
+
+<h2 style="text-align:left" class="logo-text">AL FUZAIL ENGINEERING SERVICES WLL</h2>
+
+<p>Tel : +974 4460 4254, Fax : +974 4029 8994</p>
+
+<p>Post Box : 201978, Doha - State of Qatar</p>
+
+<p>engineering@alfuzailgroup.com, www.alfuzailgroup.com</p>
+
+</td>
+
+
+</tr>
+
+</table>
+
+<hr class="seperator"/>
+
+<table class="no-border-table basic-info">
+
+
+<tr>
+
+<td width="15%" class="no-border-r">Employee ID</td> <td width="2%" class="no-border">:</td> <td width="33%" class="no-border-l">'.$ts->emp_uid.'</td>
+
+<td width="15%" class="no-border-r">Designation</td> <td width="2%" class="no-border">:</td> <td width="33%" class="no-border-l">'.$ts->emp_designation.'</td>
+
+</tr>
+
+
+<tr>
+
+<td width="15%">Name</td> <td width="2%">:</td> <td width="33%">'.$ts->emp_name.'</td>
+
+<td width="15%">Department</td> <td width="2%">:</td> <td width="33%">'.$ts->div_name.'</td>
+
+</tr>
+
+
+
+<tr>
+
+<td width="15%">QID/VIsa No</td> <td width="2%">:</td> <td width="33%">'.$ts->emp_qatar_id_no.'</td>
+
+<td width="15%">Date Of Joining</td> <td width="2%">:</td> <td width="33%">'.date('d M Y',strtotime($ts->emp_date_of_join)).'</td>
+
+</tr>
+
+
+<tr>
+
+<td width="15%">Passport No</td> <td width="2%">:</td> <td width="33%">'.$ts->emp_passport_no.'</td>
+
+<td width="15%">Payment Mode</td> <td width="2%">:</td> <td width="33%">'.$ts->mop_title.'</td>
+
+</tr>
+
+
+</table>
+
+
+
+<hr class="seperator"/>
+
+<table>
+
+
+  <tr class="no-border">
+    <td colspan="6" align="center">
+    <h3><i>Pay slip of the month '.date('M',strtotime($ts->ts_month)).' '.date('Y',strtotime($ts->ts_year)).'</i></h3>
+    </td>
+  </tr>
+
+
+  <tr class="head">
+  
+  <th colspan="2">Earnings</th>
+  
+  <th>Amount</th>
+  
+  <th colspan="2">Deductions</th>
+  
+  <th>Amount</th>
+  
+  </tr>
+
+  <tr class="no-border-y">
+    <td width="20%" class="no-border-r">Basic Salary</td>
+    <td width="10%" class="no-border"></td>
+    <td width="20%" style="text-align:right;">'.format_currency($ts->ts_basic_salary).'</td>
+
+    <td width="20%" class="no-border-r">Vacation</td>
+    <td width="10%" class="no-border">'.$ts->ts_vacation.' Days</td>
+    <td width="20%" style="text-align:right;">'.format_currency($ts->ts_current_month_vacation).'</td>
+  </tr>
+
+  <tr class="no-border-y">
+    <td class="no-border-r">Overtime Normal</td>
+    <td class="no-border">'.$ts->ts_normal_ot.' Hours</td>
+    <td style="text-align:right;">'.format_currency($ts->ts_cur_month_normal_ot).'</td>
+
+    <td class="no-border-r">Unpaid Leave</td>
+    <td class="no-border">'.$ts->ts_unpaid_leave.' Days</td>
+    <td style="text-align:right;">'.format_currency($ts->ts_cur_month_unpaid_leave).'</td>
+  </tr>
+
+  <tr class="no-border-y">
+    <td class="no-border-r">Overtime Friday</td>
+    <td class="no-border">'.$ts->ts_friday_ot.' Hours</td>
+    <td style="text-align:right;">'.format_currency($ts->ts_cur_month_friday_ot).'</td>
+
+    <td class="no-border-r">Normal Leave</td>
+    <td class="no-border">'.$ts->ts_leave.' Days</td>
+    <td style="text-align:right;">'.format_currency($ts->ts_cur_month_leave).'</td>
+  </tr>
+
+  <tr class="no-border-y">
+    <td class="no-border-r">House Rent Allowance</td>
+    <td class="no-border"></td>
+    <td style="text-align:right;">'.format_currency($ts->ts_house_rent_allowance).'</td>
+
+    <td class="no-border-r">Medical Leave</td>
+    <td class="no-border">'.$ts->ts_medical_leave.' Days</td>
+    <td style="text-align:right;"></td>
+  </tr>
+
+  <tr class="no-border-y">
+    <td class="no-border-r">Transportation Allowance</td>
+    <td class="no-border"></td>
+    <td style="text-align:right;">'.format_currency($ts->ts_transportation_allowance).'</td>
+
+    <td class="no-border-r"></td>
+    <td class="no-border"></td>
+    <td class="" style="text-align:right;"></td>
+
+  </tr>
+
+  <tr class="no-border-y">
+    <td class="no-border-r">Telephone Allowance</td>
+    <td class="no-border"></td>
+    <td class="" style="text-align:right;">'.format_currency($ts->ts_telephone_allowance).'</td>
+
+    <td class="no-border"></td>
+    <td class="no-border"></td>
+    <td class="" style="text-align:right;"></td>
+  </tr>
+
+  <tr class="no-border-y">
+    <td class="no-border-r">Food Allowance</td>
+    <td class="no-border"></td>
+    <td class="" style="text-align:right;">'.format_currency($ts->ts_food_allowance).'</td>
+
+    <td class="no-border-r"></td>
+    <td class="no-border"></td>
+    <td class="" style="text-align:right;"></td>
+  </tr>
+
+  <tr class="no-border-y">
+    <td class="no-border-r">Other Allowance</td>
+    <td class="no-border"></td>
+    <td class="" style="text-align:right;">'.format_currency($ts->ts_other_allowance).'</td>
+
+    <td class="no-border-r"></td>
+    <td class="no-border"></td>
+    <td class="" style="text-align:right;"></td>
+  </tr>
+
+  <tr>  
+    <td colspan="2" class="no-border" style="text-align:center">Total Earnings</td>
+    <td class="no-border" style="text-align:right;">'.format_currency($ts->ts_cur_month_salary).'</td>
+
+    <td colspan="2" class="no-border" style="text-align:center">Total Deductions</td>
+    <td class="no-border" style="text-align:right;">'.format_currency($total_deductions).'</td>
+  </tr>
+  
+
+
+  <tr>
+
+    <td colspan="5" style="text-align:center;" class="no-border-r">Net Salary for the Month: '.currency_to_words($ts->ts_cur_month_salary).'</td>
+
+    <td class="no-border" style="text-align:right;">'.format_currency($ts->ts_cur_month_salary).'</td>
+
+  </tr>
+  
+  
+</table>
+
+
+<table>
+
+
+<tr class="account-details">
+
+
+<td width="40%"></td>
+
+<td width="20%">
+
+</td>
+
+<td width="40%" rowspan="2">
+
+<p>'.$ts->emp_name.'</p>
+<p>'.$ts->emp_account_number.'</p>
+<p>'.$ts->mop_title.'</p>
+<p>'.$ts->emp_bank.'</p>
+<p></p>
+
+</td>
+
+
+</tr>
+
+
+<tr>
+
+<td colspan="2" style="text-align:center;">
+
+<strong>Received by '.$ts->emp_uid.', '.$ts->emp_name.'</strong>
+
+</td>
+
+</tr>
+
+
+</table>
+
+
+
+<table>
+
+  <tr class="head">
+  
+  <td style="text-align:center;">Finance Dept</td>
+  
+  <td style="text-align:center;">Operations Dept.</td>
+  
+  <td style="text-align:center;">Chief Executive Officer</td>
+  
+  </tr>
+
+  <tr class="signature-sec">
+  
+  <td></td>
+  
+  <td></th>
+  
+  <td></td>
+  
+  </tr>
+
+</table>
+
+
+
+
+
+</body>
+</html>
+    
+    
+    ';
+
+
+
     $footer="";
 
     $mpdf->falseBoldWeight = 0;

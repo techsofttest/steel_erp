@@ -77,9 +77,9 @@ class BankRec extends BaseController
               "account" => $record->ca_name,
               'br_date' => date('d M Y',strtotime($record->br_date)),
               'balance' => $record->br_bank_balance,
-              "debit"=> $record->br_total_debit,
-              "credit"=> $record->br_total_credit,
-              "difference" => $record->br_unrec_diff,
+              "debit"=> format_currency($record->br_total_debit),
+              "credit"=> format_currency($record->br_total_credit),
+              "difference" => format_currency($record->br_unrec_diff),
               "action" =>$action,
            );
            $i++; 

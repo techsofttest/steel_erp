@@ -1473,6 +1473,8 @@ class Payments extends BaseController
 
             $vendor_id = $this->request->getPost('id');
 
+            $payment_amount = $this->request->getPost('amount');
+
 
             if(empty($vendor_id))
             {
@@ -1486,54 +1488,6 @@ class Payments extends BaseController
                 exit;
         
             }
-       
-        
-            /*
-            if($payment_amount<1)
-            {
-        
-                $data['status']= 0 ;
-        
-                $data['msg'] = "Please enter amount!";
-        
-                echo json_encode($data);
-        
-                exit;
-        
-            }
-            */
-            
-
-            /*
-            $insert_data['pd_payment'] = $this->request->getPost('pid');
-
-            $insert_data['pd_debit_account'] = $vendor_id;
-
-            $insert_data['pd_payment_amount'] = $this->request->getPost('camount');
-
-            $insert_data['pd_remarks'] = $this->request->getPost('cnarration');
-
-            //$insert_data['ri_date'] = date('Y-m-d',strtotime($this->request->getPost('cdate')));
-
-            $check_invoice = $this->common_model->SingleRow('accounts_payment_debit', array('pd_payment' => $insert_data['pd_payment'], 'pd_debit_account' => $insert_data['pd_debit_account']));
-
-            if (empty($check_invoice)) {
-                $pd_id = $this->common_model->InsertData('accounts_payment_debit', $insert_data);
-            } else {
-
-
-
-                $update_cond = array('pd_id' => $check_invoice->pd_id);
-
-                $pd_id = $check_invoice->pd_id;
-
-                $this->common_model->EditData($insert_data, $update_cond, 'accounts_payment_debit');
-            }
-
-
-            $data['pd_id'] = $pd_id;
-
-            */
 
 
             $joins = array(
@@ -1572,13 +1526,20 @@ class Payments extends BaseController
 
             $balance_amount = $pv->pv_total - $pv->pv_paid;
 
+            $tick = "";
+
+            if($payment_amount>$balance_amount)
+            {
+            $tick='<input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>';
+            }
+
             $data['invoices'] .= '<tr id="' . $pv->pv_id . '">
 
             <input type="hidden" name="pv_id[]" value="' . $pv->pv_id . '">
 
             <input type="hidden" name="debit_account_invoice[]" value="' . $vendor_id . '">
             <th class="p-0">' . $sl . '</th>
-            <th class="p-0">' . date('d-m-Y', strtotime($pv->pv_date)) . '</th>
+            <th class="p-0">' . date('d-M-Y', strtotime($pv->pv_date)) . '</th>
             <th class="p-0">' . $pv->pv_reffer_id . '</th>
             <th class="p-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="' . $pv->pv_reffer_id . '" required></th>
             
@@ -1586,9 +1547,10 @@ class Payments extends BaseController
             <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
             </th>
 
-            <th class="p-0"><input class="form-control invoice_receipt_amount number_format" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="text"></th>
+            <th class="p-0"><input autocomplete="off" class="form-control invoice_receipt_amount number_format" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="text"></th>
             
-            <th class="p-0"><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
+            <th class="p-0">
+            '.$tick.'
             </tr>';
 
             $data['status'] = 1;
@@ -1637,6 +1599,10 @@ class Payments extends BaseController
 
                 $balance_amount = $pv->pv_total - $pv->pv_paid;
 
+
+                //if($$balance_amount)
+
+
                 $data['invoices'] .= '<tr id="' . $pv->pv_id . '">
     <input type="hidden" name="pay_debit_id[]" value="' . $pd_id . '">
     <input type="hidden" name="debit_account_invoice[]" value="' . $vendor_id . '">
@@ -1651,7 +1617,8 @@ class Payments extends BaseController
 
     <th><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" type="text"></th>
     
-    <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
+    <th>
+    '.$tick.'
     </tr>';
 
                 $data['status'] = 1;
@@ -2365,6 +2332,8 @@ class Payments extends BaseController
 
             $vendor_id = $this->request->getPost('vendor');
 
+            $balance = $this->request->getPost('balance');
+
             $v_id = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $vendor_id))->ca_customer;
 
             $purchase_orders = $this->common_model->FetchWhere('pro_purchase_order', array('po_vendor_name' => $v_id));
@@ -2378,6 +2347,13 @@ class Payments extends BaseController
             foreach($purchase_orders as $po)
 
             {
+
+            $tick = "";
+
+            if($balance>$po->po_amount)
+            {
+            $tick ='<input class="po_advance_add_check" data-max="'.$po->po_amount.'" type="checkbox" name="invoice_selected[]" value="' . $po->po_id . '">';
+            }
 
             $data['po_rows'] .='
             
@@ -2393,9 +2369,11 @@ class Payments extends BaseController
 
             <td class="p-0">'.format_currency($po->po_amount).'</td>
 
-            <td class="p-0"><input class="form-control po_advance_amount format_number" name="advance_amount[]"  type="text"></td>
+            <td class="p-0"><input autocomplete="off" class="form-control po_advance_amount format_number" name="advance_amount[]"  type="text"></td>
 
-            <td></td>
+            <td>
+            '.$tick.'
+            </td>
 
             </tr>
             

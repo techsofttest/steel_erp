@@ -328,7 +328,7 @@
 
                         <th>Friday OT</th>
 
-                        <td id="total_friday_to_salary_view" align="right"></td>
+                        <td id="total_friday_ot_salary_view" align="right"></td>
 
 
                         </tr>
@@ -1110,7 +1110,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input type="number" id="emp_basic_salary"  name="basic_salary" class="form-control" step=".01" min="0" readonly>
+<input type="text" id="emp_basic_salary"  name="basic_salary" class="form-control"  readonly>
 
 </div>
 
@@ -1127,7 +1127,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input type="number" id="emp_rent_allowance"  name="house_rent_allow" class="form-control" step=".01" min="0" readonly>
+<input type="text" id="emp_rent_allowance"  name="house_rent_allow" class="form-control" readonly>
 
 </div>
 
@@ -1144,7 +1144,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input type="number" id="emp_transp_allowance"  name="transport_allow" class="form-control" step=".01" min="0" readonly>
+<input type="text" id="emp_transp_allowance"  name="transport_allow" class="form-control" readonly>
 
 </div>
 
@@ -1161,7 +1161,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input type="number" id="emp_telephone_allowance"  name="telephone_allow" class="form-control" step=".01" min="0" readonly>
+<input type="text" id="emp_telephone_allowance"  name="telephone_allow" class="form-control" readonly>
 
 </div>
 
@@ -1178,7 +1178,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input type="number" id="emp_food_allowance"  name="food_allowance" class="form-control" step=".01" min="0" readonly>
+<input type="text" id="emp_food_allowance"  name="food_allowance" class="form-control" readonly>
 
 </div>
 
@@ -1195,7 +1195,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input type="number" id="emp_other_allowance"  name="other_allow" class="form-control" step=".01" min="0" readonly>
+<input type="text" id="emp_other_allowance"  name="other_allow" class="form-control" readonly>
 
 </div>
 
@@ -1213,7 +1213,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="add_hourly_salary" type="number"  name="total_salary" class="form-control" min="0" step="0.01" readonly>
+<input id="add_hourly_salary" type="text"  name="total_salary" class="form-control" readonly>
 
 <input id="add_max_hours" type="hidden" min="0" readonly>
 
@@ -1235,7 +1235,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="add_total_salary" type="number"  name="total_salary" class="form-control" step=".01" min="0" readonly>
+<input id="add_total_salary" type="text"  name="total_salary" class="form-control" readonly>
 
 </div>
 
@@ -1267,7 +1267,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="leave_total_amount" type="number"  name="total_leave_salary" class="form-control" step=".01" min="0" readonly>
+<input id="leave_total_amount" type="text"  name="total_leave_salary" class="form-control" readonly>
 
 </div>
 
@@ -1287,7 +1287,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="total_unpaid_leave_deduction" type="number"  name="total_unpaid_leave_salary" class="form-control" step=".01" min="0"  readonly>
+<input id="total_unpaid_leave_deduction" type="text"  name="total_unpaid_leave_salary" class="form-control"  readonly>
 
 </div>
 
@@ -1305,7 +1305,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="total_vacation_deduction" type="number"  name="total_vacation_salary" class="form-control" step=".01" min="0"  readonly>
+<input id="total_vacation_deduction" type="text"  name="total_vacation_salary" class="form-control" readonly>
 
 </div>
 
@@ -1326,7 +1326,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="" type="number"  name="total_medical_leave_salary" class="form-control" step=".01" min="0" readonly>
+<input id="" type="text"  name="total_medical_leave_salary" class="form-control" readonly>
 
 </div>
 
@@ -1344,7 +1344,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="total_normal_ot_salary" type="number"  name="total_normal_ot_salary" class="form-control" step=".01" min="0"  readonly>
+<input id="total_normal_ot_salary" type="text"  name="total_normal_ot_salary" class="form-control"  readonly>
 
 </div>
 
@@ -1362,7 +1362,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="total_friday_ot_salary" type="number"  name="total_friday_ot_salary" class="form-control" step=".01" min="0"  readonly>
+<input id="total_friday_ot_salary" type="text"  name="total_friday_ot_salary" class="form-control"  readonly>
 
 </div>
 
@@ -1403,7 +1403,7 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="total_month_salary" type="number"  name="total_month_salary" class="form-control" step=".01" min="0" readonly>
+<input id="total_month_salary" type="text"  name="total_month_salary" class="form-control" readonly>
 
 </div>
 
@@ -2344,10 +2344,10 @@
         let total = 0;
         $('.sal_calc').each(function() {
             // Parse the value as a float and add to total
-            total += parseFloat($(this).val()) || 0;
+            total += rmv_comma($(this).val());
         });
         // Set the total in the input with ID add_total_salary
-        $('#add_total_salary').val(total.toFixed(2));
+        $('#add_total_salary').val(add_comma(total));
 
 
         });
@@ -2434,7 +2434,7 @@
 
                             $('#add_max_days').val(data.max_normal_days);
                             
-                            $('#add_total_salary').val(data.emp_det.emp_total_salary);
+                            $('#add_total_salary').val(add_comma(data.emp_det.emp_total_salary));
 
 
                             $('#working_days').val(0);
@@ -2636,43 +2636,41 @@
 
                     //Salary
 
-                    $('#basic_salary_view').html(data.ts.ts_basic_salary);
+                    $('#basic_salary_view').html(add_comma(data.ts.ts_basic_salary));
 
-                    $('#hra_view').html(data.ts.ts_house_rent_allowance);
+                    $('#hra_view').html(add_comma(data.ts.ts_house_rent_allowance));
 
-                    $('#transportation_allow_view').html(data.ts.ts_transportation_allowance);
+                    $('#transportation_allow_view').html(add_comma(data.ts.ts_transportation_allowance));
 
-                    $('#telephone_allow_view').html(data.ts.ts_telephone_allowance);
+                    $('#telephone_allow_view').html(add_comma(data.ts.ts_telephone_allowance));
 
-                    $('#food_allowance_view').html(data.ts.ts_food_allowance);
+                    $('#food_allowance_view').html(add_comma(data.ts.ts_food_allowance));
 
-                    $('#other_allowance_view').html(data.ts.ts_other_allowance);
+                    $('#other_allowance_view').html(add_comma(data.ts.ts_other_allowance));
 
                     var daily_salary = data.ts.monthly_salary_int/30;
 
                     var hourly_salary = daily_salary/8;
 
-                    $('#hourly_salary_view').html(hourly_salary.toFixed(2));
+                    $('#hourly_salary_view').html(add_comma(hourly_salary));
 
-                    $('#monthly_salary_view').html(data.ts.ts_monthly_salary);
+                    $('#monthly_salary_view').html(add_comma(data.ts.ts_monthly_salary));
 
+                    $('#total_leave_deduction_view').html(add_comma(data.ts.ts_cur_month_leave));
 
+                    $('#total_unpaid_leave_deduction_view').html(add_comma(data.ts.ts_cur_month_unpaid_leave));
 
-                    $('#total_leave_deduction_view').html(data.ts.ts_cur_month_leave);
-
-                    $('#total_unpaid_leave_deduction_view').html(data.ts.ts_cur_month_unpaid_leave);
-
-                    $('#total_vacation_deduction_view').html(data.ts.ts_current_month_vacation);
+                    $('#total_vacation_deduction_view').html(add_comma(data.ts.ts_current_month_vacation));
 
                     $('#total_medical_leave_deduction_view').html('0.00');
 
-                    $('#total_normal_ot_salary_view').html(data.ts.ts_cur_month_normal_ot);
+                    $('#total_normal_ot_salary_view').html(add_comma(data.ts.ts_cur_month_normal_ot));
 
-                    $('#total_friday_to_salary_view').html(data.ts.ts_cur_month_friday_ot);
+                    $('#total_friday_ot_salary_view').html(add_comma(data.ts.ts_cur_month_friday_ot));
 
                     //$('#total_basic_salary_view').html(data.ts.ts_cur_month_basic_salary);
 
-                    $('#total_month_salary_view').html(data.ts.ts_cur_month_salary);
+                    $('#total_month_salary_view').html(add_comma(data.ts.ts_cur_month_salary));
 
 
 
@@ -3162,7 +3160,7 @@
 
             vacation_days = 0; 
 
-            per_day_salary = $('#add_total_salary').val()/30;
+            per_day_salary = rmv_comma($('#add_total_salary').val())/30;
 
             leave_amount = 0;
 
@@ -3306,6 +3304,7 @@
             if(vacation_days>0)
             {
             vacation_days--;
+            working_days = working_days+1;
             }
             } 
 
@@ -3355,7 +3354,6 @@
             $('#normal_ot').val(total_normal_ot_hours.toFixed(2));
 
             //salary_calc();
-
 
         });
 
@@ -3595,7 +3593,7 @@
 
         total_normal_ot_salary = Math.round(total_normal_ot_salary);
 
-        $('#total_normal_ot_salary').val(total_normal_ot_salary);
+        $('#total_normal_ot_salary').val(add_comma(total_normal_ot_salary));
 
         //Normal OT Calculation End
 
@@ -3613,7 +3611,7 @@
 
         total_friday_ot_salary = Math.round(total_friday_ot_salary);
 
-        $('#total_friday_ot_salary').val(total_friday_ot_salary);
+        $('#total_friday_ot_salary').val(add_comma(total_friday_ot_salary));
 
         //Friday OT Calculation End
 
@@ -3648,7 +3646,7 @@
 
         month_total_salary = basic_salary;
 
-        $('#total_basic_salary').val(Math.round(basic_salary));
+        $('#total_basic_salary').val(add_comma(Math.round(basic_salary)));
 
         }
 
@@ -3663,7 +3661,7 @@
 
         //var month_total_salary = normal_total_monthly * hourly_salary;
 
-        $('#total_basic_salary').val(Math.round(month_total_salary));
+        $('#total_basic_salary').val(add_comma(Math.round(month_total_salary)));
 
         }
 
@@ -3678,14 +3676,14 @@
 
 
         // Reassign updated values back to the elements
-        $('#emp_rent_allowance').val(Math.round(emp_rent_allowance));
-        $('#emp_transp_allowance').val(Math.round(emp_transp_allowance));
-        $('#emp_telephone_allowance').val(Math.round(emp_telephone_allowance));
-        $('#emp_food_allowance').val(Math.round(emp_food_allowance));
-        $('#emp_other_allowance').val(Math.round(emp_other_allowance));
+        $('#emp_rent_allowance').val(add_comma(Math.round(emp_rent_allowance)));
+        $('#emp_transp_allowance').val(add_comma(Math.round(emp_transp_allowance)));
+        $('#emp_telephone_allowance').val(add_comma(Math.round(emp_telephone_allowance)));
+        $('#emp_food_allowance').val(add_comma(Math.round(emp_food_allowance)));
+        $('#emp_other_allowance').val(add_comma(Math.round(emp_other_allowance)));
 
 
-        $('#total_month_salary').val(Math.round(total_salary_month));
+        $('#total_month_salary').val(add_comma(Math.round(total_salary_month)));
 
 
         //Calculate Total Salary End
@@ -3816,6 +3814,22 @@ $('.time_from').val('07:00').trigger('change');
 $('.time_to').val('16:00').trigger('change');
     
 })
+
+
+
+    $('body').on('click','.print_color',function(e){
+    
+    id = $(this).attr('data-id');
+    // Open the PDF generation script in a new window
+
+    var pdfWindow = window.open('<?= base_url()?>HR/Timesheets/Print/'+id, '_blank');
+
+    // Automatically print when the PDF is loaded
+    pdfWindow.onload = function() {
+        pdfWindow.print();
+    };
+
+    });
 
 
 

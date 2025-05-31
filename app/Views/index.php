@@ -89,7 +89,7 @@
 								 <div class="row project-wrapper">
 
 
-                        <div class="col-xxl-8">
+                        <div class="col-xxl-12">
 
                             
 
