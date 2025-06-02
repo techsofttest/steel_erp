@@ -475,14 +475,12 @@ class PettyCashVoucher extends BaseController
         $inv_ser++;
 
         $data['invoices'] .="<tr>
-
         <input type='hidden' name='pd_id[]' value='".$invoice->pci_id."'>
         <td class='px-0'>{$invoice->ca_name}</td>
         <td>Debit</td>
         <td>-</td>
         <td class='px-0'><input name='pay_inv_notes[]' type='text' value='{$invoice->pci_narration}' class='form-control'></td>
         <td width='10%'><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pci_amount."' class='form-control'></td>
-        <!--<td><a href='javascript:void(0)' data-id='{$invoice->pci_id}' class='invoice_delete_btn'>Delete</a></td>-->
         </tr>";
 
         $debit_data_join = array(
@@ -520,8 +518,6 @@ class PettyCashVoucher extends BaseController
 
             <td width='10%'><input name='linked_pv_paid[$invoice->pci_id][]' type='number' step='0.01' max='".$max_payable."' value='".$dl->pcdi_payment_amount."' class='form-control'></td>
             
-            <td></td>
-
             </tr>";
 
         }
@@ -752,11 +748,11 @@ class PettyCashVoucher extends BaseController
         for($poa=0;$poa<count($this->request->getPost('advance_po_id')[$update_invoice_cond['pci_id']]);$poa++)
         {
 
-        $update_poa_cond = array('pca_id' => $this->request->getPost('advance_invoice_id')[$update_invoice_cond['pci_id']]);
+        $update_poa_cond = array('pca_id' => $this->request->getPost('advance_invoice_id')[$update_invoice_cond['pci_id']][$poa]);
 
-        $updated_amount = array('pca_advance_amount' => $this->request->getPost('advance_payment_amount')[$update_invoice_cond['pci_id']]);
+        $updated_amount = array('pca_advance_amount' => $this->request->getPost('advance_payment_amount')[$update_invoice_cond['pci_id']][$poa]);
 
-        $po_id_advance = $this->request->getPost('advance_po_id')[$update_invoice_cond['pci_id']];
+        $po_id_advance = $this->request->getPost('advance_po_id')[$update_invoice_cond['pci_id']][$poa];
 
         $this->common_model->EditData($updated_amount,$update_poa_cond,'accounts_petty_cash_advances');
 
