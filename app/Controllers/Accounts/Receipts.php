@@ -1829,7 +1829,7 @@ class Receipts extends BaseController
         for($r=0;$r<(count($this->request->getPost('rec_inv_id')));$r++)
         {
 
-            $update_invoice_data['ri_amount'] = $this->request->getPost('rec_inv_amount')[$r];
+            $update_invoice_data['ri_amount'] = str_replace(",","",$this->request->getPost('rec_inv_amount')[$r]);
 
             $update_invoice_data['ri_remarks'] =$this->request->getPost('rec_inv_notes')[$r];
 
@@ -1840,12 +1840,12 @@ class Receipts extends BaseController
 
             $total_linked_invoice =0;
             if(!empty($this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']]))
-            $total_linked_invoice = array_sum($this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']]);
+            $total_linked_invoice = array_sum(str_replace(",","",$this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']]));
 
 
             $total_advance_amount=0;
             if(!empty($this->request->getPost('advance_receipt_amount')[$update_invoice_cond['ri_id']]))
-            $total_advance_amount = array_sum($this->request->getPost('advance_receipt_amount')[$update_invoice_cond['ri_id']]);
+            $total_advance_amount = array_sum(str_replace(",","",$this->request->getPost('advance_receipt_amount')[$update_invoice_cond['ri_id']]));
             
 
             $total_invoices = $total_linked_invoice+$total_advance_amount;
@@ -1871,7 +1871,7 @@ class Receipts extends BaseController
 
                 $old_invoice_data = $this->common_model->SingleRow('accounts_receipt_invoice_data',$update_invoice_data_cond);
 
-                $new_amount =  $this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']][$u];
+                $new_amount =  str_replace(",","",$this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']][$u]);
 
                 $revert_invoice_amount = $old_invoice_data->rid_receipt;
 
@@ -1889,7 +1889,7 @@ class Receipts extends BaseController
 
               $update_rso_cond = array('rso_id' => $this->request->getPost('advance_invoice_id')[$update_invoice_cond['ri_id']][$a]);
               
-              $new_rso_amount = $this->request->getPost('advance_receipt_amount')[$update_invoice_cond['ri_id']][$a];
+              $new_rso_amount = str_replace(",","",$this->request->getPost('advance_receipt_amount')[$update_invoice_cond['ri_id']][$a]);
               
               $so_id_advance = $this->request->getPost('advance_so_id')[$update_invoice_cond['ri_id']][$a];
 
