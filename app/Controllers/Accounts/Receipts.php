@@ -1753,8 +1753,10 @@ class Receipts extends BaseController
 
                 
         //Check Duplicate Receipt Number
-                
+        if((!empty($update_data['r_number'])))
+        {
         $r_no_check = $this->common_model->SingleRow('accounts_receipts',array('r_number' => $update_data['r_number']));
+        }
 
         if((!empty($r_no_check)) && ($r_id != $r_no_check->r_id))
         {
