@@ -62,7 +62,7 @@ class Payroll extends BaseController
         $data[] = array( 
               "pr_id"=>$i,
               "pr_month" => date('M Y',strtotime("1-{$record->pr_month}-{$record->pr_year}")),
-              "total_salary" => $record->pr_total_salary,
+              "total_salary" => format_currency($record->pr_total_salary),
               "action" =>$action,
         );
 

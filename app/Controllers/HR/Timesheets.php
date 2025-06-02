@@ -81,7 +81,7 @@ class TimeSheets extends BaseController
               "month" => $monthName,
               "year" => $record->ts_year,
               "working_days" => $record->ts_working_days,
-              "total_salary" => $record->ts_cur_month_salary,
+              "total_salary" => format_currency($record->ts_cur_month_salary),
               "action" =>$action,
            );
 
@@ -529,38 +529,38 @@ class TimeSheets extends BaseController
 
         $insert_data['ts_friday_ot'] = $this->request->getPost('total_friday_ot');
 
-        $insert_data['ts_basic_salary'] = $this->request->getPost('basic_salary');
-
-        $insert_data['ts_house_rent_allowance'] = $this->request->getPost('house_rent_allow');
-
-        $insert_data['ts_transportation_allowance'] = $this->request->getPost('transport_allow');
-
-        $insert_data['ts_telephone_allowance'] = $this->request->getPost('telephone_allow');
-
-        $insert_data['ts_food_allowance'] = $this->request->getPost('food_allowance');
-
-        $insert_data['ts_other_allowance'] = $this->request->getPost('other_allow');
-
-        $insert_data['ts_monthly_salary'] = $this->request->getPost('total_salary');
 
 
-        $insert_data['ts_cur_month_leave'] = $this->request->getPost('total_leave_salary');
+        $insert_data['ts_basic_salary'] = str_replace(",","",$this->request->getPost('basic_salary'));
+
+        $insert_data['ts_house_rent_allowance'] = str_replace(",", "", $this->request->getPost('house_rent_allow'));
+
+        $insert_data['ts_transportation_allowance'] = str_replace(",", "", $this->request->getPost('transport_allow'));
+
+        $insert_data['ts_telephone_allowance'] = str_replace(",", "", $this->request->getPost('telephone_allow'));
+
+        $insert_data['ts_food_allowance'] = str_replace(",", "", $this->request->getPost('food_allowance'));
+
+        $insert_data['ts_other_allowance'] = str_replace(",", "", $this->request->getPost('other_allow'));
+
+        $insert_data['ts_monthly_salary'] = str_replace(",", "", $this->request->getPost('total_salary'));
 
 
-        $insert_data['ts_cur_month_unpaid_leave'] = $this->request->getPost('total_unpaid_leave_salary');
+        $insert_data['ts_cur_month_leave'] = str_replace(",", "", $this->request->getPost('total_leave_salary'));
+
+        $insert_data['ts_cur_month_unpaid_leave'] = str_replace(",", "", $this->request->getPost('total_unpaid_leave_salary'));
         
-        $insert_data['ts_current_month_vacation'] = $this->request->getPost('total_vacation_salary');
+        $insert_data['ts_current_month_vacation'] = str_replace(",", "", $this->request->getPost('total_vacation_salary'));
         
+        $insert_data['ts_cur_month_normal_ot'] = str_replace(",", "", $this->request->getPost('total_normal_ot_salary'));
 
-        $insert_data['ts_cur_month_normal_ot'] = $this->request->getPost('total_normal_ot_salary');
+        $insert_data['ts_cur_month_friday_ot'] = str_replace(",", "", $this->request->getPost('total_friday_ot_salary'));
 
-        $insert_data['ts_cur_month_friday_ot'] = $this->request->getPost('total_friday_ot_salary');
-
-        $insert_data['ts_cur_month_basic_salary'] = $this->request->getPost('basic_salary');
+        $insert_data['ts_cur_month_basic_salary'] = str_replace(",", "", $this->request->getPost('basic_salary'));
 
         //$insert_data['ts_cur_month_basic_salary'] = $this->request->getPost('total_month_basic_salary');
 
-        $insert_data['ts_cur_month_salary'] = $this->request->getPost('total_month_salary');
+        $insert_data['ts_cur_month_salary'] = str_replace(",", "", $this->request->getPost('total_month_salary'));
 
         
 
