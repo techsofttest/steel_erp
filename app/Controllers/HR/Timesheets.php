@@ -148,7 +148,6 @@ class TimeSheets extends BaseController
 
         $data['mops'] = $this->common_model->FetchAllOrder('hr_mode_of_pay','mop_title','asc');
 
-        
         $data['months'] = array(
         1 => "January",
         2 => "February",
