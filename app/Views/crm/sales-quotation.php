@@ -5072,6 +5072,7 @@
             pdfWindow.onload = function() {
                 pdfWindow.print();
             };
+            $('#SalesQuotView').modal('hide');
 
         });
 
