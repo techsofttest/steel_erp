@@ -102,7 +102,7 @@
 
                                                                                 <select class="form-control" id="filter_range" name="filter_timeframe">
                                                                                         
-                                                                                        <option value="">Select Time</option>
+                                                                                      
 
                                                                                         <option value="Range">Range</option>
 

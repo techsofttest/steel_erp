@@ -125,8 +125,6 @@ padding:5px 0px;
 
                                                                                 <select class="form-control" id="filter_range" name="filter_timeframe">
                                                                                         
-                                                                                        <option value="">Select Time</option>
-
                                                                                         <option value="Range">Range</option>
 
                                                                                         <option value="Month">Current Month</option>

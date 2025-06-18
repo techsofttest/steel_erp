@@ -2282,7 +2282,11 @@ class Reports extends BaseController
         $end_date = date('Y-m-d',strtotime($this->request->getGet('end_date')));
         }
 
+        $time_frame="";
+        if(!empty($this->request->getGet('filter_timeframe')))
+        {
         $time_frame = $this->request->getGet('filter_timeframe');
+        }
 
         $data['c_accounts'] =  $this->report_model->TrialBalance($time_frame,$start_date,$end_date);
 
@@ -2622,12 +2626,14 @@ class Reports extends BaseController
     public function PLAccount()
     {   
 
+        $start_date = date('Y-m-d', strtotime('first day of january this year'));
+
+        $end_date = date('Y-m-d', strtotime('last day of december this year')); 
+
         if(!empty($_GET))
         {
 
-        $start_date = "";
-
-        $end_date ="";
+      
     
             if(!empty($this->request->getGet('start_date')))
             {   
