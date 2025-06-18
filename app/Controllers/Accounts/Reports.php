@@ -2265,15 +2265,12 @@ class Reports extends BaseController
     {   
 
         
-
-        if(!empty($_GET))
-        {
-
         $start_date = date('Y-m-d', strtotime('first day of january this year'));
 
         $end_date = date('Y-m-d', strtotime('last day of december this year')); 
-        
 
+        if(!empty($_GET))
+        {
 
         if(!empty($this->request->getGet('start_date')))
         {   
