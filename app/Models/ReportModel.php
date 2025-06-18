@@ -3815,6 +3815,11 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
             $id = $res->ca_id;
 
+            if($time_frame=="")
+            {
+                $time_frame="";
+            }
+
             //Cash invoice
 
             $result[$i]->transactions = $this->FetchGLTransactions($date_from, $date_to, $account_head="", $account_type="", $account=$id, $time_frame,$range_from="",$range_to="");
