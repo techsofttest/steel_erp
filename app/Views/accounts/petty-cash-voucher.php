@@ -283,7 +283,7 @@
 
                                                                 <td>Balance</td>
 
-                                                                <td class="invoice_balance"></td>
+                                                                <td colspan="2" class="invoice_balance"></td>
                                                             </tr>
 
 
@@ -643,7 +643,7 @@
 
                                                                 <td width="10%" class="p-0">
 
-                                                                    <input class="form-control credit_amount number_format" data-max="" type="text" name="inv_amount[]">
+                                                                    <input class="form-control debit_amount number_format" data-max="" type="text" name="inv_amount[]">
 
                                                                 </td>
 
@@ -807,7 +807,8 @@
                                                                 <th>Purchase Order</th>
                                                                 <th>LPO Ref</th>
                                                                 <th>Amount</th>
-                                                                <th colspan="2">Payment</th>
+                                                                <th>Payment</th>
+                                                                <th>Tick</th>
                                                             </tr>
                                                         </thead>
 
@@ -832,6 +833,7 @@
                                                                 <td>Balance</td>
 
                                                                 <td class="invoice_balance"></td>
+
                                                         </tr>
 
                                                         </tbody>
@@ -1444,6 +1446,43 @@
 
 
 
+        /* Total Payment Overflow Start */
+
+        $(document).on('input change', '.invoice_receipt_amount, .po_advance_amount', function(event) {
+        var parent = $(this).closest('tr');
+        var receipt_total = parseFloat($('#fifo_add').data('total')) || 0; // Main payment amount
+
+        // Calculate the sum of all other fields except the current one
+        var sum = 0;
+        $('.invoice_receipt_amount').each(function() {
+            if (this !== event.target) {
+                sum += parseFloat(rmv_comma($(this).val())) || 0;
+            }
+        });
+        $('.po_advance_amount').each(function() {
+            if (this !== event.target) {
+                sum += parseFloat(rmv_comma($(this).val())) || 0;
+            }
+        });
+
+        var val = rmv_comma($(this).val());
+
+        // If the sum plus the current value exceeds the main payment amount
+        if (sum + val > receipt_total) {
+            val = receipt_total - sum;
+            val = Math.max(0, val);
+            $(this).val(add_comma(val)).trigger('change');
+            alertify.error('Total cannot exceed payment amount!').delay(3).dismissOthers();
+        }
+        CalcBalance();
+        });
+
+
+
+        /* Total Payment Overflow End */
+
+
+
 
         /*account head modal start*/
 
@@ -1722,7 +1761,7 @@
 
             // console.log(c_account.val());
 
-            var c_amount = parent.find('.credit_amount');
+            var c_amount = parent.find('.debit_amount');
 
             if (c_account.val() == "") {
 
@@ -1780,7 +1819,7 @@
 
             var credit_date = parent.find('.credit_date').val();
 
-            var credit_amount = rmv_comma(parent.find('.credit_amount').val());
+            var debit_amount = rmv_comma(parent.find('.debit_amount').val());
 
             var credit_narration = parent.find('.credit_narration').val();
 
@@ -1794,7 +1833,7 @@
                 data: {
                     id: id,
                     cdate: credit_date,
-                    camount: credit_amount,
+                    camount: debit_amount,
                     cnarration: credit_narration,
                     pid: pid
                 },
@@ -1804,10 +1843,8 @@
                 success: function(data) {
 
                     if (data.status == 0) {
-                        alertify.error('No Invoices Found!').delay(3).dismissOthers();
-
+                        alertify.error(data.msg).delay(3).dismissOthers();
                         $('#AddModal').modal('show');
-
                         return false;
                     }
 
@@ -1815,9 +1852,9 @@
 
                     $('#AddModal').modal('hide');
 
-                    $('#fifo_add').attr('data-total', credit_amount);
+                    $('#fifo_add').attr('data-total', debit_amount);
 
-                    $('body #fifo_add').data('total', credit_amount);
+                    $('body #fifo_add').data('total', debit_amount);
 
                     $('body #add_poadvance_btn').data('vendor', data.vendor_id);
 
@@ -1830,7 +1867,7 @@
 
                     $('#InvoicesModal').modal('show');
 
-                    $('.invoice_total').html(add_comma(credit_amount));
+                    $('.invoice_total').html(add_comma(debit_amount));
 
                     $('.invoice_adjusted').html('0');
 
@@ -2499,7 +2536,7 @@
 
        
 
-        $(document).on('input change', '.invoice_receipt_amount,.po_advance_amount',function(event) {
+       $(document).on('input change', '.invoice_receipt_amount,.po_advance_amount',function(event) {
             // Debugging: Check if the function is called and with correct element
        
 
@@ -2510,29 +2547,17 @@
             var receipt_total = parseFloat($('#fifo_add').data('total')) || 0; // Initial balance
             var max_receipt = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
-            var val = parseFloat($(this).val()) || 0; // Current value entered
+            var val = parseFloat(rmv_comma($(this).val())) || 0; // Current value entered
             var max = parseFloat($(this).attr('data-max')) || max_receipt; // Use data-max for proper validation
-
-          
-
-            // Ensure the value doesn't exceed the maximum allowed for the field
-            /*
-            if (val > max) {
-                $(this).val(max);
-                $(this).trigger('change');
-                val = max; // Set val to max for further calculations
-            }
-            */
 
             // Calculate the total of all other fields
             var sum = 0;
             $('.invoice_receipt_amount').each(function() {
                 if (this !== event.target) {
-                    sum += parseFloat($(this).val()) || 0;
+                    sum += parseFloat(rmv_comma($(this).val())) || 0;
                 }
             });
 
-           
 
             // If the sum plus the current value exceeds the initial balance
             if (sum + val > receipt_total) {
@@ -2554,7 +2579,10 @@
         });
 
 
-        $("body").on("blur", ".credit_amount,.invoice_receipt_amount,.so_receipt_amount,.po_advance_amount", function () {
+
+
+
+        $("body").on("blur", ".debit_amount,.invoice_receipt_amount,.so_receipt_amount,.po_advance_amount", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
 
@@ -2582,7 +2610,7 @@
             LinkAdjusted += rmv_comma($(this).val());
             });
 
-            LinkTotal = rmv_comma($('.credit_amount').val());
+            LinkTotal = rmv_comma($('.debit_amount').val());
 
             $('body .po_advance_amount').each(function() {
 
@@ -2693,19 +2721,18 @@
 
             // Parse the total and total_amount as floats to ensure numeric comparison
             var total = parseFloat($('#fifo_add').data('total')) || 0;
-            var total_amount = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
-             console.log(total + ' | ' + total_amount);
+            var total_amount = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
             // If total is less than total_amount, uncheck the box and prevent the default action
             if (total < total_amount) {
                 //console.log("point 1");
-
                 // Uncheck the checkbox
                 $(this).prop('checked', false);
 
                 // Prevent the default action
                 event.preventDefault();
+
                 return false;
             }
 
@@ -2715,7 +2742,7 @@
 
                 // Fill the amount with the minimum between total and total_amount
                 var fill_amount = Math.min(total, total_amount);
-                parent.find('.invoice_receipt_amount').val(fill_amount);
+                parent.find('.invoice_receipt_amount').val(add_comma(fill_amount));
 
                 // Trigger the change event on the receipt amount
                 parent.find('.invoice_receipt_amount').trigger('change');
@@ -2734,14 +2761,59 @@
 
 
 
+          $(document).on('change', '.po_advance_add_check', function(event) {
 
-        $("body").on('keyup', '.credit_amount', function() {
+            parent = $(this).closest('tr');
+
+            // Parse the total and total_amount as floats to ensure numeric comparison
+            var total = parseFloat($('#fifo_add').data('total')) || 0;
+
+            var total_amount = parseFloat($(this).data('max')) || 0;
+
+            // If total is less than total_amount, uncheck the box and prevent the default action
+            if (total < total_amount) {
+                // Uncheck the checkbox
+                $(this).prop('checked', false);
+                // Prevent the default action
+                event.preventDefault();
+                return false;
+            }
+
+            if (balance < total_amount) {
+                // Uncheck the checkbox
+                $(this).prop('checked', false);
+                // Prevent the default action
+                event.preventDefault();
+                return false;
+            }
+
+            // If the checkbox is checked
+            if($(this).prop('checked') == true) {
+
+                // Fill the amount with the minimum between total and total_amount
+                var fill_amount = Math.min(total, total_amount);
+                parent.find('.po_advance_amount').val(add_comma(fill_amount));
+                
+                parent.find('.po_advance_amount').trigger('change');
+
+            }else{
+                // If unchecked, set the receipt amount to 0
+                parent.find('.po_advance_amount').val(0);
+
+                // Trigger the change event on the receipt amount
+                parent.find('.po_advance_amount').trigger('change');
+            }
+
+        });
+
+
+
+
+        $("body").on('keyup', '.debit_amount', function() {
 
             value = parseFloat($(this).val()) || 0;
 
             max = parseFloat($(this).attr('data-max')) || 0;
-
-
 
             /*
             if ((max != "") && (value > max)) {
@@ -3059,10 +3131,6 @@
 
             var debit_id = $(this).data('debitid');
 
-            //parent = $(this).closest('.invoice_row');
-
-            //var parent = $(this).closest('.invoice_row');
-
             $.ajax({
 
                 url: "<?php echo base_url(); ?>Accounts/Payments/FetchPOAdvance",
@@ -3071,7 +3139,8 @@
 
                 data: {
                     vendor: vendor_id,
-                    d_id : debit_id
+                    d_id : debit_id,
+                    balance : balance
                 },
 
                 success: function(data) {
@@ -3175,7 +3244,7 @@
 
         var total = 0;
 
-        $('body .credit_amount').each(function() {
+        $('body .debit_amount').each(function() {
             var sub_tot = rmv_comma($(this).val());
 
             total += sub_tot;

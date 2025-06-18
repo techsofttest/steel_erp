@@ -98,14 +98,18 @@
 
         function add_comma(value)
         {
+            if (typeof value !== "string") {
+                value = value.toString(); // Convert to string if it's not already
+            }
 
-        if (typeof value !== "string") {
-        value = value.toString(); // Convert to string if it's not already
-        }
+            // Remove existing commas before parsing
+            let num = parseFloat(value.replace(/,/g, ""));
+            if (isNaN(num)) return "";
 
-        let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
-        return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        
+            // Limit to 2 decimal places
+            num = Math.round(num * 100) / 100;
+
+            return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
         function rmv_comma(value)
@@ -119,33 +123,39 @@
 
 
             document.querySelectorAll(".number_format").forEach(function (input) {
-            input.addEventListener("input", function () {
-            let value = this.value;
+                input.addEventListener("input", function () {
+                    let value = this.value;
 
-            // Remove any non-numeric characters except '.' and ','
-            value = value.replace(/[^0-9,.]/g, '');
+                    // Remove any non-numeric characters except '.' and ','
+                    value = value.replace(/[^0-9,.]/g, '');
 
-            // Prevent starting with ',' or '.'
-            if (value.startsWith(',') || value.startsWith('.')) {
-                value = value.substring(1);
-            }
+                    // Prevent starting with ',' or '.'
+                    if (value.startsWith(',') || value.startsWith('.')) {
+                        value = value.substring(1);
+                    }
 
-            // Prevent multiple consecutive ',' or '.'
-            value = value.replace(/(\.{2,})/g, '.'); // Prevent multiple dots
-            value = value.replace(/(,{2,})/g, ','); // Prevent multiple commas
-            
-            // Ensure only one decimal point
-            let parts = value.split('.');
-            if (parts.length > 2) {
-                value = parts[0] + '.' + parts.slice(1).join('');
-            }
+                    // Prevent multiple consecutive ',' or '.'
+                    value = value.replace(/(\.{2,})/g, '.'); // Prevent multiple dots
+                    value = value.replace(/(,{2,})/g, ','); // Prevent multiple commas
 
-            // Ensure ',' is only used for thousands (e.g., 1,000.00)
-            value = value.replace(/,{2,}/g, ','); // Remove extra commas
+                    // Ensure only one decimal point
+                    let parts = value.split('.');
+                    if (parts.length > 2) {
+                        value = parts[0] + '.' + parts.slice(1).join('');
+                    }
 
-            this.value = value;
-        });
-    });
+                    // Ensure ',' is only used for thousands (e.g., 1,000.00)
+                    value = value.replace(/,{2,}/g, ','); // Remove extra commas
+
+                    // Limit to 2 decimals if decimal exists
+                    if (parts.length > 1) {
+                        parts[1] = parts[1].slice(0, 2);
+                        value = parts[0] + '.' + parts[1];
+                    }
+
+                    this.value = value;
+                });
+            });
 
 
 });

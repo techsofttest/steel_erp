@@ -57,12 +57,13 @@ class Payroll extends BaseController
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
         $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> </a> 
+        <a href="javascript:void(0);" data-id="'.$record->pr_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i> </a>
         <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $data[] = array( 
               "pr_id"=>$i,
               "pr_month" => date('M Y',strtotime("1-{$record->pr_month}-{$record->pr_year}")),
-              "total_salary" => $record->pr_total_salary,
+              "total_salary" => format_currency($record->pr_total_salary),
               "action" =>$action,
         );
 
@@ -279,25 +280,24 @@ class Payroll extends BaseController
 
                         <td>'.$ts->div_name.'</td>
 
-                        <td class="text-end">'.format_currency($ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance).'</td>
+                        <td class="text-end">'.format_currency(round($ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance, 2)).'</td>
 
-                        <td class="text-end">'.format_currency($leave).'</td>
+                        <td class="text-end">'.format_currency(round($leave, 2)).'</td>
 
-                        <td class="text-end">'.format_currency($ot).'</td>
+                        <td class="text-end">'.format_currency(round($ot, 2)).'</td>
 
-                        <td class="text-end">'.format_currency($ts->ts_house_rent_allowance).'</td>
+                        <td class="text-end">'.format_currency(round($ts->ts_house_rent_allowance, 2)).'</td>
 
-                        <td class="text-end">'.format_currency($ts->ts_transportation_allowance).'</td>
+                        <td class="text-end">'.format_currency(round($ts->ts_transportation_allowance, 2)).'</td>
 
-                        <td class="text-end">'.format_currency($ts->ts_telephone_allowance).'</td>
+                        <td class="text-end">'.format_currency(round($ts->ts_telephone_allowance, 2)).'</td>
 
-                        <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
+                        <td class="text-end">'.format_currency(round($ts->ts_cur_month_salary, 2)).'</td>
 
 
                         </tr>
 
                         ';
-
 
         }
 
@@ -308,42 +308,41 @@ class Payroll extends BaseController
 
                         <th colspan="3">Total</th>
 
-                        <th class="text-end">'.format_currency($basic_salary).'</th>
+                        <th class="text-end">'.format_currency(round($basic_salary, 2)).'</th>
 
-                        <th class="text-end">'.format_currency($total_leave).'</th>
+                        <th class="text-end">'.format_currency(round($total_leave, 2)).'</th>
 
-                        <th class="text-end">'.format_currency($total_ot).'</th>
+                        <th class="text-end">'.format_currency(round($total_ot, 2)).'</th>
 
-                        <th class="text-end">'.format_currency($house_rent_allow).'</th>
+                        <th class="text-end">'.format_currency(round($house_rent_allow, 2)).'</th>
 
-                        <th class="text-end">'.format_currency($transport_allow).'</th>
+                        <th class="text-end">'.format_currency(round($transport_allow, 2)).'</th>
 
-                        <th class="text-end">'.format_currency($telephone_allow).'</th>
+                        <th class="text-end">'.format_currency(round($telephone_allow, 2)).'</th>
 
-                        <th class="text-end">'.format_currency($total_salary).'</th>
+                        <th class="text-end">'.format_currency(round($total_salary, 2)).'</th>
 
                         </tr>
-                        
         ';
 
 
-        $data['staff_salary']= format_currency($staff_salary);
+        $data['staff_salary']= format_currency(round($staff_salary, 2));
 
-        $data['salaries_wages']= format_currency($salaries_wages);
+        $data['salaries_wages']= format_currency(round($salaries_wages, 2));
 
-        $data['total_ot'] = format_currency($total_ot);
+        $data['total_ot'] = format_currency(round($total_ot, 2));
 
-        $data['hra'] = format_currency($house_rent_allow);
+        $data['hra'] = format_currency(round($house_rent_allow, 2));
 
-        $data['transport_allow'] = format_currency($transport_allow);
+        $data['transport_allow'] = format_currency(round($transport_allow, 2));
 
-        $data['tel_allow'] = format_currency($telephone_allow);
+        $data['tel_allow'] = format_currency(round($telephone_allow, 2));
 
-        //$data['food_allow'] = format_currency($food_allow);
+        //$data['food_allow'] = format_currency(round($food_allow, 2));
 
-        //$data['other_allow'] = format_currency($other_allow);
+        //$data['other_allow'] = format_currency(round($other_allow, 2));
 
-        $data['total_salary'] = format_currency($total_salary);
+        $data['total_salary'] = format_currency(round($total_salary, 2));
 
         echo json_encode($data);
 
@@ -722,7 +721,7 @@ class Payroll extends BaseController
 
     $data['total_credit'] = $data['total_credit']+=$ts->ts_cur_month_salary;
 
-     $emp_journal .='
+    $emp_journal .='
             
     <tr class="jv_row">
 
@@ -747,7 +746,7 @@ class Payroll extends BaseController
             }
 
     $data['jv_rows'].=$emp_journal;
-
+            
 
 
         return json_encode($data);
@@ -1073,6 +1072,451 @@ class Payroll extends BaseController
 
         echo json_encode($data); 
     }
+
+
+
+
+
+
+
+
+
+    public function Print($id){
+
+    
+    $this->hr_model = new \App\Models\HRModel();
+
+    $pr = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
+    $month = $pr->pr_month;        
+    $year = $pr->pr_year;
+
+    $joins = array(
+
+        array(
+            'table' => 'hr_employees',
+            'pk' => 'emp_id',
+            'fk' => 'ts_emp_id',
+            ), 
+
+        array(
+            'table' => 'hr_divisions',
+            'pk' => 'div_id',
+            'fk' => 'emp_division',
+            'table2' => 'hr_employees',
+            ), 
+
+    );
+
+    $timesheets = $this->hr_model->FetchTimesheets($month,$year,$joins);
+
+
+    $timesheet_rows = "";
+
+
+    foreach($timesheets as $ts)
+    {
+
+    $timesheet_rows .= '
+    
+    <tr>
+    
+
+    <td>1</td>
+
+    <td>'.$ts->emp_uid.'</td>
+
+    <td>'.$ts->emp_name.'</td>
+
+    <td>'.$ts->emp_qatar_id_no.'</td>
+
+    <td>'.$ts->emp_passport_no.'</td>
+
+    <td>'.$ts->emp_designation.'</td>
+
+    <td>'.date('d-M-Y', strtotime($ts->emp_date_of_join)).'</td>
+
+    <td>'.$ts->div_name.'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_basic_salary).'</td>
+
+
+
+
+    <td class="text-end">'.$ts->ts_leave+$ts->ts_unpaid_leave+$ts->ts_vacation+$ts->ts_medical_leave.'</td>
+
+    <td class="text-end">'.$ts->ts_medical_leave.'</td>
+
+    <td class="text-end">'.$ts->ts_leave+$ts->ts_unpaid_leave.'</td>
+
+    <td class="text-end">'.$ts->ts_vacation.'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation).'</td>
+
+
+
+    <td class="text-end">'.$ts->ts_normal_ot.'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_normal_ot).'</td>
+
+
+     <td class="text-end">'.$ts->ts_friday_ot.'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_friday_ot).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_house_rent_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_transportation_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_telephone_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_food_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_other_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
+
+
+    </tr>
+
+    ';
+
+    }
+
+
+
+
+    $timesheet_rows .= '
+    
+    <tr class="">
+    
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td class="text-end">'.format_currency($pr->pr_basic_salary).'</td>
+
+
+
+
+    <td class="text-end"></td>
+
+    <td class="text-end"></td>
+
+    <td class="text-end"></td>
+
+    <td class="text-end"></td>
+
+    <td class="text-end">'.format_currency($pr->pr_leave).'</td>
+
+
+
+    <td class="text-end"></td>
+
+    <td class="text-end">'.format_currency($pr->pr_overtime).'</td>
+
+
+     <td class="text-end"></td>
+
+    <td class="text-end">'.format_currency($pr->pr_overtime).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_hra).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_transport_allow).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_telephone_allow).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_food_allow).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_other_allow).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_total_salary).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_total_salary).'</td>
+
+
+    </tr>
+
+    ';
+
+
+
+
+
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'Letter',
+        'default_font_size' => 9, 
+        'margin_left' => 5, 
+        'margin_right' => 5,
+        'margin_top' => 2,
+        'fontDir' => array_merge($fontDirs, [
+            __DIR__ . '/fonts'
+        ]),
+        'fontdata' => $fontData + [
+            'bentonsans' => [
+                'R' => 'FreeSerif.ttf',
+                'B' => 'FreeSerifBold.ttf',
+            ],
+        ],
+        'default_font' => 'bentonsans'
+        
+    ]);
+
+
+    $html ='
+
+    <html lang="en">
+    <head>
+  
+    <style>
+    body {
+      font-family: bentonsans, sans-serif;
+      margin: 40px;
+      font-size:12px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .logo-text {
+      font-size: 25px;
+      margin: 0;
+      color:grey;
+    }
+
+    p
+    {
+    
+    }
+
+    .seperator {
+      border: 0;
+      height: 2px;
+      background: #999;
+      margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    tr
+    {
+    border: 1px solid #999;
+    }
+    
+    td
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    .basic-info th, .basic-info td{
+      padding: 2px;
+      text-align: left;
+    }
+
+
+    .no-border-r
+    {
+    border-right: 0px solid #999;
+    }
+
+    .no-border-l
+    {
+    border-left: 0px solid #999;
+    }
+
+    .no-border-y
+    {
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    }
+
+    .no-border
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    }
+
+    .no-border-table
+    {
+    border:0px;
+    }
+
+
+    .no-border-table tr, .no-border-table td, .no-border-table th
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    border:0px;
+    }
+    
+    .head
+    {
+    background:#a8a8a8;
+    }
+
+    .head th
+    {
+    border-right: 1px solid #999;
+    text-align:center;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 1.1em;
+    }
+
+    .no-border {
+      border: none !important;
+    }
+
+
+    .account-details td,.signature-sec td
+    {
+    
+    height:100px;
+
+    }
+
+    .signature-section td {
+      height: 80px;
+      vertical-align: bottom;
+      text-align: center;
+    }
+
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+    }
+
+    </style>
+    </head>
+
+
+        <body>
+
+        <h3 style="text-align:center">Al Fuzail Electrical And Steel Works</h3>
+
+        <table>
+
+        <tr class="">
+
+        <th>Sl</th>
+
+        <th>Employee ID</th>
+
+        <th>Name</th>
+
+        <th>QID/Visa</th>
+
+        <th>Passport</th>
+
+        <th>Position</th>
+
+        <th>DOJ</th>
+
+        <th>Division</th>
+
+        <th>Basic Salary</th>
+
+        <th>Days</th>
+
+        <th>ML</th>
+
+        <th>NL</th>
+
+        <th>Vac</th>
+
+        <th>Amount</th>
+
+        <th>Normal Ot Hours</th>
+
+        <th>Normal Ot Amount</th>
+
+        <th>Friday Ot Hours</th>
+
+        <th>Friday Ot Amount</th>
+
+        <th>HRA</th>
+
+        <th>Transp Allowance</th>
+
+        <th>Tel Allowance</th>
+
+        <th>Food Allowance</th>
+
+        <th>Other Allowance</th>
+
+        <th>Total Salary (Qr)</th>
+
+        <th>Net Salary (Qr)</th>
+
+        </tr>
+
+       '.$timesheet_rows.'
+
+
+
+        </table>
+
+
+    </body>
+
+
+    </html>
+    
+    
+    ';
+
+
+
+    $footer="";
+
+    $mpdf->falseBoldWeight = 0;
+
+    $mpdf->WriteHTML($html);
+    $mpdf->SetFooter($footer);
+
+    $this->response->setHeader('Content-Type', 'application/pdf');
+
+    $mpdf->Output();
+
+    }
+
 
 
 

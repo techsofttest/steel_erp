@@ -622,7 +622,7 @@
 
                                                                 <td width="5%" class="p-0">
 
-                                                                    <input class="form-control credit_amount number_format" data-max="" type="text" name="inv_amount[]">
+                                                                    <input class="form-control debit_amount number_format" data-max="" type="text" name="inv_amount[]">
 
                                                                 </td>
 
@@ -1348,6 +1348,7 @@
 
 
 <script>
+
     var LinkTotal = 0;
 
     var LinkAdjusted = 0;
@@ -1357,7 +1358,10 @@
     document.addEventListener("DOMContentLoaded", function(event) {
 
 
-        /*account head add section*/
+       /* Main Payment ADD Start */
+
+
+       /* Add Payment Start */
 
         $(function() {
             $('#add_form').validate({
@@ -1372,7 +1376,7 @@
                 submitHandler: function(form) {
 
                     // Iterate through each input field in the form
-                    $('#add_form').find(':input .credit_amount ').each(function() {
+                    $('#add_form').find(':input .debit_amount ').each(function() {
                         var $input = $(this);
                         var value = $input.val(); // Get the input's value
 
@@ -1422,7 +1426,266 @@
             });
         });
 
-        /*###*/
+        /* Add Payment End*/
+
+
+        /* Invoice Row Add More Start*/
+
+        var max_fieldcost = 30;
+
+        var cc = $('.invoice_row').length;
+
+        $("body").on('click', '.add_more', function() {
+
+            var cc = $('.invoice_row').length;
+
+            if (cc < max_fieldcost) {
+
+                cc++;
+                //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+
+                var $clone = $('.invoice_row:first').clone();
+
+                $clone.find("input").val("");
+
+                $clone.find("select").val("");
+
+                $clone.find(".debit_account_select2").val('');
+
+                $clone.find(".debit_account_select2").removeAttr('data-select2-id');
+
+                $clone.find('.select2').remove();
+
+                $clone.find(".sl_no").html(cc);
+
+                $('body .del_elem').show();
+
+                $clone.find(".del_elem").hide();
+
+                $('body .add_more').hide();
+
+                $clone.find(".add_more").show();
+
+                //$clone.find('.credit_sl_no').val('2');
+
+                $clone.insertAfter('.invoice_row:last');
+
+                slno();
+
+                InitAccountsSelect2('.debit_account_select2', '.invoice_row');
+
+            }
+
+        });
+
+        /* Invoice Row Add More End*/
+
+        /* Invoice Row Delete Start */
+        $(document).on("click", ".del_elem", function() {
+            $(this).closest('.invoice_row').remove();
+            cc--;
+            slno();
+        });
+        /* Invoice Row Delete End */
+
+
+        function slno() {
+            var pp = 1;
+            $('body .invoice_row').each(function() {
+                $(this).find('.credit_sl_no').val(pp);
+                pp++;
+            });
+        }
+
+
+         /* Fetch Invoices Add Start */
+
+        $("body").on('click', '.add_invoices', function() {
+
+            var parent = $(this).closest('tr');
+
+            var d_account = parent.find('.debit_account');
+
+            var d_amount = parent.find('.debit_amount');
+
+            LinkTotal = rmv_comma(d_amount.val());
+
+            if (d_account.val() == "") {
+                alertify.error('Select Debit Account!').delay(3).dismissOthers();
+                return false;
+            }
+
+            if (d_amount.val() == "") {
+                alertify.error('Enter Amount!').delay(3).dismissOthers();
+                d_amount.focus();
+                return false;
+            }
+
+            //var id=1;
+
+            var pid = $('#added_id').val();
+
+            var id = d_account.val(); //Customer_ID
+
+            var debit_date = parent.find('.credit_date').val();
+
+            var debit_amount_comma = parent.find('.debit_amount').val();
+
+            debit_amount = debit_amount_comma.replace(",","");
+
+            var debit_narration = parent.find('.credit_narration').val();
+
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/Payments/FetchInvoices",
+
+                method: "POST",
+
+                data: {
+                    id: id,
+                    date: debit_date,
+                    amount: debit_amount,
+                    narration: debit_narration,
+                    pid: pid
+                },
+
+                dataType: "json",
+
+                success: function(data) {
+
+                    if (data.status == 0) {
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                        $('#AddModal').modal('show');
+
+                        return false;
+                    }
+
+                    $('#invoices_sec').hide().html(data.invoices).fadeIn(200);
+
+                    $('#AddModal').modal('hide');
+
+                    $('#fifo_add').attr('data-total', debit_amount);
+
+                    $('body #fifo_add').data('total', debit_amount);
+
+                    $('body #add_poadvance_btn').data('vendor', data.vendor_id);
+
+                    $('body #add_poadvance_btn').attr('data-vendor',data.vendor_id);
+
+                    $('body #add_poadvance_btn').data('debitid', data.pd_id);
+
+                    $('body #add_poadvance_btn').attr('data-debitid',data.pd_id);
+
+                    $('#InvoicesModal').modal('show');
+
+                    $('.invoice_total').html(debit_amount);
+
+                    $('.invoice_adjusted').html('0');
+
+                    $('.invoice_balance').html('0');
+
+                    CalcBalance();
+
+                }
+
+
+            });
+
+
+            /*
+        } else {
+                    //console.log('No'); // Logging for debugging purposes
+                }
+            }, 100);
+            */
+
+
+        });
+
+        /* Fetch Invoice Add End */
+
+
+        
+    /* Total Payment Overflow Start */
+
+    $(document).on('input change', '.invoice_receipt_amount, .po_advance_amount', function(event) {
+    var parent = $(this).closest('tr');
+    var receipt_total = parseFloat($('#fifo_add').data('total')) || 0; // Main payment amount
+
+    // Calculate the sum of all other fields except the current one
+    var sum = 0;
+    $('.invoice_receipt_amount').each(function() {
+        if (this !== event.target) {
+            sum += parseFloat(rmv_comma($(this).val())) || 0;
+        }
+    });
+    $('.po_advance_amount').each(function() {
+        if (this !== event.target) {
+            sum += parseFloat(rmv_comma($(this).val())) || 0;
+        }
+    });
+
+    var val = parseFloat(rmv_comma($(this).val())) || 0;
+
+    // If the sum plus the current value exceeds the main payment amount
+    if (sum + val > receipt_total) {
+        val = receipt_total - sum;
+        val = Math.max(0, val);
+        $(this).val(add_comma(val)).trigger('change');
+        alertify.error('Total cannot exceed payment amount!').delay(3).dismissOthers();
+    }
+
+    CalcBalance();
+    });
+
+
+
+        /* Total Payment Overflow End */
+
+
+
+
+        /* FIFO Add Start */
+
+        $('body').on('click', '#fifo_add', function() {
+
+            var total = $(this).attr('data-total');
+
+            $('.invoice_receipt_amount').each(function() {
+
+                var parent = $(this).closest('tr');
+
+                var invoice_total = parent.find('.invoice_total_amount').val();
+
+                var fill_amount = Math.min(total, invoice_total);
+
+                parent.find('.invoice_receipt_amount').val(add_comma(fill_amount));
+
+                total -= fill_amount;
+
+            });
+
+        });
+
+        /* Fifo Add End */
+
+
+
+
+
+
+
+
+
+
+
+        /* Main Payment ADD End */
+
+
+
+
 
 
 
@@ -1701,137 +1964,7 @@
 
 
 
-        /* Fetch Invoices */
-
-        $("body").on('click', '.add_invoices', function() {
-
-            var parent = $(this).closest('tr');
-
-            var d_account = parent.find('.debit_account');
-
-            var d_amount = parent.find('.credit_amount');
-
-            LinkTotal = rmv_comma(d_amount.val());
-
-            if (d_account.val() == "") {
-                alertify.error('Select Debit Account!').delay(3).dismissOthers();
-                return false;
-            }
-
-            if (d_amount.val() == "") {
-                alertify.error('Enter Amount!').delay(3).dismissOthers();
-                d_amount.focus();
-                return false;
-            }
-
-            //var id=1;
-
-
-
-            var pid = $('#added_id').val();
-
-            var id = d_account.val(); //Customer_ID
-
-            var debit_date = parent.find('.credit_date').val();
-
-            var debit_amount_comma = parent.find('.credit_amount').val();
-
-            debit_amount = debit_amount_comma.replace(",","");
-
-            var debit_narration = parent.find('.credit_narration').val();
-
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Accounts/Payments/FetchInvoices",
-
-                method: "POST",
-
-                data: {
-                    id: id,
-                    cdate: debit_date,
-                    camount: debit_amount,
-                    cnarration: debit_narration,
-                    pid: pid
-                },
-
-                dataType: "json",
-
-                success: function(data) {
-
-                    if (data.status == 0) {
-                        alertify.error(data.msg).delay(3).dismissOthers();
-
-                        $('#AddModal').modal('show');
-
-                        return false;
-                    }
-
-                    $('#invoices_sec').hide().html(data.invoices).fadeIn(200);
-
-                    $('#AddModal').modal('hide');
-
-                    $('#fifo_add').attr('data-total', debit_amount);
-
-                    $('body #fifo_add').data('total', debit_amount);
-
-                    $('body #add_poadvance_btn').data('vendor', data.vendor_id);
-
-                    $('body #add_poadvance_btn').attr('data-vendor',data.vendor_id);
-
-                    $('body #add_poadvance_btn').data('debitid', data.pd_id);
-
-                    $('body #add_poadvance_btn').attr('data-debitid',data.pd_id);
-
-
-                    $('#InvoicesModal').modal('show');
-
-                    $('.invoice_total').html(debit_amount);
-
-                    $('.invoice_adjusted').html('0');
-
-                    $('.invoice_balance').html('0');
-
-                }
-
-
-            });
-
-
-            /*
-        } else {
-                    //console.log('No'); // Logging for debugging purposes
-                }
-            }, 100);
-            */
-
-
-        });
-
-        /*##*/
-
-
-
-        $('body').on('click', '#fifo_add', function() {
-
-            var total = $(this).attr('data-total');
-
-            $('.invoice_receipt_amount').each(function() {
-
-                var parent = $(this).closest('tr');
-
-                var invoice_total = parent.find('.invoice_total_amount').val();
-
-                var fill_amount = Math.min(total, invoice_total);
-
-                parent.find('.invoice_receipt_amount').val(fill_amount);
-
-                total -= fill_amount;
-
-            });
-
-
-        });
+       
 
 
 
@@ -2093,83 +2226,7 @@
 
 
 
-        /*cost calculation add more*/
-
-        var max_fieldcost = 30;
-
-        var cc = $('.invoice_row').length;
-
-        $("body").on('click', '.add_more', function() {
-
-            var cc = $('.invoice_row').length;
-
-            if (cc < max_fieldcost) {
-
-                cc++;
-                //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
-
-                var $clone = $('.invoice_row:first').clone();
-
-                $clone.find("input").val("");
-
-                $clone.find("select").val("");
-
-                $clone.find(".debit_account_select2").val('');
-
-                $clone.find(".debit_account_select2").removeAttr('data-select2-id');
-
-                $clone.find('.select2').remove();
-
-                $clone.find(".sl_no").html(cc);
-
-                $('body .del_elem').show();
-
-                $clone.find(".del_elem").hide();
-
-                $('body .add_more').hide();
-
-                $clone.find(".add_more").show();
-
-                //$clone.find('.credit_sl_no').val('2');
-
-                $clone.insertAfter('.invoice_row:last');
-
-                slno();
-
-                InitAccountsSelect2('.debit_account_select2', '.invoice_row');
-
-
-            }
-
-        });
-
-
-
-        $(document).on("click", ".del_elem", function() {
-            $(this).closest('.invoice_row').remove();
-            cc--;
-            //totalCalcutate();                                                                           
-            //grossCalculate();
-            slno();
-        });
-
-        /**/
-
-
-        function slno() {
-
-            var pp = 1;
-
-            $('body .invoice_row').each(function() {
-
-                $(this).find('.credit_sl_no').val(pp);
-
-                pp++;
-
-            });
-
-        }
-
+        
 
 
 
@@ -2655,68 +2712,7 @@
         });
 
 
-
-
-
-        // $("body").on('input change', '.invoice_receipt_amount', function(event) {
-
-
-
-
-        //     val = parseFloat($(this).val()) || 0;
-
-        //     max = $(this).attr('maxlength');
-
-        //     if (val > max) {
-
-        //         $(this).val(max);
-
-        //         $(this).trigger('change');
-
-        //     }
-
-
-        //     var invoice_total = 0;
-
-        //     //var receipt_total = parseInt($('#fifo_add').attr('data-total'))||0;
-
-        //     var receipt_total = parseInt($('#fifo_add').data('total')) || 0;
-
-        //     var max_receipt = parseInt(parent.find('.invoice_total_amount').val()) || 0;
-
-        //     var receipt_amount = $(this).val();
-
-        //     parent = $(this).closest('tr');
-
-        //     if (max_receipt != receipt_amount) {
-        //         parent.find('.invoice_add_check').prop('checked', false);
-        //     } else {
-        //         parent.find('.invoice_add_check').prop('checked', true);
-        //     }
-
-        //     // $('.invoice_receipt_amount').each(function(){
-
-        //     // parent =  $(this).closest('tr');
-
-        //     // invoice_total += parseInt(parent.find('.invoice_receipt_amount').val())||0;
-
-        //     // })
-
-        //     // balance = (parseFloat(receipt_total)||0) - (parseFloat(invoice_total)||0);
-
-        //     // balance = Math.max(0,balance);
-
-        //     // $('.invoice_balance').html(balance);
-
-        //     // $('.invoice_adjusted').html(invoice_total);
-
-
-        //     //}
-
-        //     CalcBalance();
-
-
-        // });
+      
 
         $(document).on('input change', '.invoice_receipt_amount,.po_advance_amount',function(event) {
             // Debugging: Check if the function is called and with correct element
@@ -2790,7 +2786,7 @@
 
             });
 
-            //LinkTotal = parseFloat($('.credit_amount').val()) || 0;
+            //LinkTotal = parseFloat($('.debit_amount').val()) || 0;
 
 
             $('body .po_advance_amount').each(function() {
@@ -2903,9 +2899,8 @@
 
             // Parse the total and total_amount as floats to ensure numeric comparison
             var total = parseFloat($('#fifo_add').data('total')) || 0;
-            var total_amount = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
-             console.log(total + ' | ' + total_amount);
+            var total_amount = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
             // If total is less than total_amount, uncheck the box and prevent the default action
             if (total < total_amount) {
@@ -2916,6 +2911,7 @@
 
                 // Prevent the default action
                 event.preventDefault();
+
                 return false;
             }
 
@@ -2925,7 +2921,7 @@
 
                 // Fill the amount with the minimum between total and total_amount
                 var fill_amount = Math.min(total, total_amount);
-                parent.find('.invoice_receipt_amount').val(fill_amount);
+                parent.find('.invoice_receipt_amount').val(add_comma(fill_amount));
 
                 // Trigger the change event on the receipt amount
                 parent.find('.invoice_receipt_amount').trigger('change');
@@ -2945,7 +2941,49 @@
 
 
 
-        $("body").on('keyup', '.credit_amount', function() {
+        $(document).on('change', '.po_advance_add_check', function(event) {
+
+            parent = $(this).closest('tr');
+
+            // Parse the total and total_amount as floats to ensure numeric comparison
+            var total = parseFloat($('#fifo_add').data('total')) || 0;
+
+            var total_amount = parseFloat($(this).data('max')) || 0;
+
+            // If total is less than total_amount, uncheck the box and prevent the default action
+            if (total < total_amount) {
+                // Uncheck the checkbox
+                $(this).prop('checked', false);
+                // Prevent the default action
+                event.preventDefault();
+                return false;
+            }
+
+            // If the checkbox is checked
+            if($(this).prop('checked') == true) {
+
+                // Fill the amount with the minimum between total and total_amount
+                var fill_amount = Math.min(total, total_amount);
+                parent.find('.po_advance_amount').val(add_comma(fill_amount));
+                
+                parent.find('.po_advance_amount').trigger('change');
+
+            }else{
+                // If unchecked, set the receipt amount to 0
+                parent.find('.po_advance_amount').val(0);
+
+                // Trigger the change event on the receipt amount
+                parent.find('.po_advance_amount').trigger('change');
+            }
+
+        });
+
+
+
+
+
+
+        $("body").on('keyup', '.debit_amount', function() {
 
             value = parseFloat($(this).val()) || 0;
 
@@ -3182,9 +3220,9 @@
                 success: function(data) {
 
                     if (data != "") {
-                        parent.find('.credit_amount').attr('data-max', data);
+                        parent.find('.debit_amount').attr('data-max', data);
                     } else {
-                        parent.find('.credit_amount').attr('data-max', 0);
+                        parent.find('.debit_amount').attr('data-max', 0);
                     }
 
                     //console.log(data);
@@ -3268,6 +3306,8 @@
 
             var debit_id = $(this).data('debitid');
 
+
+
             //parent = $(this).closest('.invoice_row');
 
             //var parent = $(this).closest('.invoice_row');
@@ -3280,7 +3320,8 @@
 
                 data: {
                     vendor: vendor_id,
-                    d_id : debit_id
+                    d_id : debit_id,
+                    balance : balance
                 },
 
                 success: function(data) {
@@ -3368,7 +3409,7 @@
 
         // Function to format numbers with commas and always show two decimal places
 
-        $("body").on("blur", ".credit_amount,.invoice_receipt_amount,.po_advance_amount", function () {
+        $("body").on("blur", ".debit_amount,.invoice_receipt_amount,.po_advance_amount", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
 
@@ -3400,7 +3441,7 @@
 
         var total = 0;
 
-        $('body .credit_amount').each(function() {
+        $('body .debit_amount').each(function() {
 
             var sub_tot = rmv_comma($(this).val());
 

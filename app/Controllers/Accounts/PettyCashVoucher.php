@@ -165,7 +165,7 @@ class PettyCashVoucher extends BaseController
             $insert_data['pcv_date'] = date('Y-m-d', strtotime($this->request->getPost('p_date')));
             $insert_data['pcv_credit_account'] = $this->request->getPost('p_credit_account');
             $insert_data['pcv_pay_method'] = $this->request->getPost('p_method');
-            $insert_data['pcv_total'] = $this->request->getPost('p_amount');
+            $insert_data['pcv_total'] = str_replace(",","",$this->request->getPost('p_amount'));
 
             if ($this->request->getPost('p_method') == "1") {
                 $insert_data['pcv_cheque_no'] = $this->request->getPost('p_cheque_no');
@@ -196,12 +196,6 @@ class PettyCashVoucher extends BaseController
 
                 $this->common_model->EditData($update_data, $cond, 'accounts_petty_cash_voucher');
 
-                // Add to Transactions
-                $trans_data['tran_reference'] = $p_ref_no;
-                $trans_data['tran_account'] = $insert_data['pcv_credit_account'];
-                $trans_data['tran_credit'] =  $insert_data['pcv_total'];
-                $trans_data['tran_type'] = "PCV";
-                $this->common_model->InsertData('master_transactions', $trans_data);
             } else {
                 // Update existing payment
                 $id = $this->request->getPost('p_id');
@@ -230,13 +224,6 @@ class PettyCashVoucher extends BaseController
                     $insert_inv_data['pci_narration'] = $_POST['narration'][$i];
                     $insert_inv_data['pci_sales_order'] = $_POST['p_sales_order'][$i] ?? null;
 
-                    // Add to Transactions
-                    $debit_trans_data['tran_reference'] = $p_ref_no;
-                    $debit_trans_data['tran_account'] = $_POST['p_debit_account'][$i];
-                    $debit_trans_data['tran_debit'] = $insert_inv_data['pci_amount'];
-                    $debit_trans_data['tran_type'] = "PCV";
-
-                    $this->common_model->InsertData('master_transactions', $debit_trans_data);
 
                     if (empty($check_debit)) {
                        $pay_debit_id = $this->common_model->InsertData('accounts_petty_cash_debits', $insert_inv_data);
@@ -313,7 +300,7 @@ class PettyCashVoucher extends BaseController
 
                         $insert_poa_data['pca_purchase_order'] = $advanceData['po_id'][$pa];
 
-                        $insert_poa_data['pca_advance_amount'] = $advanceData['advance_amount'][$pa];
+                        $insert_poa_data['pca_advance_amount'] = str_replace(",","",$advanceData['advance_amount'][$pa]);
 
                         $this->common_model->InsertData('accounts_petty_cash_advances', $insert_poa_data);
 
@@ -488,14 +475,12 @@ class PettyCashVoucher extends BaseController
         $inv_ser++;
 
         $data['invoices'] .="<tr>
-
         <input type='hidden' name='pd_id[]' value='".$invoice->pci_id."'>
         <td class='px-0'>{$invoice->ca_name}</td>
         <td>Debit</td>
         <td>-</td>
         <td class='px-0'><input name='pay_inv_notes[]' type='text' value='{$invoice->pci_narration}' class='form-control'></td>
         <td width='10%'><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pci_amount."' class='form-control'></td>
-        <!--<td><a href='javascript:void(0)' data-id='{$invoice->pci_id}' class='invoice_delete_btn'>Delete</a></td>-->
         </tr>";
 
         $debit_data_join = array(
@@ -533,8 +518,6 @@ class PettyCashVoucher extends BaseController
 
             <td width='10%'><input name='linked_pv_paid[$invoice->pci_id][]' type='number' step='0.01' max='".$max_payable."' value='".$dl->pcdi_payment_amount."' class='form-control'></td>
             
-            <td></td>
-
             </tr>";
 
         }
@@ -765,11 +748,11 @@ class PettyCashVoucher extends BaseController
         for($poa=0;$poa<count($this->request->getPost('advance_po_id')[$update_invoice_cond['pci_id']]);$poa++)
         {
 
-        $update_poa_cond = array('pca_id' => $this->request->getPost('advance_invoice_id')[$update_invoice_cond['pci_id']]);
+        $update_poa_cond = array('pca_id' => $this->request->getPost('advance_invoice_id')[$update_invoice_cond['pci_id']][$poa]);
 
-        $updated_amount = array('pca_advance_amount' => $this->request->getPost('advance_payment_amount')[$update_invoice_cond['pci_id']]);
+        $updated_amount = array('pca_advance_amount' => $this->request->getPost('advance_payment_amount')[$update_invoice_cond['pci_id']][$poa]);
 
-        $po_id_advance = $this->request->getPost('advance_po_id')[$update_invoice_cond['pci_id']];
+        $po_id_advance = $this->request->getPost('advance_po_id')[$update_invoice_cond['pci_id']][$poa];
 
         $this->common_model->EditData($updated_amount,$update_poa_cond,'accounts_petty_cash_advances');
 
@@ -1405,40 +1388,19 @@ class PettyCashVoucher extends BaseController
 
         if ($_POST) {
 
-
             $vendor_id = $this->request->getPost('id');
 
-            /*
-            $insert_data['pd_payment'] = $this->request->getPost('pid');
-
-            $insert_data['pd_debit_account'] = $vendor_id;
-
-            $insert_data['pd_payment_amount'] = $this->request->getPost('camount');
-
-            $insert_data['pd_remarks'] = $this->request->getPost('cnarration');
-
-            //$insert_data['ri_date'] = date('Y-m-d',strtotime($this->request->getPost('cdate')));
-
-            $check_invoice = $this->common_model->SingleRow('accounts_payment_debit', array('pd_payment' => $insert_data['pd_payment'], 'pd_debit_account' => $insert_data['pd_debit_account']));
-
-            if (empty($check_invoice)) {
-                $pd_id = $this->common_model->InsertData('accounts_payment_debit', $insert_data);
-            } else {
-
-
-
-                $update_cond = array('pd_id' => $check_invoice->pd_id);
-
-                $pd_id = $check_invoice->pd_id;
-
-                $this->common_model->EditData($insert_data, $update_cond, 'accounts_payment_debit');
+            if(empty($vendor_id))
+            {
+        
+                $data['status']= 0 ;
+        
+                $data['msg'] = "Please select account!";
+        
+                echo json_encode($data);
+        
+                exit;
             }
-
-
-            $data['pd_id'] = $pd_id;
-
-            */
-
 
             $joins = array(
                 array(
@@ -1497,6 +1459,7 @@ class PettyCashVoucher extends BaseController
 
             echo json_encode($data);
         }
+
     }
 
 

@@ -75,6 +75,7 @@ class HRModel extends Model
         ->where('ts_id', $id)
         ->join('hr_employees','hr_employees.emp_id=hr_timesheets.ts_emp_id','left')
         ->join('hr_divisions','hr_divisions.div_id=hr_employees.emp_division','left')
+        ->join('hr_mode_of_pay','hr_mode_of_pay.mop_id=hr_employees.emp_mode_of_payment','left')
         
         ->get();
 

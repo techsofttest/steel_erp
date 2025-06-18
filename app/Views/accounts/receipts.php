@@ -694,9 +694,11 @@
 
 
 
+                                                            <tbody>
+
                                                             <tr>
 
-                                                                <td class="p-0">Total Receipt</td>
+                                                                <td class="p-0" >Total Receipt</td>
 
                                                                 <td class="p-0 invoice_total"></td>
 
@@ -709,6 +711,8 @@
                                                                 <td class="invoice_balance p-0"></td>
 
                                                             </tr>
+
+                                                            </tbody>
 
                                                         </table>
 
@@ -936,7 +940,7 @@
 
                                                     <div class="col-col-md-3 col-lg-3">
 
-                                                        <label for="basiInput" class="form-label">Receipt Method</label>
+                                                        <label for="basiInput" class="form-label">Receipt Method</label>        
 
                                                     </div>
 
@@ -1635,7 +1639,7 @@
                                                 <tr>
 
                                                     <td>Collected By</td>
-
+                                                    
                                                     <th id="view_collected_by"></th>
 
                                                     <td class="view_cheque_sec">Cheque Number</td>
@@ -2116,13 +2120,7 @@
 
 
 
-
-
-
-
         /* Invoices Link Btn STart */
-
-
 
 
         $("body").on('click', '.add_invoices', function() {
@@ -2159,38 +2157,6 @@
                 return false;
 
             }
-
-
-            /*
-            if (!$("#add_form").valid()) {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-            }
-            */
-
-
-            /*
-            if ($('#added_id').val() == '') {
-
-                $('#add_form').submit();
-
-                if (!$("#add_form").valid()) {
-                    alertify.error('Fill required fields!').delay(3).dismissOthers();
-                    return false;
-                }
-
-               
-
-            }
-            */
-
-
-            //var id=1;
-
-            // Use a timeout-based polling approach
-            //var checkValueInterval = setInterval(function() {
-                //if ($('#added_id').val() !== '') {
-                    //clearInterval(checkValueInterval);
 
                     var receipt = $('#added_id').val();
 
@@ -2259,16 +2225,40 @@
 
                     });
 
-                //} else {
-                    //console.log('No'); // Logging for debugging purposes
-                //}
-            //}, 100);
-
         });
+
+        /* Maximum amount validation start*/
+
+    $(document).on('input change', '.invoice_receipt_amount, .so_receipt_amount', function() {
+    
+    let invoiceAmount = parseFloat($('#fifo_add').data('total')) || 0;
+
+    let total = 0;
+
+    $('.invoice_receipt_amount').each(function() {
+        total += rmv_comma($(this).val());
+    });
+    $('.so_receipt_amount').each(function() {
+        total += rmv_comma($(this).val());
+    });
+
+    // If total exceeds invoiceAmount, adjust the current field
+    if (total > invoiceAmount) {
+        let over = total - invoiceAmount;
+        let current = rmv_comma($(this).val());
+        let newVal = Math.max(0, current - over);
+        $(this).val(newVal).trigger('change');
+        alertify.error('Total cannot exceed invoice amount!').delay(3).dismissOthers();
+    }
+
+    //Optionally update UI
+    CalcBalance();
+    });
+
+        /* Maximum amount validation end*/
 
 
         /* Invoices Link Btn ENd */
-
 
 
 
@@ -2281,7 +2271,6 @@
 
             var credit_id = $('#add_receipt_invoice_id').val();
 
-
             $.ajax({
 
                 url: "<?php echo base_url(); ?>Accounts/Receipts/FetchSalesOrdersAdd",
@@ -2290,7 +2279,8 @@
 
                 data: {
                     c_id: customer,
-                    creditid: credit_id
+                    creditid: credit_id,
+                    balance : balance
                 },
 
                 dataType: "json",
@@ -2396,6 +2386,8 @@
 
             });
 
+            //r_cheque_copy
+
             //console.log(LinkAdjusted);
 
             invoice_adjusted = LinkTotal - LinkAdjusted;
@@ -2429,65 +2421,6 @@
 
 
         /* Check Balance ADjustable End */
-
-
-
-
-        /* Check Balance ADjustable Start */
-
-
-        function CalcBalanceEdit() {
-
-            LinkAdjusted = 0;
-
-            balance = 0;
-
-            $('#InvoicesLinkEditModal .invoice_receipt_amount').each(function() {
-
-                LinkAdjusted += parseFloat(rmv_comma($(this).val())) || 0;
-
-            });
-
-
-            $('body .so_receipt_amount').each(function() {
-
-                LinkAdjusted += parseFloat(rmv_comma($(this).val())) || 0;
-
-            });
-
-            balance = LinkTotal - LinkAdjusted;
-
-
-            balance = Math.max(0, balance);
-
-            $('.invoice_balance_edit').html(balance);
-
-            $('.invoice_adjusted_edit').html(LinkAdjusted);
-
-        }
-
-        if (LinkTotal < LinkAdjusted) {
-
-            alert('Cannot be greater');
-
-            return false;
-
-        } else {
-
-            //return true;    
-
-        }
-
-
-
-        /* Check Balance ADjustable End */
-
-
-
-
-
-
-
 
 
 
@@ -2748,6 +2681,8 @@
 
                     $('.invoice_balance_edit').html('0');
 
+                    CalcBalance();
+
                 }
 
             });
@@ -2759,6 +2694,54 @@
         /* Edit Invoices Add End */
 
 
+
+        /* Check Edit Balance ADjustable Start */
+
+
+        function CalcBalanceEdit() {
+
+            LinkAdjusted = 0;
+
+            balance = 0;
+
+            $('#InvoicesLinkEditModal .invoice_receipt_amount').each(function() {
+
+                LinkAdjusted += parseFloat(rmv_comma($(this).val())) || 0;
+
+            });
+
+
+            $('body .so_receipt_amount').each(function() {
+
+                LinkAdjusted += parseFloat(rmv_comma($(this).val())) || 0;
+
+            });
+
+            balance = LinkTotal - LinkAdjusted;
+
+            balance = Math.max(0, balance);
+
+            $('.invoice_balance_edit').html(balance);
+
+            $('.invoice_adjusted_edit').html(LinkAdjusted);
+
+        }
+
+        if (LinkTotal < LinkAdjusted) {
+
+            alert('Cannot be greater');
+
+            return false;
+
+        } else {
+
+            //return true;    
+
+        }
+
+
+
+        /* Check Edit Balance ADjustable End */
 
 
 
@@ -2891,16 +2874,11 @@
 
             });
 
-
         });
 
 
 
-
-
         /* Edit Invoice End */
-
-
 
 
 
@@ -2961,20 +2939,13 @@
 
 
 
-
-
-
-
-
         /*cost calculation add more*/
 
 
 
 
-
-
-
         /*account head modal start*/
+
         $("body").on('click', '.view_btn', function() {
 
             var id = $(this).data('id');
@@ -3052,74 +3023,7 @@
 
 
             });
-
-
-
-
-            /*
-
-            var id = $(this).data('id');
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Accounts/Receipts/View",
-
-                method : "POST",
-
-                data: {id: id},
-
-                success:function(data)
-                {   
-                    if(data)
-                    {
-                    var data = JSON.parse(data);
-
-                    $('#r_ref_view').val(data.receipt.r_ref_no);
-
-                    $('#r_date').val(data.receipt.r_date);
-
-                    $('#r_debit_acc').val(data.receipt.ca_account_id);
-
-                    $('#r_no').val(data.receipt.r_number);
-
-                    $('#r_method_view').val(data.receipt.rm_name);
-
-                    $('#r_bank_view').val(data.receipt.bank_name);
-
-                    $('#r_collected_by_view').val(data.receipt.col_name);
-
-                    $('#r_credit_account_view').val('Customer1');
-
-                    $('#total_amount_view').html(data.receipt.r_amount);
-
-                    if(data.receipt.rm_name=="Cheque")
-                    {
-                    $('.cheque_sec_view').show();
-                    $('#cheque_no_view').val(data.receipt.r_cheque_no);
-                    $('#cheque_date_view').val(data.receipt.r_cheque_date);
-                    }
-                    else
-                    {
-                    $('.cheque_sec_view').hide();
-                    }
-
-                    $('#invoice_sec_view').html(data.invoices);
-
-                    $('#ViewModal').modal('show');
-                  
-                    }
-                    else
-                    {
-                    alertify.error('Something went wrong!').delay(8).dismissOthers();  
-                    }
-                    
-                }
-
-
-            });
-
-            */
-
+          
 
         });
         /*####*/
@@ -4336,7 +4240,7 @@
 
 
 
-
+        /*
         $(document).on('change', '.invoice_add_check', function(event) {
 
             parent = $(this).closest('tr');
@@ -4356,7 +4260,9 @@
 
                 // Prevent the default action
                 event.preventDefault();
+
                 return false;
+
             }
 
             
@@ -4382,8 +4288,87 @@
             }
 
         });
+        */
+
+    $(document).on('change', '.invoice_add_check', function(event) {
+    var parent = $(this).closest('tr');
+    
+    var total = parseFloat($('#fifo_add').data('total')) || 0;
+
+    var invoice_amount = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
+
+    if(total<invoice_amount)
+    {
+    $(this).prop('checked', false);
+    return false;
+    }
+
+    // Calculate the sum of all other invoice_receipt_amounts
+    var sum_others = 0;
+    $('.invoice_receipt_amount').each(function() {
+        if (this !== parent.find('.invoice_receipt_amount')[0]) {
+            sum_others += rmv_comma($(this).val());
+        }
+    });
+    $('.so_receipt_amount').each(function() {
+       
+            sum_others += rmv_comma($(this).val());
+        
+    });
+
+    // Calculate current balance
+    var balance = total - sum_others;   
+
+    if ($(this).prop('checked')) {
+        var allowed = Math.min(invoice_amount, balance);
+        if (allowed > 0) {
+            parent.find('.invoice_receipt_amount').val(add_comma(allowed)).trigger('change');
+        } else {
+            // Not allowed, clear checkbox and input
+            $(this).prop('checked', false);
+            return false;
+            //parent.find('.invoice_receipt_amount').val(0).trigger('change');
+            alertify.error('Cannot allocate more than the balance amount!').delay(3).dismissOthers();
+        }
+    } else {
+    parent.find('.invoice_receipt_amount').val(0).trigger('change');
+    }
+    CalcBalance();
+    });
 
 
+    $(document).on('change', '.add_so_advance_tick', function () {
+    var $row = $(this).closest('tr');
+    var total = parseFloat($('#fifo_add').data('total')) || 0;
+    //Get the advance amount from the hidden input in the same row
+    var so_amount = parseFloat($row.find('.advance_total_amount').val()) || 0;
+
+    if ($(this).is(':checked')) {
+
+        $row.find('.so_receipt_amount').val(add_comma(so_amount)).trigger('change');
+
+        // Now check if the total exceeds the main total
+        var sum = 0;
+        $('.invoice_receipt_amount').each(function() {
+            sum += rmv_comma($(this).val());
+        });
+        $('.so_receipt_amount').each(function() {
+            sum += rmv_comma($(this).val());
+        });
+
+        if (sum > total) {
+            alertify.error('Cannot allocate more than the balance amount!').delay(3).dismissOthers();
+            $(this).prop('checked', false);
+            //$row.find('.so_receipt_amount').val('0.00').trigger('change');
+        }
+    } else {
+
+        $row.find('.so_receipt_amount').val('0.00').trigger('change');
+
+    }
+
+    CalcBalance();
+});
 
 
 
@@ -4714,6 +4699,7 @@
 
 
 
+    /*
     $(document).on('change', '.add_so_advance_tick', function () {
     var $row = $(this).closest('tr');
     var totalAmount = $row.find('td').eq(3).text().trim().replace(/,/g, '');
@@ -4725,6 +4711,7 @@
         $input.val('0.00');
     }
     });
+    */
 
 
 
@@ -4732,7 +4719,7 @@
      // Function to format numbers with commas and always show two decimal places
         
 
-        $("body").on("blur", ".credit_amount,.invoice_receipt_amount,.so_receipt_amount", function () {
+        $("body").on("blur", ".credit_amount,.invoice_receipt_amount,.so_receipt_amount,.linked_amount_edit,.receipt_advance_amount_edit", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
 

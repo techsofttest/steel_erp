@@ -817,7 +817,7 @@
                             {
                        
                                 alertify.success('Timesheets fetched').delay(3).dismissOthers();
-                                // $('#add_form').attr('data-empid',data);
+                                //$('#add_form').attr('data-empid',data);
                                 //$('.added_id').val(data);
 
                                 $('#employee_sec').hide();
@@ -915,9 +915,9 @@
 
 
         $("body").on('click', '.view_btn', function () {
-    var id = $(this).data('id');
+        var id = $(this).data('id');
 
-    $.ajax({
+        $.ajax({
         url: "<?php echo base_url(); ?>HR/Payroll/View",
         method: "POST",
         data: { pr_id: id },
@@ -940,9 +940,6 @@
                     <tr><td class="text-center">Food Allowance</td> <td class="text-end">${payroll.pr_food_allow}</td></tr>
                     <tr><td class="text-center">Other Allowance</td> <td class="text-end">${payroll.pr_other_allow}</td></tr>
                     <tr><td class="text-center">Total Salary</td> <td class="text-end">${payroll.pr_total_salary}</td></tr>
-                    
-
-                    
                 `;
 
                 // Insert rows into the table
@@ -1256,6 +1253,26 @@
 
 
             });
+
+            
+        });
+
+
+
+
+
+        
+        $('body').on('click','.print_color',function(e){
+        
+        id = $(this).attr('data-id');
+        // Open the PDF generation script in a new window
+
+        var pdfWindow = window.open('<?= base_url()?>HR/Payroll/Print/'+id, '_blank');
+
+        // Automatically print when the PDF is loaded
+        pdfWindow.onload = function() {
+            pdfWindow.print();
+        };
 
         });
 
