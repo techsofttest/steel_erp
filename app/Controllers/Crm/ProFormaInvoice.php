@@ -1351,6 +1351,9 @@ class ProFormaInvoice extends BaseController
 
                 $title = 'PINV - '.$proforma_invoice->pf_reffer_no;
 
+
+                
+
                   $footer = '
         
                 <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
