@@ -1611,9 +1611,7 @@ class ProFormaInvoice extends BaseController
                                 
                             </tr>
     
-                        </table>
-                        
-                        ';
+                        </table>';
 
 
                         $main_table = '<style>
