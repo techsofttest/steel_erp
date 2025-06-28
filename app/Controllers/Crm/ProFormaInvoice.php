@@ -1269,7 +1269,7 @@ class ProFormaInvoice extends BaseController
         public function Pdf($id)
         {   
             if(!empty($id))
-             
+            {   
               
                 $joins1 = array(
                 
