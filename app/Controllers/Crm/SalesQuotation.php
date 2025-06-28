@@ -2182,6 +2182,8 @@ public function Pdf($id)
 
         $mpdf->WriteHTML($main_table);
 
+        
+
         // Output summary just before footer on last page
         $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 

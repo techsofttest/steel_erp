@@ -1690,6 +1690,8 @@ class SalesOrder extends BaseController
 
             $mpdf->SetTitle($title);
 
+            
+
 
             $header_html = '<div style="margin-top: -20px;"><table>
         
