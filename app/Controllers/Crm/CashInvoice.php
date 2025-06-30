@@ -1904,19 +1904,19 @@ class CashInvoice extends BaseController
                     $disc = number_format($prod_det->cipd_discount, 2);
 
 
-                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
+                    $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.$prod_det->product_details.'</td>';
 
-                    $pdf_data .= '<td align="center">'.$prod_det->cipd_qtn.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->cipd_qtn.'</td>';
 
-                    $pdf_data .= '<td align="center">'.$prod_det->cipd_unit.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->cipd_unit.'</td>';
 
-                    $pdf_data .= '<td align="right">'.$rate.'</td>';
+                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$rate.'</td>';
 
-                    $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
+                    $pdf_data .= '<td align="center" style="color: red;padding: 2px; vertical-align: top;"><i>'.$disc.'</i></td>';
 
-                    $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$amount.'</td></tr>';
 
                     $k++;
                 }
@@ -1963,338 +1963,300 @@ class CashInvoice extends BaseController
 
                 // Set the title of the PDF
                 $title = 'CIN - '.$cash_invoice->ci_reffer_no;
-               
-                //$mpdf = new \Mpdf\Mpdf();
-                $footer = '
-        
-                <table style="border-bottom:1px solid;width:100%">
-                
-                    <tr>
-                        <td></td>
-
-                        <td>IBAN : QA97CBQA000000004570407137001</td>
-
-                        <td style="font-weight: bold;width: 20%;">Total Invoice value</td>
-            
-                        <td  align="right" style="font-weight: bold;">'.format_currency($cash_invoice->ci_total_amount).'</td>
-                    
-                        
-                    </tr>
-    
-                    <tr>
-        
-                        <td>Bank Details</td>
-                    
-                        <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
-
-                        
-                       
-                       
-                    
-                    </tr>
-
-
-                    <tr>
-        
-                        <td></td>
-                    
-                        <td>SWIFT : CBQAQAQA</td>
-                       
-                        
-                    
-                    </tr>
-    
-    
-                    <tr style="width:100%";>
-        
-                        <td>Amount in words</td>
-                    
-                        <td style="width: 55%;" align="right">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
-            
-                        
-                    
-                    </tr>
-    
-                </table>
-    
-    
-                <table>
-
-                
-                 
-                <tr>
-                    <td rowspan="2" style="width:15%;vertical-align: middle;">Invoice Terms</td>
-    
-                    <td style="width:20%">Project:</td>
-    
-                    <td style="width:30%">'.$cash_invoice->ci_project.'</td>
-    
-                    <td style="width:12%">Payment:</td>
-    
-                    <td>'.$cash_invoice->ci_payment_term.'</td>
-                    
-                </tr>
-    
-                <tr>
-                    <td rowspan="2" style="width:15%">Sales Order:</td>
-    
-                    <td style="width:20%">'.$cash_invoice->so_reffer_no.'</td>
-    
-                    <td style="width:30%"></td>
-                    
-                   
-                    
-    
-                </tr>
-                
-                </table>
-    
-    
-                <table style="border-top:1px solid;">
-    
-                <tr>
-                
-                    <td><i>Received by:</i></td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-                    <td><i>Prepared by:</i></td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-                    <td><i>Finance Dept:</i></td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-                    <td><i>Workshop Manager</i></td>
-    
-                  
-    
-                </tr>
-
-
-
-                <tr>
-                
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-    
-                  
-    
-                </tr>
-
-
-
-                <tr>
-                
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-    
-                  
-    
-                </tr>
-
-
-                <tr>
-                
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-    
-                  
-    
-                </tr>
-    
-    
-                
-                
-                
-                </table>
-            
-            
-            
-                ';
-
-                // Calculate dynamic margin bottom based on footer line count
-                $footer_line_count = substr_count($footer, '<tr>');
-                $line_height_mm = 7;  // Approximate height per footer line in mm, tweak if needed
-                $margin_bottom = ($footer_line_count * $line_height_mm) + 5; // 5mm extra padding
 
                 $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 5,
+                    'margin_top' => 75,
+                    'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
-                    'margin_bottom' => $margin_bottom, // Dynamic margin bottom
+                    'defaultfooterline' => 0,
                 ]);
+               
+                $mpdf->SetAutoPageBreak(true, 45);
 
+                $mpdf->SetTitle($title);
+
+                $header_html = '
+
+                    <table><tr><td></td></tr></table>
+
+                    <table><tr><td></td></tr></table>
+
+                    <table><tr><td></td></tr></table>
                 
-               
+                    <table><tr><td></td></tr></table>
 
-                $mpdf->SetTitle($title); // Set the title
-    
-                $html ='
-            
-                <style>
-            th, td {
-                padding-top: 5px;
-               
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-            }
-            p{
+                    <table><tr><td></td></tr></table>
                 
-                font-size: 12px;
-                margin-bottom: 13px;
+                    <table><tr><td></td></tr></table>
 
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
-            
-            </style>
-            
-               
-                <table><tr><td></td></tr></table>
-
-                <table><tr><td></td></tr></table>
-
-                <table><tr><td></td></tr></table>
-               
-                <table><tr><td></td></tr></table>
-            
-            
-                <table width="100%" style="margin-top:90px;">
+                    <table><tr><td></td></tr></table>
                 
-            
-                <tr width="100%">
-                <td width="10%"></td>
-                <td>Date : '.$date.'</td>
-                <td>'.$cash_invoice->ci_reffer_no.'</td>
-                <td align="right"><h2>Cash Invoice</h2></td>
-            
-                </tr>
-            
-                </table>
+                    <table><tr><td></td></tr></table>
 
-            <table  width="100%" style="margin-top:2px;border-top:1px solid;">
+                    <table><tr><td></td></tr></table>
+
+                    <table><tr><td></td></tr></table>
+            
+            
+                    <table width="100%">
+                
+                        <tr>
+                            <td width="10%"></td>
+                            <td>Date : '.$date.'</td>
+                            <td>'.$cash_invoice->ci_reffer_no.'</td>
+                            <td align="right"><h2>Cash Invoice</h2></td>
+                        </tr>
+
+                    </table>
+                    <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px">
         
-                <tr>
-                
-                    <td > </td>
+                        <tr>
+                        
+                            <td > </td>
+                            
+                            <td >'.$cash_invoice->cc_customer_name.'</td>
+                        
+                        </tr>
+        
+        
+                        <tr>
+                        
+                        <td>Customer</td>
+                        
+                            
+                        <td >Tel : '.$cash_invoice->cc_telephone.', Fax : '.$cash_invoice->cc_fax.', Email : '.$cash_invoice->cc_email.'</td>
+                        
+                        </tr>
+        
+        
+                        <tr>
+                        
+                        <td ></td>
+                        
                     
-                    <td >'.$cash_invoice->cc_customer_name.'</td>
-                
-                </tr>
+                            <td>Post Box: ' . $cash_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
+                        
+                        </tr>
         
         
-            <tr>
-            
-            <td>Customer</td>
-            
-                
-            <td >Tel : '.$cash_invoice->cc_telephone.', Fax : '.$cash_invoice->cc_fax.', Email : '.$cash_invoice->cc_email.'</td>
-            
-            </tr>
+                        <tr>
+                        
+                        <td >Attention</td>
+                        
+                        <td >'.$cash_invoice->contact_person.' - '.$cash_invoice->contact_designation.', Mobile:-'.$cash_invoice->contact_mobile.', Email: - '.$cash_invoice->contact_email.'</td>
+                        
+                        </tr>
         
-        
-            <tr>
-            
-            <td ></td>
-            
-           
-                <td>Post Box: ' . $cash_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
-            
-            </tr>
-        
-        
-            <tr>
-            
-            <td >Attention</td>
-            
-             <td >'.$cash_invoice->contact_person.' - '.$cash_invoice->contact_designation.', Mobile:-'.$cash_invoice->contact_mobile.', Email: - '.$cash_invoice->contact_email.'</td>
-            
-            </tr>
-        
-        
-            </table>
+                    </table>';
+
+                $footer_common = '
+                    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
     
-               
+                        <tr>
+                        
+                            <td><i>Received by:</i></td>
+
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
-                
+                            <td><i>Prepared by:</i></td>
+
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             
-                <tr>
-                
-                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
-                
-                    <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Qty</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Unit</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Rate</th>
-        
-                    <th align="center" style="border-bottom:1px solid;">Disc%</th>
-        
-                    <th align="center" style="border-bottom:1px solid;">Amount</th>
-        
-                
-                </tr>
+                            <td><i>Finance Dept:</i></td>
+
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            
+            
+                            <td><i>Workshop Manager</i></td>
+            
+                        </tr>
 
 
-                '.$pdf_data.'
+
+                        <tr>
+                        
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+            
+                        </tr>
+
+
+
+                        <tr>
+                        
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+            
+                        
+            
+                        </tr>
+
+
+                        <tr>
+                        
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+
+                            <td></td>
+            
+                            <td></td>
+            
+            
+                        </tr>
     
+    
+                    </table>';
+
+                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+                
+                                    <tr>
+                                        <td></td>
+
+                                        <td>IBAN : QA97CBQA000000004570407137001</td>
+
+                                        <td style="font-weight: bold;width: 20%;">Total Invoice value</td>
+                            
+                                        <td  align="right" style="font-weight: bold;">'.format_currency($cash_invoice->ci_total_amount).'</td>
+                                    
+                                        
+                                    </tr>
+    
+                                    <tr>
+                        
+                                        <td>Bank Details</td>
+                                    
+                                        <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+
+                                    
+                                    </tr>
+
+
+                                    <tr>
+                        
+                                        <td></td>
+                                    
+                                        <td>SWIFT : CBQAQAQA</td>
+                                    
+                                    </tr>
+    
+    
+                                    <tr style="width:100%";>
+                        
+                                        <td style="">Amount in words</td>
+                                    
+                                        <td style="" align="right">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
+                            
+                                    </tr>
+    
+                                </table>
+
+                                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin:0 20px;padding: 0">
+
+                
                  
+                                    <tr>
+                                        <td rowspan="2" style="width:15%;vertical-align: middle;padding:0; margin:0;">Invoice Terms</td>
+                        
+                                        <td style="width:20%;padding:0; margin:0;">Project:</td>
+                        
+                                        <td style="width:30%;padding:0; margin:0;">'.$cash_invoice->ci_project.'</td>
+                        
+                                        <td style="width:12%;padding:0; margin:0;">Payment:</td>
+                        
+                                        <td>'.$cash_invoice->ci_payment_term.'</td>
+                                        
+                                    </tr>
+    
+                                    <tr>
+                                        <td rowspan="2" style="width:15%;padding:0; margin:0;">Sales Order:</td>
+                        
+                                        <td style="width:20%;padding:5px; margin:5px;">'.$cash_invoice->so_reffer_no.'</td>
+                        
+                                        <td style="width:30%;"></td>
+                                 
+                                    </tr>
                 
-            </table>';
-            
-            
-            
-                //echo $html . $footer; exit();
+                                </table>';
 
-                $mpdf->WriteHTML($html);
-                $mpdf->SetFooter($footer);
+                $main_table = '<style>
+                                    th, td { padding: 4px; font-size: 12px; }
+                                    p { font-size: 12px; margin-bottom: 13px; }
+                                </style>
+
+                                <table  width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
+                
+                                    <thead>
+                                        <tr>
+                                        
+                                            <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
+                                        
+                                            <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
+                                        
+                                            <th align="center" style="border-bottom:1px solid;">Qty</th>
+                                        
+                                            <th align="center" style="border-bottom:1px solid;">Unit</th>
+                                        
+                                            <th align="center" style="border-bottom:1px solid;">Rate</th>
+                                
+                                            <th align="center" style="border-bottom:1px solid;">Disc%</th>
+                                
+                                            <th align="center" style="border-bottom:1px solid;">Amount</th>
+                                
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>'.$pdf_data.'</tbody>
+
+                                </table>
+                
+                
+                ';
+
+                
+                $mpdf->SetHTMLHeader($header_html);
+                $mpdf->SetHTMLFooter($footer_common);
+
+                $mpdf->SetAutoPageBreak(true, 20);
+
+                $mpdf->WriteHTML($main_table);
+
+                // Output summary just before footer on last page
+                $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
                 $this->response->setHeader('Content-Type', 'application/pdf');
                 $mpdf->Output($title . '.pdf', 'I');
+               
+            
             
             }
     
