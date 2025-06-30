@@ -1677,15 +1677,15 @@ class DeliverNote extends BaseController
                  $k=1;
                 foreach($product_details as $prod_det)
                 {
-                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
+                    $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.$prod_det->product_details.'</td>';
 
-                    $pdf_data .= '<td align="center">'.$prod_det->dpd_unit.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->dpd_unit.'</td>';
 
-                    $pdf_data .= '<td align="center">'.$prod_det->dpd_order_qty.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->dpd_order_qty.'</td>';
 
-                    $pdf_data .= '<td align="center">'.$prod_det->dpd_current_qty.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->dpd_current_qty.'</td>';
 
                     $k++;
 
@@ -1730,276 +1730,228 @@ class DeliverNote extends BaseController
 
                 $title = 'DN-'.$delivery_note->dn_reffer_no;
                 
-                //$mpdf = new \Mpdf\Mpdf();
-
-                 $footer = '
-        
-                
-    
-    
-                <table style="style="border-top:1px solid; border-collapse: collapse; width: 100%;"">
-                
-                <tr>
-                    <td rowspan="2">Order Terms</td>
-    
-                    <td style="width:15%">LPO Ref:</td>
-    
-                    <td style="width:30%">'.$delivery_note->dn_lpo_reference.'</td>
-
-                    <td style="width:12%">Payment:</td>
-    
-                    <td >'.$delivery_note->dn_payment_terms.'</td>
-                    
-                </tr>
-    
-                <tr>
-                    <td>Project:</td>
-    
-                    <td style="">'.$delivery_note->dn_project.'</td>
-    
-                    <td style="">Sales Order:</td>
-
-                    <td style="">'.$delivery_note->so_reffer_no.'</td>
-    
-                    <td ></td>
-    
-                </tr>
-                
-                </table>
-    
-    
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-    
-                <tr>
-                
-                    <td><i>Received by: </i></td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-                   
-
-                   
-    
-                    <td>Driver:</td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-    
-                    <td><i>Store Keeper</i></td>
-    
-                  
-    
-                </tr>
-
-
-
-                <tr>
-                
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-    
-                  
-    
-                </tr>
-
-
-                 <tr>
-                
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-    
-                  
-    
-                </tr>
-
-
-
-                 <tr>
-                
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-
-                    <td></td>
-                    
-                    <td></td>
-    
-                  
-    
-                </tr>
-    
-    
-                
-                
-                
-                </table>
-            
-            
-            
-                ';
-
-                // Calculate dynamic margin bottom based on footer line count
-                $footer_line_count = substr_count($footer, '<tr>');
-                $line_height_mm = 7;  // Approximate height per footer line in mm, tweak if needed
-                $margin_bottom = ($footer_line_count * $line_height_mm) + 5; // 5mm extra padding
-
                 $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 5,
+                    'margin_top' => 75,
+                    'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
-                    'margin_bottom' => $margin_bottom, // Dynamic margin bottom
+                    'defaultfooterline' => 0,
                 ]);
 
+                $mpdf->SetAutoPageBreak(true, 45);
 
-              
+                $header_html = '
+                                <table><tr><td></td></tr></table>
 
-                $mpdf->SetTitle($title); // Set the title
-    
-                $html ='
-            
-                <style>
-            th, td {
-                padding-top: 5px;
-               
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-            }
-            p{
-                
-                font-size: 12px;
-                margin-bottom: 13px;
+                                <table><tr><td></td></tr></table>
 
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
-            
-            </style>
-            
-               
-                <table><tr><td></td></tr></table>
+                                <table><tr><td></td></tr></table>
+                            
+                                <table><tr><td></td></tr></table>
 
-                <table><tr><td></td></tr></table>
+                                <table><tr><td></td></tr></table>
 
-                <table><tr><td></td></tr></table>
-               
-                <table><tr><td></td></tr></table>
-            
-            
-            
-                <table width="100%" style="margin-top:90px;">
-                
-            
-                <tr width="100%">
-                <td width="10%"></td>
-                <td width="20%">Date : '.$date.'</td>
-                <td align="center">'.$delivery_note->dn_reffer_no.'</td>
-                <td align="right"><h2>Delivery Note</h2></td>
-            
-                </tr>
-            
-                </table>
+                                <table><tr><td></td></tr></table>
 
-            <table  width="100%" style="margin-top:2px;border-top:1px solid;">
-        
-                <tr>
-                
-                    <td > </td>
+                                <table><tr><td></td></tr></table>
+
+                                <table><tr><td></td></tr></table>
+
+                                <table><tr><td></td></tr></table>
+
+                                <table><tr><td></td></tr></table>
+            
+                                <table width="100%" >
                     
-                    <td >'.$delivery_note->cc_customer_name.'</td>
+                                    <tr >
+                                        <td width="10%"></td>
+                                        <td width="20%">Date : '.$date.'</td>
+                                        <td align="center">'.$delivery_note->dn_reffer_no.'</td>
+                                        <td align="right"><h2>Delivery Note</h2></td>
+                                    </tr>
                 
-                </tr>
-        
-        
-            <tr>
-            
-            <td>Customer</td>
-            
-                
-            <td >Tel : '.$delivery_note->cc_telephone.', Fax : '.$delivery_note->cc_fax.', Email : '.$delivery_note->cc_email.'</td>
-            
-            </tr>
-        
-        
-            <tr>
-            
-            <td ></td>
-            
-           
+                                </table>
 
-             <td>Post Box: ' . $delivery_note->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
-            
-            </tr>
+                                <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
+        
+                                    <tr>
+                                    
+                                        <td > </td>
+                                        
+                                        <td >'.$delivery_note->cc_customer_name.'</td>
+                                    
+                                    </tr>
         
         
-            <tr>
-            
-            <td >Attention</td>
-            
-           <td >'.$delivery_note->contact_person.' - '.$delivery_note->contact_designation.', Mobile:-'.$delivery_note->contact_mobile.', Email: - '.$delivery_note->contact_email.'</td>
-            
-            </tr>
+                                    <tr>
+                                    
+                                        <td>Customer</td>
+                                        
+                                            
+                                        <td >Tel : '.$delivery_note->cc_telephone.', Fax : '.$delivery_note->cc_fax.', Email : '.$delivery_note->cc_email.'</td>
+                                    
+                                    </tr>
         
         
-            </table>
+                                    <tr>
+                                    
+                                        <td ></td>
+                                        
+                                        <td>Post Box: ' . $delivery_note->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
+                                    
+                                    </tr>
+        
+        
+                                    <tr>
+                                    
+                                        <td >Attention</td>
+                                    
+                                        <td >'.$delivery_note->contact_person.' - '.$delivery_note->contact_designation.', Mobile:-'.$delivery_note->contact_mobile.', Email: - '.$delivery_note->contact_email.'</td>
+                                    
+                                    </tr>
+        
+        
+                                </table>';
+
+                                $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
     
-               
-            
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
+                                    <tr>
                 
-            
-                <tr>
-                
-                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
-                
-                    <th align="center" style="border-bottom:1px solid;" width="60%">Description</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Unit</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Qty Ordered</th>
-        
-                    <th align="center" style="border-bottom:1px solid;">Delivery</th>
-        
-                
-                </tr>
+                                        <td><i>Received by: </i></td>
 
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                        <td></td><td></td><td></td><td></td><td></td><td></td> 
+                                        <td>Driver:</td>
 
-                '.$pdf_data.'
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                        <td></td><td></td><td></td><td></td><td></td>
+                                        <td><i>Store Keeper</i></td>
     
-                 
-                
-            </table>';
-            
-           
-            
-                //echo $html . $footer;
+                                    </tr>
 
-                $mpdf->WriteHTML($html);
-                $mpdf->SetFooter($footer);
-                $this->response->setHeader('Content-Type', 'application/pdf');
-                $mpdf->Output($title . '.pdf', 'I');
+
+                                    <tr>
+                                    
+                                        <td></td>
+
+                                        <td></td>
+                                        
+                                        <td></td>
+
+                                        <td></td>
+                                        
+                                        <td></td>
+                        
+                                    </tr>
+
+
+                                    <tr>
+                                    
+                                        <td></td>
+
+                                        <td></td>
+                                        
+                                        <td></td>
+
+                                        <td></td>
+                                        
+                                        <td></td>
+                        
+                        
+                                    </tr>
+
+
+                                    <tr>
+                                    
+                                        <td></td>
+
+                                        <td></td>
+                                        
+                                        <td></td>
+
+                                        <td></td>
+                                        
+                                        <td></td>
+                        
+                        
+                                    </tr>
+    
+                
+                                 </table>';
+
+                            $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+                
+                                    <tr>
+                                        <td rowspan="2">Order Terms</td>
+                        
+                                        <td style="width:15%">LPO Ref:</td>
+                        
+                                        <td style="width:30%">'.$delivery_note->dn_lpo_reference.'</td>
+
+                                        <td style="width:12%">Payment:</td>
+                        
+                                        <td >'.$delivery_note->dn_payment_terms.'</td>
+                                        
+                                    </tr>
+    
+                                    <tr>
+                                        <td>Project:</td>
+                        
+                                        <td style="">'.$delivery_note->dn_project.'</td>
+                        
+                                        <td style="">Sales Order:</td>
+
+                                        <td style="">'.$delivery_note->so_reffer_no.'</td>
+                        
+                                        <td ></td>
+                        
+                                    </tr>
+                
+                                </table>';
+
+
+                $main_table = '<style>
+                                    th, td { padding: 4px; font-size: 12px; }
+                                    p { font-size: 12px; margin-bottom: 13px; }
+                                </style>
+                                <table  width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
+                                    <thead>
+                                        <tr>
+                    
+                                            <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
+                                        
+                                            <th align="center" style="border-bottom:1px solid;" width="60%">Description</th>
+                                        
+                                            <th align="center" style="border-bottom:1px solid;">Unit</th>
+                                        
+                                            <th align="center" style="border-bottom:1px solid;">Qty Ordered</th>
+                                
+                                            <th align="center" style="border-bottom:1px solid;">Delivery</th>
+            
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>' . $pdf_data . '</tbody>
+
+                                </table>';
+
+                                $mpdf->SetHTMLHeader($header_html);
+
+                                $mpdf->SetHTMLFooter($footer_common);
+
+                                $mpdf->SetAutoPageBreak(true, 20);
+
+                                $mpdf->WriteHTML($main_table);
+
+                                // Output summary just before footer on last page
+                                $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+                                $this->response->setHeader('Content-Type', 'application/pdf');
+
+                                $mpdf->Output($title . '.pdf', 'I');
+
+
+
             
             }
     

@@ -1266,7 +1266,7 @@ class ProFormaInvoice extends BaseController
         
         
 
-       public function Pdf($id)
+        public function Pdf($id)
         {   
             if(!empty($id))
             {   
@@ -1360,6 +1360,8 @@ class ProFormaInvoice extends BaseController
                 ]);
 
                 $mpdf->SetAutoPageBreak(true, 45);
+
+                $mpdf->SetTitle($title);
 
                 $header_html = '<div style="">
                                     
