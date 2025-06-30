@@ -1366,368 +1366,217 @@ class PurchaseOrder extends BaseController
 
             $title = $purchase_order->po_reffer_no;
 
-            //$mpdf = new \Mpdf\Mpdf();
-
-             $footer = '
-
-                <table style="width:100%">
-            
-                    <tr  style="width:100%";>
-        
-                        <td>Amount in words</td>
-                    
-                        <td style="width: 50%;">'.currency_to_words($purchase_order->po_amount).'</td>
-
-
-                        <td style="font-weight: bold;width: 20%;" >Net Order Value</td>
-            
-                        <td>'.format_currency($purchase_order->po_amount).'</td>
-
-                    
-                    </tr>
-
-                </table>
-
-
-            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-            
-            <tr>
-                <td style="width:12%" rowspan="2">Order Terms</td>
-
-                <td style="width:15%">Payment</td>
-
-                <td style="width:29%">'.$purchase_order->po_payment_term.'</td>
-
-                <td style="width:10%">Vendor Ref:</td>
-
-                <td style="">'.$purchase_order->po_vendor_ref.'</td>
-                
-            </tr>
-
-            <tr>
-                <td style="width:15%" rowspan="2">Delivery</td>
-
-                <td style="width:29%">'.$delivery_date.'</td>
-
-                <td style=""></td>
-  
-
-            </tr>
-
-            
-            </table>
-
-
-            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-
-            <tr>
-            
-               <td style="width:55%">Procurement Executive - Accounts Assistant, Mob : +974 5013 0377</td>
-               
-               <td>Justin Jose - Operations Manager</td>
-              
-
-            </tr>
-
-
-            <tr>
-            
-                <td style="width:55%">Finance Manager  - Chief Accountant, Mob : +974 7743 4520</td>
-                
-                <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
-           
-
-            </tr>
-
-
-            <tr>
-            
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-            
-
-            </tr>
-
-
-            <tr>
-        
-            <td></td>
-
-            <td></td>
-
-            <td></td>
-
-            <td></td>
-
-            <td></td>
-
-            <td></td>
-
-            <td></td>
-
-            
-
-        </tr>
-
-
-        <tr>
-    
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        
-
-    </tr>
-
-
-    <tr>
-    
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        
-
-    </tr>
-
-
-    <tr>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-    
-
-    </tr>
-
-
-    <tr>
-    
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        <td></td>
-
-        
-
-    </tr>
-
-
-            
-            
-            
-            </table>
-    
-           
-        
-        
-            ';
-
-            // Calculate dynamic margin bottom based on footer line count
-            $footer_line_count = substr_count($footer, '<tr>');
-            $line_height_mm = 7;  // Approximate height per footer line in mm, tweak if needed
-            $margin_bottom = ($footer_line_count * $line_height_mm) + 5; // 5mm extra padding
-
             $mpdf = new \Mpdf\Mpdf([
-                'margin_top' => 5,
-                'margin_left' => 5,
-                'margin_right' => 5,
-                'margin_bottom' => $margin_bottom, // Dynamic margin bottom
+                    'margin_top' => 81,
+                    'margin_bottom' => 45,
+                    'margin_left' => 5,
+                    'margin_right' => 5,
+                    'defaultfooterline' => 0,
             ]);
 
-            
-           
+            $mpdf->SetAutoPageBreak(true, 45);
 
-            $mpdf->SetTitle($title); // Set the title
+            $mpdf->SetTitle($title);
 
-            $html ='
-        
-            <style>
-            tbody  td{
-            
-               padding-top: unset;
+            $header_html = '<table><tr><td></td></tr></table>
 
-            }
-            th, td {
-                padding-top: 10px !important;
-               
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-            }
-            p{
-                
-                font-size: 12px;
-                margin-bottom: 13px;
+                            <table><tr><td></td></tr></table>
 
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
-            
-            </style>
-           
-           
-           
-            <table><tr><td></td></tr></table>
+                            <table><tr><td></td></tr></table>
+                            
+                            <table><tr><td></td></tr></table>
 
-            <table><tr><td></td></tr></table>
+                            <table><tr><td></td></tr></table>
 
-            <table><tr><td></td></tr></table>
-            
-            <table><tr><td></td></tr></table>
-    
-            <table width="100%" style="margin-top:90px;">
-            
-        
-            <tr width="100%">
-            <td width="9%"></td>
-            <td width="20%">Date : '.$date.'</td>
-            <td align="center">'.$purchase_order->po_reffer_no.'</td>
-            <td align="right"><h2>Purchase Order</h2></td>
-        
-            </tr>
-        
-            </table>
+                            <table><tr><td></td></tr></table>
 
-        <table  width="100%" style="margin-top:2px;border-top:1px solid;line-height:8px;">
-    
-            <tr>
-            
-                <td> </td>
-                
-                <td>'.$purchase_order->cc_customer_name.'</td>
-            
-            </tr>
-    
-    
-        <tr>
-        
-        <td> Vendor </td>
-        
-            
-        <td>Tel : '.$purchase_order->cc_telephone.', Fax : '.$purchase_order->cc_fax.', Email : '.$purchase_order->cc_email.'</td>
-        
-        </tr>
-    
-    
-        <tr>
-        
-        <td></td>
-        
-        <td >Post Box :  '.$purchase_order->cc_post_box.' , '.$customers->cc_city.' , '.$customers->cc_country.'</td>
-        
-        </tr>
-    
-    
-        <tr>
-        
-        <td >Attention</td>
-        
-         <td >'.$purchase_order->contact_person.' - '.$purchase_order->contact_designation.', Mobile:-'.$purchase_order->contact_mobile.', Email: - '.$purchase_order->contact_email.'</td>
-        
-        </tr>
-    
-    
-        </table>
+                            <table><tr><td></td></tr></table>
 
-           
+                            <table><tr><td></td></tr></table>
+
+                            <table><tr><td></td></tr></table>
+
+                            <table><tr><td></td></tr></table>
+
+                            <table><tr><td></td></tr></table>
+
+                            <table><tr><td></td></tr></table>
+                    
+                            <table width="100%" >
+                                <tr>
+                                    <td width="9%"></td>
+                                    <td width="20%">Date : '.$date.'</td>
+                                    <td align="center">'.$purchase_order->po_reffer_no.'</td>
+                                    <td align="right"><h2>Purchase Order</h2></td>
         
-        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
-            
+                                </tr>
         
-            <tr>
-            
-                <th align="center" style="border-bottom:1px solid;"width="8%">Item No</th>
-            
-                <th align="center" style="border-bottom:1px solid;"width="47%">Description</th>
-            
-                <th align="center" style="border-bottom:1px solid;">Qty</th>
-            
-                <th align="center" style="border-bottom:1px solid;">Unit</th>
-            
-                <th align="center" style="border-bottom:1px solid;">Rate</th>
+                            </table>
+
+                            <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
     
-                <th align="center" style="border-bottom:1px solid;">Disc%</th>
+                                <tr>
+                                
+                                    <td> </td>
+                                    
+                                    <td>'.$purchase_order->cc_customer_name.'</td>
+                                
+                                </tr>
     
-                <th align="center" style="border-bottom:1px solid;">Amount</th>
     
-            
-            </tr>
+                                <tr>
+                                
+                                <td> Vendor </td>
+                                
+                                    
+                                <td>Tel : '.$purchase_order->cc_telephone.', Fax : '.$purchase_order->cc_fax.', Email : '.$purchase_order->cc_email.'</td>
+                                
+                                </tr>
+    
+    
+                                <tr>
+                                
+                                <td></td>
+                                
+                                <td >Post Box :  '.$purchase_order->cc_post_box.' , '.$customers->cc_city.' , '.$customers->cc_country.'</td>
+                                
+                                </tr>
+    
+    
+                                <tr>
+                                
+                                <td >Attention</td>
+                                
+                                <td >'.$purchase_order->contact_person.' - '.$purchase_order->contact_designation.', Mobile:-'.$purchase_order->contact_mobile.', Email: - '.$purchase_order->contact_email.'</td>
+                                
+                                </tr>
+    
+    
+                            </table>';
 
 
-            '.$pdf_data.'
+            $footer_common = ' <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
 
-             
+                                    <tr>
+                                    
+                                        <td style="width:55%">Procurement Executive - Accounts Assistant, Mob : +974 5013 0377</td>
+                                        
+                                        <td>Justin Jose - Operations Manager</td>
+                                    
+
+                                    </tr>
+
+
+                                    <tr>
+                                    
+                                        <td style="width:55%">Finance Manager  - Chief Accountant, Mob : +974 7743 4520</td>
+                                        
+                                        <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+                                
+
+                                    </tr>
+
+
+                                    
+
+
             
-        </table>';
-        
-       
-        
-            //echo $html . $footer; exit();
+            
+            
+                                </table>';
 
-            $mpdf->WriteHTML($html);
-            $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+            $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+            
+                                <tr>
+                    
+                                    <td>Amount in words</td>
+                                
+                                    <td style="width: 50%;">'.currency_to_words($purchase_order->po_amount).'</td>
+
+
+                                    <td style="font-weight: bold;width: 20%;" >Net Order Value</td>
+                        
+                                    <td>'.format_currency($purchase_order->po_amount).'</td>
+
+                                
+                                </tr>
+
+                            </table>
+
+                            <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
+            
+                                <tr>
+                                    <td style="width:12%" rowspan="2">Order Terms</td>
+
+                                    <td style="width:15%">Payment</td>
+
+                                    <td style="width:29%">'.$purchase_order->po_payment_term.'</td>
+
+                                    <td style="width:10%">Vendor Ref:</td>
+
+                                    <td style="">'.$purchase_order->po_vendor_ref.'</td>
+                                    
+                                </tr>
+
+                                <tr>
+                                    <td style="width:15%" rowspan="2">Delivery</td>
+
+                                    <td style="width:29%">'.$delivery_date.'</td>
+
+                                    <td style=""></td>
+                    
+
+                                </tr>
+
+            
+                            </table>';
+
+
+            $main_table = '<style>
+                                    th, td { padding: 4px; font-size: 12px; }
+                                    p { font-size: 12px; margin-bottom: 13px; }
+                                </style>
+            <table  width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
+
+                                <thead>
+                                    <tr>
+                                    
+                                        <th align="center" style="border-bottom:1px solid;"width="8%">Item No</th>
+                                    
+                                        <th align="center" style="border-bottom:1px solid;"width="47%">Description</th>
+                                    
+                                        <th align="center" style="border-bottom:1px solid;">Qty</th>
+                                    
+                                        <th align="center" style="border-bottom:1px solid;">Unit</th>
+                                    
+                                        <th align="center" style="border-bottom:1px solid;">Rate</th>
+                            
+                                        <th align="center" style="border-bottom:1px solid;">Disc%</th>
+                            
+                                        <th align="center" style="border-bottom:1px solid;">Amount</th>
+                            
+                                    
+                                    </tr>
+                                </thead>
+
+
+                                <tbody>'.$pdf_data.'</tbody>
+
+                            </table>';
+
+                            $mpdf->SetHTMLHeader($header_html);
+                            $mpdf->SetHTMLFooter($footer_common);
+
+                            $mpdf->SetAutoPageBreak(true, 20);
+
+                            $mpdf->WriteHTML($main_table);
+
+                            // Output summary just before footer on last page
+                            $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+                            $this->response->setHeader('Content-Type', 'application/pdf');
+                            $mpdf->Output($title . '.pdf', 'I');
+
         
         }
 
