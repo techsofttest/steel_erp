@@ -1740,6 +1740,8 @@ class DeliverNote extends BaseController
 
                 $mpdf->SetAutoPageBreak(true, 45);
 
+                $mpdf->SetTitle($title);
+
                 $header_html = '
                                 <table><tr><td></td></tr></table>
 
