@@ -1266,7 +1266,7 @@ class ProFormaInvoice extends BaseController
         
         
 
-            public function Pdf($id)
+       public function Pdf($id)
         {   
             if(!empty($id))
             {   
@@ -1294,19 +1294,19 @@ class ProFormaInvoice extends BaseController
                     $disc = number_format($prod_det->pp_discount, 2);
     
 
-                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
+                    $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.$prod_det->product_details.'</td>';
 
-                    $pdf_data .= '<td align="center">'.$prod_det->pp_quantity.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->pp_quantity.'</td>';
 
-                    $pdf_data .= '<td align="center">'.$prod_det->pp_unit.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->pp_unit.'</td>';
 
-                    $pdf_data .= '<td align="right">'.$rate.'</td>';
+                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$rate.'</td>';
 
-                    $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
+                    $pdf_data .= '<td align="center" style="color: red;padding: 2px; vertical-align: top;"><i>'.$disc.'</i></td>';
 
-                    $pdf_data .= '<td align="right">'.$amount.'</td>';
+                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$amount.'</td>';
                     
                     $k++;
                 }
@@ -1351,347 +1351,314 @@ class ProFormaInvoice extends BaseController
 
                 $title = 'PINV - '.$proforma_invoice->pf_reffer_no;
 
-                  $footer = '
-        
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-                
-                    <tr>
-                        <td></td>
-
-                        <td>IBAN : QA97CBQA000000004570407137001</td>
-
-                        <td style="width: 19%;">Net Order Value:</td>
-            
-                        <td align="right">'.format_currency($proforma_invoice->pf_total_amount).'</td>
-                    
-                       
-                
-                    </tr>
-    
-                    <tr>
-        
-                        <td>Bank Details</td>
-                    
-                        <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
-
-                        <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
-
-                        <td align="right" style="font-weight: bold;">'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
-                        
-                       
-                        
-                    </tr>
-
-
-                    <tr>
-        
-                        <td></td>
-                    
-                        <td>SWIFT : CBQAQAQA</td>
-
-                        
-            
-                        
-                       
-                       
-                    
-                    </tr>
-    
-    
-                    <tr style="width:100%";>
-        
-                        <td style="width: 15%;">Amount in words</td>
-                    
-                        <td style="width: 59%;">'.currency_to_words($proforma_invoice->pf_total_amount).'</td>
-            
-                        
-                    
-                    </tr>
-    
-                </table>
-    
-    
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-                
-                <tr>
-                    <td style="width:12%" rowspan="2">Invoice Terms</td>
-    
-                    <td style="width:20%">LPO Ref:</td>
-    
-                    <td style="width:30%">'.$proforma_invoice->pf_lpo_ref.'</td>
-    
-                    <td style="width:10%">Payment:</td>
-    
-                    <td style="width:">'.$proforma_invoice->pf_payment_terms.'</td>
-
-                    
-                    
-                    
-                </tr>
-
-
-                <tr>
-                    <td style="width:12%" rowspan="2">Project:</td>
-    
-                    <td style="">'.$proforma_invoice->pf_project.'</td>
-    
-                    <td style="width:15%">Sales Order:</td>
-
-                    <td style="">'.$proforma_invoice->so_reffer_no.'</td>
-    
-                    
-    
-                    
-                    
-                </tr>
-    
-               
-                
-                </table>
-    
-    
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
-    
-                <tr>
-                
-                    <td><i>Received by: </i></td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-                    <td><i>Prepared by:</i></td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-                    <td><i>Finance Dept:</i></td>
-
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-    
-                    <td><i>Workshop Manager</i></td>
-    
-                  
-    
-                </tr>
-
-
-                <tr>
-                
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-    
-                  
-    
-                </tr>
-
-
-                <tr>
-                
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-    
-                  
-    
-                </tr>
-
-
-                <tr>
-                
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-
-                    <td></td>
-    
-                    <td></td>
-    
-                  
-    
-                </tr>
-    
-    
-                
-                
-                
-                </table>
-            
-            
-            
-                ';
-
-                // Calculate dynamic margin bottom based on footer line count
-                $footer_line_count = substr_count($footer, '<tr>');
-                $line_height_mm = 7;  // Approximate height per footer line in mm, tweak if needed
-                $margin_bottom = ($footer_line_count * $line_height_mm) + 5; // 5mm extra padding
-
                 $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 5,
+                    'margin_top' => 75,
+                    'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
-                    'margin_bottom' => $margin_bottom, // Dynamic margin bottom
+                    'defaultfooterline' => 0,
                 ]);
 
-                
+                $mpdf->SetAutoPageBreak(true, 45);
 
-                $mpdf->SetTitle($title); // Set the title
-    
-                $html ='
-            
-                <style>
-                th, td {
-                padding-top: 5px;
-               
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-            }
-            p{
-                
-                font-size: 12px;
-               margin-bottom: 13px;
+                $header_html = '<div style="">
+                                    
+                                    <table><tr><td></td></tr></table>
 
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
-            
-            </style>
-            
-               
-                <table><tr><td></td></tr></table>
+                                    <table><tr><td></td></tr></table>
 
-                <table><tr><td></td></tr></table>
+                                    <table><tr><td></td></tr></table>
+                                
+                                    <table><tr><td></td></tr></table>
 
-                <table><tr><td></td></tr></table>
-               
-                <table><tr><td></td></tr></table>
+                                    <table><tr><td></td></tr></table>
+
+                                    <table><tr><td></td></tr></table>
+
+                                    <table><tr><td></td></tr></table>
+
+                                    <table><tr><td></td></tr></table>
+
+                                    <table><tr><td></td></tr></table>
+
+                                    <table><tr><td></td></tr></table>
+
+                                   
             
-            
-                <table width="100%" style="margin-top:90px;">
+                                    <table width="100%" >
                 
             
-                <tr width="100%">
-                <td width="9%"></td>
-                <td>Date : '.$date.'</td>
-                <td align="center" width="20%">'.$proforma_invoice->pf_reffer_no.'</td>
-                <td align="right"><h2>Pro-forma Invoice</h2></td>
+                                        <tr>
+                                            <td width="9%"></td>
+                                            <td>Date : '.$date.'</td>
+                                            <td align="center" width="20%">'.$proforma_invoice->pf_reffer_no.'</td>
+                                            <td align="right"><h2>Pro-forma Invoice</h2></td>
+                                        </tr>
             
-                </tr>
-            
-                </table>
+                                    </table>
 
-            <table  width="100%" style="margin-top:2px;border-top:1px solid;">
+                                    <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
         
-                <tr>
+                                        <tr>
+                                        
+                                            <td > </td>
+                                            
+                                            <td >'.$proforma_invoice->cc_customer_name.'</td>
+                                        
+                                        </tr>
+                                
+        
+                                        <tr>
+                                        
+                                            <td>Customer</td>
+                                            
+                                                
+                                            <td >Tel : '.$proforma_invoice->cc_telephone.', Fax : '.$proforma_invoice->cc_fax.', Email : '.$proforma_invoice->cc_email.'</td>
+                                            
+                                        </tr>
+                                    
+                                    
+                                        <tr>
+            
+                                            <td ></td>
                 
-                    <td > </td>
+                                            <td>Post Box: ' . $proforma_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
+                
+                                        </tr>
+        
+        
+                                        <tr>
+                                        
+                                            <td >Attention</td>
+                                            
+                                            <td >'.$proforma_invoice->contact_person.' - '.$proforma_invoice->contact_designation.', Mobile:-'.$proforma_invoice->contact_mobile.', Email: - '.$proforma_invoice->contact_email.'</td>
+                                            
+                                        </tr>
+        
+        
+                                    </table>
+                                </div>';
+
+
+               $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+    
+                                    <tr>
+                                    
+                                        <td><i>Received by: </i></td>
+
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        
+                                        <td><i>Prepared by:</i></td>
+
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        
+                                        <td><i>Finance Dept:</i></td>
+
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        
+                                        <td><i>Workshop Manager</i></td>
+                        
+                                    
+                        
+                                    </tr>
+
+
+                                    <tr>
+                                    
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+                        
+                                    
+                        
+                                    </tr>
+
+
+                                    <tr>
+                                    
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+                        
+                                    
+                        
+                                    </tr>
+
+
+                                    <tr>
+                                    
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+
+                                        <td></td>
+                        
+                                        <td></td>
+                        
+                                    
+                        
+                                    </tr>
+    
+    
+                                </table>';
+
+                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+                
+                        <tr>
+                            <td></td>
+
+                            <td style=width="60%">IBAN : QA97CBQA000000004570407137001</td>
+
+                            <td style="width: 15%;">Net Order Value:</td>
+                
+                            <td align="right">'.format_currency($proforma_invoice->pf_total_amount).'</td>
+                        
+                        
                     
-                    <td >'.$proforma_invoice->cc_customer_name.'</td>
+                        </tr>
+    
+                        <tr>
+            
+                            <td>Bank Details</td>
+                        
+                            <td style=width="62%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+
+                            <td style="font-weight: bold;width: 17%;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
+
+                            <td align="right" style="font-weight: bold;">'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
+                            
+                        
+                            
+                        </tr>
+
+
+                        <tr>
+            
+                            <td></td>
+                        
+                            <td>SWIFT : CBQAQAQA</td>
+    
+                        
+                        
+                        </tr>
+    
+    
+                        <tr style="width:100%";>
+            
+                            <td style="width: 15%;">Amount in words</td>
+                        
+                            <td style="width: 59%;">'.currency_to_words($proforma_invoice->pf_total_amount).'</td>
                 
-                </tr>
-        
-        
-            <tr>
-            
-            <td>Customer</td>
-            
+                            
+                        
+                        </tr>
+    
+                    </table>
+                    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
                 
-            <td >Tel : '.$proforma_invoice->cc_telephone.', Fax : '.$proforma_invoice->cc_fax.', Email : '.$proforma_invoice->cc_email.'</td>
+                        <tr>
+                            <td style="width:12%" rowspan="2">Invoice Terms</td>
             
-            </tr>
-        
-        
-            <tr>
+                            <td style="width:20%">LPO Ref:</td>
             
-            <td ></td>
+                            <td style="width:30%">'.$proforma_invoice->pf_lpo_ref.'</td>
             
-            <td>Post Box: ' . $proforma_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
+                            <td style="width:10%">Payment:</td>
             
-            </tr>
-        
-        
-            <tr>
+                            <td style="width:">'.$proforma_invoice->pf_payment_terms.'</td>
+
+                            
+                            
+                            
+                        </tr>
+
+
+                        <tr>
+                            <td style="width:12%" rowspan="2">Project:</td>
             
-            <td >Attention</td>
+                            <td style="">'.$proforma_invoice->pf_project.'</td>
             
-            <td >'.$proforma_invoice->contact_person.' - '.$proforma_invoice->contact_designation.', Mobile:-'.$proforma_invoice->contact_mobile.', Email: - '.$proforma_invoice->contact_email.'</td>
+                            <td style="width:15%">Sales Order:</td>
+
+                            <td style="">'.$proforma_invoice->so_reffer_no.'</td>
             
-            </tr>
-        
-        
-            </table>
+                            
+            
+                            
+                            
+                        </tr>
     
                
-            
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
                 
-            
-                <tr>
-                
-                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
-                
-                    <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Qty</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Unit</th>
-        
-                    <th align="center" style="border-bottom:1px solid;" width="10%">Rate</th>
+                    </table>';
 
-                    <th align="center" style="border-bottom:1px solid;">Disc%</th>
+                $main_table = ' <style>
+                                    th, td { padding: 4px; font-size: 12px; }
+                                    p { font-size: 12px; margin-bottom: 13px; }
+                                </style>
+                                <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
+                                    <thead>
+                                        <tr>
+                                            <th align="center" width="8%" style="border-bottom:1px solid;">Item No</th>
+                                            <th align="center" width="45%" style="border-bottom:1px solid;">Description</th>
+                                            <th align="center" style="border-bottom:1px solid;">Qty</th>
+                                            <th align="center" style="border-bottom:1px solid;">Unit</th>
+                                            <th align="center" style="border-bottom:1px solid;">Rate</th>
+                                            <th align="center" style="border-bottom:1px solid;">Disc%</th>
+                                            <th align="center" style="border-bottom:1px solid;">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>' . $pdf_data . '</tbody>
+                                </table>';
 
-                    <th align="center" style="border-bottom:1px solid;">Amount</th>
-        
+                                $mpdf->SetHTMLHeader($header_html);
+                                $mpdf->SetHTMLFooter($footer_common);
+
+                                $mpdf->SetAutoPageBreak(true, 20);
+
+                                $mpdf->WriteHTML($main_table);
+
+                                // Output summary just before footer on last page
+                                $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+                                $this->response->setHeader('Content-Type', 'application/pdf');
+                                $mpdf->Output($title . '.pdf', 'I');
+                
+                
+                
+
                  
-                
-                </tr>
 
+                
+                
 
-                '.$pdf_data.'
-    
-                 
                 
-            </table>';
-            
-          
-                
-                //echo $html . $footer; exit();
-                
-                $mpdf->WriteHTML($html);
-                $mpdf->SetHTMLFooter($footer, 'EOD'); // Footer only on last page
-                $this->response->setHeader('Content-Type', 'application/pdf');
-                $mpdf->Output($title . '.pdf', 'I');
             
             }
     
