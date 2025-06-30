@@ -1547,11 +1547,11 @@ class ProFormaInvoice extends BaseController
             
                             <td>Bank Details</td>
                         
-                            <td style=width="62%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                            <td style=width="60%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
 
                             <td style="font-weight: bold;width: 17%;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
 
-                            <td align="right" style="font-weight: bold;">'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
+                            <td align="right" style="font-weight: bold;width: 15%;">'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
                             
                         
                             
