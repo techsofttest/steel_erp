@@ -50,7 +50,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 251px !important;
+        width: 239px !important;
    
    
 }
@@ -365,13 +365,13 @@ span.select2.customer_width, span.select2 {
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width:10%">DN No.</td>
+                                                                <td style="width:107px">DN No.</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:6%">Unit</td>
-                                                                <td style="width:6%">Qty</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:7%">Discount</td>
-                                                                <td style="width:9%">Amount</td>
+                                                                <td style="width:65px">Unit</td>
+                                                                <td style="width:60px">Qty</td>
+                                                                <td style="width:80px">Rate</td>
+                                                                <td style="width:69px">Discount</td>
+                                                                <td style="width:90px">Amount</td>
                                                                 
 
                                                             </tr>
@@ -1260,14 +1260,14 @@ span.select2.customer_width, span.select2 {
                             <table class="table table-bordered table-striped delTable " style="margin:0px;">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td class="text-center" style="width: 4%;">SI</td>
-                                        <td class="text-center" style="width: 11%;">Delivery Reffer</td>
+                                        <td class="text-center" style="width: 45px;">SI</td>
+                                        <td class="text-center" style="width: 110px;">Delivery Reffer</td>
                                         <td class="text-center">Product Description</td>
-                                        <td class="text-center" style="width: 6%;">Unit</td>
-                                        <td class="text-center" style="width: 6%;">Qty</td>
-                                        <td class="text-center" style="width: 8%;">Rate</td>
-                                        <td class="text-center" style="width: 7%;">Discount</td>
-                                        <td class="text-center" style="width: 9%;">Amount</td>
+                                        <td class="text-center" style="width: 65px;">Unit</td>
+                                        <td class="text-center" style="width: 60px;">Qty</td>
+                                        <td class="text-center" style="width: 80px;">Rate</td>
+                                        <td class="text-center" style="width: 69px;">Discount</td>
+                                        <td class="text-center" style="width: 90px;">Amount</td>
                                         
 
                                     </tr>
