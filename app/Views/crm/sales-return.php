@@ -2388,7 +2388,9 @@ span.select2.customer_width, span.select2 {
             }
             else{
                 
-                $('.once_form_submit').attr('disabled', false); 
+                //$('.once_form_submit').attr('disabled', false); 
+                $('.once_form_submit').prop('disabled', false);
+
                 $('.cancel_btn').hide()
             }
         }
