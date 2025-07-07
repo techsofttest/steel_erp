@@ -2174,7 +2174,7 @@ class CashInvoice extends BaseController
                         
                                         <td style="">Amount in words</td>
                                     
-                                        <td style="" align="right">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
+                                        <td style="" align="left">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
                             
                                     </tr>
     
