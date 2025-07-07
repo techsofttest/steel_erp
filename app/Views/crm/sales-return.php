@@ -2387,7 +2387,7 @@ span.select2.customer_width, span.select2 {
                 $('.cancel_btn').show().attr('data-id', sales_return);
             }
             else{
-                
+                alert ("sucess");
                 //$('.once_form_submit').attr('disabled', false); 
                 $('.once_form_submit').prop('disabled', false);
 
