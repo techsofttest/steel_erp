@@ -40,7 +40,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 30% !important;
+    width: 239px !important;
    
 }
 span.select2.customer_width, span.select2 {
@@ -363,13 +363,13 @@ span.select2.customer_width, span.select2 {
                                                             
                                                             <tr>
                                                                 
-                                                                <td style="width: 4%;">SI</td>
+                                                                <td style="width: 40px;">SI</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 6%;">Unit</td>
-                                                                <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 7%;">Discount</td>
-                                                                <td style="width: 9%;">Amount</td>
+                                                                <td style="width: 65px;">Unit</td>
+                                                                <td style="width: 60px;">Qty</td>
+                                                                <td style="width: 80px;">Rate</td>
+                                                                <td style="width: 69px;">Discount</td>
+                                                                <td style="width: 90px;">Amount</td>
                                                                
                                                             </tr>
                                                          
