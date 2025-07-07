@@ -946,13 +946,13 @@ span.select2.customer_width, span.select2 {
                                 <thead class="travelerinfo contact_tbody">
                                     
                                     <tr>
-                                        <td class="text-center" style="width: 4%;">SI</td>
-                                        <td class="text-center">Product Description</td>
-                                        <td class="text-center" style="width: 6%;">Unit</td>
-                                        <td class="text-center" style="width: 6%;">Qty</td>
-                                        <td class="text-center" style="width: 6%;">Rate</td>
-                                        <td class="text-center" style="width: 7%;">Discount</td>
-                                        <td class="text-center" style="width: 9%;">Amount</td>
+                                        <td style="width: 40px;">SI</td>
+                                        <td>Product Description</td>
+                                        <td style="width: 65px;">Unit</td>
+                                        <td style="width: 60px;">Qty</td>
+                                        <td style="width: 80px;">Rate</td>
+                                        <td style="width: 69px;">Discount</td>
+                                        <td style="width: 90px;">Amount</td>
                                       
                                     </tr>
                                     
