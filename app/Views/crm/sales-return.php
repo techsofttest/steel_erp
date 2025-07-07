@@ -2378,7 +2378,7 @@ span.select2.customer_width, span.select2 {
 
             var pending_amount = $('.pending_amount').val();
 
-            
+            console.log(rawPrice);
             if (parseFloat(rawPrice)  >  pending_amount){
                 
                 alertify.error("Only " +pending_amount+" can be returned.").delay(3).dismissOthers();
@@ -2387,7 +2387,7 @@ span.select2.customer_width, span.select2 {
                 $('.cancel_btn').show().attr('data-id', sales_return);
             }
             else{
-                alert ("sucess");
+                
                 //$('.once_form_submit').attr('disabled', false); 
                 $('.once_form_submit').prop('disabled', false);
 
