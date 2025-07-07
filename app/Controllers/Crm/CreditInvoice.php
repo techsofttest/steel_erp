@@ -1581,7 +1581,7 @@ class CreditInvoice extends BaseController
                                 <td></td>
                                 <td>IBAN : QA97CBQA000000004570407137001</td>
                                 <td style="font-weight: bold;width: 18%;">Total Invoice value</td>
-                                <td>' . format_currency($credit_invoice->cci_total_amount) . '</td>
+                                <td style="font-weight: bold;">' . format_currency($credit_invoice->cci_total_amount) . '</td>
                             </tr>
                             <tr>
                                 <td>Bank Details</td>
