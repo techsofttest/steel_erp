@@ -110,7 +110,7 @@
     }
     .total_table {
         
-        width: 29% !important;
+        width: 241px !important;
     }
     .cost_data td{
 
@@ -146,6 +146,13 @@
     .select2-container--default .select2-selection--single .select2-selection__rendered {
    
         line-height: 18px;
+    }
+    @media only screen and (max-width: 1199px) and (min-width: 320px){
+
+        .total_table {
+            width: 247px !important;
+        }
+
     }
 </style>
 
