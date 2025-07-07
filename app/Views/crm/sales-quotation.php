@@ -110,7 +110,7 @@
     }
     .total_table {
         
-        width: 241px !important;
+        width: 295px !important;
     }
     .cost_data td{
 
@@ -147,13 +147,13 @@
    
         line-height: 18px;
     }
-    @media only screen and (max-width: 1199px) and (min-width: 320px){
+    /*@media only screen and (max-width: 1199px) and (min-width: 320px){
 
         .total_table {
             width: 247px !important;
         }
 
-    }
+    }*/
 </style>
 
 <div class="tab-content text-muted">
@@ -1829,12 +1829,12 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td class="text-center" style="width: 4%;">SI</td>
+                                                                <td class="text-center" style="width: 40px;">SI</td>
                                                                 <td colspan="2" class="text-center">Cost Of Materials / Services</td>
-                                                                <td class="text-center" style="width: 6%;">Unit</td>
-                                                                <td class="text-center" style="width: 6%;">Qty</td>
-                                                                <td class="text-center"  style="width: 8%;">Rate</td>
-                                                                <td class="text-center" style="width: 9%;">Amount</td>
+                                                                <td class="text-center" style="width: 65px;">Unit</td>
+                                                                <td class="text-center" style="width: 60px;">Qty</td>
+                                                                <td class="text-center"  style="width: 80px;">Rate</td>
+                                                                <td class="text-center" style="width: 90px;">Amount</td>
                                                                 
                                                             </tr>
                                                            
