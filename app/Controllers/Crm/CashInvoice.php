@@ -2140,7 +2140,7 @@ class CashInvoice extends BaseController
                 $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
                 
                                     <tr>
-                                        <td></td>
+                                        <td width="15%"></td>
 
                                         <td>IBAN : QA97CBQA000000004570407137001</td>
 
