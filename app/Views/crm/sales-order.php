@@ -48,7 +48,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 168px !important;
+       width: 159px !important;
    
 }
 .view_product_data td{
@@ -1306,13 +1306,13 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td class="text-center" style="width: 4%;">SI</td>
+                                                                <td class="text-center" style="width: 45px;">SI</td>
                                                                 <td class="text-center">Product Description</td>
-                                                                <td class="text-center" style="width: 6%;">Unit</td>
-                                                                <td class="text-center" style="width: 6%;">Qty</td>
-                                                                <td class="text-center" style="width: 8%;">Rate</td>
-                                                                <td class="text-center" style="width: 7%;">Discount</td>
-                                                                <td class="text-center" style="width: 9%;">Amount</td>
+                                                                <td class="text-center" style="width: 65px;">Unit</td>
+                                                                <td class="text-center" style="width: 60px;">Qty</td>
+                                                                <td class="text-center" style="width: 80px;">Rate</td>
+                                                                <td class="text-center" style="width: 69px;">Discount</td>
+                                                                <td class="text-center" style="width: 90px;">Amount</td>
                                                                
                                                             </tr>
                                                             
