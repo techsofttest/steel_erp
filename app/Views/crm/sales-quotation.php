@@ -110,7 +110,7 @@
     }
     .total_table {
         
-        width: 295px !important;
+        width: 296px !important;
     }
     .cost_data td{
 
