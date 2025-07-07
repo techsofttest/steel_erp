@@ -40,7 +40,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 28% !important;
+    width: 30% !important;
    
 }
 span.select2.customer_width, span.select2 {

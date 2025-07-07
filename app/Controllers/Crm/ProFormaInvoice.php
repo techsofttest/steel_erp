@@ -1575,7 +1575,7 @@ class ProFormaInvoice extends BaseController
             
                             <td style="width: 15%;">Amount in words</td>
                         
-                            <td style="width: 59%;">'.currency_to_words($proforma_invoice->pf_total_amount).'</td>
+                            <td style="width: 59%;">'.currency_to_words($proforma_invoice->pf_current_claim_value).'</td>
                 
                             
                         

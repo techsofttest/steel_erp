@@ -2135,7 +2135,7 @@ public function Pdf($id)
                 <td>Quote Validity</td>
                 <td width="62%">' . $quotation_details->qd_validity . '</td>
                 <td style="font-weight: bold;width: 15%;">Net Quote Value</td>
-                <td>' . format_currency($quotation_details->qd_sales_amount) . '</td>
+                <td style="font-weight: bold;">' . format_currency($quotation_details->qd_sales_amount) . '</td>
             </tr>
             <tr><td>Currency</td><td>Qatar Riyals</td></tr>
             <tr><td>Amount in words</td><td>' . $amount_in_words . '</td></tr>
@@ -2144,7 +2144,7 @@ public function Pdf($id)
 
         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin: 0 20px 0 20px;padding: 0">
             <tr>
-                <td style="width:12%;" rowspan="2">Quote Terms</td>
+                <td style="width:14%;" rowspan="2">Quote Terms</td>
                 <td style="width:15%">Enquiry Ref.</td>
                 <td style="width:32%">' . $quotation_details->enquiry_reff . '</td>
                 <td style="width:9%">Payment:</td>

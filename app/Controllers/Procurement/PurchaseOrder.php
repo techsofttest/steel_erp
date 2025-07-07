@@ -1477,11 +1477,6 @@ class PurchaseOrder extends BaseController
                                     </tr>
 
 
-                                    
-
-
-            
-            
             
                                 </table>';
 

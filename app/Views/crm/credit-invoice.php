@@ -50,7 +50,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 30% !important;
+    width: 251px !important;
    
    
 }

@@ -446,8 +446,8 @@
                                                                 <td style="width: 4%;">SI</td>
                                                                 <td >Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
-                                                                <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
+                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 9%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 <td style="width: 4%;"></td>
