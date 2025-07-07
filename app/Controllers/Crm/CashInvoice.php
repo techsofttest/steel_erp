@@ -2185,7 +2185,7 @@ class CashInvoice extends BaseController
                 
                  
                                     <tr>
-                                        <td rowspan="2" style="width:15%;vertical-align: middle;padding:0; margin:0;">Invoice Terms</td>
+                                        <td rowspan="2" style="width:20%;vertical-align: middle;padding:0; margin:0;">Invoice Terms</td>
                         
                                         <td style="width:20%;padding:0; margin:0;">Project:</td>
                         
