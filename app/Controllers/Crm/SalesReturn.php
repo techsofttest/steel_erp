@@ -1353,6 +1353,8 @@ class SalesReturn extends BaseController
                                                        
                         $balance_amount = $credit_invoice_parent->cci_total_amount - $credit_invoice_parent->cci_paid_amount;
 
+                        print_r($balance_amount ); exit();
+
 
                         $data['pending_amount_alert'] = "Only " . number_format($balance_amount, 2) . " can be returned.";
 
