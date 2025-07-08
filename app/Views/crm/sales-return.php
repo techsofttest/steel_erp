@@ -2791,15 +2791,15 @@ span.select2.customer_width, span.select2 {
  
                 success:function(data)
                 {   
-                     var data = JSON.parse(data);
+                    var data = JSON.parse(data);
                      
-                     $(".edit_select_prod_add").html(data.product_detail);
+                    $(".edit_select_prod_add").html(data.product_detail);
  
-                     $('#EditSelectProduct').modal('show');
+                    $('#EditSelectProduct').modal('show');
                      
-                     $('#EditSalesReturn').modal('hide');
+                    $('#EditSalesReturn').modal('hide');
  
-                 } 
+                } 
  
              });
  

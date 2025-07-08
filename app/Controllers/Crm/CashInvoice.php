@@ -576,7 +576,7 @@ class CashInvoice extends BaseController
 
         $total_amount = format_currency($cash_invoice->ci_total_amount);
 
-        $advance_paid = format_currency($cash_invoice->ci_advance_amount);
+        $advance_paid = format_currency($cash_invoice->ci_paid_amount);
 
         $data['total_amount'] = '<tr>
             
@@ -1324,7 +1324,7 @@ class CashInvoice extends BaseController
              
             $total_amount = format_currency($cash_invoice->ci_total_amount);
 
-            $advance_paid = format_currency($cash_invoice->ci_advance_amount);
+            $advance_paid = format_currency($cash_invoice->ci_paid_amount);
 
             $data['total_amount'] = '<tr>
                 
