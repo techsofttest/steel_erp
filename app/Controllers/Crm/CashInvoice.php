@@ -1439,8 +1439,13 @@ class CashInvoice extends BaseController
             );
     
             $product_details_data = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',$cond1,$joins1);
-             
+
+
+            $sales_return = $this->common_model->SingleRow('crm_sales_return',array('sr_invoice' => $cash_invoice->ci_reffer_no));
+
+            $receipt_check_data = $this->common_model->CheckTwiceCond1('accounts_receipt_invoice_data',array('rid_invoice_type' => 'cash_invoice'),array('rid_invoice' => $this->request->getPost('ID')));
            
+            
             $i=1;  
     
             $data['prod_details']= "";
@@ -1459,9 +1464,13 @@ class CashInvoice extends BaseController
                 <td>'.format_currency($prod_det->cipd_qtn).'</td>
                 <td>'.$rate.'</td>
                 <td >'.$discount.'</td>
-                <td>'.$amount.'</td>
-                <td><a href="javascript:void(0)" class="delete delete-color del_prod_remove" data-id="215" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
-                <input type="hidden" value="'.$prod_det->cipd_cash_invoice.'" class="edit_ci_prod_id">
+                <td>'.$amount.'</td>';
+                if(empty($sales_return) && empty($receipt_check_data)){
+                    
+                    $data['prod_details'] .='<td><a href="javascript:void(0)" class="delete delete-color del_prod_remove" data-id="215" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>';
+                }
+
+                $data['prod_details'] .='<input type="hidden" value="'.$prod_det->cipd_cash_invoice.'" class="edit_ci_prod_id">
                 <input type="hidden" value="'.$prod_det->cipd_id.'" class="hidden_cash_prod_id">
                 </tr>'; 
                  $i++;

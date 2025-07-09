@@ -798,8 +798,10 @@ class CreditInvoice extends BaseController
         $credit_invoice = $this->common_model->SingleRow('crm_credit_invoice', $cond);
 
         $sales_return = $this->common_model->fetchWhere('crm_sales_return',array('sr_invoice' => $credit_invoice->cci_reffer_no));
+
+        $receipts = $this->common_model->fetchWhere('accounts_receipt_invoice_data',array('rid_invoice'=>$credit_invoice->cci_id,'rid_invoice_type' => 'credit_invoice'));
         
-        if(empty($sales_return))
+        if(empty($sales_return) && empty($receipts))
         {  
             
             $credit_invoice_prod = $this->common_model->FetchWhere('crm_credit_invoice_prod_det',array('ipd_credit_invoice' => $credit_invoice->cci_id));
