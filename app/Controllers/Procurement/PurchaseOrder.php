@@ -559,7 +559,7 @@ class PurchaseOrder extends BaseController
     public function AddContactDetails()
     {   
         
-
+       
         if(!empty($_POST['pro_con_person']))
         {    
             $count =  count($_POST['pro_con_person']);
@@ -569,18 +569,18 @@ class PurchaseOrder extends BaseController
             
                 for($j=0;$j<=$count-1;$j++)
                 {
-                
+                    
                     $insert_data  	= array(  
                         
-                        'pro_con_person'       =>  $_POST['pro_con_person'][$j],
-                        'pro_con_designation'  =>  $_POST['pro_con_designation'][$j],
-                        'pro_con_mobile'       =>  $_POST['pro_con_mobile'][$j],
-                        'pro_con_email'        =>  $_POST['pro_con_email'][$j],
-                        'pro_con_vendor'       =>  $_POST['new_vendor_hidden_id'],
+                        'contact_person'             =>  $_POST['pro_con_person'][$j],
+                        'contact_designation'        =>  $_POST['pro_con_designation'][$j],
+                        'contact_mobile'             =>  $_POST['pro_con_mobile'][$j],
+                        'contact_email'              =>  $_POST['pro_con_email'][$j],
+                        'contact_customer_creation'  =>  $_POST['new_vendor_hidden_id'],
                       
                     );
-
-                    $this->common_model->InsertData('pro_contact',$insert_data);
+                    
+                    $this->common_model->InsertData('crm_contact_details',$insert_data);
 
                 } 
             }
@@ -1367,7 +1367,7 @@ class PurchaseOrder extends BaseController
             $title = $purchase_order->po_reffer_no;
 
             $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 81,
+                    'margin_top' => 62,
                     'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
@@ -1390,17 +1390,9 @@ class PurchaseOrder extends BaseController
 
                             <table><tr><td></td></tr></table>
 
-                            <table><tr><td></td></tr></table>
+                            
 
-                            <table><tr><td></td></tr></table>
-
-                            <table><tr><td></td></tr></table>
-
-                            <table><tr><td></td></tr></table>
-
-                            <table><tr><td></td></tr></table>
-
-                            <table><tr><td></td></tr></table>
+                            
                     
                             <table width="100%" >
                                 <tr>
@@ -1455,7 +1447,7 @@ class PurchaseOrder extends BaseController
                             </table>';
 
 
-            $footer_common = ' <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+            $footer_common = ' <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;margin-bottom:30px;">
 
                                     <tr>
                                     
@@ -1489,9 +1481,9 @@ class PurchaseOrder extends BaseController
                                     <td style="width: 50%;">'.currency_to_words($purchase_order->po_amount).'</td>
 
 
-                                    <td style="font-weight: bold;width: 20%;" >Net Order Value</td>
+                                    <td style="font-weight: bold;width: 20%;" align="right">Net Order Value</td>
                         
-                                    <td>'.format_currency($purchase_order->po_amount).'</td>
+                                    <td style="font-weight: bold;" align="right">'.format_currency($purchase_order->po_amount).'</td>
 
                                 
                                 </tr>
@@ -1556,6 +1548,7 @@ class PurchaseOrder extends BaseController
 
 
                                 <tbody>'.$pdf_data.'</tbody>
+                                
 
                             </table>';
 
@@ -1567,7 +1560,7 @@ class PurchaseOrder extends BaseController
                             $mpdf->WriteHTML($main_table);
 
                             // Output summary just before footer on last page
-                            $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+                            $mpdf->WriteHTML('<div style="position: absolute; bottom: 110px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
                             $this->response->setHeader('Content-Type', 'application/pdf');
                             $mpdf->Output($title . '.pdf', 'I');

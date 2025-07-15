@@ -90,6 +90,7 @@ class SalesOrder extends BaseController
               'so_reffer_no'     => $reffer_num,
               'so_date'          => date('d-M-Y',strtotime($record->so_date)),
               'so_customer'      => $record->cc_customer_name,
+			  'so_amount'        => $record->so_amount_total,
               "action"           => $action,
             );
            $i++; 

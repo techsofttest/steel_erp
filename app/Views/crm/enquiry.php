@@ -1138,7 +1138,6 @@
             var form = $('#add_enquiry_form');
 
             
-            
             form.validate({
                 rules: {
                     required: 'required',

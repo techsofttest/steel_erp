@@ -1419,6 +1419,7 @@
                                                     <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
+													<th>Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1884,6 +1885,7 @@
                 { data: 'so_reffer_no' },
                 { data: 'so_date'},
                 { data: 'so_customer'},
+				{ data: 'so_amount'},
                 { data: 'action'},
                 
                ],

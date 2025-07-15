@@ -652,7 +652,7 @@
                                                 <td><input type="text" name="contact_person"  value="" class="form-control" required></td>
                                                 <td><input type="text" name="contact_designation"  value="" class="form-control" required></td>
                                                 <td><input type="text" name="contact_mobile"  value="" class="form-control pro_con_mobile_clz" required></td>
-                                                <td> <input type="email" name="contact_email" value="" class="form-control" required></td>
+                                                <td> <input type="email" name="contact_email" value="" class="form-control"></td>
                                                 
                                             </tr>
 

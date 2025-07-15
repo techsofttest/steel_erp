@@ -621,7 +621,7 @@ class Vendor extends BaseController
             <td><input type="text" name="contact_person"  value="'.$contact_edit->contact_person .'" class="form-control text-center" required></td>
             <td><input type="text" name="contact_designation"  value="'.$contact_edit->contact_designation .'" class="form-control text-center" required></td>
             <td><input type="text" name="contact_mobile"  value="'.$contact_edit->contact_mobile .'" class="form-control edit_contact text-center" required></td>
-            <td> <input type="email" name="contact_email" value="'.$contact_edit->contact_email .'" class="form-control text-center" required></td>
+            <td> <input type="email" name="contact_email" value="'.$contact_edit->contact_email .'" class="form-control text-center"></td>
             </tr>
             <input type="hidden" class="contact_cust" name="contact_id" value="'.$contact_edit->contact_id.'">
             '; 

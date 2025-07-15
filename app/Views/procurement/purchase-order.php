@@ -2318,6 +2318,17 @@
 
         });
 
+       
+
+        $('#AddNewContact').on('hidden.bs.modal', function () {
+
+            $('#AddPurchaseOrder').modal('show');
+            
+            $('.add_vendor').val('').trigger('change');
+        })
+
+        
+
         /*#####*/
 
 
