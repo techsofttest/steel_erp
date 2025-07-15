@@ -1176,13 +1176,13 @@ class PurchaseOrder extends BaseController
 
             $current_qty =  $delivered_qty -  $purchase_qty;
 
-            $this->common_model->EditData(array('mrp_delivered_qty' => $current_qty), array('mrp_id' => $material_req_single->mrp_id ),'pro_material_requisition_prod');
+            $this->common_model->EditData(array('mrp_delivered_qty' => $current_qty , 'mrp_pur_status' => 0), array('mrp_id' => $material_req_single->mrp_id ),'pro_material_requisition_prod');
 
 
             }
 
         
-            $this->common_model->EditData(array('mrp_pur_status' => 0), array('mrp_mr_id' => $purchase->po_mrn_reff),'pro_material_requisition_prod');
+           // $this->common_model->EditData(array('mrp_pur_status' => 0), array('mrp_mr_id' => $purchase->po_mrn_reff),'pro_material_requisition_prod');
             
             $this->common_model->EditData(array('mr_pur_status' => 0), array('mr_id' => $purchase->po_mrn_reff),'pro_material_requisition');
         
