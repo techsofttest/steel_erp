@@ -37,6 +37,11 @@
     text-align:center;
 }
 
+.select2-center .select2-container--default .select2-selection--single .select2-selection__rendered
+{
+    line-height:1 !important;
+}
+
     </style>
     
 
@@ -712,7 +717,7 @@
 
 
     <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-l">
             
         <div class="modal-content">
             <div class="modal-header">
@@ -758,7 +763,7 @@
 
                     </div> -->
 
-                    <div class="col-col-md-9 col-lg-9 select2-center" id="add_te_parent">
+                    <div class="col-col-md-12 col-lg-12 select2-center" id="add_te_parent">
 
                     <select class="form-control add_te" name="employee" required>
 
@@ -775,7 +780,7 @@
 
                     <div class="row align-items-start justify-content-start">
 
-                    <div class="col-col-md-4 col-lg-4">
+                    <div class="col-col-md-7 col-lg-7">
                        
                     <select class="form-select " name="month"  required>
                     
@@ -828,7 +833,7 @@
                         
                     </div>
 
-                    <div class="col-col-md-4 col-lg-4">
+                    <div class="col-col-md-5 col-lg-5 p-0">
                        
                     <select class="form-select " name="year"  required>
 
@@ -894,12 +899,17 @@
 
                     <div class="row align-items-start form_sec" id="timesheet_sec" style="display:none;">
 
+
+                    <div class="col-lg-12 text-center">
+
+                    <a class="btn btn-success" id="test_btn" href="javascript:void(0);">Auto Fill</a>
+
+                    </div>
+
                     <div class="col-lg-12">
 
 
                         <table class="table table-bordered">
-                        
-                        <a class="btn btn-success" id="test_btn" href="javascript:void(0);">Test Fill</a>
 
 
                         <tr class="month_header">
@@ -2403,6 +2413,10 @@
 
                             $('#timesheet_sec').show();
 
+                            $('#AddModal .modal-dialog').removeClass('modal-l');
+
+                            $('#AddModal .modal-dialog').addClass('modal-xl');
+
                             $('#timesheet_emp_id').val(data.emp_det.emp_id);
 
                             $('#emp_basic_salary').val(data.emp_det.emp_basic_salary);
@@ -2812,6 +2826,10 @@
 
             $('#timesheet_sec input').val('');
 
+            $('#AddModal .modal-dialog').removeClass('modal-xl');
+
+            $('#AddModal .modal-dialog').addClass('modal-l');
+
             $('#timesheet_sec').hide();
 
             $.ajax({
@@ -2888,9 +2906,20 @@
 
             var parent = $(this).closest('.day_row');
 
+
             if(parent.find('.time_to').val()=="" || parent.find('.time_to').val().length!=5 || parent.find('.time_from').val().length!=5)
             {
-             
+
+            parent.find('.total_hours').val('').trigger('change');
+
+            parent.find('.normal_hours').val('').trigger('change');
+
+            parent.find('.normal_ot').val('').trigger('change');
+
+            parent.find('.friday_ot').val('').trigger('change');
+
+            salary_calc();
+
             return false;
                 
             }
@@ -3229,6 +3258,13 @@
 
             }
 
+            if(selected=="Public Holiday")
+            {
+
+            parent.find('input').removeAttr('required');
+            
+            }
+
 
             $('#leave_total_amount').val(0);
 
@@ -3239,9 +3275,8 @@
 
                 if($(this).val()== 1 || $(this).val()== 6)
                 {
-
+                
                 working_days++;
-
                 //$(this).children("option").filter(":selected").text();
 
                 }
@@ -3304,7 +3339,7 @@
             if(vacation_days>0)
             {
             vacation_days--;
-            working_days = working_days+1;
+            working_days = working_days;
             }
             } 
 
@@ -3801,7 +3836,7 @@ $(document).ajaxComplete(function(event, jqXHR, ajaxSettings){
 
 
 $(document).ajaxError(function(){
-    alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+    //alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
 });
 
 });
@@ -3810,8 +3845,8 @@ $(document).ajaxError(function(){
 
 $('#test_btn').click(function(){
 
-$('.time_from').val('07:00').trigger('change');
-$('.time_to').val('16:00').trigger('change');
+$('.time_from').not('.fri').val('07:00').trigger('change');
+$('.time_to').not('.fri').val('16:00').trigger('change');
     
 })
 

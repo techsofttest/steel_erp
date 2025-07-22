@@ -272,11 +272,17 @@ class TimeSheets extends BaseController
 
             $required="";
 
+            $fri_class="";
+
             if($date["day"] != "Fri")
             {
 
             $required="required";
 
+            }
+            else
+            {
+              $fri_class="fri";
             }
 
 
@@ -334,6 +340,8 @@ class TimeSheets extends BaseController
 
                         <td width="15%" >
 
+                        <i class="fa fa-times clear_btn"></i>
+
                         <input type="hidden" name="date[]" value="'.$date["date"].'">
 
                         <input type="hidden" name="day[]" value="'.$date["day"].'">
@@ -350,9 +358,9 @@ class TimeSheets extends BaseController
 
                         <!-- <input placeholder="HH" style="width:40%;display:inline-block" class="form-control time_from" name="time_from[]" value="" maxlength="5" type="text"   required > : <input placeholder="MM" style="width:40%;display:inline-block" class="form-control time_from" name="time_from[]" value="" maxlength="5" type="text" required > -->
 
-                        <td width="10%"><input class="form-control time_from" name="time_from[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" '.$required.' ></td>
+                        <td width="10%"><input class="form-control '.$fri_class.' time_from" name="time_from[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" '.$required.' ></td>
 
-                        <td width="10%"><input class="form-control time_to" name="time_to[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" '.$required.' ></td>
+                        <td width="10%"><input class="form-control '.$fri_class.' time_to" name="time_to[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" '.$required.' ></td>
 
                         <td width="10%" ><input tabindex="-1" class="form-control total_hours" name="total_hours[]" value="0" type="text" readonly></td>
 
