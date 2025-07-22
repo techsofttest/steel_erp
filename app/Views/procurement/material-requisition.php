@@ -224,7 +224,7 @@
                                                         <thead class="travelerinfo">
                                                             <tr>
                                                                 <td style="width: 4%;">SI</td>
-                                                                <td style="width: 14%;">Sales Order </td>
+                                                                <td style="width: 10%;">Sales Order </td>
                                                                 <td >Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
@@ -236,7 +236,7 @@
                                                                 <td class="si_no text-center" style="padding:10px 10px;">1</td>
                                                                 <td >
                                                                     <select class="form-control add_sales_order" style="text-align: center;" name="mrp_sales_order[0]" required>
-                                                                         <option value="" selected disabled>Select Sales Order Ref</option>
+                                                                         <option value="" selected disabled> Sales Order </option>
                                                                          <?php foreach($sales_orders as $sales_order){?> 
                                                                          <option value="<?php echo $sales_order->so_id;?>"><?php echo $sales_order->so_reffer_no;?></option>
                                                                          <?php } ?>
@@ -892,21 +892,22 @@
         
 
         /*add more product section start*/
-        var max_fieldspp  = 30;
-        var pp = 1;
-        var jj = 0;
+        
         $("#add_product").click(function(){
-
+            var max_fieldspp  = 30;
+            var pp = 1;
+            var jj = 0;
 			if(pp < max_fieldspp){ 
 			    pp++;
                 jj++;
+                console.log(jj)
                 
                $("#product-more").append(
                     "<tr class='prod_row mr_remove prod_row_lenght'>" +
                     "<td class='si_no text-center' style='padding:10px; 10px;'><input type='number' value='" + pp + "' name='pd_serial_no["+jj+"]' class='form-control' required='' readonly></td>" +
                     "<td>" +
                     "<select class='form-select add_sales_order' name='mrp_sales_order["+jj+"]' style='text-align: center;' required>" +
-                    "<option value='' selected disabled>Select Sales Order Ref</option>" +
+                    "<option value='' selected disabled> Sales Order </option>" +
                     "<?php foreach($sales_orders as $sales_order): ?>" +
                     "<option value='<?php echo $sales_order->so_id; ?>'><?php echo $sales_order->so_reffer_no; ?></option>" +
                     "<?php endforeach; ?>" +
