@@ -713,6 +713,8 @@
 									
 <div class="tab-pane active" id="border-nav-1" role="tabpanel">
 
+
+
     <!-- Add Modal -->
 
 
@@ -741,7 +743,6 @@
 
                     <form  class="Dashboard-form class add_form" data-empid="" id="add_form">
                     <input class="added_id" type="hidden" name="emp_id" value="" autocomplete="off">
-                    <input class="ts_id_add_model" type="hidden" name="ts_id" autocomplete="off">
             
                     <div class="row align-items-start form_sec" id="employee_sec">
 
@@ -895,7 +896,7 @@
 
                     <input class="" id="timesheet_emp_id" type="hidden" name="emp_id" value="" autocomplete="off">
 
-                    <input class="ts_id_add_model" type="hidden" name="ts_id" autocomplete="off">
+                    <input class="ts_id_add_model" type="hidden" name="ts_id_add_model" autocomplete="off">
 
                     <div class="row align-items-start form_sec" id="timesheet_sec" style="display:none;">
 
@@ -2237,10 +2238,6 @@
     </div>
 </div>
 
- <!-- Add Modal End -->
-
-
-
  <!-- Edit Modal End -->
 
 
@@ -2545,6 +2542,14 @@
 
             var id = $(this).data('id');
 
+            $('.form_sec').hide();
+
+            $('#timesheet_sec').show();
+
+            $('#AddModal .modal-dialog').removeClass('modal-l');
+
+            $('#AddModal .modal-dialog').addClass('modal-xl');
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>HR/Timesheets/Edit",
@@ -2565,9 +2570,42 @@
                     $('#month_days_row').html(data.table);
 
                     $('#timesheet_sec').show();
-                    
 
-                    $('#working_days').val(data.ts.ts_working_days);
+
+
+                            //$('#timesheet_emp_id').val(data.emp_det.emp_id);
+
+                            $('#emp_basic_salary').val(data.emp_det.emp_basic_salary);
+
+
+                            $('#emp_rent_allowance').val(data.emp_det.emp_house_rent_allow);
+
+                            $('#emp_transp_allowance').val(data.emp_det.emp_transport_allow);
+
+                            $('#emp_telephone_allowance').val(data.emp_det.emp_tel_allow);
+
+                            $('#emp_food_allowance').val(data.emp_det.emp_food_allow);
+
+                            $('#emp_other_allowance').val(data.emp_det.emp_other_allow);
+
+
+                             total_emp_rent_allowance = data.emp_det.emp_house_rent_allow;
+                             total_emp_transp_allowance = data.emp_det.emp_transport_allow;
+                             total_emp_telephone_allowance = data.emp_det.emp_tel_allow;
+                             total_emp_food_allowance = data.emp_det.emp_food_allow;
+                             total_emp_other_allowance = data.emp_det.emp_other_allow;
+
+
+                            $('#add_hourly_salary').val(data.hour_salary);
+
+                            $('#add_max_hours').val(data.max_normal_hours);
+
+                            $('#add_max_days').val(data.max_normal_days);
+                            
+                            $('#add_total_salary').val(add_comma(data.emp_det.emp_total_salary));
+
+
+                    $('#working_days').val(data.ts.ts_working_days);    
 
                     $('#public_holiday').val(data.ts.ts_public_holidays);
 
@@ -2583,6 +2621,9 @@
 
                     $('#friday_ot').val(data.ts.ts_friday_ot);
 
+                    //$('body .day_type').trigger('change');
+
+                    $('body .time_to').trigger('change');
                     
                     $('#AddModal').modal('show');
 
@@ -2826,6 +2867,8 @@
 
             $('#timesheet_sec input').val('');
 
+            $('#ts_id_add_model').val('');
+
             $('#AddModal .modal-dialog').removeClass('modal-xl');
 
             $('#AddModal .modal-dialog').addClass('modal-l');
@@ -2862,6 +2905,10 @@
            
 
             });
+
+
+
+        
 
 
           
@@ -3497,228 +3544,227 @@
         function salary_calc()
         {
 
-        var basic_salary = parseFloat($('#emp_basic_salary').val())||0;
+            var basic_salary = parseFloat($('#emp_basic_salary').val())||0;
 
-        var hourly_salary = parseFloat($('#add_hourly_salary').val())||0;
+            var hourly_salary = parseFloat($('#add_hourly_salary').val())||0;
 
-        //var max_hours = parseFloat($('#add_max_hours').val())||0;
+            //var max_hours = parseFloat($('#add_max_hours').val())||0;
 
-        var month_work_days = 30;
+            var month_work_days = 30;
 
-        var max_working_days = $('#add_max_days').val();
+            var max_working_days = $('#add_max_days').val();
 
-        max_working_days = max_working_days-publicHolidaysCount;
+            max_working_days = max_working_days-publicHolidaysCount;
 
-        var max_hours = max_working_days*8;
+            var max_hours = max_working_days*8;
 
-        var total_normal_ot = 0;
+            var total_normal_ot = 0;
 
-        var total_friday_ot= 0;
+            var total_friday_ot= 0;
 
-        var total_hours_month = 0;
+            var total_hours_month = 0;
 
-        var total_salary_month = 0;
+            var total_salary_month = 0;
 
-        var total_leave = 0;
+            var total_leave = 0;
 
-        var total_unpaid_leave=0;
+            var total_unpaid_leave=0;
 
-        var total_vacation = 0;
+            var total_vacation = 0;
 
-        var total_medical_leave = 0;
+            var total_medical_leave = 0;
 
-        var normal_total_monthly = 0;
+            var normal_total_monthly = 0;
 
 
-        //allowances
+            //allowances
 
-        var emp_rent_allowance = parseFloat($('#emp_rent_allowance').val())||0;
+            var emp_rent_allowance = parseFloat($('#emp_rent_allowance').val())||0;
 
-        var emp_transp_allowance = parseFloat($('#emp_transp_allowance').val())||0;
+            var emp_transp_allowance = parseFloat($('#emp_transp_allowance').val())||0;
 
-        var emp_telephone_allowance = parseFloat($('#emp_telephone_allowance').val())||0;
+            var emp_telephone_allowance = parseFloat($('#emp_telephone_allowance').val())||0;
 
-        var emp_food_allowance = parseFloat($('#emp_food_allowance').val())||0;
+            var emp_food_allowance = parseFloat($('#emp_food_allowance').val())||0;
 
-        var emp_other_allowance = parseFloat($('#emp_other_allowance').val())||0;
+            var emp_other_allowance = parseFloat($('#emp_other_allowance').val())||0;
 
 
 
-        //Leave Calcuation Start
+            //Leave Calcuation Start
 
 
-        total_leave = $('#leave').val();
+            total_leave = $('#leave').val();
 
-        if(total_leave>30)
-        {
-        total_leave=30;
-        }
+            if(total_leave>30)
+            {
+            total_leave=30;
+            }
 
-        var total_leave_deduction = basic_salary/30*total_leave;
+            var total_leave_deduction = basic_salary/30*total_leave;
 
-        month_work_days = month_work_days - total_leave;
+            month_work_days = month_work_days - total_leave;
 
-        total_leave_deduction = Math.round(total_leave_deduction);
+            total_leave_deduction = Math.round(total_leave_deduction);
 
-        $('#leave_total_amount').val(total_leave_deduction);
+            $('#leave_total_amount').val(add_comma(total_leave_deduction));
 
-        //Leave Calculation End
+            //Leave Calculation End
 
 
 
-        //Medical Leave default 0
-        $('input[name=total_medical_leave_salary]').val(0);
+            //Medical Leave default 0
+            $('input[name=total_medical_leave_salary]').val(0);
 
 
 
 
-        //Unpaid Leave Calculation Start
+            //Unpaid Leave Calculation Start
 
 
-        var total_unpaid_leave = $('#unpaid_leave').val();
+            var total_unpaid_leave = $('#unpaid_leave').val();
 
-        var total_unpaid_leave_deduction = basic_salary/30*total_unpaid_leave*1.5;
+            var total_unpaid_leave_deduction = basic_salary/30*total_unpaid_leave*1.5;
 
-        month_work_days = month_work_days - total_unpaid_leave;
+            month_work_days = month_work_days - total_unpaid_leave;
 
-        total_unpaid_leave_deduction = Math.round(total_unpaid_leave_deduction)
+            total_unpaid_leave_deduction = Math.round(total_unpaid_leave_deduction)
 
-        $('#total_unpaid_leave_deduction').val(total_unpaid_leave_deduction);
+            $('#total_unpaid_leave_deduction').val(add_comma(total_unpaid_leave_deduction));
 
 
-        //Unpaid Leave Calculation End
+            //Unpaid Leave Calculation End
 
 
 
 
-         //Vacation Calculation Start
-
-      
-        var total_vacation = $('#vacation').val();
-
-        var total_vacation_deduction = basic_salary/30*total_vacation;
-
-        month_work_days = month_work_days - total_vacation;
-
-        total_vacation_deduction = Math.round(total_vacation_deduction);
-
-        $('#total_vacation_deduction').val(total_vacation_deduction);
-
-
-        //Vacation Calculation End
-
-
-        emp_rent_allowance = total_emp_rent_allowance * month_work_days / 30;
-        emp_transp_allowance = total_emp_transp_allowance * month_work_days / 30;
-        emp_telephone_allowance = total_emp_telephone_allowance * month_work_days / 30;
-        emp_food_allowance = total_emp_food_allowance * month_work_days / 30;
-        emp_other_allowance = total_emp_other_allowance * month_work_days / 30;
-
-
-
-        //Normal Ot Calculation Start
-
-        $('.normal_ot').each(function(){
-
-        total_normal_ot+=parseFloat($(this).val())||0;
-
-        });
-        
-        var total_normal_ot_salary = basic_salary/30/8*1.25*total_normal_ot; 
-
-        total_normal_ot_salary = Math.round(total_normal_ot_salary);
-
-        $('#total_normal_ot_salary').val(add_comma(total_normal_ot_salary));
-
-        //Normal OT Calculation End
-
-
-
-        //Friday OT Calcualation Start
-
-        $('.friday_ot').each(function(){
-
-        total_friday_ot+=parseFloat($(this).val())||0;
-
-        });
-
-        total_friday_ot_salary = basic_salary/30/8*1.50*total_friday_ot;
-
-        total_friday_ot_salary = Math.round(total_friday_ot_salary);
-
-        $('#total_friday_ot_salary').val(add_comma(total_friday_ot_salary));
-
-        //Friday OT Calculation End
-
-
-
-        //Calculate Total Salary Start
+            //Vacation Calculation Start
 
         
+            var total_vacation = $('#vacation').val();
 
-        $('.normal_hours').each(function(){
+            var total_vacation_deduction = basic_salary/30*total_vacation;
 
-        normal_total_monthly+=parseFloat($(this).val())||0;
+            month_work_days = month_work_days - total_vacation;
 
-        });
+            total_vacation_deduction = Math.round(total_vacation_deduction);
 
-        
-
-        //Normal Total
-
-        month_total_salary = 0;
-
-        max_hours = month_work_days*8;
-        
-        $('#total_basic_salary').val(0);
-
-        if(normal_total_monthly>0)
-
-        {
-
-        if( normal_total_monthly == max_hours)
-        {
-
-        month_total_salary = basic_salary;
-
-        $('#total_basic_salary').val(add_comma(Math.round(basic_salary)));
-
-        }
-
-        else
-        {
-
-        var difference = max_hours-normal_total_monthly;
-
-        hourly_deduction = difference*hourly_salary;
-
-        //var month_total_salary = basic_salary-(difference*hourly_salary);
-
-        //var month_total_salary = normal_total_monthly * hourly_salary;
-
-        $('#total_basic_salary').val(add_comma(Math.round(month_total_salary)));
-
-        }
-
-        }
+            $('#total_vacation_deduction').val(add_comma(total_vacation_deduction));
 
 
-        var total_salary_month = basic_salary+total_normal_ot_salary+total_friday_ot_salary+emp_rent_allowance+emp_transp_allowance+emp_telephone_allowance+emp_food_allowance+emp_other_allowance;
-
-        var total_salary_month = total_salary_month-(total_unpaid_leave_deduction+total_vacation_deduction+total_leave_deduction)
-
-        //var total_salary_month = month_total_salary+total_normal_ot_salary+total_friday_ot_salary+emp_rent_allowance+emp_transp_allowance+emp_telephone_allowance+emp_food_allowance+emp_other_allowance;
+            //Vacation Calculation End
 
 
-        // Reassign updated values back to the elements
-        $('#emp_rent_allowance').val(add_comma(Math.round(emp_rent_allowance)));
-        $('#emp_transp_allowance').val(add_comma(Math.round(emp_transp_allowance)));
-        $('#emp_telephone_allowance').val(add_comma(Math.round(emp_telephone_allowance)));
-        $('#emp_food_allowance').val(add_comma(Math.round(emp_food_allowance)));
-        $('#emp_other_allowance').val(add_comma(Math.round(emp_other_allowance)));
+            emp_rent_allowance = Math.round(total_emp_rent_allowance * month_work_days / 30);
+            emp_transp_allowance = Math.round(total_emp_transp_allowance * month_work_days / 30);
+            emp_telephone_allowance = Math.round(total_emp_telephone_allowance * month_work_days / 30);
+            emp_food_allowance = Math.round(total_emp_food_allowance * month_work_days / 30);
+            emp_other_allowance = Math.round(total_emp_other_allowance * month_work_days / 30);
 
 
-        $('#total_month_salary').val(add_comma(Math.round(total_salary_month)));
+
+            //Normal Ot Calculation Start
+
+            $('.normal_ot').each(function(){
+
+            total_normal_ot+=parseFloat($(this).val())||0;
+
+            });
+            
+            var total_normal_ot_salary = basic_salary/30/8*1.25*total_normal_ot; 
+
+            total_normal_ot_salary = Math.round(total_normal_ot_salary);
+
+            $('#total_normal_ot_salary').val(add_comma(total_normal_ot_salary));
+
+            //Normal OT Calculation End
+
+
+
+            //Friday OT Calcualation Start
+
+            $('.friday_ot').each(function(){
+
+            total_friday_ot+=parseFloat($(this).val())||0;
+
+            });
+
+            total_friday_ot_salary = basic_salary/30/8*1.50*total_friday_ot;
+
+            total_friday_ot_salary = Math.round(total_friday_ot_salary);
+
+            $('#total_friday_ot_salary').val(add_comma(total_friday_ot_salary));
+
+            //Friday OT Calculation End
+
+
+
+            //Calculate Total Salary Start
+
+            
+
+            $('.normal_hours').each(function(){
+
+            normal_total_monthly+=parseFloat($(this).val())||0;
+
+            });
+
+            
+
+            //Normal Total
+
+            month_total_salary = 0;
+
+            max_hours = month_work_days*8;
+            
+            $('#total_basic_salary').val(0);
+
+            if(normal_total_monthly>0)
+
+            {
+
+            if( normal_total_monthly == max_hours)
+            {
+
+            month_total_salary = basic_salary;
+
+            $('#total_basic_salary').val(add_comma(Math.round(basic_salary)));
+
+            }
+
+            else
+            {
+
+            var difference = max_hours-normal_total_monthly;
+
+            hourly_deduction = difference*hourly_salary;
+
+            //var month_total_salary = basic_salary-(difference*hourly_salary);
+
+            //var month_total_salary = normal_total_monthly * hourly_salary;
+
+            $('#total_basic_salary').val(add_comma(Math.round(month_total_salary)));
+
+            }
+
+            }
+
+
+            var total_salary_month = basic_salary-(total_unpaid_leave_deduction+total_vacation_deduction+total_leave_deduction)
+
+            var total_salary_month = total_salary_month+total_normal_ot_salary+total_friday_ot_salary+emp_rent_allowance+emp_transp_allowance+emp_telephone_allowance+emp_food_allowance+emp_other_allowance;
+
+            //var total_salary_month = month_total_salary+total_normal_ot_salary+total_friday_ot_salary+emp_rent_allowance+emp_transp_allowance+emp_telephone_allowance+emp_food_allowance+emp_other_allowance;
+
+            // Reassign updated values back to the elements
+            $('#emp_rent_allowance').val(add_comma(Math.round(emp_rent_allowance)));
+            $('#emp_transp_allowance').val(add_comma(Math.round(emp_transp_allowance)));
+            $('#emp_telephone_allowance').val(add_comma(Math.round(emp_telephone_allowance)));
+            $('#emp_food_allowance').val(add_comma(Math.round(emp_food_allowance)));
+            $('#emp_other_allowance').val(add_comma(Math.round(emp_other_allowance)));
+
+
+            $('#total_month_salary').val(add_comma(Math.round(total_salary_month)));
 
 
         //Calculate Total Salary End

@@ -70,7 +70,7 @@ class TimeSheets extends BaseController
         $monthName = date('F', mktime(0, 0, 0, $record->ts_month, 10)); // March
 
         $action = '<a href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="'.$record->ts_id.'" ><i class="ri-eye-fill"></i> </a> 
-        <a  href="javascript:void(0)" class="d-none edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->ts_id.'"><i class="ri-pencil-fill"></i> </a> 
+        <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->ts_id.'"><i class="ri-pencil-fill"></i> </a> 
         <a href="javascript:void(0);" data-id="'.$record->ts_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
         <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
            
@@ -401,13 +401,152 @@ class TimeSheets extends BaseController
     // add account head
     Public function Add()
     {   
-        /*
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+      
+        $timesheet_id = $this->request->getPost('ts_id_add_model');
 
-        exit;
-        */
+        $day_rows = [];
+
+        //If Edit
+        if(!empty($timesheet_id))
+        {
+
+            for($d=0;$d<count($_POST['day_type']);$d++){
+
+            $check['td_tsid_fk'] = $timesheet_id;
+
+            $check['td_date'] = date('Y-m-d',strtotime($this->request->getPost('date')[$d]));
+    
+            $check['td_day'] = $this->request->getPost('day')[$d];
+    
+            $check['td_daytype'] = $this->request->getPost('day_type')[$d];
+    
+            $check['td_time_in'] = $this->request->getPost('time_from')[$d];
+    
+            $check['td_time_out'] = $this->request->getPost('time_to')[$d];
+    
+            $check['td_total_hours'] = $this->request->getPost('total_hours')[$d];
+    
+            $check['td_normal_hours'] = $this->request->getPost('normal_hours')[$d];
+    
+            $check['td_normal_ot'] = $this->request->getPost('normal_ot')[$d];
+    
+            $check['td_friday_ot'] = $this->request->getPost('friday_ot')[$d];
+
+
+            if((empty($check['td_daytype'])))
+            {
+                $data['status']=0;
+                $data['msg'] ="Enter day type for ! ".date('d M Y',strtotime($check['td_date']))."!";
+                
+                echo json_encode($data);
+                exit;
+            }
+
+
+            if(($check['td_daytype'] == 1))
+            {
+
+            if((empty($check['td_time_in'])) || (empty($check['td_time_out'])) || (empty($check['td_total_hours'])) )
+            {
+
+                $data['status']=0;
+                $data['row'] = $this->request->getPost('date')[$d];
+                $data['msg'] ="Enter data for ".date('d M Y',strtotime($check['td_date']))."!";
+                echo json_encode($data);
+                exit;
+
+            }
+
+
+            if(($check['td_daytype'] == 1) && (empty($check['td_normal_hours'])) )
+            {
+            
+                $data['status']=0;
+                $data['row'] = $this->request->getPost('date')[$d];
+                $data['msg'] ="Enter data for ".date('d M Y',strtotime($check['td_date']))."!";
+                echo json_encode($data);
+                exit;
+
+            }
+
+            }
+
+            $day_rows[] = $check;
+
+        }
+
+            if (!empty($day_rows)) {
+
+                $this->common_model->DeleteData('hr_timesheet_data',array('td_tsid_fk' => $timesheet_id));
+
+                $db = \Config\Database::connect();
+
+                $db->table('hr_timesheet_data')->insertBatch($day_rows);
+            }
+
+
+        //Update timesheet first
+
+        $insert_data['ts_working_days'] = $this->request->getPost('total_working_days'); 
+
+        $insert_data['ts_public_holidays'] = $this->request->getPost('total_public_holidays'); 
+
+        $insert_data['ts_leave'] = $this->request->getPost('total_leaves');
+
+        $insert_data['ts_unpaid_leave'] = $this->request->getPost('total_unpaid_leaves');
+
+        $insert_data['ts_medical_leave'] = $this->request->getPost('total_medical_leaves');
+
+        $insert_data['ts_vacation'] = $this->request->getPost('total_vacation');
+
+        $insert_data['ts_normal_ot'] = $this->request->getPost('total_normal_ot');
+
+        $insert_data['ts_friday_ot'] = $this->request->getPost('total_friday_ot');
+
+
+
+        $insert_data['ts_basic_salary'] = str_replace(",","",$this->request->getPost('basic_salary'));
+
+        $insert_data['ts_house_rent_allowance'] = str_replace(",", "", $this->request->getPost('house_rent_allow'));
+
+        $insert_data['ts_transportation_allowance'] = str_replace(",", "", $this->request->getPost('transport_allow'));
+
+        $insert_data['ts_telephone_allowance'] = str_replace(",", "", $this->request->getPost('telephone_allow'));
+
+        $insert_data['ts_food_allowance'] = str_replace(",", "", $this->request->getPost('food_allowance'));
+
+        $insert_data['ts_other_allowance'] = str_replace(",", "", $this->request->getPost('other_allow'));
+
+        $insert_data['ts_monthly_salary'] = str_replace(",", "", $this->request->getPost('total_salary'));
+
+
+        $insert_data['ts_cur_month_leave'] = str_replace(",", "", $this->request->getPost('total_leave_salary'));
+
+        $insert_data['ts_cur_month_unpaid_leave'] = str_replace(",", "", $this->request->getPost('total_unpaid_leave_salary'));
+        
+        $insert_data['ts_current_month_vacation'] = str_replace(",", "", $this->request->getPost('total_vacation_salary'));
+        
+        $insert_data['ts_cur_month_normal_ot'] = str_replace(",", "", $this->request->getPost('total_normal_ot_salary'));
+
+        $insert_data['ts_cur_month_friday_ot'] = str_replace(",", "", $this->request->getPost('total_friday_ot_salary'));
+
+        $insert_data['ts_cur_month_basic_salary'] = str_replace(",", "", $this->request->getPost('basic_salary'));
+
+        //$insert_data['ts_cur_month_basic_salary'] = $this->request->getPost('total_month_basic_salary');
+
+        $insert_data['ts_cur_month_salary'] = str_replace(",", "", $this->request->getPost('total_month_salary'));
+
+        $this->common_model->EditData($insert_data,array('ts_id' => $timesheet_id),'hr_timesheets');
+
+        $data['status']=1;
+
+        echo json_encode($data);
+
+
+        }
+
+
+        else {
 
         //Insert into timesheet main
 
@@ -447,8 +586,6 @@ class TimeSheets extends BaseController
 
         }
 
-
-
         //Validation For Days
 
         for($d=0;$d<count($_POST['day_type']);$d++){
@@ -475,7 +612,7 @@ class TimeSheets extends BaseController
             if((empty($check['td_daytype'])))
             {
                 $data['status']=0;
-                $data['msg'] ="Fill all day types to continue!";
+                $data['msg'] ="Enter day type for ! ".date('d M Y',strtotime($check['td_date']))."!";
                 echo json_encode($data);
                 exit;
             }
@@ -605,6 +742,8 @@ class TimeSheets extends BaseController
 
 
         echo json_encode($data);
+
+        }
         
 
     }
@@ -629,17 +768,19 @@ class TimeSheets extends BaseController
 
     $data['ts'] = $this->hr_model->FetchSingleTimesheet($id);
 
+    $data['emp_det'] = $this->common_model->SingleRowJoin('hr_employees',$cond=array('emp_id' => $data['ts']->ts_emp_id),$joins=array());
+
 
     $data['table'] ="";
 
 
     $daytypes = $this->common_model->FetchAllOrder('hr_daytypes','dt_name','asc');
     
-    $daytype_select="";
-
-
+    
     foreach($data['ts']->days as $day)
     {
+
+    $daytype_select="";
 
     foreach($daytypes as $dt)
     {
@@ -678,17 +819,17 @@ class TimeSheets extends BaseController
     
     </td>
 
-    <td width="10%"><input class="form-control time_from" name="time_from[]" value="'.$day->td_time_in.'" type="text" maxlength="5"  oninput="formatTime(this)" required ></td>
+    <td width="10%"><input class="form-control time_from" name="time_from[]" value="'.($day->td_time_in == "00:00:00" ? '' : date('H:i',strtotime($day->td_time_in))).'" type="text" maxlength="5"  oninput="formatTime(this)"  ></td>
 
-    <td width="10%"><input class="form-control time_to" name="time_to[]" value="'.$day->td_time_out.'" type="text" maxlength="5"  oninput="formatTime(this)" required ></td>
+    <td width="10%"><input class="form-control time_to" name="time_to[]" value="'.($day->td_time_out == "00:00:00" ? '' : date('H:i',strtotime($day->td_time_out))).'" type="text" maxlength="5"  oninput="formatTime(this)"  ></td>
 
-    <td width="10%"><input class="form-control total_hours" name="total_hours[]" value="'.$day->td_total_hours.'" type="text" required readonly></td>
+    <td width="10%"><input class="form-control total_hours" name="total_hours[]" value="'.($day->td_total_hours == 0.00 ? '' : $day->td_total_hours).'" type="text"  readonly></td>
 
-    <td width="10%"><input class="form-control normal_hours" type="number" value="'.$day->td_normal_hours.'" name="normal_hours[]" readonly></td>
+    <td width="10%"><input class="form-control normal_hours" type="number" value="'.($day->td_normal_hours == 0.00 ? '' : $day->td_normal_hours).'" name="normal_hours[]" readonly></td>
 
-    <td width="10%"><input class="form-control normal_ot" type="number" name="normal_ot[]" value="'.$day->td_normal_hours.'" readonly></td>
+    <td width="10%"><input class="form-control normal_ot" type="number" name="normal_ot[]" value="'.($day->td_normal_ot == 0.00 ? '' : $day->td_normal_ot).'" readonly></td>
 
-    <td width="10%"><input class="form-control friday_ot" type="number" name="friday_ot[]" value="'.$day->td_normal_hours.'" readonly></td>
+    <td width="10%"><input class="form-control friday_ot" type="number" name="friday_ot[]" value="'.($day->td_friday_ot == 0.00 ? '' : $day->td_friday_ot).'" readonly></td>
 
     </tr>
 
@@ -983,11 +1124,11 @@ class TimeSheets extends BaseController
 
 
     $mpdf = new \Mpdf\Mpdf([
-        'format' => 'Letter',
+        'format' => 'A4',
         'default_font_size' => 9, 
         'margin_left' => 5, 
         'margin_right' => 5,
-        'margin_top' => 2,
+        'margin_top' => 7,
         'fontDir' => array_merge($fontDirs, [
             __DIR__ . '/fonts'
         ]),
@@ -1016,7 +1157,7 @@ class TimeSheets extends BaseController
       text-align: center;
     }
     .logo-text {
-      font-size: 25px;
+      font-size: 23px;
       margin: 0;
       color:grey;
     }
@@ -1032,11 +1173,11 @@ class TimeSheets extends BaseController
       background: #999;
       margin-top: 10px;
     }
-
+    
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 3px;
     }
 
     tr
@@ -1051,7 +1192,7 @@ class TimeSheets extends BaseController
     }
 
     th, td {
-      padding: 8px;
+      padding: 2px 2px;
       text-align: left;
     }
 
@@ -1100,7 +1241,7 @@ class TimeSheets extends BaseController
     
     .head
     {
-    background:#a8a8a8;
+    background:#f2f2f2;
     }
 
     .head th
@@ -1140,6 +1281,13 @@ class TimeSheets extends BaseController
       font-size: 0.9em;
     }
 
+    .my-3{
+    margin-top:3px;
+    margin-bottom:3px;
+    background:white;
+    border-color:white;
+    }
+
   </style>
 </head>
 <body>
@@ -1149,19 +1297,19 @@ class TimeSheets extends BaseController
 
 <tr>
 
-<td rowspan="2" width="10%">
+<td rowspan="2" width="15%">
 <img src="'.base_url().'assets/images/logo-sm.png">
 </td>
 
-<td width="90%">
+<td width="85%" style="line-height:1.8;">
 
-<h2 style="text-align:left" class="logo-text">AL FUZAIL ENGINEERING SERVICES WLL</h2>
+<h2 style="text-align:left;" class="logo-text">AL FUZAIL ENGINEERING SERVICES WLL</h2>
 
 <p>Tel : +974 4460 4254, Fax : +974 4029 8994</p>
 
-<p>Post Box : 201978, Doha - State of Qatar</p>
+<p style="">Post Box : 201978, Doha - State of Qatar</p>
 
-<p>engineering@alfuzailgroup.com, www.alfuzailgroup.com</p>
+<p style="">engineering@alfuzailgroup.com, www.alfuzailgroup.com</p>
 
 </td>
 
@@ -1177,37 +1325,37 @@ class TimeSheets extends BaseController
 
 <tr>
 
-<td width="15%" class="no-border-r">Employee ID</td> <td width="2%" class="no-border">:</td> <td width="33%" class="no-border-l">'.$ts->emp_uid.'</td>
+<td width="11%" class="no-border-r">Employee ID</td> <td width="2%" class="no-border">:</td> <td width="37%" class="no-border-l">'.$ts->emp_uid.'</td>
 
-<td width="15%" class="no-border-r">Designation</td> <td width="2%" class="no-border">:</td> <td width="33%" class="no-border-l">'.$ts->emp_designation.'</td>
-
-</tr>
-
-
-<tr>
-
-<td width="15%">Name</td> <td width="2%">:</td> <td width="33%">'.$ts->emp_name.'</td>
-
-<td width="15%">Department</td> <td width="2%">:</td> <td width="33%">'.$ts->div_name.'</td>
-
-</tr>
-
-
-
-<tr>
-
-<td width="15%">QID/VIsa No</td> <td width="2%">:</td> <td width="33%">'.$ts->emp_qatar_id_no.'</td>
-
-<td width="15%">Date Of Joining</td> <td width="2%">:</td> <td width="33%">'.date('d M Y',strtotime($ts->emp_date_of_join)).'</td>
+<td width="11%" class="no-border-r">Designation</td> <td width="2%" class="no-border">:</td> <td width="37%" class="no-border-l">'.$ts->emp_designation.'</td>
 
 </tr>
 
 
 <tr>
 
-<td width="15%">Passport No</td> <td width="2%">:</td> <td width="33%">'.$ts->emp_passport_no.'</td>
+<td width="11%">Name</td> <td width="2%">:</td> <td width="37%">'.$ts->emp_name.'</td>
 
-<td width="15%">Payment Mode</td> <td width="2%">:</td> <td width="33%">'.$ts->mop_title.'</td>
+<td width="11%">Department</td> <td width="2%">:</td> <td width="37%">'.$ts->div_name.'</td>
+
+</tr>
+
+
+
+<tr>
+
+<td width="11%">QID/VIsa No</td> <td width="2%">:</td> <td width="37%">'.$ts->emp_qatar_id_no.'</td>
+
+<td width="11%">Date Of Joining</td> <td width="2%">:</td> <td width="37%">'.date('d M Y',strtotime($ts->emp_date_of_join)).'</td>
+
+</tr>
+
+
+<tr>
+
+<td width="11%">Passport No</td> <td width="2%">:</td> <td width="37%">'.$ts->emp_passport_no.'</td>
+
+<td width="11%">Payment Mode</td> <td width="2%">:</td> <td width="37%">'.$ts->mop_title.'</td>
 
 </tr>
 
@@ -1218,25 +1366,25 @@ class TimeSheets extends BaseController
 
 <hr class="seperator"/>
 
-<table>
+<table style="margin-top:0;">
 
 
   <tr class="no-border">
     <td colspan="6" align="center">
-    <h3><i>Pay slip of the month '.date('M',strtotime($ts->ts_month)).' '.date('Y',strtotime($ts->ts_year)).'</i></h3>
+    <h3 style="font-weight:600;"><i>Pay slip of the month '.date('M',strtotime($ts->ts_month)).' '.date('Y',strtotime($ts->ts_year)).'</i></h3>
     </td>
   </tr>
 
 
   <tr class="head">
   
-  <th colspan="2">Earnings</th>
+  <td colspan="2" align="center">Earnings</td>
   
-  <th>Amount</th>
+  <td align="center">Amount</td>
   
-  <th colspan="2">Deductions</th>
+  <td colspan="2" align="center">Deductions</td>
   
-  <th>Amount</th>
+  <td align="center">Amount</td>
   
   </tr>
 
@@ -1323,7 +1471,7 @@ class TimeSheets extends BaseController
 
   <tr>  
     <td colspan="2" class="no-border" style="text-align:center">Total Earnings</td>
-    <td class="no-border" style="text-align:right;">'.format_currency($ts->ts_cur_month_salary).'</td>
+    <td class="no-border" style="text-align:right;"><b>'.format_currency($ts->ts_cur_month_salary).'</b></td>
 
     <td colspan="2" class="no-border" style="text-align:center">Total Deductions</td>
     <td class="no-border" style="text-align:right;">'.format_currency($total_deductions).'</td>

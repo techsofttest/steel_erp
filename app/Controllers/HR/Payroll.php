@@ -11,7 +11,7 @@ class Payroll extends BaseController
 
     public function FetchData()
     {
-
+        
         /*pagination start*/
         $request = service('request');
         $postData = $request->getPost();
@@ -326,23 +326,23 @@ class Payroll extends BaseController
         ';
 
 
-        $data['staff_salary']= format_currency(round($staff_salary, 2));
+        $data['staff_salary']= format_currency(round($staff_salary));
 
-        $data['salaries_wages']= format_currency(round($salaries_wages, 2));
+        $data['salaries_wages']= format_currency(round($salaries_wages));
 
-        $data['total_ot'] = format_currency(round($total_ot, 2));
+        $data['total_ot'] = format_currency(round($total_ot));
 
-        $data['hra'] = format_currency(round($house_rent_allow, 2));
+        $data['hra'] = format_currency(round($house_rent_allow));
 
-        $data['transport_allow'] = format_currency(round($transport_allow, 2));
+        $data['transport_allow'] = format_currency(round($transport_allow));
 
-        $data['tel_allow'] = format_currency(round($telephone_allow, 2));
+        $data['tel_allow'] = format_currency(round($telephone_allow));
 
         //$data['food_allow'] = format_currency(round($food_allow, 2));
 
         //$data['other_allow'] = format_currency(round($other_allow, 2));
 
-        $data['total_salary'] = format_currency(round($total_salary, 2));
+        $data['total_salary'] = format_currency(round($total_salary));
 
         echo json_encode($data);
 
@@ -465,6 +465,13 @@ class Payroll extends BaseController
 
 
         }
+
+            $staff_salary     = round($staff_salary);
+            $salaries_wages   = round($salaries_wages);
+            $total_ot         = round($total_ot);
+            $house_rent_allow = round($house_rent_allow);
+            $transport_allow  = round($transport_allow);
+            $telephone_allow  = round($telephone_allow);
 
 
             $data['jv_rows'] = "";
@@ -1189,7 +1196,7 @@ class Payroll extends BaseController
 
     $timesheet_rows .= '
     
-    <tr class="">
+    <tr class="no-border-table">
     
 
     <td></td>
@@ -1265,7 +1272,7 @@ class Payroll extends BaseController
 
 
     $mpdf = new \Mpdf\Mpdf([
-        'format' => 'Letter',
+        'format' => 'A4-L',
         'default_font_size' => 9, 
         'margin_left' => 5, 
         'margin_right' => 5,
@@ -1293,7 +1300,7 @@ class Payroll extends BaseController
     body {
       font-family: bentonsans, sans-serif;
       margin: 40px;
-      font-size:12px;
+      font-size:8px;
     }
     h2 {
       text-align: center;
@@ -1429,8 +1436,20 @@ class Payroll extends BaseController
 
         <body>
 
-        <h3 style="text-align:center">Al Fuzail Electrical And Steel Works</h3>
 
+        <table style="margin:0;" class="no-border-table">
+
+        <tr class="">
+
+        <td width="50%" align="center" style="font-size:8px">Staff salary for </td>
+
+        <td width="50%" align="center" style="font-size:8px">Al Fuzail Engineering Services</td>
+
+        </tr>
+
+        </table>
+
+         
         <table>
 
         <tr class="">
@@ -1449,7 +1468,7 @@ class Payroll extends BaseController
 
         <th>DOJ</th>
 
-        <th>Division</th>
+        <th>Department</th>
 
         <th>Basic Salary</th>
 

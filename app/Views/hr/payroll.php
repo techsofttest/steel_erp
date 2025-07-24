@@ -159,7 +159,7 @@
 
 
     <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-l">
             
         <div class="modal-content">
             <div class="modal-header">
@@ -188,7 +188,7 @@
 
                     <!-- Section 1 -->
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
 
 
                     <div class="row align-items-center mb-2" id="add_ah_parent">
@@ -271,31 +271,23 @@
 
                         <tr>
 
-                        <th>ID</th>
+                        <th>Employee ID</th>
 
-                        <th>Name</th>
+                        <th>Employee Name</th>
 
                         <th class="">Division</th>
 
-                        <th class="text-end">Basic Salary</th>
-
-                        <th class="text-end">Leave</th>
-
-                        <th class="text-end">Overtime</th>
-
-                        <th class="text-end">HRA</th>
-
-                        <th class="text-end">Transport Allowance</th>
-
-                        <th class="text-end">Telephone Allowance</th>
-
+                        <th class="text-end" style="width: 10%;">Basic Salary</th>
+                        <th class="text-end" style="width: 10%;">Leave</th>
+                        <th class="text-end" style="width: 10%;">Overtime</th>
+                        <th class="text-end" style="width: 10%;">HRA</th>
+                        <th class="text-end" style="width: 10%;">Transport</th>
+                        <th class="text-end" style="width: 10%;">Telephone</th>
                         <?php /*
-                        <th class="text-end">Food Allowance</th>
-
-                        <th class="text-end">Other Allowance</th>
+                        <th class="text-end" style="width: 10%;">Food Allowance</th>
+                        <th class="text-end" style="width: 10%;">Other Allowance</th>
                         */ ?>
-
-                        <th class="text-end">Total Salary</th>
+                        <th class="text-end" style="width: 10%;">Total Salary</th>
 
                       
 
@@ -320,7 +312,7 @@
 
                                 <tr>
 
-                                <td align="right">Staff Salary</td>
+                                <td align="right">Staff Salary</td> 
 
                                 <th class="text-end" id="staff_salary_add"></th>
 
@@ -842,6 +834,10 @@
 
                                 $('#total_salary_add').html(data.total_salary);
 
+                                $('#AddModal .modal-dialog').removeClass('modal-l');
+
+                                $('#AddModal .modal-dialog').addClass('modal-xl');
+
                                 $('#timesheet_sec').show();
 
                             }
@@ -849,6 +845,10 @@
                             {
 
                                 alertify.error(data.msg).delay(3).dismissOthers();
+
+                                $('#AddModal .modal-dialog').removeClass('modal-xl');
+
+                                $('#AddModal .modal-dialog').addClass('modal-l');
 
                                 $('#timesheets_row').html('');
 
@@ -1182,6 +1182,10 @@
             $('#timesheet_sec').hide();
 
             $('#timesheets_row').html('');
+
+            $('#AddModal .modal-dialog').removeClass('modal-xl');
+
+            $('#AddModal .modal-dialog').addClass('modal-l');
 
             $.ajax({
 
