@@ -69,7 +69,8 @@
     <script src="<?php echo base_url(); ?>public/assets/js/app.js"></script>
 	
     <!-- Datatable JS -->
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <!--<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>-->
+    <script src="https://unpkg.com/datatables.net@1.13.1/js/jquery.dataTables.js" ></script>
 
     <!--jquery validate-->
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>

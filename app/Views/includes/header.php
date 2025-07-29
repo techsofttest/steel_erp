@@ -40,7 +40,7 @@
 <link href="<?php echo base_url(); ?>public/assets/css/select2.min.css" rel="stylesheet">
 
 <!-- Datatable CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-dt/1.13.1/css/jquery.dataTables.min.css" integrity="sha512-+Xf7SaFcNcDB/Oljq2iar4hbV83GgMmRO+Mqc39H3PW+bDDnOZZAvWznc2WBtiOOpN4xAZYfpTbwrguQbqcwvA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.min.css" integrity="sha512-utd7llAF/e6WX9avC78rlcxtNEuU8ANazugGLhomOBMTSvx0sxfpwcgSUphwKVbxKkIsbwqRGr6FN+pUHxGaUg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
