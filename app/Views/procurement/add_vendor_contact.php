@@ -1,3 +1,9 @@
+<style>
+.table>:not(caption)>*>* {
+    padding: 0;
+    
+}
+</style>
 <!--contact detail modal section start-->
                          
     <div class="modal fade" id="AddNewContact" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -12,26 +18,28 @@
 
                     <div class="modal-body">
 
-                        <div class="card-seprate_divider"></div>
+                        <div class=""></div>
 
-                            <div class="live-preview">
+                            <div class="live-preview content_table" style="padding-top: 0px;">
                                 <table  class="table table-bordered table-striped delTable">
-                                    <tbody class="travelerinfo">
+                                    <thead class="travelerinfo">
                                         <tr>
-                                            <td >No</td>
+                                            <td style="width: 4%;">No</td>
                                             <td>Contact Person</td>
                                             <td>Designation</td>
                                             <td>Mobile</td>
                                             <td>Email</td>
                                             <td>Action</td>
                                         </tr>
+                                    </thead>
+                                    <tbody>
                                         <tr class="contact_more_row">
                                             <td class="cont_si_no">1</td>
-                                            <td><input type="text" name="pro_con_person[0]" class="form-control" required></td>
-                                            <td><input type="text" name="pro_con_designation[0]" class="form-control" required></td>
-                                            <td><input type="text" name="pro_con_mobile[0]"  class="form-control contact_mobile_clz" required></td>
-                                            <td> <input type="email" name="pro_con_email[0]" class="form-control" required></td>
-                                            <td><div class="tecs"><span  class="add_contact_data" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                            <td><input type="text" name="pro_con_person[0]" class="form-control text-center" required></td>
+                                            <td><input type="text" name="pro_con_designation[0]" class="form-control text-center" required></td>
+                                            <td><input type="text" name="pro_con_mobile[0]"  class="form-control contact_mobile_clz text-center" required></td>
+                                            <td> <input type="email" name="pro_con_email[0]" class="form-control text-center" required></td>
+                                            <td><div class="tecs"><span  class="add_contact_data" class="add_icon"><i class="ri-add-circle-line"></i></span></div></td>
                                         </tr>
                                     </tbody>
 
@@ -73,7 +81,7 @@
 			if(co < contact_max_fieldss){ //max input box allowed
 				co++;
 				i++;
-				$(".contact-more_data").append("<tr class='contact_more_row add_prod'><td class='cont_si_no'>"+co+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control ' required></td><td class='remove-contact-btn' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+				$(".contact-more_data").append("<tr class='contact_more_row add_prod'><td class='cont_si_no'>"+co+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control text-center' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control text-center' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz text-center' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control text-center' required></td><td class='remove-contact-btn' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td>");
 				contactSlno();
 			}
 		});
@@ -95,7 +103,7 @@
 
         function reName(){
 
-            alert("sucess");
+           
             
             var jj = 0;
 
@@ -125,7 +133,7 @@
 			
 			$('body .contact_more_row').each(function() {
 
-				$(this).find('.cont_si_no').html('<td class="cont_si_no">' + pp + '</td>');
+				$(this).find('.cont_si_no').html('<td class="cont_si_no" style="border: unset;vertical-align: middle;padding-left: 12px;">' + pp + '</td>');
 
 				pp++;
 
