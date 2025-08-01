@@ -507,17 +507,17 @@ class Indemnity extends BaseController
     
             <td class="text-end">'.$emp->emp_name.'</td>
     
-            <td class="text-end">'.$emp->ide_basic_salary.'</td>
+            <td class="text-end">'.format_currency($emp->ide_basic_salary).'</td>
     
             <td class="text-end">'.date('d M Y',strtotime($emp->ide_date_of_join)).'</td>
     
             <td class="text-end">'.$emp->ide_entitlement.'</td>
     
-            <td class="text-end">'.$emp->ide_indemnity.'</td>
+            <td class="text-end">'.format_currency($emp->ide_indemnity).'</td>
     
-            <td class="text-end">'.$emp->ide_advance.'</td>
+            <td class="text-end">'.format_currency($emp->ide_advance).'</td>
     
-            <td class="text-end">'.$emp->ide_amount.'</td>
+            <td class="text-end">'.format_currency($emp->ide_indemnity-$emp->ide_advance).'</td>
             
             </tr>'
             ;
