@@ -390,7 +390,7 @@ class VacationPay extends BaseController
 
             $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
-            $data['current_balance'] = $gl_balance;
+            $data['current_balance'] = abs($gl_balance);
 
             $data['emp_row'] = "";
 
