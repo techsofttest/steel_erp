@@ -57,6 +57,7 @@ class Indemnity extends BaseController
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
         $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->id_id.'" data-original-title=""><i class="ri-eye-fill"></i> </a> 
+        <a href="javascript:void(0);" data-id="'.$record->id_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
         <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->id_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->id_credit_account));
@@ -141,7 +142,7 @@ class Indemnity extends BaseController
 
             $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
-            $data['current_balance'] = $gl_balance;
+            $data['current_balance'] = abs($gl_balance);
 
             $data['emp_row'] = "";
 
@@ -150,21 +151,27 @@ class Indemnity extends BaseController
             foreach($employees as $emp)
             {
 
-                $diff = abs(strtotime($emp->emp_date_of_join)-strtotime($date));
+               $doj = strtotime($emp->emp_date_of_join);
+               $selected_date = strtotime($date); // e.g., '2025-07-31'
 
-                $years = floor($diff / (365*60*60*24));
-                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
- 
-                $entitlement = $days*21/365;
- 
-                $year_salary = $emp->emp_basic_salary*12;
- 
-                $indemnity = $year_salary/365*$entitlement;
- 
-                $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
- 
-                $amount = $amount/365;
+               $diff_in_seconds = abs($selected_date - $doj);
+
+                // Total number of days
+               $total_days = floor($diff_in_seconds / (60 * 60 * 24));
+
+               // Entitlement calculation
+               $entitlement = ($total_days * 21) / 365;
+
+               $entitlement = round($entitlement,2);
+
+               $year_salary = $emp->emp_basic_salary*12;
+
+               $indemnity = $year_salary/365*$entitlement;
+
+               $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
+
+               $amount = $amount/365;
+
                 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
 
@@ -183,6 +190,8 @@ class Indemnity extends BaseController
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
 
+            $data['jv_total'] = $data['total_amount']-$data['current_balance'];
+
 
 
         //Insert Vacation Travel
@@ -195,7 +204,7 @@ class Indemnity extends BaseController
 
         $insert_indemnity['id_current_balance'] = $data['current_balance'];
        
-        $insert_indemnity['id_total'] = $data['total_amount'];
+        $insert_indemnity['id_total'] = str_replace(",","",$data['total_amount']);
         
 
         //Insert Journal voucher
@@ -207,9 +216,9 @@ class Indemnity extends BaseController
 
         $insert_journal['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
 
-        $insert_journal['jv_debit_total'] = $data['total_amount'];
+        $insert_journal['jv_debit_total'] = $data['jv_total'];
 
-        $insert_journal['jv_credit_total'] = $data['total_amount'];
+        $insert_journal['jv_credit_total'] = $data['jv_total'];
 
         $insert_journal['jv_added_date'] = date('Y-m-d');
 
@@ -297,7 +306,7 @@ class Indemnity extends BaseController
 
            //$gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
        
-           $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date="",$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
+           $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date_ledger="",$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
 
            $total_credit = array_sum(array_column($account_ledger,'credit_amount'));
 
@@ -305,7 +314,7 @@ class Indemnity extends BaseController
 
            $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
-           $data['current_balance'] = $gl_balance;
+           $data['current_balance'] = abs($gl_balance);
 
            $data['emp_row'] = "";
 
@@ -315,6 +324,7 @@ class Indemnity extends BaseController
            foreach($employees as $emp)
            {
 
+               /*
                $diff = abs(strtotime($emp->emp_date_of_join)-strtotime($date));
 
                $years = floor($diff / (365*60*60*24));
@@ -322,6 +332,20 @@ class Indemnity extends BaseController
                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
                $entitlement = $days*21/365;
+               */
+
+               $doj = strtotime($emp->emp_date_of_join);
+               $selected_date = strtotime($date); // e.g., '2025-07-31'
+
+               $diff_in_seconds = abs($selected_date - $doj);
+
+                // Total number of days
+               $total_days = floor($diff_in_seconds / (60 * 60 * 24));
+
+               // Entitlement calculation
+               $entitlement = ($total_days * 21) / 365;
+
+               $entitlement = round($entitlement,2);
 
                $year_salary = $emp->emp_basic_salary*12;
 
@@ -343,17 +367,17 @@ class Indemnity extends BaseController
 
                    <td>{$emp->emp_name}</td>
 
-                   <td>{$emp->emp_basic_salary}</td>
+                   <td class='text-end'>".format_currency($emp->emp_basic_salary)."</td>
 
                    <td>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
 
-                   <td>{$entitlement}</td>
+                   <td class='text-end'>{$entitlement}</td>
 
-                   <td>{$indemnity}</td>
+                   <td class='text-end'>".format_currency($indemnity)."</td>
 
-                   <td>{$emp->emp_indemnity_advance}</td>
+                   <td class='text-end'>{$emp->emp_indemnity_advance}</td>
 
-                   <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
+                   <td class='text-end'>".format_currency($amount)."</td>
 
                    </tr>
                
@@ -366,6 +390,10 @@ class Indemnity extends BaseController
            $jv_sl=0;
 
            $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+           $data['jv_total'] = $data['total_amount']-$data['current_balance'];
+
+           $data['jv_total'] = number_format((float)$data['jv_total'],2,'.','');
 
            $data['jv_rows'] ='';
 
@@ -385,7 +413,7 @@ class Indemnity extends BaseController
                                        
                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                       <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['total_amount'].'" readonly></th>
+                                       <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['jv_total'].'" readonly></th>
 
                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
 
@@ -413,7 +441,7 @@ class Indemnity extends BaseController
 
                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
 
-                                       <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['total_amount'].'" readonly></th>
+                                       <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['jv_total'].'" readonly></th>
 
            </tr>
 
@@ -529,6 +557,338 @@ class Indemnity extends BaseController
 
     }
 
+
+
+
+
+    public function Print($id)
+    {
+
+    $this->hr_model = new \App\Models\HRModel();
+
+    $id_data = $this->hr_model->FetchIDSingle($id);
+
+    $id_emp ='';
+
+    $sl=1;
+
+    $advance_total = 0;
+
+    $balance_total = 0;
+
+    foreach($id_data->employees as $emp)
+    {
+
+    $id_emp .='
+    
+    <tr>
+
+    <td align="center">'.$sl.'</td>
+
+    <td align="center">'.$emp->emp_uid.'</td>
+
+    <td align="left">'.$emp->emp_name.'</td>
+
+    <td align="center">'.$emp->emp_nationality.'</td>
+
+    <td align="center">'.date('d-M-Y',strtotime($emp->emp_date_of_join)).'</td>
+
+    <td align="center">'.$emp->emp_qatar_id_no.'</td>
+
+    <td align="right">'.format_currency($emp->ide_basic_salary).'</td>
+
+    <td align="center">21</td>
+
+    <td align="center">'.$emp->ide_entitlement.'</td>
+
+    <td align="right">'.format_currency($emp->ide_amount).'</td>
+
+    <td align="right">'.format_currency($emp->ide_advance).'</td>
+
+    <td align="right">'.format_currency(((float)$emp->ide_amount-(float)$emp->ide_advance)).'</td>
+
+    </tr>
+
+    ';
+
+    $advance_total += (float)$emp->ide_advance;
+
+    $balance_total += ((float)$emp->ide_amount-(float)$emp->ide_advance);
+
+    $sl++;
+
+    }
+
+
+   
+
+    $id_emp .='
+    
+    <tr style="border:0px solid;">
+
+    <td style="border:0px solid;" colspan="9"></td>
+
+    <td style="border:0px solid;color:red" align="right">'.format_currency($id_data->id_total).'</td>
+
+    <td style="border:0px solid;color:red" align="right">'.format_currency($advance_total).'</td> 
+
+    <td style="border:0px solid;color:red" align="right">'.format_currency($balance_total).'</td>
+
+    </tr>
+    
+    ';
+
+   
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'A4-L',
+        'default_font_size' => 9, 
+        'margin_left' => 5, 
+        'margin_right' => 5,
+        'margin_top' => 2,
+        'fontDir' => array_merge($fontDirs, [
+            __DIR__ . '/fonts'
+        ]),
+        'fontdata' => $fontData + [
+            'bentonsans' => [
+                'R' => 'FreeSerif.ttf',
+                'B' => 'FreeSerifBold.ttf',
+            ],
+        ],
+        'default_font' => 'bentonsans'
+        
+    ]);
+
+
+
+    $html ='
+
+    <html lang="en">
+
+    <head>
+  
+    <style>
+
+    body {
+      font-family: bentonsans, sans-serif;
+      margin: 40px;
+      font-size:9px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .logo-text {
+      font-size: 23px;
+      margin: 0;
+      color:grey;
+    }
+
+    p
+    {
+    
+    }
+
+    .seperator {
+      border: 0;
+      height: 2px;
+      background: #999;
+      margin-top: 10px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3px;
+    }
+
+    tr
+    {
+    border: 1px solid #999;
+    }
+    
+    td
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th, td {
+      padding: 2px 2px;
+      text-align: left;
+    }
+
+    .basic-info th, .basic-info td{
+      padding: 2px;
+      text-align: left;
+    }
+
+
+    .no-border-r
+    {
+    border-right: 0px solid #999;
+    }
+
+    .no-border-l
+    {
+    border-left: 0px solid #999;
+    }
+
+    .no-border-y
+    {
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    }
+
+    .no-border
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    }
+
+    .no-border-table
+    {
+    border:0px;
+    }
+
+
+    .no-border-table tr, .no-border-table td, .no-border-table th
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    border:0px;
+    }
+    
+    .head
+    {
+    background:#f2f2f2;
+    }
+
+    .head th
+    {
+    border-right: 1px solid #999;
+    text-align:center;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 1.1em;
+    }
+
+    .no-border {
+      border: none !important;
+    }
+
+
+    .account-details td,.signature-sec td
+    {
+    
+    height:100px;
+
+    }
+
+    .signature-section td {
+      height: 80px;
+      vertical-align: bottom;
+      text-align: center;
+    }
+
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+    }
+
+    .my-3{
+    margin-top:3px;
+    margin-bottom:3px;
+    background:white;
+    border-color:white;
+    }
+
+  </style>
+</head>
+<body>
+
+
+<table class="no-border-table">
+
+<tr>
+
+<td align="center">INDEMNITY ACCRUAL - Al Fuzail Engineering Services WLL</td>
+
+</tr>
+
+</table>
+
+
+<table>
+
+<tr>
+  <th align="center">SL #</th>
+  <th align="center">Employee ID</th>
+  <th align="center">Name</th>
+  <th align="center">Nationality</th>
+  <th align="center">D O J</th>
+  <th align="center">QID/Visa</th>
+  <th align="center">Basic Salary</th>
+  <th align="center">Days/Year</th>
+  <th align="center">Entitlement</th>
+  <th align="center">Amount - Qr</th>
+  <th align="center">Payment</th>
+  <th align="center">Balance</th>
+</tr>
+
+
+
+'.$id_emp.'
+
+
+
+
+</table>
+
+
+
+
+
+</body>
+</html>
+    
+    
+    ';
+
+
+
+    $footer="";
+
+    $mpdf->falseBoldWeight = 0;
+
+    $mpdf->WriteHTML($html);
+    $mpdf->SetFooter($footer);
+
+    $this->response->setHeader('Content-Type', 'application/pdf');
+
+    $mpdf->Output();
+
+    
+
+    }
 
 
 

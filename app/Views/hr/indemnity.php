@@ -439,12 +439,12 @@
                         <td>Sl No</td>
                         <td>Employee ID</td>
                         <td>Name</td>
-                        <td>Basic Salary</td>
+                        <td class="text-end">Basic Salary</td>
                         <td>Date Of Joining</td>
-                        <td>Entitlement</td>
-                        <td>Indemnity</td>
-                        <td>Advance</td>
-                        <td>Amount</td>
+                        <td class="text-end">Entitlement</td>
+                        <td class="text-end">Indemnity</td>
+                        <td class="text-end">Advance</td>
+                        <td class="text-end">Amount</td>
                     </tr>
 
                     </thead>
@@ -455,6 +455,20 @@
 
 
                     </tbody>
+
+
+
+                    <tfoot>
+
+                    <td colspan="8" class="text-end">Total</td>
+
+                    <input type="hidden" id="total_amount_input" name="" value="" required>
+
+                    <td id="total_amount_view" class="text-end"></td>
+
+                    </tfoot>
+
+                    
 
 
                     </table>
@@ -848,15 +862,15 @@
 
                             $('#total_amount_input').val(data.total_amount);
 
-                            $('#total_amount_view').html(data.total_amount);
+                            $('#total_amount_view').html(add_comma(data.total_amount));
 
                             $('#jv_rows').html(data.jv_rows);
 
-                            $('#total_amount_debit').val(data.total_amount);
-                            $('#total_amount_debit_disp').html(data.total_amount);
+                            $('#total_amount_debit').val(data.jv_total);
+                            $('#total_amount_debit_disp').html(data.jv_total);
 
-                            $('#total_amount_credit').val(data.total_amount);
-                            $('#total_amount_credit_disp').html(data.total_amount);
+                            $('#total_amount_credit').val(data.jv_total);
+                            $('#total_amount_credit_disp').html(data.jv_total);
 
                             }
                             else
@@ -1175,6 +1189,25 @@
 
 
         });
+
+        });
+
+
+
+
+
+        
+        $('body').on('click','.print_color',function(e){
+    
+        id = $(this).attr('data-id');
+        // Open the PDF generation script in a new window
+
+        var pdfWindow = window.open('<?= base_url()?>HR/Indemnity/Print/'+id, '_blank');
+
+        // Automatically print when the PDF is loaded
+        pdfWindow.onload = function() {
+            pdfWindow.print();
+        };
 
         });
 

@@ -774,7 +774,7 @@ border: unset !important;
 }
 thead td{
 
-    padding: 10px 0px !important;
+    padding: 10px 10px !important;
 }
 
 .content_table tr {

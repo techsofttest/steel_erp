@@ -515,6 +515,12 @@ class Employees extends BaseController
 
     $data['employee']->emp_doj = date('d-F-Y',strtotime($data['employee']->emp_date_of_join));
 
+    $this->hr_model = new \App\Models\HRModel();
+
+    $total_vacations = $this->hr_model->FetchVacationTotal(date('Y-m-d'));
+
+    $data['employee']->total_vacations = $total_vacations;
+
     if(!empty($data['employee']->emp_air_ticket_due_from))
     $data['employee']->emp_air_ticket_due_from = date('d-F-Y',strtotime($data['employee']->emp_air_ticket_due_from));
 

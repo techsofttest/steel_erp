@@ -128,6 +128,64 @@ class HRModel extends Model
     }
 
 
+    public function FetchVTPrint($id){
+
+    $query = $this->db->table('hr_vacation_travel');
+
+    $query->where('vt_id',$id);
+
+    $result = $query->get()->getRow();
+
+        $emp_query = $this->db->table('hr_vacation_travel_employees');
+        $emp_query->where('vte_main_id',$id);
+        $emp_query->join('hr_employees','hr_employees.emp_id = hr_vacation_travel_employees.vte_emp_id','left');
+        $emp_query->orderBy('emp_uid','asc');
+        $emp_result = $emp_query->get()->getResult();
+    
+    $result->employees = $emp_result;
+
+    return $result;
+
+    }
+
+
+
+    public function FetchVTEmployees($id)
+    {
+
+    $query = $this->db->table('hr_vacation_travel_employees');
+
+    $this->db->where('vte_main_id',$id);
+
+    $query->join('hr_employees','hr_employees.emp_id = hr_vacation_travel_employees.vte_emp_id','left');
+
+    $result = $query->get()->getResult();
+
+    }
+
+
+
+
+
+
+    public function FetchVacationTotal($date)
+    {
+
+    $query = $this->db->table('hr_timesheets');
+
+    $query->selectSum('ts_vacation','total_vacation');
+
+    $query->where('ts_month<=',date('n',strtotime($date)));
+
+    $query->where('ts_year<=',date('Y',strtotime($date)));
+
+    $result = $query->get()->getRow();
+
+    return $result->total_vacation ?? 0;
+
+    }
+
+
 
     public function FetchVPaySingle($id)
     {

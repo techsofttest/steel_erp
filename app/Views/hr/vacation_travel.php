@@ -432,15 +432,15 @@
                     <thead>
                     
                     <tr>
-                        <td>Sl No</td>
-                        <td>Employee ID</td>
-                        <td>Name</td>
-                        <td>Ticket Due From</td>
-                        <td>Ticket Rate</td>
-                        <td>Ticket/Year</td>
-                        <td>Utilization</td>
-                        <td>Entitlement</td>
-                        <td class="text-end">Amount</td>
+                        <td align="center">Sl No</td>
+                        <td align="center">Employee ID</td>
+                        <td align="center">Name</td>
+                        <td align="center">Ticket Due From</td>
+                        <td align="center">Ticket Rate</td>
+                        <td align="center">Ticket/Year</td>
+                        <td align="center">Utilization</td>
+                        <td align="center">Entitlement</td>
+                        <td align="center">Amount</td>
                     </tr>
 
                     </thead>
@@ -456,7 +456,9 @@
                     <tfoot>
 
 
-                    <td colspan="8" class="text-end">Total</td>
+                    <td colspan="7"></td> 
+
+                    <td  class="text-center">Total</td>
 
                     <input type="hidden" id="total_amount_input" name="" value="" required>
 
@@ -869,11 +871,11 @@
 
                             $('#jv_rows').html(data.jv_rows);
 
-                            $('#total_amount_debit').val(data.total_amount);
-                            $('#total_amount_debit_disp').html(data.total_amount);
+                            $('#total_amount_debit').val(data.jv_total);
+                            $('#total_amount_debit_disp').html(data.jv_total);
 
-                            $('#total_amount_credit').val(data.total_amount);
-                            $('#total_amount_credit_disp').html(data.total_amount);
+                            $('#total_amount_credit').val(data.jv_total);
+                            $('#total_amount_credit_disp').html(data.jv_total);
 
                             }
                             else
@@ -944,6 +946,8 @@
             e.preventDefault();
 
             var journal_form = $(this).serialize();
+
+            //console.log(journal_form);
 
             var credit_account = $('#credit_account').val();
 
@@ -1218,6 +1222,23 @@
 
 
         });
+
+        });
+
+
+
+
+        $('body').on('click','.print_color',function(e){
+    
+        id = $(this).attr('data-id');
+        // Open the PDF generation script in a new window
+
+        var pdfWindow = window.open('<?= base_url()?>HR/VacationTravel/Print/'+id, '_blank');
+
+        // Automatically print when the PDF is loaded
+        pdfWindow.onload = function() {
+            pdfWindow.print();
+        };
 
         });
 

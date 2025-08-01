@@ -57,6 +57,7 @@ class VacationPay extends BaseController
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
         $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->vp_id.'" data-original-title=""><i class="ri-eye-fill"></i> </a> 
+        <a href="javascript:void(0);" data-id="'.$record->vp_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
         <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vp_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->vp_credit_account));
@@ -133,7 +134,7 @@ class VacationPay extends BaseController
 
             $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
-            $data['current_balance'] = $gl_balance;
+            $data['current_balance'] = abs($gl_balance);
 
             $data['emp_row'] = "";
 
@@ -152,19 +153,25 @@ class VacationPay extends BaseController
                 $total_years = $interval->y;
 
 
-                $days_per_year = $this->calculateLeave($date,$emp->emp_date_of_join);
+                $vacation_pay_due_date_format = new \DateTime($emp->emp_vacation_pay_due_from);
 
+                $selected_date_format = new \DateTime($date);
+
+
+                $days_per_year = $this->calculateLeave($date,$emp->emp_date_of_join);
 
                 $vacation_pay_due_date = date('Y-m-d',strtotime($emp->emp_vacation_pay_due_from. "+ 1 day"));
 
+                $interval = $vacation_pay_due_date_format->diff($selected_date_format);
+
+                $diff = $interval->days;
+
+                $diff++;
+
                 //Entitlement Calc
-                $diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
+                //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
 
-                $years = floor($diff / (365*60*60*24));
-                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-
-                $entitlement = $days*$days_per_year/365;
+                $entitlement = $diff*$days_per_year/365;
 
                 $entitlement = number_format($entitlement,2,'.');
 
@@ -183,21 +190,21 @@ class VacationPay extends BaseController
                     <input type='hidden' name='amount[]' value='{$amount}'>
                     
 
-                    <td class='text-end'>{$slno}</td>
+                    <td class='text-center'>{$slno}</td>
                     
-                    <td class='text-end'>{$emp->emp_uid}</td>
+                    <td class='text-center'>{$emp->emp_uid}</td>
 
-                    <td class='text-end'>{$emp->emp_name}</td>
+                    <td class='text-start'>{$emp->emp_name}</td>
 
-                    <td class='text-end'>".date('d M Y',strtotime($emp->emp_date_of_join))." ({$total_years} Y)</td>
+                    <td class='text-center'>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
 
-                    <td class='text-end'>".date('d M Y',strtotime($emp->emp_vacation_pay_due_from))."</td>
+                    <td class='text-center'>".date('d M Y',strtotime($emp->emp_vacation_pay_due_from))."</td>
 
                     <td class='text-end'>".format_currency($emp->emp_basic_salary)."</td>
 
-                    <td class='text-end'>{$days_per_year}</td>
+                    <td class='text-center'>{$days_per_year}</td>
 
-                    <td class='text-end'>{$entitlement}</td>
+                    <td class='text-center'>{$entitlement}</td>
 
                     <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
 
@@ -212,6 +219,10 @@ class VacationPay extends BaseController
             $jv_sl=0;
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+            $data['jv_total'] = $data['total_amount']-$data['current_balance'];
+
+            $data['jv_total'] = number_format((float)$data['jv_total'],2,'.','');
 
             $data['jv_rows'] ='';
 
@@ -231,7 +242,7 @@ class VacationPay extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['total_amount'].'" readonly></th>
+                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['jv_total'].'" readonly></th>
 
                                         <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
 
@@ -259,7 +270,7 @@ class VacationPay extends BaseController
 
                                         <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['total_amount'].'" readonly></th>
+                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['jv_total'].'" readonly></th>
 
             </tr>
 
@@ -361,6 +372,8 @@ class VacationPay extends BaseController
 
             $debit_account = $this->request->getPost('debit_account');
 
+            $jvid = $formData['jv_uid'];
+
             $date = date('Y-m-d',strtotime($this->request->getPost('date')));
 
             $credit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $credit_account));
@@ -399,6 +412,7 @@ class VacationPay extends BaseController
                 $vacation_pay_due_date = date('Y-m-d',strtotime($emp->emp_vacation_pay_due_from. "+ 1 day"));
 
                 //Entitlement Calc
+                /*
                 $diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
 
                 $years = floor($diff / (365*60*60*24));
@@ -408,6 +422,38 @@ class VacationPay extends BaseController
                 $entitlement = $days*$days_per_year/365;
 
                 $entitlement = number_format($entitlement,2,'.');
+                */
+
+
+                $date1 = new \DateTime($emp->emp_date_of_join);
+                $date2 = new \DateTime($date);
+                $interval = $date1->diff($date2);
+                $total_years = $interval->y;
+
+
+                $vacation_pay_due_date_format = new \DateTime($emp->emp_vacation_pay_due_from);
+
+                $selected_date_format = new \DateTime($date);
+
+
+                $days_per_year = $this->calculateLeave($date,$emp->emp_date_of_join);
+
+                $vacation_pay_due_date = date('Y-m-d',strtotime($emp->emp_vacation_pay_due_from. "+ 1 day"));
+
+                $interval = $vacation_pay_due_date_format->diff($selected_date_format);
+
+                $diff = $interval->days;
+
+                $diff++;
+
+                //Entitlement Calc
+                //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
+
+                $entitlement = $diff*$days_per_year/365;
+
+                $entitlement = number_format($entitlement,2,'.');
+
+
 
                 $amount = $emp->emp_basic_salary*12/365*$entitlement;
 
@@ -447,10 +493,8 @@ class VacationPay extends BaseController
         
 
         //Insert Journal voucher
-
-        $juid = $this->request->getPost('jv_uid');
        
-        $insert_journal['jv_voucher_no'] = $juid;
+        $insert_journal['jv_voucher_no'] = $jvid;
 
         $insert_journal['jv_date'] = date('Y-m-d',strtotime($formData['jv_date']));
 
@@ -597,6 +641,319 @@ class VacationPay extends BaseController
 
     $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $vp->vp_jv_id));
 
+
+    }
+
+
+
+
+
+
+    public function Print($id)
+    {
+
+    $this->hr_model = new \App\Models\HRModel();
+
+    $vp_data = $this->hr_model->FetchVPaySingle($id);
+
+    $vp_emp ='';
+
+    $sl=1;
+
+    foreach($vp_data->employees as $emp)
+    {
+
+    $vp_emp .='
+    
+    <tr>
+
+    <td align="center">'.$sl.'</td>
+
+    <td align="center">'.$emp->emp_uid.'</td>
+
+    <td align="left">'.$emp->emp_name.'</td>
+
+    <td align="center">'.$emp->emp_nationality.'</td>
+
+    <td align="center">'.date('d-M-Y',strtotime($emp->emp_date_of_join)).'</td>
+
+    <td align="center">'.$emp->emp_qatar_id_no.'</td>
+
+    <td align="center">'.date('d-M-Y',strtotime($emp->vpe_vacation_due_from)).'</td>
+
+    <td align="right">'.format_currency($emp->vpe_basic_salary).'</td>
+
+    <td align="center">'.$emp->vpe_days_per_year.'</td>
+
+    <td align="center">'.$emp->vpe_entitlement.'</td>
+
+    <td align="right">'.format_currency($emp->vpe_amount).'</td>
+
+    </tr>
+
+    ';
+
+    $sl++;
+
+    }
+
+
+    $vp_emp .='
+    
+    <tr style="border:0px solid;">
+
+    <td style="border:0px solid;color:red" colspan="11" align="right">'.format_currency($vp_data->vp_total).'</td>
+
+    </tr>
+    
+    ';
+
+   
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'A4-L',
+        'default_font_size' => 9, 
+        'margin_left' => 5, 
+        'margin_right' => 5,
+        'margin_top' => 2,
+        'fontDir' => array_merge($fontDirs, [
+            __DIR__ . '/fonts'
+        ]),
+        'fontdata' => $fontData + [
+            'bentonsans' => [
+                'R' => 'FreeSerif.ttf',
+                'B' => 'FreeSerifBold.ttf',
+            ],
+        ],
+        'default_font' => 'bentonsans'
+        
+    ]);
+
+
+
+    $html ='
+
+    <html lang="en">
+
+    <head>
+  
+    <style>
+
+    body {
+      font-family: bentonsans, sans-serif;
+      margin: 40px;
+      font-size:9px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .logo-text {
+      font-size: 23px;
+      margin: 0;
+      color:grey;
+    }
+
+    p
+    {
+    
+    }
+
+    .seperator {
+      border: 0;
+      height: 2px;
+      background: #999;
+      margin-top: 10px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3px;
+    }
+
+    tr
+    {
+    border: 1px solid #999;
+    }
+    
+    td
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th, td {
+      padding: 2px 2px;
+      text-align: left;
+    }
+
+    .basic-info th, .basic-info td{
+      padding: 2px;
+      text-align: left;
+    }
+
+
+    .no-border-r
+    {
+    border-right: 0px solid #999;
+    }
+
+    .no-border-l
+    {
+    border-left: 0px solid #999;
+    }
+
+    .no-border-y
+    {
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    }
+
+    .no-border
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    }
+
+    .no-border-table
+    {
+    border:0px;
+    }
+
+
+    .no-border-table tr, .no-border-table td, .no-border-table th
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    border:0px;
+    }
+    
+    .head
+    {
+    background:#f2f2f2;
+    }
+
+    .head th
+    {
+    border-right: 1px solid #999;
+    text-align:center;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 1.1em;
+    }
+
+    .no-border {
+      border: none !important;
+    }
+
+
+    .account-details td,.signature-sec td
+    {
+    
+    height:100px;
+
+    }
+
+    .signature-section td {
+      height: 80px;
+      vertical-align: bottom;
+      text-align: center;
+    }
+
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+    }
+
+    .my-3{
+    margin-top:3px;
+    margin-bottom:3px;
+    background:white;
+    border-color:white;
+    }
+
+  </style>
+</head>
+<body>
+
+
+<table class="no-border-table">
+
+<tr>
+
+<td align="center">VACATION PAY ACCRUAL - Al Fuzail Engineering Services WLL</td>
+
+</tr>
+
+</table>
+
+
+<table>
+
+<tr>
+  <th align="center">SL #</th>
+  <th align="center">Employee ID</th>
+  <th align="center">Name</th>
+  <th align="center">Nationality</th>
+  <th align="center">D O J</th>
+  <th align="center">QID/Visa</th>
+  <th align="center">Vacation Due From</th>
+  <th align="center">Basic Salary</th>
+  <th align="center">Days/Year</th>
+  <th align="center">Entitlement</th>
+  <th align="center">Amount - Qr</th>
+</tr>
+
+
+
+'.$vp_emp.'
+
+
+
+
+</table>
+
+
+
+
+
+</body>
+</html>
+    
+    
+    ';
+
+
+
+    $footer="";
+
+    $mpdf->falseBoldWeight = 0;
+
+    $mpdf->WriteHTML($html);
+    $mpdf->SetFooter($footer);
+
+    $this->response->setHeader('Content-Type', 'application/pdf');
+
+    $mpdf->Output();
 
     }
 

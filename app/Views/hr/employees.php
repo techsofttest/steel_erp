@@ -1275,7 +1275,7 @@
 
             <th>Vacation Taken</th>
 
-            <td colspan="2" id="view_vacation_taken"></td>
+            <td colspan="2"><span id="view_vacation_taken"></span> + <span id="view_vacation_taken_timesheet"></span></td>
 
 
             </tr>
@@ -3009,6 +3009,8 @@
                         $('#view_other_allowance').html(formatNumber(data.employee.emp_other_allow));
 
                         $('#view_vacation_taken').html(data.employee.emp_vacation_taken);
+
+                        $('#view_vacation_taken_timesheet').html(data.employee.total_vacations);
 
                         $('#view_air_ticket_due_from').html(data.employee.emp_air_ticket_due_from);
 

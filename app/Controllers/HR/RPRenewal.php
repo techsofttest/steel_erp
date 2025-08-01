@@ -57,6 +57,7 @@ class RPRenewal extends BaseController
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
         $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->rpr_id.'" data-original-title=""><i class="ri-eye-fill"></i> </a> 
+        <a href="javascript:void(0);" data-id="'.$record->rpr_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
         <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->rpr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->rpr_credit_account));
@@ -125,7 +126,7 @@ class RPRenewal extends BaseController
 
             //$gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
         
-            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date="",$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
+            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date_l="",$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
 
             $total_credit = array_sum(array_column($account_ledger,'credit_amount'));
 
@@ -133,7 +134,7 @@ class RPRenewal extends BaseController
 
             $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
-            $data['current_balance'] = $gl_balance;
+            $data['current_balance'] = abs($gl_balance);
 
             $data['emp_row'] = "";
 
@@ -151,24 +152,23 @@ class RPRenewal extends BaseController
                 $expiry_date = date('Y-m-d',strtotime($emp->emp_qatar_id_expiry));
 
 
-                // Convert dates to DateTime objects
-                $expiryDateObj = new \DateTime($expiry_date);
-                $currentDateObj = new \DateTime($date);
+               $expiry_date_f = new \DateTime($expiry_date);    // '2025-10-15'
+                $selected_date = new \DateTime($date);           // '2025-07-31'
 
-                // Calculate the difference in days
-                $daysDifference = $expiryDateObj->diff($currentDateObj)->days;
+                // Calculate the exact difference in days
+                $interval = $selected_date->diff($expiry_date_f);
+                $days_between = $interval->format('%a');
 
-                // Determine whether the expiry date is in the past or future
-                if ($expiryDateObj < $currentDateObj) {
-                    // If expiry date is in the past, consider the days difference as negative
-                    $daysDifference = -$daysDifference;
-                }
-
-                // Calculate Entitlement
-                $entitlement = 365 - $daysDifference;
-                if ($entitlement < 0) {
+                // If expiry is in the past
+                if ($expiry_date_f < $selected_date) {
                     $entitlement = 0;
+                } else {
+                    $entitlement = 365 - $days_between;
+                    if ($entitlement < 0) {
+                        $entitlement = 0;
+                    }
                 }
+
 
                 // Calculate Amount
                 $defaultAmount = 1220;
@@ -204,7 +204,7 @@ class RPRenewal extends BaseController
                     
                     <td class='text-end'>{$emp->emp_uid}</td>
 
-                    <td class='text-end'>{$emp->emp_name}</td>
+                    <td class='text-start'>{$emp->emp_name}</td>
 
                     <td class='text-end'>{$emp->emp_qatar_id_no}</td>
 
@@ -224,11 +224,16 @@ class RPRenewal extends BaseController
                 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
 
+
             }
 
             $jv_sl=0;
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+            $data['jv_total'] = $data['total_amount']-$data['current_balance'];
+
+            $data['jv_total'] = number_format((float)$data['jv_total'],2,'.','');
 
             $data['jv_rows'] ='';
 
@@ -248,7 +253,7 @@ class RPRenewal extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['total_amount'].'" readonly></th>
+                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['jv_total'].'" readonly></th>
 
                                         <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
 
@@ -276,7 +281,7 @@ class RPRenewal extends BaseController
 
                                         <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['total_amount'].'" readonly></th>
+                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['jv_total'].'" readonly></th>
 
             </tr>
 
@@ -395,7 +400,7 @@ class RPRenewal extends BaseController
 
             $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
-            $data['current_balance'] = $gl_balance;
+            $data['current_balance'] = abs($gl_balance);
 
             $data['emp_row'] = "";
 
@@ -408,24 +413,23 @@ class RPRenewal extends BaseController
 
                 $expiry_date = date('Y-m-d',strtotime($emp->emp_qatar_id_expiry));
 
-                // Convert dates to DateTime objects
-                $expiryDateObj = new \DateTime($expiry_date);
-                $currentDateObj = new \DateTime($date);
+                $expiry_date_f = new \DateTime($expiry_date);    // '2025-10-15'
+                $selected_date = new \DateTime($date);           // '2025-07-31'
 
-                // Calculate the difference in days
-                $daysDifference = $expiryDateObj->diff($currentDateObj)->days;
+                // Calculate the exact difference in days
+                $interval = $selected_date->diff($expiry_date_f);
+                $days_between = $interval->format('%a');
 
-                // Determine whether the expiry date is in the past or future
-                if ($expiryDateObj < $currentDateObj) {
-                    // If expiry date is in the past, consider the days difference as negative
-                    $daysDifference = -$daysDifference;
-                }
-
-                // Calculate Entitlement
-                $entitlement = 365 - $daysDifference;
-                if ($entitlement < 0) {
+                // If expiry is in the past
+                if ($expiry_date_f < $selected_date) {
                     $entitlement = 0;
+                } else {
+                    $entitlement = 365 - $days_between;
+                    if ($entitlement < 0) {
+                        $entitlement = 0;
+                    }
                 }
+
 
                 // Calculate Amount
                 $defaultAmount = 1220;
@@ -458,6 +462,8 @@ class RPRenewal extends BaseController
             $jv_sl=0;
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+            $data['jv_total'] = $data['total_amount']-$data['current_balance'];
 
 
             //Insert Vacation Travel
@@ -632,6 +638,322 @@ class RPRenewal extends BaseController
 
     }
 
+
+
+
+
+
+    public function Print($id)
+    {
+
+      
+
+    $this->hr_model = new \App\Models\HRModel();
+
+    $rp_data = $this->hr_model->FetchRPSingle($id);
+
+    $rp_emp ='';
+
+    $sl=1;
+ 
+    foreach($rp_data->employees as $emp)
+    {
+
+    $rp_emp .='
+    
+    <tr>
+
+    <td align="center">'.$sl.'</td>
+
+    <td align="center">'.$emp->emp_uid.'</td>
+
+    <td align="left">'.$emp->emp_name.'</td>
+
+    <td align="center">'.$emp->emp_nationality.'</td>
+
+    <td align="center">'.date('d-M-Y',strtotime($emp->emp_date_of_join)).'</td>
+
+    <td align="center">'.$emp->emp_qatar_id_no.'</td>
+
+    <td align="right">'.format_currency($emp->emp_id_charges_deduction).'</td>
+
+    <td align="center">'.date('d-M-Y',strtotime($emp->rr_id_expiry_date)).'</td>
+
+    <td align="right">'.format_currency($emp->rr_charges).'</td>
+
+    <td></td>
+
+    <td align="right">'.format_currency($emp->rr_amount).'</td>
+
+    </tr>
+
+    ';
+
+    $sl++;
+
+    }
+
+    $rp_emp .='
+    
+    <tr style="border:0px solid;">
+
+    <td style="border:0px solid;color:red" colspan="11" align="right">'.format_currency($rp_data->rpr_total).'</td>
+
+    </tr>
+    
+    ';
+
+   
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'A4-L',
+        'default_font_size' => 9, 
+        'margin_left' => 5, 
+        'margin_right' => 5,
+        'margin_top' => 2,
+        'fontDir' => array_merge($fontDirs, [
+            __DIR__ . '/fonts'
+        ]),
+        'fontdata' => $fontData + [
+            'bentonsans' => [
+                'R' => 'FreeSerif.ttf',
+                'B' => 'FreeSerifBold.ttf',
+            ],
+        ],
+        'default_font' => 'bentonsans'
+        
+    ]);
+
+
+
+    $html ='
+
+    <html lang="en">
+
+    <head>
+  
+    <style>
+
+    body {
+      font-family: bentonsans, sans-serif;
+      margin: 40px;
+      font-size:9px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .logo-text {
+      font-size: 23px;
+      margin: 0;
+      color:grey;
+    }
+
+    p
+    {
+    
+    }
+
+    .seperator {
+      border: 0;
+      height: 2px;
+      background: #999;
+      margin-top: 10px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3px;
+    }
+
+    tr
+    {
+    border: 1px solid #999;
+    }
+    
+    td
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    text-align:center;
+    }
+
+    th
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th, td {
+      padding: 2px 2px;
+      text-align: left;
+    }
+
+    .basic-info th, .basic-info td{
+      padding: 2px;
+      text-align: left;
+    }
+
+
+    .no-border-r
+    {
+    border-right: 0px solid #999;
+    }
+
+    .no-border-l
+    {
+    border-left: 0px solid #999;
+    }
+
+    .no-border-y
+    {
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    }
+
+    .no-border
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    }
+
+    .no-border-table
+    {
+    border:0px;
+    }
+
+
+    .no-border-table tr, .no-border-table td, .no-border-table th
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    border:0px;
+    }
+    
+    .head
+    {
+    background:#f2f2f2;
+    }
+
+    .head th
+    {
+    border-right: 1px solid #999;
+    text-align:center;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 1.1em;
+    }
+
+    .no-border {
+      border: none !important;
+    }
+
+
+    .account-details td,.signature-sec td
+    {
+    
+    height:100px;
+
+    }
+
+    .signature-section td {
+      height: 80px;
+      vertical-align: bottom;
+      text-align: center;
+    }
+
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+    }
+
+    .my-3{
+    margin-top:3px;
+    margin-bottom:3px;
+    background:white;
+    border-color:white;
+    }
+
+  </style>
+</head>
+<body>
+
+
+<table class="no-border-table">
+
+<tr>
+
+<td align="center">RP RENEWAL ACCRUAL - Al Fuzail Engineering Services WLL</td>
+
+</tr>
+
+</table>
+
+
+<table>
+
+<tr>
+  <th align="center">SL #</th>
+  <th align="center">Employee ID</th>
+  <th align="center">Name</th>
+  <th align="center">Nationality</th>
+  <th align="center">D O J</th>
+  <th align="center">QID / Visa</th>
+  <th align="center">ID Deduction</th>
+  <th align="center">ID Expiry</th>
+  <th align="center">RP Charges</th>
+  <th align="center">Days</th>
+  <th align="center">Amount (QR)</th>
+</tr>
+
+
+
+'.$rp_emp.'
+
+
+
+
+</table>
+
+
+
+
+
+</body>
+</html>
+    
+    
+    ';
+
+
+
+    $footer="";
+
+    $mpdf->falseBoldWeight = 0;
+
+    $mpdf->WriteHTML($html);
+    $mpdf->SetFooter($footer);
+
+    $this->response->setHeader('Content-Type', 'application/pdf');
+
+    $mpdf->Output();
+
+    
+
+    }
 
 
 

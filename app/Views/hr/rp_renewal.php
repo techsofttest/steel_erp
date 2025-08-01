@@ -423,9 +423,9 @@
                     <thead>
                     
                     <tr>
-                        <td class="text-end">Sl No</td>
-                        <td class="text-end">Employee ID</td>
-                        <td class="text-end">Name</td>
+                        <td class="">Sl No</td>
+                        <td class="">Employee ID</td>
+                        <td class="text-center">Name</td>
                         <td class="text-end">QID Number</td>
                         <td class="text-end">Date Of Joining</td>
                         <td class="text-end">ID Expiry Date</td>
@@ -1207,6 +1207,26 @@
 
 
         });
+
+
+        });
+
+
+
+
+
+        
+        $('body').on('click','.print_color',function(e){
+    
+        id = $(this).attr('data-id');
+        // Open the PDF generation script in a new window
+
+        var pdfWindow = window.open('<?= base_url()?>HR/RPRenewal/Print/'+id, '_blank');
+
+        // Automatically print when the PDF is loaded
+        pdfWindow.onload = function() {
+            pdfWindow.print();
+        };
 
         });
 

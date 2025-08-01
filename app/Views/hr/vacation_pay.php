@@ -436,15 +436,15 @@
                     <thead>
                     
                     <tr>
-                        <td class="text-end">Sl No</td>
-                        <td class="text-end">Employee ID</td>
-                        <td class="text-end">Name</td>
-                        <td class="text-end">Date Of Joining</td>
-                        <td class="text-end">Vacation Due From</td>
-                        <td class="text-end">Basic Salary</td>
-                        <td class="text-end">Days/Year</td>
-                        <td class="text-end">Entitlement</td>
-                        <td class="text-end">Amount</td>
+                        <td class="text-center">Sl No</td>
+                        <td class="text-center">Employee ID</td>
+                        <td class="text-center">Name</td>
+                        <td class="text-center">Date Of Joining</td>
+                        <td class="text-center">Vacation Due From</td>
+                        <td class="text-center">Basic Salary</td>
+                        <td class="text-center">Days/Year</td>
+                        <td class="text-center">Entitlement</td>
+                        <td class="text-center">Amount</td>
                     </tr>
 
                     </thead>
@@ -460,7 +460,9 @@
                     <tfoot>
 
 
-                    <td colspan="8" class="text-end">Total</td>
+                    <td colspan="7"></td>
+
+                    <td  class="text-center">Total</td>
 
                     <input type="hidden" id="total_amount_input" name="" value="" required>
 
@@ -667,7 +669,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text" id="uid"  class="form-control" readonly>
+                            <input type="text" name="jv_uid" id="uid"  class="form-control" required>
 
                             </div>
 
@@ -871,11 +873,11 @@
 
                             $('#jv_rows').html(data.jv_rows);
 
-                            $('#total_amount_debit').val(data.total_amount);
-                            $('#total_amount_debit_disp').html(data.total_amount);
+                            $('#total_amount_debit').val(data.jv_total);
+                            $('#total_amount_debit_disp').html(data.jv_total);
 
-                            $('#total_amount_credit').val(data.total_amount);
-                            $('#total_amount_credit_disp').html(data.total_amount);
+                            $('#total_amount_credit').val(data.jv_total);
+                            $('#total_amount_credit_disp').html(data.jv_total);
 
                             $('.generated_sec').show();
 
@@ -1207,6 +1209,24 @@
 
 
         });
+
+        });
+
+
+
+
+
+         $('body').on('click','.print_color',function(e){
+    
+        id = $(this).attr('data-id');
+        // Open the PDF generation script in a new window
+
+        var pdfWindow = window.open('<?= base_url()?>HR/VacationPay/Print/'+id, '_blank');
+
+        // Automatically print when the PDF is loaded
+        pdfWindow.onload = function() {
+            pdfWindow.print();
+        };
 
         });
 

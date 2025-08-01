@@ -4,6 +4,7 @@ namespace App\Controllers\HR;
 
 use App\Controllers\BaseController;
 
+use DateTime;
 
 class VacationTravel extends BaseController
 {
@@ -43,7 +44,7 @@ class VacationTravel extends BaseController
 
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_vacation_travel','vt_id',$searchValue,$searchColumns);
     
-        ##Joins if any //Pass Joins as Multi dim array
+        ##Joins if any //Pass Joins as Multi dim array 
         $joins = array();
         ## Fetch records
         $records = $this->common_model->GetRecord('hr_vacation_travel','vt_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
@@ -57,7 +58,8 @@ class VacationTravel extends BaseController
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
         $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="'.$record->vt_id.'" data-original-title=""><i class="ri-eye-fill"></i> </a>
-         <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vt_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
+        <a href="javascript:void(0);" data-id="'.$record->vt_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
+        <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vt_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->vt_credit_account));
 
@@ -111,6 +113,8 @@ class VacationTravel extends BaseController
          public function FetchEmployees()
          {
 
+            $this->hr_model = new \App\Models\HRModel();
+
             $account = $this->request->getPost('account');
 
             $debit_account = $this->request->getPost('debit_account');
@@ -131,50 +135,69 @@ class VacationTravel extends BaseController
 
             $total_debit = array_sum(array_column($account_ledger,'debit_amount'));
 
+            //Nothing 
+
             $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
-            $data['current_balance'] = $gl_balance;
+            $data['current_balance'] = abs($gl_balance);
 
             $data['emp_row'] = "";
 
             $data['total_amount'] = 0;
 
+            $slno=0;
+
             foreach($employees as $emp)
             {
 
-                $ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from. "+ 1 day"));
+                $slno++;
 
-                $diff = abs(strtotime($ticket_due_date) - strtotime($date));
 
-                $years = floor($diff / (365*60*60*24));
-                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                $total_vacations = $this->hr_model->FetchVacationTotal($date);
 
-                $entitlement = $days;
+                $total_vacations = $total_vacations+$emp->emp_vacation_taken;
+
+                
+                $ticket_due_date_format = new DateTime($emp->emp_air_ticket_due_from);
+
+                $selected_date_format = new DateTime($date);
+
+                $interval = $ticket_due_date_format->diff($selected_date_format);
+
+                $diff = $interval->days;
+
+                //$diff = abs(strtotime($ticket_due_date) - strtotime($date));
+
+                //$years = floor($diff / (365*60*60*24));
+                //$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                //$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+                $entitlement = $diff+1;
 
                 $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
                 $amount = $amount/365;
+                                
 
                 $data['emp_row'] .="
                 
                     <tr>
 
-                    <td></td>
+                    <td class='text-center'>{$slno}</td>
                     
-                    <td>{$emp->emp_uid}</td>
+                    <td class='text-center'>{$emp->emp_uid}</td>
 
-                    <td>{$emp->emp_name}</td>
+                    <td class='text-start'>{$emp->emp_name}</td>
 
-                    <td>".date('d M Y',strtotime($emp->emp_air_ticket_due_from))."</td>
+                    <td class='text-center'>".date('d M Y',strtotime($emp->emp_air_ticket_due_from))."</td>
 
                     <td align='right'>{$emp->emp_budgeted_ticket_amount}</td>
 
-                    <td>{$emp->emp_air_ticket_per_year}</td>
+                    <td class='text-center'>{$emp->emp_air_ticket_per_year}</td>
 
-                    <td></td>
+                    <td class='text-center'>{$total_vacations}</td>
 
-                    <td>{$entitlement}</td>
+                    <td class='text-center'>{$entitlement}</td>
 
                     <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
 
@@ -189,6 +212,10 @@ class VacationTravel extends BaseController
             $jv_sl=0;
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+            $data['jv_total'] = $data['total_amount']-$data['current_balance'];
+
+            $data['jv_total'] =  number_format((float)$data['jv_total'],2,'.','');
 
             $data['jv_rows'] ='';
 
@@ -208,7 +235,7 @@ class VacationTravel extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['total_amount'].'" readonly></th>
+                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['jv_total'].'" readonly></th>
 
                                         <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
 
@@ -236,7 +263,7 @@ class VacationTravel extends BaseController
 
                                         <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['total_amount'].'" readonly></th>
+                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['jv_total'].'" readonly></th>
 
             </tr>
 
@@ -289,7 +316,7 @@ class VacationTravel extends BaseController
 
             $debit_account = $this->request->getPost('debit_account');
 
-            $jvid = $this->request->getPost('jv_uid');
+            $jvid = $formData['jv_uid'];
 
             $dfull = date('Y-m-d',strtotime($this->request->getPost('date')));
 
@@ -320,15 +347,28 @@ class VacationTravel extends BaseController
             foreach($employees as $emp)
             {
 
+                $total_vacations = $this->hr_model->FetchVacationTotal($date);
+
+                $total_vacations = $total_vacations+$emp->emp_vacation_taken;
+
                 $ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from. "+ 1 day"));
 
-                $diff = abs(strtotime($ticket_due_date) - strtotime($date));
 
-                $years = floor($diff / (365*60*60*24));
-                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                $ticket_due_date_format = new DateTime($ticket_due_date);
 
-                $entitlement = $days;
+                $selected_date_format = new DateTime($date);
+
+                $interval = $ticket_due_date_format->diff($selected_date_format);
+
+                $diff = $interval->days;
+
+                //$diff = abs(strtotime($ticket_due_date) - strtotime($date));
+
+                //$years = floor($diff / (365*60*60*24));
+                //$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                //$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+                $entitlement = $diff;
 
                 $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
@@ -342,7 +382,7 @@ class VacationTravel extends BaseController
                 $insert_emp_arr['vte_ticket_due_from'][$emp->emp_id] = $emp->emp_air_ticket_due_from ?? "2025-01-01";
                 $insert_emp_arr['vte_ticket_rate'][$emp->emp_id] = $emp->emp_budgeted_ticket_amount ?? 0;
                 $insert_emp_arr['vte_ticket_per_year'][$emp->emp_id] = $emp->emp_air_ticket_per_year ?? 0;
-                $insert_emp_arr['vte_utilization'][$emp->emp_id] = '';                                                                                                                          
+                $insert_emp_arr['vte_utilization'][$emp->emp_id] = $total_vacations;                                                                                                                          
                 $insert_emp_arr['vte_entitlement'][$emp->emp_id] = $entitlement;
                 $insert_emp_arr['vte_amount'][$emp->emp_id] = $amount;
 
@@ -369,7 +409,7 @@ class VacationTravel extends BaseController
 
         //Insert Journal voucher
         
-        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers','jv_voucher_no',"JV-{$year}-",$year);
+        //$juid = $this->common_model->FetchNextId('accounts_journal_vouchers','jv_voucher_no',"JV-{$year}-",$year);
 
         $insert_journal['jv_voucher_no'] = $jvid;
 
@@ -532,6 +572,353 @@ class VacationTravel extends BaseController
 
 
     }
+
+
+
+
+
+
+    public function Print($id){
+
+    $this->hr_model = new \App\Models\HRModel();
+
+
+    $vt_data = $this->hr_model->FetchVTPrint($id);
+
+
+
+    $vt_emp ='';
+
+
+    $sl=1;
+
+    foreach($vt_data->employees as $emp)
+    {
+
+
+    $vt_emp .='
+    
+
+    <tr>
+
+    <td align="center">'.$sl.'</td>
+
+    <td align="center">'.$emp->emp_uid.'</td>
+
+    <td align="left">'.$emp->emp_name.'</td>
+
+    <td align="center">'.$emp->emp_nationality.'</td>
+
+    <td align="center">'.$emp->emp_designation.'</td>
+
+    <td align="center">'.date('d-M-Y',strtotime($emp->emp_date_of_join)).'</td>
+
+    <td align="center">'.$emp->emp_qatar_id_no.'</td>
+
+    <td align="center">'.$emp->emp_passport_no.'</td>
+
+    <td align="center">'.$emp->emp_contact_no.'</td>
+
+    <td align="center">'.date('d-M-Y',strtotime($emp->emp_air_ticket_due_from)).'</td>
+
+    <td align="right">'.format_currency($emp->emp_budgeted_ticket_amount).'</td>
+
+    <td align="center">'.$emp->vte_utilization.'</td>
+
+    <td align="center">'.$emp->vte_ticket_per_year.'</td>
+
+    <td align="center">'.$emp->vte_entitlement.'</td>
+
+    <td align="right">'.format_currency($emp->vte_amount).'</td>
+
+    </tr>
+
+    ';
+
+
+    $sl++;
+
+    }
+
+    $vt_emp .='
+    
+    <tr style="border:0px solid;">
+
+    <td style="border:0px solid;color:red" colspan="15" align="right">'.format_currency($vt_data->vt_total).'</td>
+
+    </tr>
+    
+    ';
+
+   
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'A4-L',
+        'default_font_size' => 7, 
+        'margin_left' => 5, 
+        'margin_right' => 5,
+        'margin_top' => 2,
+        'fontDir' => array_merge($fontDirs, [
+            __DIR__ . '/fonts'
+        ]),
+        'fontdata' => $fontData + [
+            'bentonsans' => [
+                'R' => 'FreeSerif.ttf',
+                'B' => 'FreeSerifBold.ttf',
+            ],
+        ],
+        'default_font' => 'bentonsans'
+        
+    ]);
+
+
+
+    $html ='
+
+    <html lang="en">
+
+    <head>
+  
+    <style>
+
+    body {
+      font-family: bentonsans, sans-serif;
+      margin: 40px;
+      font-size:9px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .logo-text {
+      font-size: 23px;
+      margin: 0;
+      color:grey;
+    }
+
+    p
+    {
+    
+    }
+
+    .seperator {
+      border: 0;
+      height: 2px;
+      background: #999;
+      margin-top: 10px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3px;
+    }
+
+    tr
+    {
+    border: 1px solid #999;
+    }
+    
+    td
+    {
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th
+    {
+    text-align:center;
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+
+    th, td {
+      padding: 2px 2px;
+      text-align: left;
+    }
+
+    .basic-info th, .basic-info td{
+      padding: 2px;
+      text-align: left;
+    }
+
+
+    .no-border-r
+    {
+    border-right: 0px solid #999;
+    }
+
+    .no-border-l
+    {
+    border-left: 0px solid #999;
+    }
+
+    .no-border-y
+    {
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    }
+
+    .no-border
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    }
+
+    .no-border-table
+    {
+    border:0px;
+    }
+
+
+    .no-border-table tr, .no-border-table td, .no-border-table th
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    border:0px;
+    }
+    
+    .head
+    {
+    background:#f2f2f2;
+    }
+
+    .head th
+    {
+    border-right: 1px solid #999;
+    text-align:center;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 1.1em;
+    }
+
+    .no-border {
+      border: none !important;
+    }
+
+
+    .account-details td,.signature-sec td
+    {
+    
+    height:100px;
+
+    }
+
+    .signature-section td {
+      height: 80px;
+      vertical-align: bottom;
+      text-align: center;
+    }
+
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+    }
+
+    .my-3{
+    margin-top:3px;
+    margin-bottom:3px;
+    background:white;
+    border-color:white;
+    }
+
+  </style>
+</head>
+<body>
+
+
+<table class="no-border-table">
+
+<tr>
+
+<td align="center">VACATION TRAVEL ACCRUAL - Al Fuzail Engineering Services WLL</td>
+
+</tr>
+
+</table>
+
+
+<table>
+
+
+<tr>
+
+<th align="center">SL #</th>
+
+<th align="center">Employee ID</th>
+
+<th align="center">Name</th>
+
+<th align="center">Nationality</th>
+
+<th align="center">Designation</th>
+
+<th align="center">D O J</th>
+
+<th align="center">QID / Visa</th>
+
+<th align="center">Passport</th>
+
+<th align="center">Contact</th>
+
+<th align="center">Vacation Due From</th>
+
+<th align="center">Ticket Rate</th>
+
+<th align="center">Vacation Utilised</th>
+
+<th align="center">Tickets Per Year</th>
+
+<th align="center">Entitlement</th>
+
+<th align="center">Amount - Qr</th>
+
+
+</tr>
+
+
+'.$vt_emp.'
+
+
+</table>
+
+
+
+
+
+</body>
+</html>
+    
+    
+    ';
+
+
+
+    $footer="";
+
+    $mpdf->falseBoldWeight = 0;
+
+    $mpdf->WriteHTML($html);
+    $mpdf->SetFooter($footer);
+
+    $this->response->setHeader('Content-Type', 'application/pdf');
+
+    $mpdf->Output();
+
+    }
+
 
 
 
