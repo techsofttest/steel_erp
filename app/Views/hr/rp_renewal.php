@@ -858,11 +858,11 @@
 
                             $('#jv_rows').html(data.jv_rows);
 
-                            $('#total_amount_debit').val(data.total_amount);
-                            $('#total_amount_debit_disp').html(data.total_amount);
+                            $('#total_amount_debit').val(data.jv_total);
+                            $('#total_amount_debit_disp').html(data.jv_total);
 
-                            $('#total_amount_credit').val(data.total_amount);
-                            $('#total_amount_credit_disp').html(data.total_amount);
+                            $('#total_amount_credit').val(data.jv_total);
+                            $('#total_amount_credit_disp').html(data.jv_total);
 
                             }
                             else
