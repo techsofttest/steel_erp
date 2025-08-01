@@ -606,11 +606,11 @@ class Indemnity extends BaseController
 
     <td align="center">'.$emp->ide_entitlement.'</td>
 
-    <td align="right">'.format_currency($emp->ide_amount).'</td>
+    <td align="right">'.format_currency($emp->ide_indemnity).'</td>
 
     <td align="right">'.format_currency($emp->ide_advance).'</td>
 
-    <td align="right">'.format_currency(((float)$emp->ide_amount-(float)$emp->ide_advance)).'</td>
+    <td align="right">'.format_currency($emp->ide_amount).'</td>
 
     </tr>
 
