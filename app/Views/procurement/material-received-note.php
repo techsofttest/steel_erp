@@ -944,7 +944,7 @@
                                         <td style="width:4%">SI</td>
                                         <td>Product Description</td>
                                         <td style="width:6%">Unit</td>
-                                        <td style="width:6%">Qty</td>
+                                        <!--<td style="width:6%">Qty</td>-->
                                         <td style="width:4%">Tick</td>
                                     </tr>
 

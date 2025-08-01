@@ -463,12 +463,21 @@ class MaterialReceivedNote extends BaseController
 
         foreach($products as $prod){
 
-            $data['product_detail'] .='<tr class="" id="'.$prod->pop_id.'">
+            /*$data['product_detail'] .='<tr class="" id="'.$prod->pop_id.'">
                                             
                                             <td class="si_no text-center">'.$i.'</td>
                                             <td style="text-align: left;">'.$prod->product_details.'</td>
                                             <td class="text-center"><input type="text" name="dpd_unit[]" value="'.$prod->pop_unit.'" class="form-control text-center" readonly></td>
                                             <td class="text-center"><input type="number" name="dpd_order_qty[]" value="'.$prod->pop_qty.'"  class="form-control order_qty text-center" readonly></td>
+                                            <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$prod->pop_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
+                                          
+                                        </tr>';*/
+                                        
+            $data['product_detail'] .='<tr class="" id="'.$prod->pop_id.'">
+                                            
+                                            <td class="si_no text-center">'.$i.'</td>
+                                            <td style="text-align: left;">'.$prod->product_details.'</td>
+                                            <td class="text-center"><input type="text" name="dpd_unit[]" value="'.$prod->pop_unit.'" class="form-control text-center" readonly></td>
                                             <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$prod->pop_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                           
                                         </tr>';

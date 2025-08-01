@@ -469,11 +469,19 @@ class PurchaseOrder extends BaseController
 
         foreach($products as $prod){
 
-            $data['product_details'] .='<tr class="" id="'.$prod->mrp_id.'">
+            /*$data['product_details'] .='<tr class="" id="'.$prod->mrp_id.'">
                                             <td class="si_no text-center">'.$i.'</td>
                                             <td style="text-align:left;padding:10px 10px;" >'.$prod->product_details.'</td>
                                             <td class="text-center"><input type="text" name="dpd_unit[]" value="'.$prod->mrp_unit.'" class="form-control text-center" readonly></td>
                                             <td class="text-center"><input type="number" name="dpd_order_qty[]" value="'.$prod->mrp_qty.'"  class="form-control order_qty text-center" readonly></td>
+                                            <td class="text-center" ><input type="checkbox" name="product_select[]" id="'.$prod->mrp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                               
+                                        </tr>';*/
+            $data['product_details'] .='<tr class="" id="'.$prod->mrp_id.'">
+                                            <td class="si_no text-center">'.$i.'</td>
+                                            <td style="text-align:left;padding:10px 10px;" >'.$prod->product_details.'</td>
+                                            <td class="text-center"><input type="text" name="dpd_unit[]" value="'.$prod->mrp_unit.'" class="form-control text-center" readonly></td>
+                                            
                                             <td class="text-center" ><input type="checkbox" name="product_select[]" id="'.$prod->mrp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                                
                                         </tr>';
@@ -1458,7 +1466,7 @@ class PurchaseOrder extends BaseController
 
                                     <tr>
                                     
-                                        <td style="width:55%">Procurement Executive - Accounts Assistant, Mob : +974 5013 0377</td>
+                                        <td style="width:55%">Ubais Usman - Procurement Executive, Mob :  +974 5013 0377</td>
                                         
                                         <td>Justin Jose - Operations Manager</td>
                                     
@@ -1468,7 +1476,7 @@ class PurchaseOrder extends BaseController
 
                                     <tr>
                                     
-                                        <td style="width:55%">Finance Manager  - Chief Accountant, Mob : +974 7743 4520</td>
+                                        <td style="width:55%">Muhamed Raphy  -  Finance Manager, Mob : +974 7743 4520</td>
                                         
                                         <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
                                 
@@ -1487,8 +1495,7 @@ class PurchaseOrder extends BaseController
                                 
                                     <td style="width: 50%;">'.currency_to_words($purchase_order->po_amount).'</td>
 
-
-                                    <td style="font-weight: bold;width: 20%;" align="right">Net Order Value</td>
+                                    <td style="font-weight: bold;width: 20%;" align="right">Qr</td>
                         
                                     <td style="font-weight: bold;" align="right">'.format_currency($purchase_order->po_amount).'</td>
 
@@ -1509,20 +1516,8 @@ class PurchaseOrder extends BaseController
                                     <td style="width:10%">Vendor Ref:</td>
 
                                     <td style="">'.$purchase_order->po_vendor_ref.'</td>
-                                    
                                 </tr>
 
-                                <tr>
-                                    <td style="width:15%" rowspan="2">Delivery</td>
-
-                                    <td style="width:29%">'.$delivery_date.'</td>
-
-                                    <td style=""></td>
-                    
-
-                                </tr>
-
-            
                             </table>';
 
 

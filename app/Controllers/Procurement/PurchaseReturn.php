@@ -454,11 +454,20 @@ class PurchaseReturn extends BaseController
 
         foreach($products as $prod){
 
+            /*$data['product_detail'] .='<tr class="" id="'.$prod->pvp_id.'">
+                                            
+                                            <td class="si_no text-center">'.$i.'</td>
+                                            <td style="text-align: left;padding: 2px 5px;">'.$prod->pvp_prod_dec.'</td>
+                                            <td>'.$prod->pvp_qty.'</td>
+                                            <td class="text-center"><input type="checkbox" name="" id="'.$prod->pvp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
+                                            
+                                          
+                                        </tr>';*/
             $data['product_detail'] .='<tr class="" id="'.$prod->pvp_id.'">
                                             
                                             <td class="si_no text-center">'.$i.'</td>
-                                            <td style="text-align: left;">'.$prod->pvp_prod_dec.'</td>
-                                            <td>'.$prod->pvp_qty.'</td>
+                                            <td style="text-align: left;padding: 2px 5px;">'.$prod->pvp_prod_dec.'</td>
+                                           
                                             <td class="text-center"><input type="checkbox" name="" id="'.$prod->pvp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                             
                                           
@@ -520,8 +529,8 @@ class PurchaseReturn extends BaseController
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->pvp_id.'">
                                             <td class="si_no text-center">'.$j.'</td>
                                             <td><input type="text" name="prp_sales_order[]" value="'.$product->pvp_sales_order.'" class="form-control text-center" readonly></td>
-                                            <td style="text-align:left;">'.$product->pvp_prod_dec.'</td>
-                                            <td style="text-align:left;">'.$product->ca_name.'</td>
+                                            <td style="text-align:left;padding: 3px 5px;">'.$product->pvp_prod_dec.'</td>
+                                            <td style="text-align:left;padding: 0px 8px;">'.$product->ca_name.'</td>
                                             <td><input type="number" name="prp_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center"  required></td>
                                             <td><input type="text" name="prp_unit[]" value="'.$product->pvp_unit.'" class="form-control text-center" required readonly></td>
                                             <td><input type="text" name="prp_rate[]" value="'.format_currency($product->pvp_rate).'"  class="form-control add_prod_rate text-end" required readonly></td>
@@ -809,7 +818,7 @@ class PurchaseReturn extends BaseController
             $data['purchase_return'] .= '<tr class="edit_prod_row" id="'.$pur_return_prod->prp_id.'">
             <td class="si_no1 text-center">'.$i.'</td>
             <td>'.$pur_return_prod->prp_sales_order.'</td>
-            <td style="text-align:left">'.$pur_return_prod->prp_prod_desc.'</td>
+            <td style="text-align:left;padding: 4px 7px;">'.$pur_return_prod->prp_prod_desc.'</td>
             <td>'.$pur_return_prod->prp_debit.'</td>
             <td>'.format_currency($pur_return_prod->prp_qty).'</td>
             <td>'.$pur_return_prod->prp_unit.'</td>
@@ -923,7 +932,7 @@ class PurchaseReturn extends BaseController
             $data['purchase_return'] .= '<tr class="edit_prod_row" id="'.$pur_return_prod->prp_id.'">
             <td class="si_no1 text-center">'.$i.'</td>
             <td>'.$pur_return_prod->prp_sales_order.'</td>
-            <td style="text-align:left;">'.$pur_return_prod->prp_prod_desc.'</td>
+            <td style="text-align:left;padding: 5px 7px;">'.$pur_return_prod->prp_prod_desc.'</td>
             <td>'.$pur_return_prod->prp_debit.'</td>
             <td>'.format_currency($pur_return_prod->prp_qty).'</td>
             <td>'.$pur_return_prod->prp_unit.'</td>

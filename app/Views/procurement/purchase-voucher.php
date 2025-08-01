@@ -96,7 +96,7 @@
         margin-bottom: 0px;
     }
     .total_table {
-        width: 14% !important;
+        width: 223px !important;
     
     }
     .select_prod_add td{
@@ -501,15 +501,15 @@
                                                             
                                                             <tr>
                                                                 
-                                                                <td style="width:8%">Sales Order</td>
+                                                                <td style="width:115px">Sales Order</td>
                                                                 <td >Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
-                                                                <td style="width:20%">Debit A/C</td>
-                                                                <td style="width:3%">Qty</td>
-                                                                <td style="width:3%">Unit</td>
-                                                                <td style="width:4%">Rate</td>
-                                                                <td style="width:4%">Discount</td>
-                                                                <td style="width:5%">Amount</td>
-                                                                <td style="width:5%;display:none" class="show_action">Action</td> 
+                                                                <td style="width:300px;">Debit A/C</td>
+                                                                <td style="width: 49px;">Qty</td>
+                                                                <td style="width: 49px;">Unit</td>
+                                                                <td style="width: 70px;">Rate</td>
+                                                                <td style="width: 67px;">Discount</td>
+                                                                <td style="width: 85px">Amount</td>
+                                                                <td style="width:55px;display:none" class="show_action">Action</td> 
 
                                                             </tr>
                                                             
@@ -817,15 +817,15 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td class="text-center" style="width: 4%;">SI</td>
-                                                                <td class="text-center" style="width: 8%;">Sales Order</td>
+                                                                <td class="text-center" style="width: 35px;">SI</td>
+                                                                <td class="text-center" style="width:115px">Sales Order</td>
                                                                 <td class="text-center">Product Description</td>
-                                                                <td class="text-center" style="width: 20%;">Debit A/C</td>
-                                                                <td class="text-center" style="width: 3%;">Qty</td>
-                                                                <td class="text-center" style="width: 3%;">Unit</td>
-                                                                <td class="text-center" style="width: 4%;">Rate</td>
-                                                                <td class="text-center" style="width: 4%;">Discount</td>
-                                                                <td class="text-center" style="width: 5%;">Amount</td>
+                                                                <td class="text-center" style="width:300px;">Debit A/C</td>
+                                                                <td class="text-center" style="width: 49px;">Qty</td>
+                                                                <td class="text-center" style="width: 49px;">Unit</td>
+                                                                <td class="text-center" style="width: 70px">Rate</td>
+                                                                <td class="text-center" style="width: 67px;">Discount</td>
+                                                                <td class="text-center" style="width: 85px;">Amount</td>
 
 
 
@@ -1117,15 +1117,15 @@
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 
-                                                            <td style="width:8%">Sales Order</td>
+                                                            <td style="width:115px">Sales Order</td>
                                                             <td >Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
-                                                            <td style="width:20%">Debit A/C</td>
-                                                            <td style="width:3%">Qty</td>
-                                                            <td style="width:3%">Unit</td>
-                                                            <td style="width:4%">Rate</td>
-                                                            <td style="width:4%">Discount</td>
-                                                            <td style="width:5%">Amount</td>
-                                                            <td style="width:5%;display:none" class="edit_action">Action</td> 
+                                                            <td style="width:300px">Debit A/C</td>
+                                                            <td style="width:49px">Qty</td>
+                                                            <td style="width:49px">Unit</td>
+                                                            <td style="width:70px">Rate</td>
+                                                            <td style="width:67px">Discount</td>
+                                                            <td style="width:85px">Amount</td>
+                                                            <td style="width:55px;display:none" class="edit_action">Action</td> 
 
                                                             
                                                                
@@ -1967,7 +1967,7 @@
          /*sales order droup drown search*/
          function InitSalesSelectAdd(){
             $(".add_sales_order:last").select2({
-                placeholder: "Select Sales Order",
+                placeholder: "Sales Order",
                 theme : "default form-control- droup_color",
                 dropdownParent: $($('.add_sales_order:last').closest('.add_prod_row')),
                 ajax: {
@@ -2915,7 +2915,7 @@ InitDebitSelectAdd1()
           */ 
          
           
-          $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td ><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+          $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td ><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
              
           
               

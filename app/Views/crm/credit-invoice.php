@@ -574,7 +574,7 @@ span.select2.customer_width, span.select2 {
                                         <td style="width: 4%;">SI</td>
                                         <td>Product Description</td>
                                         <td style="width: 10%;">Delivery Note</td>
-                                        <td style="width: 6%;">Qty</td>
+                                        <!--<td style="width: 6%;">Qty</td>-->
                                         <td style="width: 4%;">Tick</td>
                                     </tr>
                                                             

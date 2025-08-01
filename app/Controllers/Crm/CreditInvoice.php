@@ -966,11 +966,19 @@ class CreditInvoice extends BaseController
             
 		                $options_product = '<option value="'.$del_note->product_id.'" selected>'.$del_note->product_details.'</option>';
         
-                        $data['product_detail'] .='<tr class="prod_row " id="'.$del_note->dn_id.'" style="text-align:center">
+                        /*$data['product_detail'] .='<tr class="prod_row " id="'.$del_note->dn_id.'" style="text-align:center">
                                                         <td class="si_no text-center">'.$i.'</td>
                                                         <td class="" style="text-align: left !important;">'.$del_note->product_details.' </td>
                                                         <td style="padding: 0px !important;">'.$del_note->dn_reffer_no.'</td>
                                                         <td><input type="text"  value="'.$del_note->dpd_current_qty	.'" class="form-control text-center" required></td>
+                                                        <td><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
+                                                      
+                                                    </tr>';*/
+                        $data['product_detail'] .='<tr class="prod_row " id="'.$del_note->dn_id.'" style="text-align:center">
+                                                        <td class="si_no text-center">'.$i.'</td>
+                                                        <td class="" style="text-align: left !important;">'.$del_note->product_details.' </td>
+                                                        <td style="padding: 0px !important;">'.$del_note->dn_reffer_no.'</td>
+                                                       
                                                         <td><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                                       
                                                     </tr>';

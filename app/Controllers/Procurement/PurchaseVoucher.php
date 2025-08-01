@@ -834,7 +834,7 @@ class PurchaseVoucher extends BaseController
 
             if(empty($pur_vou_prod->pv_purchase_order)){
 
-            $data['prod_desc'] .='<td class="text-center" style="padding:10px 10px;"><a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-toggle="tooltip" data-placement="top" title="edit" data-id="'.$pur_vou_prod->pvp_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a></td>';
+            $data['prod_desc'] .='<td class="text-center" style="padding:10px 10px;"><a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-toggle="tooltip" data-placement="top" title="edit" data-id="'.$pur_vou_prod->pvp_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a></td>';
 
             }
 
@@ -1192,7 +1192,7 @@ class PurchaseVoucher extends BaseController
             $data['product_detail'] .='<tr class="" id="'.$prod->rnp_id.'">
                                             
                                             <td class="si_no text-center" >'.$i.'</td>
-                                            <td>'.$prod->rnp_product_desc.'</td>
+                                            <td style="padding: 2px 7px;">'.$prod->rnp_product_desc.'</td>
                                             <td><input type="text" name="dpd_unit[]" value="'.$prod->mrn_reffer.'" class="form-control text-center" readonly></td>
                                             <td class="text-center" ><input type="checkbox" name="product_select[]" id="'.$prod->rnp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                           
@@ -1397,6 +1397,10 @@ class PurchaseVoucher extends BaseController
 
     public function Delete()
     {    
+        $data['status'] ="";
+
+         $data['msg'] ="";
+
         $adminId = session('admin_id');
 
         $segment1 = service('uri')->getSegment(1);

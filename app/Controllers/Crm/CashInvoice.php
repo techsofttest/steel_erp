@@ -1113,12 +1113,23 @@ class CashInvoice extends BaseController
                
                 $new_qty = $sales_det->spd_quantity - $sales_det->spd_delivered_qty;
 
-                $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
+                /*$data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                 <td class="si_no text-center" style="padding: 10px 10px;">'.$i.'</td>
                                                
                                                 <td>'.$sales_det->product_details.'</td>
                                                 <td class="text-center">'.$sales_det->spd_unit.'</td>
                                                 <td class="text-center">'.$new_qty.'</td>
+                                                <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
+                                                    
+                                                    
+                                                </tr>';*/
+
+                $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
+                                                <td class="si_no text-center" style="padding: 10px 10px;">'.$i.'</td>
+                                               
+                                                <td>'.$sales_det->product_details.'</td>
+                                                <td class="text-center">'.$sales_det->spd_unit.'</td>
+                                               
                                                 <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                                     
                                                     
