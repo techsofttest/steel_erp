@@ -681,7 +681,7 @@ class RPRenewal extends BaseController
 
     <td align="right">'.format_currency($emp->rr_charges).'</td>
 
-    <td></td>
+    <td>'.$emp->rr_entitlement.'</td>
 
     <td align="right">'.format_currency($emp->rr_amount).'</td>
 
