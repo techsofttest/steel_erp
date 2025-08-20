@@ -438,7 +438,7 @@ class SalesQuotation extends BaseController
                     <td class="text-center">'.$prod_det->qpd_quantity.'</td>
                     <td class="text-end" style="padding: 0px 10px;">'.format_currency($prod_det->qpd_rate).'</td>
                     <td class="text-center">'.format_currency($prod_det->qpd_discount).'</td>
-                    <td class="text-end">'.format_currency($prod_det->qpd_amount).'</td>
+                    <td class="text-end" style="padding: 0px 10px;">'.format_currency($prod_det->qpd_amount).'</td>
                     
                 </tr>';
                 $i++;
