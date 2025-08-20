@@ -168,9 +168,11 @@ class Indemnity extends BaseController
 
                $indemnity = $year_salary/365*$entitlement;
 
-               $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
+               //$amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
-               $amount = $amount/365;
+               //$amount = $amount/365;
+
+               $amount = $indemnity-$emp->emp_indemnity_advance;
 
                 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
@@ -351,11 +353,12 @@ class Indemnity extends BaseController
 
                $indemnity = $year_salary/365*$entitlement;
 
-               $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
+               //$amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
-               $amount = $amount/365;
+               //$amount = $amount/365;
 
-               
+               $amount = $indemnity-$emp->emp_indemnity_advance;
+
 
                $data['emp_row'] .="
                
@@ -493,6 +496,8 @@ class Indemnity extends BaseController
 
         $indemnity->id_employees = "";
 
+        $indemnity->id_total = format_currency($indemnity->id_total);
+
         $io=0;
 
         foreach($indemnity->employees as $emp)
@@ -501,17 +506,17 @@ class Indemnity extends BaseController
             $indemnity->id_employees .= '
             <tr>
         
-            <td class="text-end">'.++$io.'</td>
+            <td class="text-center">'.++$io.'</td>
     
-            <td class="text-end">'.$emp->emp_uid.'</td>
+            <td class="text-center">'.$emp->emp_uid.'</td>
     
-            <td class="text-end">'.$emp->emp_name.'</td>
+            <td class="text-start">'.$emp->emp_name.'</td>
     
             <td class="text-end">'.format_currency($emp->ide_basic_salary).'</td>
     
-            <td class="text-end">'.date('d M Y',strtotime($emp->ide_date_of_join)).'</td>
+            <td class="text-center">'.date('d M Y',strtotime($emp->ide_date_of_join)).'</td>
     
-            <td class="text-end">'.$emp->ide_entitlement.'</td>
+            <td class="text-center">'.$emp->ide_entitlement.'</td>
     
             <td class="text-end">'.format_currency($emp->ide_indemnity).'</td>
     
@@ -601,11 +606,11 @@ class Indemnity extends BaseController
 
     <td align="center">'.$emp->ide_entitlement.'</td>
 
-    <td align="right">'.format_currency($emp->ide_amount).'</td>
+    <td align="right">'.format_currency($emp->ide_indemnity).'</td>
 
     <td align="right">'.format_currency($emp->ide_advance).'</td>
 
-    <td align="right">'.format_currency(((float)$emp->ide_amount-(float)$emp->ide_advance)).'</td>
+    <td align="right">'.format_currency($emp->ide_amount).'</td>
 
     </tr>
 

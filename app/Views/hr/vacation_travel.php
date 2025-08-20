@@ -154,23 +154,23 @@
 
                             <tr>
 
-                            <th class="text-end">Sl No</th>
+                            <th class="text-center">Sl No</th>
 
-                            <th class="text-end">Emp Id</th>
+                            <th class="text-center">Emp Id</th>
 
-                            <th class="text-end">Name</th>
+                            <th class="text-center">Name</th>
 
-                            <th class="text-end">Ticket Due From</th>
+                            <th class="text-center">Ticket Due From</th>
 
-                            <th class="text-end">Ticket Rate</th>
+                            <th class="text-center">Ticket Rate</th>
 
-                            <th class="text-end">Ticket Per year</th>
+                            <th class="text-center">Ticket Per year</th>
 
-                            <th class="text-end">Utilization</th>
+                            <th class="text-center">Utilization</th>
 
-                            <th class="text-end">Entitlement</th>
+                            <th class="text-center">Entitlement</th>
 
-                            <th class="text-end">Amount</th>
+                            <th class="text-center">Amount</th>
 
                             </tr>
 

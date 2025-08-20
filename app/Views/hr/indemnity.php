@@ -155,23 +155,23 @@
 
                             <tr>
 
-                            <th class="text-end">Sl No</th>
+                            <th class="text-center">Sl No</th>
 
-                            <th class="text-end">Emp Id</th>
+                            <th class="text-center">Emp Id</th>
 
-                            <th class="text-end">Name</th>
+                            <th class="text-center">Name</th>
 
-                            <th class="text-end">Basic Salary</th>
+                            <th class="text-center">Basic Salary</th>
 
-                            <th class="text-end">Date Of Joining</th>
+                            <th class="text-center">Date Of Joining</th>
 
-                            <th class="text-end">Entitlement</th>
+                            <th class="text-center">Entitlement</th>
 
-                            <th class="text-end">Indemnity</th>
+                            <th class="text-center">Indemnity</th>
 
-                            <th class="text-end">Advance</th>
+                            <th class="text-center">Advance</th>
 
-                            <th class="text-end">Amount</th>
+                            <th class="text-center">Amount</th>
 
                             </tr>
 
@@ -189,7 +189,9 @@
 
                             <tr>
 
-                            <th class="text-end" colspan="8"><b>Total</b></th>
+                            <th colspan="7"></th>
+
+                            <th class="text-center" ><b>Total</b></th>
 
                             <th class="text-end" id="total_id_view"></th>
 

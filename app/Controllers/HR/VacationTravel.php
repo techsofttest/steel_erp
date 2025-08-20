@@ -510,23 +510,23 @@ class VacationTravel extends BaseController
         
         <tr>
         
-        <td class="text-end">'.$io.'</td>
+        <td class="text-center">'.$io.'</td>
 
-        <td class="text-end">'.$emp->emp_uid.'</td>
+        <td class="text-center">'.$emp->emp_uid.'</td>
 
-        <td class="text-end">'.$emp->emp_name.'</td>
+        <td class="text-start">'.$emp->emp_name.'</td>
 
-        <td class="text-end">'.date('d M Y',strtotime($emp->vte_ticket_due_from)).'</td>
+        <td class="text-center">'.date('d M Y',strtotime($emp->vte_ticket_due_from)).'</td>
 
-        <td class="text-end">'.$emp->vte_ticket_rate.'</td>
+        <td class="text-end">'.format_currency($emp->vte_ticket_rate).'</td>
 
-        <td class="text-end">'.$emp->vte_ticket_per_year.'</td>
+        <td class="text-center">'.$emp->vte_ticket_per_year.'</td>
 
-        <td class="text-end">'.$emp->vte_utilization.'</td>
+        <td class="text-center">'.$emp->vte_utilization.'</td>
 
-        <td class="text-end">'.$emp->vte_entitlement.'</td>
+        <td class="text-center">'.$emp->vte_entitlement.'</td>
 
-        <td class="text-end">'.$emp->vte_amount.'</td>
+        <td class="text-end">'.format_currency($emp->vte_amount).'</td>
         
         </tr>
         

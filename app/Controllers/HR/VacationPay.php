@@ -579,6 +579,8 @@ class VacationPay extends BaseController
 
         $vacation_pay->vp_employees = "";
 
+        $vacation_pay->vp_total = format_currency($vacation_pay->vp_total);
+
         $io=1;
 
         foreach($vacation_pay->employees as $emp){
@@ -587,23 +589,23 @@ class VacationPay extends BaseController
         
         <tr>
         
-        <td class="text-end">'.$io.'</td>
+        <td class="text-center">'.$io.'</td>
 
-        <td class="text-end">'.$emp->emp_uid.'</td>
+        <td class="text-center">'.$emp->emp_uid.'</td>
 
-        <td class="text-end">'.$emp->emp_name.'</td>
+        <td class="text-start">'.$emp->emp_name.'</td>
 
-        <td class="text-end">'.date('d M Y',strtotime($emp->emp_date_of_join)).'</td>
+        <td class="text-center">'.date('d M Y',strtotime($emp->emp_date_of_join)).'</td>
 
-        <td class="text-end">'.date('d M Y',strtotime($emp->vpe_vacation_due_from)).'</td>
+        <td class="text-center">'.date('d M Y',strtotime($emp->vpe_vacation_due_from)).'</td>
 
-        <td class="text-end">'.$emp->vpe_basic_salary.'</td>
+        <td class="text-end">'.format_currency($emp->vpe_basic_salary).'</td>
 
-        <td class="text-end">'.$emp->vpe_days_per_year.'</td>
+        <td class="text-center">'.$emp->vpe_days_per_year.'</td>
 
-        <td class="text-end">'.$emp->vpe_entitlement.'</td>
+        <td class="text-center">'.$emp->vpe_entitlement.'</td>
 
-        <td class="text-end">'.$emp->vpe_amount.'</td>
+        <td class="text-end">'.format_currency($emp->vpe_amount).'</td>
         
         </tr>
         
