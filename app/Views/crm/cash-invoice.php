@@ -40,7 +40,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 239px !important;
+    width: 250px !important;
    
 }
 span.select2.customer_width, span.select2 {
@@ -1265,7 +1265,7 @@ span.select2.customer_width, span.select2 {
                                 <tbody class="add_more_class"></tbody>   
                                 
                             </table>
-                            <table class="total_table">
+                            <table class="total_table" style="width: 189px !important;">
                                 <tbody class="edit_total_amount"></tbody>
                             </table>
                         </div>

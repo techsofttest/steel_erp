@@ -83,7 +83,7 @@
     }
 
     .total_table {
-    width: 231px !important;
+    width: 240px !important;
     margin-top: -16px;
 }
 

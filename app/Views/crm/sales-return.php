@@ -365,7 +365,7 @@ span.select2.customer_width, span.select2 {
 
                                                         
                                                     </table>
-                                                    <table class="total_table" style="display:none;">
+                                                    <table class="total_table" style="display:none;width: 258px !important;">
                                                         <tbody>
                                                             <tr>
                                                                 
@@ -918,7 +918,7 @@ span.select2.customer_width, span.select2 {
                             </table>
 
 
-                            <table class="total_table">
+                            <table class="total_table" style="width: 259px !important;">
                                 <tbody>
 
                                     <tr>
@@ -1242,7 +1242,7 @@ span.select2.customer_width, span.select2 {
                                 
                             </table>
 
-                            <table class="total_table" >
+                            <table class="total_table" style="width: 259px !important;">
                                 <tbody>
                                     <tr>
                                         

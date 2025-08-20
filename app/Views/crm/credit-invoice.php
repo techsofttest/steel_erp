@@ -50,7 +50,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-        width: 239px !important;
+        width: 251px !important;
    
    
 }
@@ -893,7 +893,7 @@ span.select2.customer_width, span.select2 {
                            
                             
                         </table>
-                        <table class="total_table">
+                        <table class="total_table" style="width: 258px !important;">
                             <tbody  class="travelerinfo edit_total_amount"></tbody>
                         </table>
                     </div>

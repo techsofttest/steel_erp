@@ -110,7 +110,7 @@
     }
     .total_table {
         
-        width: 296px !important;
+        width: 296px ;
     }
     .cost_data td{
 
@@ -154,6 +154,7 @@
         }
 
     }*/
+   
 </style>
 
 <div class="tab-content text-muted">
@@ -454,7 +455,7 @@
                                                                 <td >Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 9%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 <td style="width: 4%;"></td>
@@ -523,7 +524,7 @@
                                                         </tbody>--->
                                                         
                                                     </table>
-                                                    <table class="total_table">
+                                                    <table class="total_table" style="width: unset !important;">
                                                         <tbody>
                                                             <tr>
                                                                 
@@ -1847,7 +1848,7 @@
                                                         
                                                     </table>
 
-                                                    <table class="total_table">
+                                                    <table class="total_table" style="width: 231px !important;">
                                                         <tbody>
                                                             <tr>
                                                                
@@ -2290,7 +2291,7 @@
                                         <td>Product Description</td>
                                         <td style="width: 6%;">Unit</td>
                                         <td style="width: 6%;">Qty</td>
-                                        <td style="width: 6%;">Rate</td>
+                                        <td style="width: 8%;">Rate</td>
                                         <td style="width: 7%;">Discount</td>
                                         <td style="width: 9%;">Amount</td>
                                        
@@ -2317,12 +2318,12 @@
                             <table class="table table-bordered table-striped delTable add_table">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td style="width: 4%;">SI</td>
+                                        <td style="width: 40px;">SI</td>
                                         <td colspan="2">Cost Of Materials / Services</td>
-                                        <td style="width: 6%;">Unit</td>
-                                        <td style="width: 6%;">Qty</td>
-                                        <td style="width: 6%;">Rate</td>
-                                        <td style="width: 9%;">Amount</td>
+                                        <td style="width: 65px;">Unit</td>
+                                        <td style="width: 60px;">Qty</td>
+                                        <td style="width: 80px">Rate</td>
+                                        <td style="width: 90px;">Amount</td>
                                         
                                     </tr>
                                     
@@ -2344,7 +2345,7 @@
                                 
                             </table>
 
-                            <table class="total_table" style="width: 27% !important;">
+                            <table class="total_table" style="width: 295px !important;">
                                 <tbody>
                                     <tr>
                                        
@@ -2897,7 +2898,7 @@
  
                 //$(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod add_select2_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)' required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod add_select2_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)' required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
 			}
             
