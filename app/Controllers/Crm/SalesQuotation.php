@@ -390,8 +390,6 @@ class SalesQuotation extends BaseController
 
         $data['percentage'] = format_currency($quotation_details->qd_percentage);
 
-
-
         $data['print_pdf_btn'] = '<a href="'.base_url().'Crm/SalesQuotation/Pdf/'.$quotation_details->qd_id.'" class="btn btn btn-success print_pdf_btn" target="_blank">Print</a>';
          
         $data['print_pdf_btn'] = '<a href="javascript:void(0)" data-id="'.$quotation_details->qd_id.'" class="btn btn btn-success  print_color" >Print</a>';
