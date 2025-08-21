@@ -609,8 +609,16 @@
             var form = $('#add_cust_creation');
             
             form.validate({
+
                 rules: {
-                    required: 'required',
+           
+                    /*some_field: {      
+                        required: true
+                    },*/
+            
+                    cc_post_box: {      
+                        required: false
+                    }
                 },
                 messages: {
                     required: 'This field is required',

@@ -1904,7 +1904,7 @@ class SalesOrder extends BaseController
 
                 $mpdf->WriteHTML($main_table);
 
-                // Output summary just before footer on last page
+                
                 $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
                 $this->response->setHeader('Content-Type', 'application/pdf');

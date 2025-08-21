@@ -1092,7 +1092,10 @@ height:100% !important;
     {
     height:40px;
     }
+    td .text-end{
 
+        padding: 0px 6px !important;
+    }
 
 
 </style>

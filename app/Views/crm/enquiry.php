@@ -2223,13 +2223,12 @@
 
         function slno(){
 
-
+           
             var pp =1;
-
+         
             $('body .prod_row1').each(function() {
 
                 $(this).find('.si_no1').html(pp);
-                
                 
                 pp++;
 

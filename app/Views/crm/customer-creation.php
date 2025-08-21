@@ -652,7 +652,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_post_box" class="form-control edit_post_box input_length" required>
+                                                                        <input type="number" name="cc_post_box" class="form-control edit_post_box input_length">
                                                                     </div>
 
                                                                 </div> 
@@ -861,7 +861,7 @@
                                                             <td>Mobile</td>
                                                             <td>Email</td>
                                                             <td colspan="2">Action</td>
-                                                            <td></td>
+                                                            <!--<td></td>-->
                                                         </tr>
                                                        
                                                     </thead>

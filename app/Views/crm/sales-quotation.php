@@ -108,14 +108,14 @@
         margin-bottom: 0px;
         vertical-align: middle;
     }
-    .total_table {
+    /*.total_table {
         
         width: 296px ;
-    }
+    }*/
     .cost_data td{
 
         vertical-align: middle !important;
-        padding: 10px 10px;
+        padding: 10px 7px;
     }
     .product-more4{
 
@@ -130,7 +130,7 @@
     .view_cost_cal td{
        
         vertical-align: middle;
-        padding: 10px 10px;
+        padding: 10px 7px;
     }
     .total_table td{
             border: 1px solid black !important;
@@ -154,6 +154,18 @@
         }
 
     }*/
+    .amount_table{
+
+        width: 296px !important;
+        margin-left: auto;
+        margin-bottom: 10px;
+        border-top: unset !important;
+    }
+    td.total_label {
+        
+        width: 205px;
+    
+    }
    
 </style>
 
@@ -524,7 +536,7 @@
                                                         </tbody>--->
                                                         
                                                     </table>
-                                                    <table class="total_table" style="width: unset !important;">
+                                                    <table class="amount_table">
                                                         <tbody>
                                                             <tr>
                                                                 
@@ -1848,7 +1860,7 @@
                                                         
                                                     </table>
 
-                                                    <table class="total_table" style="width: 231px !important;">
+                                                    <table class="amount_table" >
                                                         <tbody>
                                                             <tr>
                                                                
@@ -2345,25 +2357,25 @@
                                 
                             </table>
 
-                            <table class="total_table" style="width: 295px !important;">
+                            <table class="amount_table">
                                 <tbody>
                                     <tr>
                                        
                                         <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
-                                        <td align="center" class="total_table">Product</td>
+                                        <td align="center" class="" style="width: 205px;">Product</td>
                                         <td><input type="text" name="qd_sales_amount" class="amount_total form-control text-end" readonly></td>
                                         
                                     </tr>
                                     <tr>
                                       
-                                        <td align="center" class="total_table">Cost</td>
+                                        <td align="center" class="">Cost</td>
                                         <td><input type="text" class="form-control total_cost_cal text-end" readonly></td>
                                         
                                     </tr>
                                     <tr>
                                         
                                         
-                                        <td align="center" class="total_table">Percentage</td>
+                                        <td align="center" class="">Percentage</td>
                                         <td><input type="text" class="form-control total_percent text-end" readonly></td>
                                        
                                     </tr>
