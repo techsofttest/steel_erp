@@ -1391,6 +1391,11 @@ span.select2.customer_width, span.select2 {
                                                                 <td><input type="text" name="pp_amount" class="form-control forma_edit_amount text-end" readonly></td>
                                                                
                                                                 <input type="hidden" name="pp_id" class="edit_hidden_prod_id">
+
+                                                                <input type="hidden" name="" value="" class="forma_hidden_sales_qty">
+
+                                                                <input type="hidden" name="" class="avaliable_qty">
+
                                                             </tr>
                                                            
                                                         </tbody>
@@ -1545,14 +1550,13 @@ span.select2.customer_width, span.select2 {
 
                             if(data.print!="")
                             {
-                                //window.open(data.print, '_blank');
+                                
 
                                 id = data.print;
-                                // Open the PDF generation script in a new window
-
+                                
                                 var pdfWindow = window.open('<?= base_url()?>Crm/ProFormaInvoice/Pdf/'+id, '_blank');
 
-                                // Automatically print when the PDF is loaded
+                               
                                 pdfWindow.onload = function() {
                                     pdfWindow.print();
                                 };
@@ -2193,6 +2197,34 @@ InitProductSelectEdit();
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
 
+            /**/
+            console.log(quantity);
+            var quantityRealElement = $this.closest(".prod_row").find(".hidden_sales_qty");
+            var quantityReal = parseFloat(quantityRealElement.val()) || 0;
+
+            if(quantity >  quantityReal){
+
+                //$('.current_cliam_clz').val("")
+
+                alertify.error('Maximum quantity is ' + quantityReal).delay(3).dismissOthers();
+              
+                quantityElement.val('');
+
+                var amountElement = $this.closest(".prod_row").find(".amount_clz_id");
+                amountElement.val('');
+
+                $('.amount_total').val('');
+
+                $('.current_cliam_clz').val('');
+
+                $('.claim_qar').val('');
+
+                return false
+
+            }
+           
+            /**/
+
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;
             var finalPrice = multipliedTotal - discountAmount;
@@ -2359,6 +2391,10 @@ InitProductSelectEdit();
             $(this).closest('.performa_row_lenght').find('.discount_clz_id').attr('name', 'pp_discount['+jj+']');
 
             $(this).closest('.performa_row_lenght').find('.amount_clz_id').attr('name', 'pp_amount['+jj+']');
+
+            $(this).closest('.performa_row_lenght').find('.hidden_sales_order_prod_id').attr('name', 'pp_sales_order_prod_id['+jj+']');
+
+            $(this).closest('.performa_row_lenght').find('.hidden_orginal_qty').attr('name', 'orginal_qty['+jj+']');
 
             jj++;
 
@@ -3073,6 +3109,10 @@ InitProductSelectEdit();
 
                 $(".forma_edit_amount").val(data.amount);
 
+                $(".forma_hidden_sales_qty").val(data.sales_qty);
+
+                $(".avaliable_qty").val(data.avaliable_qty);
+
                 //console.log(data.rate);
 
                 
@@ -3145,14 +3185,31 @@ InitProductSelectEdit();
 
         $("body").on("keyup", ".forma_edit_discount, .forma_edit_qty, .forma_edit_rate", function () {
             var $this = $(this);
+            
+            
 
             var discount = parseFloat($this.closest(".edit_product_row").find(".forma_edit_discount").val()) || 0;
             var rateElement = $this.closest(".edit_product_row").find(".forma_edit_rate");
             var quantityElement = $this.closest(".edit_product_row").find(".forma_edit_qty");
+            var quantity = parseFloat(quantityElement.val()) || 0;
+            
+            var avaliableQtyElement = $this.closest(".edit_product_row").find(".avaliable_qty");
+
+            var avaliableQty = parseFloat(avaliableQtyElement.val()) || 0;
+
+            console.log(avaliableQty);
+
+            if(quantity > avaliableQty){
+                
+                
+                alertify.error('Maximun Quantity Avaliable  Is '+avaliableQty+'').delay(3).dismissOthers();
+                return false;
+
+            }
 
             // Remove commas before performing calculations
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
-            var quantity = parseFloat(quantityElement.val()) || 0;
+            
 
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;

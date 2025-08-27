@@ -67,6 +67,18 @@
    
    line-height: 18px;
 }
+.amount_table{
+
+    width: 250px !important;
+    margin-left: auto;
+    margin-bottom: 10px;
+    border-top: unset !important;
+}
+ td.total_label {
+        
+        width: 159px;
+    
+    }
 </style>
 
 
@@ -397,7 +409,7 @@
                                                         </tbody>
                                                         
                                                     </table>
-                                                    <table class="total_table">
+                                                    <table class="amount_table">
                                                         <tbody>
                                                             <tr>
                                                                 
@@ -795,7 +807,7 @@
                                                         </tbody>
                                                         
                                                     </table>
-                                                    <table class="total_table">
+                                                    <table class="amount_table">
                                                         <tbody>
                                                             <tr>
                                                                 
@@ -803,7 +815,7 @@
                                                                 <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
                                                                 <td align="right" class="total_label">Total</td>
                                                                 <td><input type="text" name="so_amount_total" class="edit_amount_total form-control text-end" readonly></td>
-                                                                <td></td>
+                                                                
                                                             </tr>
                                                             
                                                           
@@ -1325,7 +1337,7 @@
                                                         
                                                        
                                                     </table>
-                                                    <table class="total_table">
+                                                    <table class="amount_table">
                                                         <tbody>
                                                             <tr>
                                                                 

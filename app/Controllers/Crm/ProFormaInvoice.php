@@ -169,7 +169,9 @@ class ProFormaInvoice extends BaseController
        
         $where['so_customer'] = $id;
 
-        $orders = $this->common_model->FetchWhere('crm_sales_orders',$where);
+        //$orders = $this->common_model->FetchWhere('crm_sales_orders',$where);
+
+        $orders = $this->common_model->CheckTwiceCond1('crm_sales_orders',$where,array('so_preforma_flag' => '0'));
 
         $data['orders'] ="";
 
@@ -299,20 +301,61 @@ class ProFormaInvoice extends BaseController
                         'pp_rate'           =>  preg_replace('/[,]/', '',$_POST['pp_rate'][$j]),
                         'pp_discount'       =>  $_POST['pp_discount'][$j],
                         'pp_amount'         =>  preg_replace('/[,]/', '',$_POST['pp_amount'][$j]),
+                        'pp_sales_prod_id'  =>  $_POST['pp_sales_order_prod_id'][$j],
                         'pp_proforma'       =>  $sales_order_id,
+                       
     
                     );
 
                     $this->common_model->InsertData('crm_proforma_product',$insert_data);
 
+                    /**/
+
+                    $sales_prod_sigle = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]));
+
+                    
+
+                    $current_qty = $sales_prod_sigle->spd_performa_prod_qty;
+
+                    $sales_qty = $sales_prod_sigle->spd_quantity;
+
+                    $total_qty = $current_qty + $_POST['pp_quantity'][$j];
+
+                    $update_data = array(  
+                       
+                        'spd_performa_prod_qty'  =>  $total_qty,
+                     
+                    );
+
+                    $this->common_model->EditData($update_data,array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]),'crm_sales_product_details');
+
+                    $sales_prod_sigle1 = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]));
+
+                    if($sales_prod_sigle1->spd_performa_prod_qty == $sales_prod_sigle1->spd_quantity){
+
+                        $this->common_model->EditData(array('spd_performa_prod_qty_status' => '1'),array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]),'crm_sales_product_details');
+
+                    }
+
+                    $sales_prod1 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $sales_prod_sigle1->spd_sales_order),array('spd_performa_prod_qty_status' => 1));
+                   
+                    $sales_prod2 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $sales_prod_sigle1->spd_sales_order));
+                
+                    if(count($sales_prod1) == count($sales_prod2)){
+
+                        $this->common_model->EditData(array('so_preforma_flag' => '1'),array('so_id' => $sales_prod_sigle1->spd_sales_order),'crm_sales_orders');
+                    }
+                   
+
+                    /**/
+                    
                     if(!empty($_POST['print_btn']))
                     {
                         //$return['print'] =  base_url() . 'Crm/ProFormaInvoice/Pdf/' . urlencode($sales_order_id);
 
                         $return['print'] =  $sales_order_id;
                     }
-                    
-                  
+                 
             
                 } 
             }
@@ -564,10 +607,39 @@ class ProFormaInvoice extends BaseController
         }
 
         $cond = array('pf_id' => $this->request->getPost('ID'));
- 
+
         $this->common_model->DeleteData('crm_proforma_invoices',$cond);
             
         $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
+
+        
+        /**/
+        
+        $performa_product = $this->common_model->FetchWhere('crm_proforma_product',array('pp_proforma' => $this->request->getPost('ID')));
+
+        $preforma_qty = '';
+
+        foreach($performa_product as $pre_prod){
+            
+            $sales_prod_data = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $pre_prod->pp_sales_prod_id));
+
+            $update_data1 = [
+
+                'spd_performa_prod_qty'        => $sales_prod_data->spd_performa_prod_qty - $pre_prod->pp_quantity,
+    
+                'spd_performa_prod_qty_status' => 0,
+            ];
+
+            $this->common_model->EditData($update_data1,array('spd_id' => $pre_prod->pp_sales_prod_id),'crm_sales_product_details');
+
+            $this->common_model->EditData(array('so_preforma_flag' => 0),array('so_id' => $sales_prod_data->spd_sales_order),'crm_sales_orders');
+
+        }
+
+       
+
+        /**/
+
 
         $this->common_model->DeleteData('crm_proforma_product',$cond1);
 
@@ -592,6 +664,7 @@ class ProFormaInvoice extends BaseController
             //$sales_prod_det = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
 
             $joins = array(
+
                 array(
                     'table' => 'crm_products',
                     'pk'    => 'product_id',
@@ -601,16 +674,16 @@ class ProFormaInvoice extends BaseController
     
             );
 
-            $sales_prod_det = $this->common_model->FetchWhereJoin('crm_sales_product_details',$cond1,$joins);
+            //$sales_prod_det = $this->common_model->FetchWhereJoin('crm_sales_product_details',$cond1,$joins);
+
+            $sales_prod_det = $this->common_model->TwiceCondWithJoin('crm_sales_product_details',$cond1,array('spd_performa_prod_qty_status' => '0'),$joins);
+
+            
 
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
             
-            
-            
             $proforma_invoice = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
             
-           
-
             $data['so_delivery_term'] = $sales_order->so_delivery_term;
 
             $data['so_project'] = $sales_order->so_project;
@@ -670,6 +743,8 @@ class ProFormaInvoice extends BaseController
             foreach($sales_prod_det as $prod_det){
 
                 $options_product = '<option value="'.$prod_det->product_id.'" selected>'.$prod_det->product_details.'</option>';
+
+                $avaliable_qty = $prod_det->spd_quantity - $prod_det->spd_performa_prod_qty;
                
 
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
@@ -677,12 +752,17 @@ class ProFormaInvoice extends BaseController
                                             <td><select name="pp_product_det['.$j.']" class="form-control add_prod2">'.$options_product.'</select>
                                             </td>
                                             <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
-                                            <td><input type="number" name="pp_quantity['.$j.']" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
+                                            <td><input type="number" name="pp_quantity['.$j.']" value="'.$avaliable_qty.'" class="form-control qtn_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_rate['.$j.']" value="'.format_currency($prod_det->spd_rate).'" class="form-control rate_clz_id text-end" required></td>
                                             <td><input type="number" name="pp_discount['.$j.']" value="'.format_currency($prod_det->spd_discount).'" class="form-control discount_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_amount['.$j.']" value="'.format_currency($prod_det->spd_amount).'" class="form-control amount_clz_id text-end" readonly></td>
                                             <td class="row_remove remove-btnpp text-center" data-id="'.$prod_det->spd_id .'" style="padding: 10px 10px;"><i class="ri-close-line"></i></td>
-                                        </tr>';
+                                            <input type="hidden" value="'.$avaliable_qty.'"   class="hidden_sales_qty">
+                                            <input type="hidden" value="'.$prod_det->spd_id.'"  class="hidden_sales_order_prod_id" name="pp_sales_order_prod_id['.$j.']">
+                                            <input type="hidden" value="'.$prod_det->spd_quantity.'" class="hidden_orginal_qty" name="orginal_qty['.$j.']">
+                                        </tr>
+                                        
+                                        ';
                                         $i++;
                                         $j++;
                                     }
@@ -896,9 +976,10 @@ class ProFormaInvoice extends BaseController
                 <td class="text-end edit_total_amount">'.format_currency($prod_det->pp_amount).'</td>
                 <td class="text-center">
                     <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                    <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+                    
                 </td>
                 </tr>'; 
+                /*<a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>*/
                 $i++; 
             }
 
@@ -1011,8 +1092,34 @@ class ProFormaInvoice extends BaseController
     
             $proforma_prod = $this->common_model->SingleRowJoin('crm_proforma_product',$cond,$joins);
 
-            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+            $sales_order_prod = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $proforma_prod->pp_sales_prod_id));
 
+
+            $performa_prod_data = $this->common_model->PreformaQtyCheck('crm_proforma_product',array('pp_sales_prod_id' => $proforma_prod->pp_sales_prod_id),$proforma_prod->pp_id);
+            
+            if(!empty($performa_prod_data)){
+
+                $performa_qty = 0;
+
+                foreach($performa_prod_data as $preforma){
+
+                    $performa_qty += $preforma->pp_quantity;
+                }
+
+                $avaliable_qty = $sales_order_prod->spd_quantity - $performa_qty;
+
+                //print_r($performa_qty); exit();
+
+                $data['avaliable_qty'] = $avaliable_qty;
+            
+            }else{
+
+               $data['avaliable_qty'] = $sales_order_prod->spd_quantity;
+            }
+
+
+
+            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
             $data['product'] ="";
 
@@ -1031,8 +1138,6 @@ class ProFormaInvoice extends BaseController
 
             $data['product'] = '<option value="'.$proforma_prod->product_id.'" selected>'.$proforma_prod->product_details.'</option>';
 
-
-
             $data['unit']     = $proforma_prod->pp_unit;
 
             $data['qty']      = round($proforma_prod->pp_quantity);
@@ -1042,6 +1147,10 @@ class ProFormaInvoice extends BaseController
             $data['discount'] = format_currency($proforma_prod->pp_discount);
 
             $data['amount']   = format_currency($proforma_prod->pp_amount);
+
+            $data['sales_qty'] = $sales_order_prod->spd_quantity;
+
+           
     
             echo json_encode($data);
         }
@@ -1052,6 +1161,8 @@ class ProFormaInvoice extends BaseController
             $cond = array('pp_id' => $this->request->getPost('pp_id'));
 
             $update_data = $this->request->getPost();
+
+           // print_r($update_data); exit();
 
             if (isset($update_data['pp_rate'])) {
                 $update_data['pp_rate'] = preg_replace('/[,]/', '', $update_data['pp_rate']);
@@ -1068,7 +1179,70 @@ class ProFormaInvoice extends BaseController
             }  
             
             $this->common_model->EditData($update_data,$cond,'crm_proforma_product');
+
+            $single_prod_det1 = $this->common_model->SingleRow('crm_proforma_product',$cond);
+
+            /*23-08-2025*/
+
+            $preforma_qty_check = $this->common_model->FetchWhere('crm_proforma_product',array('pp_sales_prod_id' => $single_prod_det1->pp_sales_prod_id));
+
+            $avaliable_qty = 0;
+
+            foreach($preforma_qty_check as $per_qty_check){
+                
+                $avaliable_qty += $per_qty_check->pp_quantity;
+
+            }
             
+            //print_r($avaliable_qty); exit();
+
+            //$update_data2 = array('spd_performa_prod_qty'=> $avaliable_qty );
+
+            $update_data2 = [
+
+                'spd_performa_prod_qty' => $avaliable_qty
+            ];
+
+
+            $this->common_model->EditData($update_data2,array('spd_id' => $single_prod_det1->pp_sales_prod_id),'crm_sales_product_details');
+
+            $sales_prod_details = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $single_prod_det1->pp_sales_prod_id));
+
+            if($sales_prod_details->spd_quantity == $sales_prod_details->spd_performa_prod_qty){
+                 
+                $this->common_model->EditData(array('spd_performa_prod_qty_status' => '1'),array('spd_id' => $single_prod_det1->pp_sales_prod_id),'crm_sales_product_details');
+
+
+            }
+            else{
+                 
+                $this->common_model->EditData(array('spd_performa_prod_qty_status' => '0'),array('spd_id' => $single_prod_det1->pp_sales_prod_id),'crm_sales_product_details');
+
+            }
+
+            $sales_prod1 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $sales_prod_details->spd_sales_order),array('spd_performa_prod_qty_status' => 1));
+                   
+            $sales_prod2 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $sales_prod_details->spd_sales_order));
+
+            if(count($sales_prod1) == count($sales_prod2)){
+
+                $this->common_model->EditData(array('so_preforma_flag' => '1'),array('so_id' => $sales_prod_details->spd_sales_order),'crm_sales_orders');
+
+            }else{
+
+                $this->common_model->EditData(array('so_preforma_flag' => '0'),array('so_id' => $sales_prod_details->spd_sales_order),'crm_sales_orders');
+            }
+
+            //$this->common_model->FetchWhere('crm_sales_product_details',array('spd_id' => $single_prod_det->pp_sales_prod_id));
+
+            /*end*/
+
+           
+            /**/
+            //$single_prod_det->
+
+            /**/
+
             $single_prod_det = $this->common_model->SingleRow('crm_proforma_product',$cond);
 
             $cond2 = array('pp_proforma'=>$single_prod_det->pp_proforma);
@@ -1132,7 +1306,6 @@ class ProFormaInvoice extends BaseController
                 'pf_current_claim_value' => $current_claim_value
 
             );
-
 
 
             $this->common_model->EditData($update_data,array('pf_id' => $performa_prod->pp_proforma),'crm_proforma_invoices');

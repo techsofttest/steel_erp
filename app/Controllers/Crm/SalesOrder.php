@@ -1680,18 +1680,17 @@ class SalesOrder extends BaseController
             //$mpdf = new \Mpdf\Mpdf();
 
             $mpdf = new \Mpdf\Mpdf([
-                'margin_top' => 65,
+                'margin_top' => 68,
                 'margin_bottom' => 45,
                 'margin_left' => 5,
                 'margin_right' => 5,
                 'defaultfooterline' => 0,
+                'setAutoTopMargin'   => 'stretch',
             ]);
 
-            $mpdf->SetAutoPageBreak(true, 45);
+           // $mpdf->SetAutoPageBreak(true, 45);
 
             $mpdf->SetTitle($title);
-
-            
 
 
             $header_html = '<div style="margin-top: -20px;"><table>
@@ -1811,15 +1810,9 @@ class SalesOrder extends BaseController
             
                         <td style="font-weight: bold;" >'.format_currency($sales_order->so_amount_total).'</td>
 
-                        
                     </tr>
 
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        
-                        
-                    </tr>
+                   
 
                     <tr  style="width:100%";>
         
@@ -1827,7 +1820,6 @@ class SalesOrder extends BaseController
                     
                         <td style="width: 60%;">'.currency_to_words($sales_order->so_amount_total).'</td>
     
-                    
                     </tr>
 
                 </table>
@@ -1898,6 +1890,7 @@ class SalesOrder extends BaseController
                 </table>';
 
                 $mpdf->SetHTMLHeader($header_html);
+               
                 $mpdf->SetHTMLFooter($footer_common);
 
                 $mpdf->SetAutoPageBreak(true, 50);
@@ -1910,10 +1903,6 @@ class SalesOrder extends BaseController
                 $this->response->setHeader('Content-Type', 'application/pdf');
                 $mpdf->Output($title . '.pdf', 'I');
 
-        
-
-          
-            
         
         }
 

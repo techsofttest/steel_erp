@@ -1097,6 +1097,7 @@ height:100% !important;
 
         padding: 0px 6px !important;
     }
+    
     td>.text-end{
 
         padding: 0px 6px !important;

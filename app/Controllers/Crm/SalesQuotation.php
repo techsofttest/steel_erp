@@ -2143,12 +2143,13 @@ public function Pdf($id)
         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin: 0 20px 0 20px;padding: 0">
             <tr>
                 <td style="width:14%;" rowspan="2">Quote Terms</td>
-                <td style="width:15%">Enquiry Ref.</td>
-                <td style="width:32%">' . $quotation_details->enquiry_reff . '</td>
+               
                 <td style="width:9%">Payment:</td>
                 <td>' . $quotation_details->qd_payment_term . '</td>
             </tr>
             <tr style="margin-bottom:0px">
+                
+                
                 <td style="width:15%" rowspan="2">Delivery Period</td>
                 <td style="width:29%">' . $quotation_details->dt_name . '</td>
             </tr>

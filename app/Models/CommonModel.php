@@ -1847,6 +1847,24 @@ class CommonModel extends Model
     }
 
 
+    public function PreformaQtyCheck($table,$cond,$id){
+
+        $query = $this->db->table($table)
+
+        ->select('*');
+
+        $query->where($cond);
+
+        $query->whereNotIn('pp_id',(array)$id);
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+
+    }
+
+
     /*public function FetchUserDet($userId){
         
         $query = $this->db->table('users')
