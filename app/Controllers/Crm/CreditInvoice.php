@@ -1509,7 +1509,7 @@ class CreditInvoice extends BaseController
         $title = 'CRN - ' . $credit_invoice->cci_reffer_no;
 
         $mpdf = new \Mpdf\Mpdf([
-            'margin_top' => 68,
+            'margin_top' => 72,
             'margin_bottom' => 45,
             'margin_left' => 5,
             'margin_right' => 5,
@@ -1653,7 +1653,7 @@ class CreditInvoice extends BaseController
 
                         $mpdf->SetHTMLFooter($footer_common);
 
-                        $mpdf->SetAutoPageBreak(true, 20);
+                        $mpdf->SetAutoPageBreak(true, 50);
 
                         $mpdf->WriteHTML($main_table);
 

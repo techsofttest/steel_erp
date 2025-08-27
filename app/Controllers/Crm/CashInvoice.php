@@ -1985,14 +1985,14 @@ class CashInvoice extends BaseController
                 $title = 'CIN - '.$cash_invoice->ci_reffer_no;
 
                 $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 75,
+                    'margin_top' => 79,
                     'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
                     'defaultfooterline' => 0,
                 ]);
                
-                $mpdf->SetAutoPageBreak(true, 45);
+                //$mpdf->SetAutoPageBreak(true, 45);
 
                 $mpdf->SetTitle($title);
 
@@ -2266,7 +2266,7 @@ class CashInvoice extends BaseController
                 $mpdf->SetHTMLHeader($header_html);
                 $mpdf->SetHTMLFooter($footer_common);
 
-                $mpdf->SetAutoPageBreak(true, 20);
+                $mpdf->SetAutoPageBreak(true, 50);
 
                 $mpdf->WriteHTML($main_table);
 

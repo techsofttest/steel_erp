@@ -2061,14 +2061,15 @@ public function Pdf($id)
         $title = 'SQ- ' . $quotation_details->qd_reffer_no;
 
         $mpdf = new \Mpdf\Mpdf([
-            'margin_top' => 65,
+            'margin_top' => 68,
             'margin_bottom' => 45,
             'margin_left' => 5,
             'margin_right' => 5,
             'defaultfooterline' => 0,
+            'setAutoTopMargin'   => 'stretch',
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 45);
+        //$mpdf->SetAutoPageBreak(true, 45);
 
         $mpdf->SetTitle($title);
 
@@ -2177,7 +2178,7 @@ public function Pdf($id)
         $mpdf->SetHTMLHeader($header_html);
         $mpdf->SetHTMLFooter($footer_common);
 
-        $mpdf->SetAutoPageBreak(true, 20);
+        $mpdf->SetAutoPageBreak(true, 50);
 
         $mpdf->WriteHTML($main_table);
 
