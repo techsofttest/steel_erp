@@ -2145,13 +2145,13 @@ public function Pdf($id)
             <tr>
                 <td style="width:14%;" rowspan="2">Quote Terms</td>
                
-                <td style="width:9%">Payment:</td>
+                <td style="">Payment:</td>
                 <td>' . $quotation_details->qd_payment_term . '</td>
             </tr>
             <tr style="margin-bottom:0px">
                 
                 
-                <td style="width:15%" rowspan="2">Delivery Period</td>
+                <td style="width:5%" rowspan="2">Delivery Period</td>
                 <td style="width:29%">' . $quotation_details->dt_name . '</td>
             </tr>
         </table>';

@@ -2188,7 +2188,6 @@ class SalesReturn extends BaseController
     
                 //$mpdf = new \Mpdf\Mpdf();
     
-                
                 $mpdf = new \Mpdf\Mpdf([
                     'margin_top' => 5,     // Reduce top margin
                     'margin_bottom' => 5,  // Reduce bottom margin
