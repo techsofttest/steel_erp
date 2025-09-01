@@ -2150,9 +2150,9 @@ public function Pdf($id)
             </tr>
             <tr style="margin-bottom:0px">
                 
-                
-                <td style="width:15%" rowspan="2">Delivery Period</td>
+                <td style="width:15%" rowspan="2">Delivery Period:</td>
                 <td style="">' . $quotation_details->dt_name . '</td>
+                
             </tr>
         </table>';
 
@@ -2176,13 +2176,13 @@ public function Pdf($id)
             </table>';
 
         $mpdf->SetHTMLHeader($header_html);
+
         $mpdf->SetHTMLFooter($footer_common);
 
-        $mpdf->SetAutoPageBreak(true, 50);
+        //$mpdf->SetAutoPageBreak(true, 50);
 
         $mpdf->WriteHTML($main_table);
 
-        
 
         // Output summary just before footer on last page
         $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
