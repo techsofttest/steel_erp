@@ -2145,8 +2145,8 @@ public function Pdf($id)
             <tr>
                 <td style="width:14%;" rowspan="2">Quote Terms</td>
                
-                <td style="">Payment:</td>
-                <td>' . $quotation_details->qd_payment_term . '</td>
+                <td style="width:5%">Payment:</td>
+                <td style="width:29%">' . $quotation_details->qd_payment_term . '</td>
             </tr>
             <tr style="margin-bottom:0px">
                 
