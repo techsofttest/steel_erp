@@ -1388,11 +1388,11 @@ class SalesQuotation extends BaseController
 
         $data['unit'] = $cost_cal->qc_unit;
 
-        $data['qty'] = $cost_cal->qc_qty;
+        $data['qty'] = format_currency($cost_cal->qc_qty);
 
-        $data['rate'] = $cost_cal->qc_rate;
+        $data['rate'] = format_currency($cost_cal->qc_rate);
 
-        $data['amount'] = $cost_cal->qc_amount;
+        $data['amount'] = format_currency($cost_cal->qc_amount);
 
         echo json_encode($data);
 
@@ -1437,11 +1437,36 @@ class SalesQuotation extends BaseController
             $old_amount =  $old_amount + $cost_cal->qc_amount;
         }
 
-        $quotation_update = array('qd_cost_amount' => $old_amount);
+       
+
+        //$quotation_update = array('qd_cost_amount' => $old_amount);
 
         $cond3 = array('qd_id'=>$single_cost_cal->qc_quotation_id);
 
+        /**/
+
+        $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond3);
+
+        $quot_flag = ++$quotation_details->qd_edit_flag;
+        
+        $output = $quotation_details->qd_reffer_no . "-REV-" ."0". $quot_flag;
+
+        $quotation_update = [
+
+            
+            'qd_edit_flag'         => $quot_flag,
+
+            'qd_edit_quot_reff'    => $output,
+
+            'qd_cost_amount'       => $old_amount,
+            
+        ];
+
+        /**/
+
         $this->common_model->EditData($quotation_update,$cond3,'crm_quotation_details');
+
+
 
 
         $data['quot_id']  =  $single_cost_cal->qc_quotation_id;
@@ -1486,11 +1511,31 @@ class SalesQuotation extends BaseController
             $old_amount =  $old_amount + $cost_cal->qc_amount;
         }
         
-        $quotation_update = array('qd_cost_amount' => $old_amount);
+        //$quotation_update = array('qd_cost_amount' => $old_amount);
 
         $cond3 = array('qd_id'=>$single_cost_cal->qc_quotation_id);
 
-        $this->common_model->EditData($quotation_update,$cond3,'crm_quotation_details');
+        /**/
+
+        $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond3);
+
+        $quot_flag = ++$quotation_details->qd_edit_flag;
+        
+        $output = $quotation_details->qd_reffer_no . "-REV-" ."0". $quot_flag;
+
+        $updated_data = [
+
+            'qd_edit_flag'         => $quot_flag,
+
+            'qd_edit_quot_reff'    => $output,
+
+            'qd_cost_amount'       => $old_amount,
+            
+        ];
+
+        /**/
+
+        $this->common_model->EditData($updated_data,$cond3,'crm_quotation_details');
 
 
         $data['quot_id']  =  $single_cost_cal->qc_quotation_id;
@@ -1529,9 +1574,30 @@ class SalesQuotation extends BaseController
                 $old_amount =  $old_amount + $cost_cal->qc_amount;
             }
         
-            $quotation_update = array('qd_cost_amount' => $old_amount);
+            //$quotation_update = array('qd_cost_amount' => $old_amount);
 
             $cond3 = array('qd_id'=>$single_cost_cal->qc_quotation_id);
+
+            /**/
+
+            $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond3);
+
+            $quot_flag = ++$quotation_details->qd_edit_flag;
+            
+            $output = $quotation_details->qd_reffer_no . "-REV-" ."0". $quot_flag;
+
+            $quotation_update = [
+
+                'qd_edit_flag'         => $quot_flag,
+
+                'qd_edit_quot_reff'    => $output,
+
+                'qd_cost_amount'      => $old_amount,
+            
+            ];
+
+
+            /**/
 
             $this->common_model->EditData($quotation_update,$cond3,'crm_quotation_details');
 
@@ -1669,6 +1735,26 @@ class SalesQuotation extends BaseController
 
         $this->common_model->EditData($quotation_update,$cond3,'crm_quotation_details');
 
+        /**/
+
+        $sales_quotation = $this->common_model->SingleRow('crm_quotation_details',$cond3);
+
+        $quot_flag = ++$sales_quotation->qd_edit_flag;
+
+        $output = $sales_quotation->qd_reffer_no . "-REV-" ."0". $quot_flag;
+
+        $updated_data = [
+
+            'qd_edit_flag'         => $quot_flag,
+
+            'qd_edit_quot_reff'    => $output,
+            
+        ];
+
+        $this->common_model->EditData($updated_data,$cond3,'crm_quotation_details');
+
+        /**/
+
         $data['quotation_id']  =  $single_prod->qpd_quotation_details;
 
         $this->UpdatePercentage($single_prod->qpd_quotation_details);
@@ -1703,7 +1789,6 @@ class SalesQuotation extends BaseController
 
         $product_details  = $this->common_model->FetchWhere('crm_quotation_product_details',$cond2);
 
-        
 
         $old_amount = 0;
 
@@ -1712,9 +1797,30 @@ class SalesQuotation extends BaseController
             $old_amount =  $old_amount + $prod_det->qpd_amount;
         }
 
-        $quotation_update = array('qd_sales_amount' => $old_amount);
+        //$quotation_update = array('qd_sales_amount' => $old_amount);
 
         $cond3 = array('qd_id'=>$single_prod->qpd_quotation_details);
+
+        /**/
+
+        $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond3);
+
+        $quot_flag = ++$quotation_details->qd_edit_flag;
+        
+        $output = $quotation_details->qd_reffer_no . "-REV-" ."0". $quot_flag;
+
+        $quotation_update = [
+
+            'qd_edit_flag'         => $quot_flag,
+
+            'qd_edit_quot_reff'    => $output,
+
+            'qd_sales_amount'      => $old_amount,
+            
+        ];
+
+
+        /**/
 
         $this->common_model->EditData($quotation_update,$cond3,'crm_quotation_details');
 
@@ -1723,7 +1829,6 @@ class SalesQuotation extends BaseController
         $this->UpdatePercentage($single_prod->qpd_quotation_details);
 
         echo json_encode($data); 
-
 
 
     }
@@ -1756,9 +1861,30 @@ class SalesQuotation extends BaseController
                 $old_amount =  $old_amount + $prod_det->qpd_amount;
             }
         
-            $quotation_update = array('qd_sales_amount' => $old_amount);
+           // $quotation_update = array('qd_sales_amount' => $old_amount);
 
             $cond4 = array('qd_id'=>$quot_prod);
+
+            /**/
+
+            $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond4);
+
+            $quot_flag = ++$quotation_details->qd_edit_flag;
+        
+            $output = $quotation_details->qd_reffer_no . "-REV-" ."0". $quot_flag;
+
+            $quotation_update = [
+
+
+                'qd_edit_flag'         => $quot_flag,
+
+                'qd_edit_quot_reff'    => $output,
+
+                'qd_sales_amount'      => $old_amount,
+            
+            ];
+
+            /**/
 
             $this->common_model->EditData($quotation_update,$cond4,'crm_quotation_details');
 
@@ -1775,8 +1901,6 @@ class SalesQuotation extends BaseController
         }
 
         echo json_encode($data); 
-
-       
 
     }
 
@@ -1909,9 +2033,9 @@ class SalesQuotation extends BaseController
 
         $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond);
 
-        $quot_flag = ++$quotation_details->qd_edit_flag;
+        //$quot_flag = ++$quotation_details->qd_edit_flag;
         
-        $output = $this->request->getPost('qd_reffer_no') . "-REV-" ."0". $quot_flag;
+        //$output = $this->request->getPost('qd_reffer_no') . "-REV-" ."0". $quot_flag;
 
         $updated_data = [
 
@@ -1935,9 +2059,9 @@ class SalesQuotation extends BaseController
 
             'qd_modified_date'     => date('Y-m-d'),
 
-            'qd_edit_flag'         => $quot_flag,
+            //'qd_edit_flag'         => $quot_flag,
 
-            'qd_edit_quot_reff'    => $output,
+            //'qd_edit_quot_reff'    => $output,
             
         ];
 
@@ -2029,6 +2153,7 @@ public function Pdf($id)
 
         $pdf_data = '';
         $k = 1;
+
         foreach ($product_details as $prod_det) {
             $rate = format_currency($prod_det->qpd_rate);
             $amount = format_currency($prod_det->qpd_amount);
@@ -2179,7 +2304,7 @@ public function Pdf($id)
 
         $mpdf->SetHTMLFooter($footer_common);
 
-        //$mpdf->SetAutoPageBreak(true, 50);
+        $mpdf->SetAutoPageBreak(true, 50);
 
         $mpdf->WriteHTML($main_table);
 
@@ -2188,7 +2313,9 @@ public function Pdf($id)
         $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
         $this->response->setHeader('Content-Type', 'application/pdf');
+
         $mpdf->Output($title . '.pdf', 'I');
+
     }
 }
 

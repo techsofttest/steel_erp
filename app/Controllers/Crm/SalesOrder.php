@@ -90,7 +90,7 @@ class SalesOrder extends BaseController
               'so_reffer_no'     => $reffer_num,
               'so_date'          => date('d-M-Y',strtotime($record->so_date)),
               'so_customer'      => $record->cc_customer_name,
-			  'so_amount'        => $record->so_amount_total,
+			  'so_amount'        => format_currency($record->so_amount_total),
               "action"           => $action,
             );
            $i++; 
@@ -666,6 +666,7 @@ class SalesOrder extends BaseController
                     if (!empty($sales_order->so_file)) { 
                         unlink($previousImagePath);
                     }
+                    
                 }
                 
                 // Upload the new image
@@ -1429,7 +1430,11 @@ class SalesOrder extends BaseController
             $this->common_model->EditData($update_data4,array('so_id'=>$prod_det->spd_sales_order),'crm_sales_orders');
        }
 
+        /**/
+        
+        
 
+        /**/
             
 
 
@@ -1830,7 +1835,7 @@ class SalesOrder extends BaseController
                     <tr>
                         <td style="width:12%" rowspan="2">Order Terms</td>
 
-                        <td style="width:15%">LPO Reference</td>
+                        <td style="width:15%">LPO Reference:</td>
 
                         <td style="width:29%">'.$sales_order->so_lpo.'</td>
 
@@ -1841,7 +1846,7 @@ class SalesOrder extends BaseController
                     </tr>
 
                     <tr>
-                        <td style="width:15%" rowspan="2">Quote Reference</td>
+                        <td style="width:15%" rowspan="2">Quote Reference:</td>
 
                         <td style="width:29%">'.$sales_order->qd_reffer_no.'</td>
 
