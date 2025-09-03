@@ -2223,20 +2223,25 @@ public function Pdf($id)
 
     <table width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
         <tr>
+            <td></td>
+            <td></td>
+        </tr>
+        
+        <tr>
             <td width="13%"></td>
-            <td>' . $quotation_details->cc_customer_name . '</td>
+            <td>' . $quotation_details->cc_customer_name. '</td>
         </tr>
         <tr>
             <td>Customer</td>
-            <td>Tel : ' . $quotation_details->cc_telephone . ', Fax : ' . $quotation_details->cc_fax . ', Email : ' . $quotation_details->cc_email . '</td>
+            <td>Tel : ' . $quotation_details->cc_telephone. ', Fax : ' . $quotation_details->cc_fax . ', Email : ' . $quotation_details->cc_email . '</td>
         </tr>
         <tr>
             <td></td>
-            <td>Post Box: ' . $quotation_details->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
+            <td>Post Box: ' .$quotation_details->cc_post_box. ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
         </tr>
         <tr>
             <td>Attention</td>
-            <td>' . $quotation_details->contact_person . ' - ' . $quotation_details->contact_designation . ', Mobile:-' . $quotation_details->contact_mobile . ', Email: - ' . $quotation_details->contact_email . '</td>
+            <td>' . $quotation_details->contact_person. ' - ' . $quotation_details->contact_designation . ', Mobile:-' . $quotation_details->contact_mobile . ', Email: - ' . $quotation_details->contact_email . '</td>
         </tr>
     </table>
 </div>';
@@ -2283,7 +2288,7 @@ public function Pdf($id)
 
         $main_table = '<style>
                 th, td { padding: 4px; font-size: 12px; }
-                p { font-size: 12px; margin-bottom: 13px; }
+                p { font-size: 12px; margin-bottom: 13px; } 
             </style>
             <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
                 <thead>

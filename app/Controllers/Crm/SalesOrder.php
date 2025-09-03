@@ -1734,7 +1734,7 @@ class SalesOrder extends BaseController
 
 
             <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
-    
+               
                 <tr>
                 
                     <td width="13%"></td>
