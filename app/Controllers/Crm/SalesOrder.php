@@ -654,7 +654,7 @@ class SalesOrder extends BaseController
                 //'so_edit_reff_no'           => $output,
 
                 
-                ];
+            ];
 
             // Handle file upload
             if (isset($_FILES['so_file']) && $_FILES['so_file']['name'] !== '') {
@@ -666,7 +666,7 @@ class SalesOrder extends BaseController
                     if (!empty($sales_order->so_file)) { 
                         unlink($previousImagePath);
                     }
-                    
+
                 }
                 
                 // Upload the new image
