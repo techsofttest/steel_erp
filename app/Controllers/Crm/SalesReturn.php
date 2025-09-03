@@ -1191,12 +1191,22 @@ class SalesReturn extends BaseController
                 foreach($credit_invoice_product as $credit_invoice_prod)
                 {
 
-                    $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$credit_invoice_prod->ipd_id.'">
+                    /*$data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$credit_invoice_prod->ipd_id.'">
                                                 <td class="si_no text-center">'.$i.'</td>
                                                 
                                                 <td style="text-align: left;">'.$credit_invoice_prod->product_details.'</td>
                                             
                                                 <td class="text-center"><input type="number" name="dpd_order_qty[]" value="'.$credit_invoice_prod->ipd_quantity.'"  class="form-control order_qty text-center" readonly></td>
+                                                <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$credit_invoice_prod->ipd_reffer_no.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
+                                                
+                                            </tr>';*/
+
+                                            $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$credit_invoice_prod->ipd_id.'">
+                                                <td class="si_no text-center">'.$i.'</td>
+                                                
+                                                <td style="text-align: left;">'.$credit_invoice_prod->product_details.'</td>
+                                            
+                                                
                                                 <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$credit_invoice_prod->ipd_reffer_no.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                                 
                                             </tr>';

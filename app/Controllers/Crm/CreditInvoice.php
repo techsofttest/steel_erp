@@ -1610,23 +1610,25 @@ class CreditInvoice extends BaseController
                         </table>
                         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
                             <tr>
-                                <td style="width:15%"></td>
-                                <td style="width:15%">LPO Ref</td>
+                                <td style="width:13%"></td>
+                                <td style="width:13%">LPO Ref</td>
                                 <td style="width:30%">' . $credit_invoice->cci_lpo_reff . '</td>
-                                <td style="width:10%">Payment:</td>
+                                <td style="width:13%">Payment:</td>
                                 <td>' . $credit_invoice->cci_payment_term . '</td>
                             </tr>
                             <tr>
-                                <td style="width:15%">Invoice Terms</td>
-                                <td style="width:15%">Project:</td>
+                                <td style="width:13%">Invoice Terms</td>
+                                <td style="width:13%">Project:</td>
                                 <td style="width:30%">' . $credit_invoice->cci_project . '</td>
-                                <td style="width:10%">DN No:</td>
-                                <td>' . $del_data_string . '</td>
+                                
+                                <td style="width:13%">Sales Order:</td>
+                                <td>' . $credit_invoice->so_reffer_no . '</td>
+                                
                             </tr>
                             <tr>
-                                <td style="width:15%"></td>
-                                <td style="width:15%">Sales Order:</td>
-                                <td style="width:30%">' . $credit_invoice->so_reffer_no . '</td>
+                                <td style="width:13%"></td>
+                                <td style="width:13%">DN No:</td>
+                                <td style="width:30%">' . $del_data_string . '</td>
                             </tr>
                         </table>';
 
