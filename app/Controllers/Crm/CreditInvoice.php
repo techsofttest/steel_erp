@@ -1612,14 +1612,14 @@ class CreditInvoice extends BaseController
                             <tr>
                                 <td style="width:13%"></td>
                                 <td style="width:13%">LPO Ref</td>
-                                <td style="width:30%">' . $credit_invoice->cci_lpo_reff . '</td>
+                                <td style="width:33%">' . $credit_invoice->cci_lpo_reff . '</td>
                                 <td style="width:13%">Payment:</td>
                                 <td>' . $credit_invoice->cci_payment_term . '</td>
                             </tr>
                             <tr>
                                 <td style="width:13%">Invoice Terms</td>
                                 <td style="width:13%">Project:</td>
-                                <td style="width:30%">' . $credit_invoice->cci_project . '</td>
+                                <td style="width:33%">' . $credit_invoice->cci_project . '</td>
                                 
                                 <td style="width:13%">Sales Order:</td>
                                 <td>' . $credit_invoice->so_reffer_no . '</td>
@@ -1628,7 +1628,7 @@ class CreditInvoice extends BaseController
                             <tr>
                                 <td style="width:13%"></td>
                                 <td style="width:13%">DN No:</td>
-                                <td style="width:30%">' . $del_data_string . '</td>
+                                <td style="width:33%">' . $del_data_string . '</td>
                             </tr>
                         </table>';
 
