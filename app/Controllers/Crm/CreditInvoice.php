@@ -1510,13 +1510,13 @@ class CreditInvoice extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 73,
-            'margin_bottom' => 0,
+            'margin_bottom' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
             'defaultfooterline' => 0,
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 45);
+        $mpdf->SetAutoPageBreak(true, 10);
 
         $mpdf->SetTitle($title);
 
@@ -1656,7 +1656,7 @@ class CreditInvoice extends BaseController
 
                         $mpdf->SetHTMLFooter($footer_common);
 
-                        $mpdf->SetAutoPageBreak(true, 50);
+                        //$mpdf->SetAutoPageBreak(true, 50);
 
                         $mpdf->WriteHTML($main_table);
 
