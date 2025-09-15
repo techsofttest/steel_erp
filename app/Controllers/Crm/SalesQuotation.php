@@ -2187,7 +2187,7 @@ public function Pdf($id)
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 68,
-            'margin_bottom' => 45,
+            'margin_bottom' => 40,
             'margin_left' => 5,
             'margin_right' => 5,
             'defaultfooterline' => 0,
