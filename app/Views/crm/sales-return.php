@@ -2378,8 +2378,12 @@ span.select2.customer_width, span.select2 {
 
             var pending_amount = $('.pending_amount').val();
 
+            console.log('rawPrice:',rawPrice);
+
+            console.log('pending_amount:',pending_amount);
+
            
-            if (parseFloat(rawPrice)  >  pending_amount){
+            if (parseFloat(rawPrice)  >  pending_amount && pending_amount!=""){
                 
                 alertify.error("Only " +pending_amount+" can be returned.").delay(3).dismissOthers();
                 $('.once_form_submit').attr('disabled', true); 
