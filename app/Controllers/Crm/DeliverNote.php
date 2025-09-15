@@ -1742,14 +1742,14 @@ class DeliverNote extends BaseController
                 
                 $mpdf = new \Mpdf\Mpdf([
                     'margin_top' => 79,
-                    'margin_bottom' => 45,
+                    'margin_bottom' => 10,
                     'margin_left' => 5,
                     'margin_right' => 5,
                     'defaultfooterline' => 0,
                     'setAutoTopMargin'   => 'stretch',
                 ]);
 
-                //$mpdf->SetAutoPageBreak(true, 45);
+                $mpdf->SetAutoPageBreak(true, 20);
 
                 $mpdf->SetTitle($title);
 
@@ -1957,7 +1957,7 @@ class DeliverNote extends BaseController
 
                                 $mpdf->SetHTMLFooter($footer_common);
 
-                                $mpdf->SetAutoPageBreak(true, 50);
+                                //$mpdf->SetAutoPageBreak(true, 50);
 
                                 $mpdf->WriteHTML($main_table);
 
