@@ -1516,7 +1516,7 @@ class CreditInvoice extends BaseController
             'defaultfooterline' => 0,
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 10);
+        $mpdf->SetAutoPageBreak(true, 20);
 
         $mpdf->SetTitle($title);
 
