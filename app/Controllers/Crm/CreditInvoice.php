@@ -1509,7 +1509,7 @@ class CreditInvoice extends BaseController
         $title = 'CRN - ' . $credit_invoice->cci_reffer_no;
 
         $mpdf = new \Mpdf\Mpdf([
-            'margin_top' => 72,
+            'margin_top' => 73,
             'margin_bottom' => 45,
             'margin_left' => 5,
             'margin_right' => 5,
@@ -1539,6 +1539,7 @@ class CreditInvoice extends BaseController
                             </tr>
                         </table>
                         <table width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
+                            <tr><td></td><td></td></tr>
                             <tr><td></td><td>' . $credit_invoice->cc_customer_name . '</td></tr>
                             <tr><td>Customer</td><td>Tel : ' . $credit_invoice->cc_telephone . ', Fax : ' . $credit_invoice->cc_fax . ', Email : ' . $credit_invoice->cc_email . '</td></tr>
                             <tr><td></td><td>Post Box: ' . $credit_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td></tr>

@@ -1368,9 +1368,9 @@ class SalesOrder extends BaseController
 
             <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control text-center" required></td>
             <td> <input type="text" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
-            <td> <input type="text" name="spd_rate" value="'.$prod_det->spd_rate.'" class="form-control edit_prod_rate text-end" required></td>
+            <td> <input type="text" name="spd_rate" value="'.format_currency($prod_det->spd_rate).'" class="form-control edit_prod_rate text-end" required></td>
             <td> <input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount text-center" required></td>
-            <td> <input type="text" name="spd_amount" value="'.$prod_det->spd_amount.'" class="form-control edit_prod_amount text-end" readonly></td>
+            <td> <input type="text" name="spd_amount" value="'.format_currency($prod_det->spd_amount).'" class="form-control edit_prod_amount text-end" readonly></td>
            <input type="hidden" name="spd_id" class="edit_prod_id" value="'.$prod_det->spd_id.'">
            </tr>'; 
 
@@ -1734,6 +1734,11 @@ class SalesOrder extends BaseController
 
 
             <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
                
                 <tr>
                 

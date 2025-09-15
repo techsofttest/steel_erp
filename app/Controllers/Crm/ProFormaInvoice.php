@@ -1573,6 +1573,11 @@ class ProFormaInvoice extends BaseController
                                     </table>
 
                                     <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
         
                                         <tr>
                                         
@@ -1825,14 +1830,6 @@ class ProFormaInvoice extends BaseController
                                 $this->response->setHeader('Content-Type', 'application/pdf');
                                 $mpdf->Output($title . '.pdf', 'I');
                 
-                
-                
-
-                 
-
-                
-                
-
                 
             
             }

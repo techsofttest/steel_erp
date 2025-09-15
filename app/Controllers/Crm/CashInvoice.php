@@ -2030,6 +2030,12 @@ class CashInvoice extends BaseController
 
                     </table>
                     <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px">
+
+
+                       <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
         
                         <tr>
                         
@@ -2221,7 +2227,7 @@ class CashInvoice extends BaseController
 
                                         <td rowspan="2" style="padding:0; margin:0;">Sales Order:</td>
                         
-                                        <td style="padding:5px 0px; margin:5px;">'.$cash_invoice->so_reffer_no.'</td>
+                                        <td style="padding:4px 0px; margin:5px;">'.$cash_invoice->so_reffer_no.'</td>
                         
                                         <td style="width:15%;"></td>
                                  
