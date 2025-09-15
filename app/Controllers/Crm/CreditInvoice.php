@@ -1510,7 +1510,7 @@ class CreditInvoice extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 73,
-            'margin_bottom' => 15,
+            'margin_bottom' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
             'defaultfooterline' => 0,
