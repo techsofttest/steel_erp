@@ -61,6 +61,12 @@ span.select2.customer_width, span.select2 {
    
    line-height: 18px;
 }
+.once_form_submit {
+    padding: 8px 16px;
+}
+.btn-success {
+    background: #00AF50;
+}
 </style>
 
 
@@ -403,6 +409,7 @@ span.select2.customer_width, span.select2 {
                                                     <div class="modal-footer justify-content-center">
                                                         <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
                                                         <button class="btn btn btn-success cancel_btn"  style="display:none;">cancel</button>
+                                                        <span class="print_btn_clz " style="display:none"><button class="btn btn btn-success print_sucss_clz"  name="print_btn" type="submit" value="1">Print</button></span>
                                                     </div>
                                                     </div>
                                                     
@@ -446,13 +453,12 @@ span.select2.customer_width, span.select2 {
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
-                                                    <th>Date</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 85px !important;">Reference</th>
+                                                    <th style="width: 75px !important;">Date</th>
                                                     <th>Customer</th>
-                                                    <th>Sales Order</th>
-                                                    <th>Invoice No</th>
-                                                    <th>Amount</th>
+                                                    <th style="width: 90px !important;">Invoice No</th>
+                                                    <th style="width: 100px;">Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1507,7 +1513,26 @@ span.select2.customer_width, span.select2 {
                                 {
                                     $('#SaveModal').modal('show');
                                 }
-                            
+
+                                if(data.print!="")
+                                {
+                                   // window.open(data.print, '_blank');
+
+                                   id = data.print;
+
+                                   //alert(id);
+                                   // Open the PDF generation script in a new window
+
+                                    var pdfWindow = window.open('<?= base_url()?>Crm/SalesReturn/Pdf/'+id, '_blank');
+
+                                    // Automatically print when the PDF is loaded
+                                    pdfWindow.onload = function() {
+
+                                        pdfWindow.print();
+
+                                    };
+                                }
+
                             }
                         });
 
@@ -1600,12 +1625,16 @@ span.select2.customer_width, span.select2 {
                 { data: 'sr_reffer_no' },
                 { data: 'sr_date'},
                 { data: 'sr_customer'},
-                { data: 'sr_sales_order'},
                 { data: 'sr_invoice'},
                 { data: 'sr_total'},
                 { data: 'action'},
                 
                ],
+
+               columnDefs: [
+                { targets: [5], className: "dt-body-center" }
+               ],
+
 
                 "initComplete": function() {
 
@@ -2387,6 +2416,7 @@ span.select2.customer_width, span.select2 {
                 
                 alertify.error("Only " +pending_amount+" can be returned.").delay(3).dismissOthers();
                 $('.once_form_submit').attr('disabled', true); 
+                $('.print_sucss_clz').attr('disabled', true); 
                 var sales_return = $('.hidden_sales_return').val();
                 $('.cancel_btn').show().attr('data-id', sales_return);
             }
@@ -2394,6 +2424,8 @@ span.select2.customer_width, span.select2 {
                 
                 //$('.once_form_submit').attr('disabled', false); 
                 $('.once_form_submit').attr('disabled', false);
+
+                $('.print_sucss_clz').attr('disabled', false); 
 
                 $('.cancel_btn').hide()
             }
@@ -2407,6 +2439,8 @@ span.select2.customer_width, span.select2 {
        $("body").on('click', '.prod_modal_submit', function(){ 
 
             var selectId = $('#select_prod_id').val();
+
+             $('.print_btn_clz').css('display', 'block');
 
             checked = $("input[type=checkbox]:checked").length;
 
@@ -2427,9 +2461,7 @@ span.select2.customer_width, span.select2 {
                 {
                 
                     var data = JSON.parse(data);
-
-                    
-                                    
+             
                     $('.product-more2').html(data.product_detail);
 
                     $('#SelectProduct').modal("hide");
@@ -2447,6 +2479,8 @@ span.select2.customer_width, span.select2 {
                         if(data.button_status === 1){
 
                             $('.once_form_submit').attr('disabled', true); // Disable this input.
+
+                            $('.print_sucss_clz').attr('disabled', true); // Disable this input.
 
                             var sales_return = $('.hidden_sales_return').val();
 
@@ -2486,6 +2520,8 @@ span.select2.customer_width, span.select2 {
         $('.sales_order_add_clz option').remove();
 
         $('.cont_person  option').remove();
+
+        $('.print_btn_clz').css('display', 'none');
 
         $(".cust_more_modal").removeClass("disabled-span");
 

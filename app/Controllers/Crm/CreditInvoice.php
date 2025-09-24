@@ -1509,18 +1509,20 @@ class CreditInvoice extends BaseController
         $title = 'CRN - ' . $credit_invoice->cci_reffer_no;
 
         $mpdf = new \Mpdf\Mpdf([
-            'margin_top' => 73,
+            'margin_top' => 79,
             'margin_bottom' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
             'defaultfooterline' => 0,
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 20);
+        $mpdf->SetAutoPageBreak(true, 59);
 
         $mpdf->SetTitle($title);
 
         $header_html = '
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
                         <table><tr><td></td></tr></table>
                         <table><tr><td></td></tr></table>
                         <table><tr><td></td></tr></table>
@@ -1629,7 +1631,7 @@ class CreditInvoice extends BaseController
                             <tr>
                                 <td style="width:13%"></td>
                                 <td style="width:13%">DN No:</td>
-                                <td style="width:33%">' . $del_data_string . '</td>
+                                <td style="width:33%" >' . $del_data_string . '</td>
                             </tr>
                         </table>';
 

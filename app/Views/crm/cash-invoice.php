@@ -506,13 +506,13 @@ span.select2.customer_width, span.select2 {
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
-                                                    <th>Date</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 105px !important;">Reference</th>
+                                                    <th style="width: 75px !important;">Date</th>
                                                     <th>Customer</th>
-                                                    <th>Sales Order</th>
-                                                    <th>Total Amount</th>
-                                                    <th>Paid Amount</th>
+                                                    <th style="width: 85px !important;">Sales Order</th>
+                                                    <th style="width: 100px;"> Amount</th>
+                                                    
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1579,10 +1579,14 @@ span.select2.customer_width, span.select2 {
                 { data: 'ci_customer'},
                 { data: 'ci_sales_order'},
                 { data: 'ci_total_amount'},
-                { data: 'ci_paid_amount'},
+               
                 { data: 'action'},
                 
                ],
+
+               columnDefs: [
+                { targets: [5], className: "dt-body-center" }
+            ],
 
                     "initComplete": function() {
 

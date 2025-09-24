@@ -1503,11 +1503,11 @@ class CommonModel extends Model
 
         ->where($cond2)
         
-        ->groupStart() // Start grouping conditions
+        /*->groupStart() 
 
-            ->where('ci_paid_status', 0) // Condition for ci_paid_status = 0
+            ->where('ci_paid_status', 0) 
 
-            ->orGroupStart() // Nested group for ci_paid_status = 1
+            ->orGroupStart() 
             
                 ->where('ci_paid_status', 1)
 
@@ -1516,9 +1516,9 @@ class CommonModel extends Model
                 //->where('(ci_total_amount - ci_paid_amount) >  steel_crm_sales_orders.so_amount_total', null, false)
 
 
-            ->groupEnd() // End nested group
+            ->groupEnd() 
 
-        ->groupEnd() // End outer group
+        ->groupEnd()*/
         
 
         ->get();
@@ -1607,19 +1607,19 @@ class CommonModel extends Model
 
         ->where($cond2)
         
-        ->groupStart() // Start grouping conditions
+        /*->groupStart() 
 
-            ->where('cci_paid_status', 0) // Condition for ci_paid_status = 0
+            ->where('cci_paid_status', 0) 
 
-            ->orGroupStart() // Nested group for ci_paid_status = 1
+            ->orGroupStart() 
             
                 ->where('cci_paid_status', 1)
 
                 //->where('(cci_total_amount - cci_paid_amount) > crm_sales_orders.so_amount_total')
 
-            ->groupEnd() // End nested group
+            ->groupEnd() 
 
-        ->groupEnd() // End outer group
+        ->groupEnd()*/
         
 
         ->get();

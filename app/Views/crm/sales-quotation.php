@@ -1935,6 +1935,7 @@
                                                     <th>Date</th>
                                                     <th>Customer</th>
                                                     <th>Enquiry Number</th>
+                                                    <th>Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -2715,6 +2716,7 @@
                 { data: 'qd_date'},
                 { data: 'qd_customer'},
                 { data: 'qd_enquiry'},
+                { data: 'qd_sales_amount'},
                 { data: 'action'},
                 
                ],

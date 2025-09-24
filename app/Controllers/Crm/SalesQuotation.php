@@ -90,6 +90,7 @@ class SalesQuotation extends BaseController
               'qd_date'             => date('d-M-Y',strtotime($record->qd_date)),
               'qd_customer'         => $record->cc_customer_name,
               'qd_enquiry'          => $record->enquiry_reff,
+              'qd_sales_amount'     => format_currency($record->qd_sales_amount),
               "action"              => $action,
            );
            $i++; 
@@ -2187,7 +2188,7 @@ public function Pdf($id)
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 68,
-            'margin_bottom' => 10,
+            'margin_bottom' => 20,
             'margin_left' => 5,
             'margin_right' => 5,
             'defaultfooterline' => 0,

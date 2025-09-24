@@ -78,6 +78,7 @@ class ProFormaInvoice extends BaseController
               'pf_date'         => date('d-M-Y',strtotime($record->pf_date)),
               'pf_customer'     => $record->cc_customer_name,
               'pf_sales_order'  => $record->so_reffer_no,
+              'pf_total_amount' => format_currency($record->pf_total_amount),
               'action'          => $action,
            );
            $i++; 
@@ -1532,7 +1533,7 @@ class ProFormaInvoice extends BaseController
                     'defaultfooterline' => 0,
                 ]);
 
-                $mpdf->SetAutoPageBreak(true, 20);
+                $mpdf->SetAutoPageBreak(true, 41);
 
                 $mpdf->SetTitle($title);
 

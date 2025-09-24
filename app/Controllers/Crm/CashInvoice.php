@@ -1994,7 +1994,7 @@ class CashInvoice extends BaseController
                
                 //$mpdf->SetAutoPageBreak(true, 45);
 
-                $mpdf->SetAutoPageBreak(true, 20);
+                $mpdf->SetAutoPageBreak(true, 59);
 
                 $mpdf->SetTitle($title);
 
@@ -2214,13 +2214,13 @@ class CashInvoice extends BaseController
 
                                         <td rowspan="2" style="width:16%;vertical-align: middle;padding:0; margin:0;">Invoice Terms</td>
                         
-                                        <td style="width:20%;padding:0; margin:0;">Project:</td>
+                                        <td style="width:10%;padding:0; margin:0;">Project:</td>
                         
                                         <td style="width:30%;padding:0; margin:0;">'.$cash_invoice->ci_project.'</td>
                         
-                                        <td style="width:12%;padding:0; margin:0;">Payment:</td>
+                                        <td style="width:8%;padding:0; margin:0;">Payment:</td>
                         
-                                        <td>'.$cash_invoice->ci_payment_term.'</td>
+                                        <td style="padding:0px">'.$cash_invoice->ci_payment_term.'</td>
                                         
                                     </tr>
 
@@ -2229,9 +2229,9 @@ class CashInvoice extends BaseController
 
                                         <td rowspan="2" style="padding:0; margin:0;">Sales Order:</td>
                         
-                                        <td style="padding:4px 0px; margin:5px;">'.$cash_invoice->so_reffer_no.'</td>
+                                        <td style="padding:4px; margin:0px;">'.$cash_invoice->so_reffer_no.'</td>
                         
-                                        <td style="width:15%;"></td>
+                                        <td style=""></td>
                                  
                                     </tr>
                 

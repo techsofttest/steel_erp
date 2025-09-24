@@ -67,11 +67,12 @@ class DeliverNote extends BaseController
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->dn_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
            
            $data[] = array( 
-              'dn_id'         => $i,
-              'dn_reffer_no'  => $record->dn_reffer_no,
-              'dn_date'       => date('d-M-Y',strtotime($record->dn_date)),
-              'dn_customer'   => $record->cc_customer_name,
-              'action'        => $action,
+              'dn_id'            => $i,
+              'dn_reffer_no'     => $record->dn_reffer_no,
+              'dn_date'          => date('d-M-Y',strtotime($record->dn_date)),
+              'dn_customer'      => $record->cc_customer_name,
+              'dn_total_amount'  => format_currency($record->dn_total_amount),
+              'action'           => $action,
            );
            $i++; 
         }
@@ -1742,7 +1743,7 @@ class DeliverNote extends BaseController
                 
                 $mpdf = new \Mpdf\Mpdf([
                     'margin_top' => 79,
-                    'margin_bottom' => 10,
+                    'margin_bottom' => 20,
                     'margin_left' => 5,
                     'margin_right' => 5,
                     'defaultfooterline' => 0,
@@ -1902,9 +1903,9 @@ class DeliverNote extends BaseController
                                     <tr>
                                         <td rowspan="2">Order Terms</td>
                         
-                                        <td style="width:10%">LPO Ref:</td>
+                                        <td style="width:10%"></td>
                         
-                                        <td style="width:30%">'.$delivery_note->dn_lpo_reference.'</td>
+                                        <td style="width:30%"></td>
 
                                         <td style="width:12%">Payment:</td>
                         
@@ -1913,9 +1914,9 @@ class DeliverNote extends BaseController
                                     </tr>
     
                                     <tr>
-                                        <td>Project:</td>
+                                        <td></td>
                         
-                                        <td style="">'.$delivery_note->dn_project.'</td>
+                                        <td style=""></td>
                         
                                         <td style="">Sales Order:</td>
 
@@ -1967,8 +1968,6 @@ class DeliverNote extends BaseController
                                 $this->response->setHeader('Content-Type', 'application/pdf');
 
                                 $mpdf->Output($title . '.pdf', 'I');
-
-
 
             
             }

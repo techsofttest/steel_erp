@@ -1040,10 +1040,11 @@ span.select2.customer_width, span.select2 {
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
-                                                    <th>Date</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 85px !important;">Reference</th>
+                                                    <th style="width: 75px !important;">Date</th>
                                                     <th>Customer</th>
+                                                    <th style="width: 100px;">Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1399,9 +1400,14 @@ span.select2.customer_width, span.select2 {
                 { data: 'dn_reffer_no' },
                 { data: 'dn_date'},
                 { data: 'dn_customer'},
+                { data: 'dn_total_amount'},
                 { data: 'action'},
                 
                ],
+
+                columnDefs: [
+                { targets: [4], className: "dt-body-center" }
+            ],
 
                "initComplete": function () {
 

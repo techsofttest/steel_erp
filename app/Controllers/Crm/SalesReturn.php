@@ -74,7 +74,6 @@ class SalesReturn extends BaseController
               'sr_reffer_no'    => $record->sr_reffer_no,
               'sr_date'         => date('d-M-Y',strtotime($record->sr_date)),
               'sr_customer'     => $record->cc_customer_name,
-              'sr_sales_order'  => $record->so_reffer_no,
               'sr_invoice'      => $record->sr_invoice,
               'sr_total'        => $record->sr_total,
               'action'          => $action,
@@ -195,7 +194,7 @@ class SalesReturn extends BaseController
     // add account head
     Public function Add()
     {    
-
+        $data['print']  ="";
         if(empty($this->request->getPost('sr_id')))
         {
             //$uid = $this->common_model->FetchNextId('crm_sales_return',"SR");
@@ -459,9 +458,7 @@ class SalesReturn extends BaseController
                        
                     }
 
-                   
-
-                
+                 
                     
                 } 
             }
@@ -471,6 +468,17 @@ class SalesReturn extends BaseController
             $credit_invoices = $this->common_model->FetchWhere('crm_credit_invoice',array('cci_customer' => $this->request->getPost('sr_customer')));
             
             $sales_order_data = $this->common_model->SingleRow('crm_sales_orders',array('so_id' => $this->request->getPost('sales_order')));
+
+            if(!empty($_POST['print_btn']))
+            {
+                
+                //$data['print'] =  base_url() . 'Crm/CreditInvoice/Pdf/' . urlencode($credit_invoice_id);
+
+                $data['print'] =  $sales_return_id->sr_id;
+
+                //print_r($data['print']); exit();
+
+            }
                 
             if($sales_order_data->so_advance_paid > 0)
             {
@@ -852,10 +860,21 @@ class SalesReturn extends BaseController
                     $current_qty = $credit_inv_prod->ipd_delivered_qty - $sales_ret_prod->srp_quantity;
                 
                     $this->common_model->EditData(array('ipd_delivered_qty' => $current_qty,'ipd_status' => 0), array('ipd_reffer_no' => $sales_ret_prod->srp_prod_reff_name), 'crm_credit_invoice_prod_det');
-                
+                    
                     $this->common_model->EditData(array('cci_status' => 0), array('cci_id' =>$credit_inv_prod->ipd_credit_invoice), 'crm_credit_invoice');
                     
                 }
+                
+                /**/
+                
+               /* $single_credit = $this->common_model->SingleRow('crm_credit_invoice',array('cci_reffer_no' => $sales_return->sr_invoice));
+
+                $current_amount = $single_credit->cci_paid_amount -  $sales_return->sr_total;
+
+                $this->common_model->EditData(array('cci_paid_amount' => $current_amount), array('cci_reffer_no' =>$sales_return->sr_invoice), 'crm_credit_invoice');*/
+
+                
+                /**/
 
                 $data['status'] =1;
 
@@ -880,6 +899,16 @@ class SalesReturn extends BaseController
                     
                 }
 
+                /**/
+                
+                /*$single_cash = $this->common_model->SingleRow('crm_cash_invoice',array('ci_reffer_no' => $sales_return->sr_invoice));
+
+                $current_sales_amount = $single_cash->ci_paid_amount -  $sales_return->sr_total;
+
+                $this->common_model->EditData(array('ci_paid_amount' => $current_sales_amount), array('ci_reffer_no' =>$sales_return->sr_invoice), 'crm_cash_invoice');*/
+
+                /**/
+
                 $data['status'] =1;
 
                 $data['msg'] ="Data Deleted Successfully";
@@ -894,6 +923,42 @@ class SalesReturn extends BaseController
            
             
         }
+
+
+        /**/
+
+        
+
+        $credit_data = $this->common_model->SingleRow('crm_credit_invoice',array('cci_reffer_no' => $sales_return->sr_invoice));
+
+        $cash_data = $this->common_model->SingleRow('crm_cash_invoice',array('ci_reffer_no' => $sales_return->sr_invoice));
+
+        if(!empty($credit_data)){
+
+            $single_credit = $this->common_model->SingleRow('crm_credit_invoice',array('cci_reffer_no' => $sales_return->sr_invoice));
+
+            $current_amount = $single_credit->cci_paid_amount -  $sales_return->sr_total;
+
+            $this->common_model->EditData(array('cci_paid_amount' => $current_amount), array('cci_reffer_no' =>$sales_return->sr_invoice), 'crm_credit_invoice');
+
+
+        }
+
+        if(!empty($cash_data)){
+
+            $single_cash = $this->common_model->SingleRow('crm_cash_invoice',array('ci_reffer_no' => $sales_return->sr_invoice));
+
+            $current_sales_amount = $single_cash->ci_paid_amount -  $sales_return->sr_total;
+
+            $this->common_model->EditData(array('ci_paid_amount' => $current_sales_amount), array('ci_reffer_no' =>$sales_return->sr_invoice), 'crm_cash_invoice');
+
+
+        }
+
+        /**/
+
+
+
          
         if(!empty($sales_return->sr_id)){
        
@@ -1234,7 +1299,8 @@ class SalesReturn extends BaseController
 
             // Fetch details for each selected product ID
             $i = 1; 
-            $new_amount = 0; 
+            $new_amount = 0;
+           
             foreach ($idsArray as $number) 
             {
                 $cond = array('cipd_reffer_no' => $number);
@@ -1303,21 +1369,31 @@ class SalesReturn extends BaseController
                         $new_amount =    $new_amount += $orginalPrice;   
                                                         
                     }
+                    
+                    
 
-                    $data['total_amount'] = format_currency($new_amount);
+                    
 
                     $balance_amount = $cash_invoice_parent->ci_total_amount - $cash_invoice_parent->ci_paid_amount;
+
+                    $status_total_amt = $cash_invoice_parent->ci_total_amount;
+
+                    $status_pending_amt = $cash_invoice_parent->ci_paid_amount;
+
+                    /*if($new_amount >  $balance_amount){
+                        
+                        $data['button_status'] =  1;
+                    }*/
+                    
+
+                    $data['total_amount'] = format_currency($new_amount);
 
 
                     $data['pending_amount_alert'] = "Only " . number_format($balance_amount, 2) . " can be returned.";
 
-                    $data['pending_amount'] = $balance_amount;
+                    $data['pending_amount'] = format_currency($balance_amount);
 
-                    if($new_amount >  $balance_amount){
-
-                            $data['button_status'] =  1;
-                    }
-
+                 
                 }
 
                 if(!empty($sales_order_details2))
@@ -1358,10 +1434,7 @@ class SalesReturn extends BaseController
                                                     $new_amount =    $new_amount += $orginalPrice;
 
                                                    //$new_amount += $orginalPrice;
-                                                    
-                                                    
-
-                                                    
+                                                  
                                                         
                     }
 
@@ -1378,10 +1451,16 @@ class SalesReturn extends BaseController
 
                         $data['pending_amount'] = $balance_amount;
 
-                        if($new_amount >  $balance_amount){
+                        $status_total_amt = $credit_invoice_parent->cci_total_amount;
+
+                        $status_pending_amt = $credit_invoice_parent->cci_paid_amount;
+
+                       
+
+                        /*if($new_amount >  $balance_amount){
 
                             $data['button_status'] =  1;
-                        }
+                        }*/
 
                                                         
                     //}
@@ -1391,7 +1470,23 @@ class SalesReturn extends BaseController
                 
                 $i++;
             }
+            
+            
+            //if(number_format($new_amount,2) >  number_format($balance_amount,2)){
 
+            if($status_total_amt <  $status_pending_amt){
+
+                $data['button_status'] =  1;
+            }
+            else{
+
+                $data['button_status'] =  0;
+            }
+
+
+            $data['test'] = $status_total_amt ;
+
+            $data['test1'] = $status_pending_amt ;
 
 
 
@@ -2117,7 +2212,8 @@ class SalesReturn extends BaseController
                     
                 
                 $pdf_data = "";
-                 $k=1;
+                $k=1;
+
                 foreach($product_details as $prod_det)
                 {   
                     $rate = format_currency($prod_det->srp_rate);
@@ -2127,19 +2223,19 @@ class SalesReturn extends BaseController
                     $disc = number_format($prod_det->srp_discount, 2);
     
     
-                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
+                    $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
     
-                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.$prod_det->product_details.'</td>';
     
-                    $pdf_data .= '<td align="center">'.$prod_det->srp_quantity.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->srp_quantity.'</td>';
     
-                    $pdf_data .= '<td align="center">'.$prod_det->srp_unit.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->srp_unit.'</td>';
     
-                    $pdf_data .= '<td align="right">'.$rate.'</td>';
+                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$rate.'</td>';
     
-                    $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
+                    $pdf_data .= '<td align="center" style="color: red;padding: 2px; vertical-align: top;"><i>'.$disc.'</i></td>';
     
-                    $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$amount.'</td></tr>';
     
                     $k++;
                 }
@@ -2169,6 +2265,12 @@ class SalesReturn extends BaseController
                         'pk'    => 'dt_id',
                         'fk'    => 'so_delivery_term',
                     ),*/
+
+                    array(
+                        'table' => 'crm_sales_orders',
+                        'pk'    => 'so_id',
+                        'fk'    => 'sr_sales_order',
+                    ),
     
                    
                 );
@@ -2183,6 +2285,8 @@ class SalesReturn extends BaseController
                         'pk'    => 'country_id',
                         'fk'    => 'cc_country',
                     ),
+
+                   
                     
                 );
     
@@ -2199,166 +2303,168 @@ class SalesReturn extends BaseController
                 //$mpdf = new \Mpdf\Mpdf();
     
                 $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 5,     // Reduce top margin
-                    'margin_bottom' => 5,  // Reduce bottom margin
-                    'margin_left' => 5,    // Reduce left margin
-                    'margin_right' => 5,   // Reduce right margin
+                    'margin_top' => 79,
+                    'margin_bottom' => 10,
+                    'margin_left' => 5,
+                    'margin_right' => 5,
+                    'defaultfooterline' => 0,
                 ]);
+
+                $mpdf->SetAutoPageBreak(true, 59);
     
                 $mpdf->SetTitle($title); // Set the title
-    
-                $html ='
-            
-                <style>
-                tbody  td{
-                
-                   padding-top: unset;
-    
-                }
-                th, td {
-                    padding-top: 5px;
-                   
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    font-size: 12px;
-                }
-                p{
-                    
-                    font-size: 12px;
-                    margin-bottom: 13px;
-    
-                }
-                .dec_width
-                {
-                    width:30%
-                }
-                .disc_color
-                {
-                    color:red;
-                }
-                
-                </style>
-               
-               
-                <table>
-            
-                    <tr>
+
+                $header_html = '
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>
                         
-                        <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
-            
-                        <td>
-                    
-                        <h2>Al Fuzail Engineering Services WLL</h2>
-                        <span style="font-size:2pt;"><br></span>
-                        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
-                        <span style="font-size:2pt;"><br></span>
-                        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                        <table width="100%">
+                            <tr width="100%">
+                                <td width="9%"></td>
+                                <td>Date : ' . $date . '</td>
+                                <td>' .$sales_order->sr_reffer_no. '</td>
+                                <td align="right"><h2>Sales Return</h2></td>
+                            </tr>
+                        </table>
+                        <table width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
+                            <tr><td></td><td></td></tr>
+                            <tr><td></td><td>' . $sales_order->cc_customer_name. '</td></tr>
+                            <tr><td>Customer</td><td>Tel : ' . $sales_order->cc_telephone . ', Fax : ' . $sales_order->cc_fax . ', Email : ' . $sales_order->cc_email . '</td></tr>
+                            <tr><td></td><td>Post Box: ' . $sales_order->cc_post_box . ', ' . $sales_order->cc_city . ', ' . $customers->cc_country . '</td></tr>
+                            <tr><td>Attention</td><td>' . $sales_order->contact_person . ' - ' . $sales_order->contact_designation . ', Mobile:-' . $sales_order->contact_mobile . ', Email: - ' . $sales_order->contact_email . '</td></tr>
                         
-                        
-                        </td>
-                    
-                    </tr>
-            
-                </table>
-            
-            
-                <table width="100%" style="margin-top:-10px;">
-                
-            
-                <tr width="100%">
-                <td width="9%"></td>
-                <td width="20%">Date : '.$date.'</td>
-                <td align="center">'.$sales_order->sr_reffer_no.'</td>
-                <td align="right"><h2>Sales Return</h2></td>
-            
-                </tr>
-            
-                </table>
+                        </table>';
+
+                        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+                            <tr>
+                                <td><i>Received by: </i></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td><i>Prepared by:</i></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td><i>Finance Dept:</i></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td></td>
+                                <td><i>Workshop Manager</i></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>';
+
+                        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+                            <tr>
+                                <td></td>
+                                <td>IBAN : QA97CBQA000000004570407137001</td>
+                                <td style="font-weight: bold;width: 18%;">Total Invoice value</td>
+                                <td style="font-weight: bold;">' . format_currency($sales_order->sr_total) . '</td>
+                            </tr>
+                            <tr>
+                                <td>Bank Details</td>
+                                <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>SWIFT : CBQAQAQA</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Amount in words</td>
+                                <td style="width: 60%;">' . currency_to_words($sales_order->sr_total) . '</td>
+                            </tr>
+                        </table>
+                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
+                            <tr>
+                                <td style="width:13%"></td>
+                                <td style="width:13%">LPO Ref</td>
+                                <td style="width:33%">' . $sales_order->sr_lpo_reff . '</td>
+                                <td style="width:13%">Payment:</td>
+                                <td>' . $sales_order->sr_payment_term . '</td>
+                            </tr>
+                            <tr>
+                                <td style="width:13%">Invoice Terms</td>
+                                <td style="width:13%">Project:</td>
+                                <td style="width:33%">' . $sales_order->sr_project . '</td>
+                                
+                                <td style="width:13%">Sales Order:</td>
+                                <td>' . $sales_order->so_reffer_no . '</td>
+                                
+                            </tr>
+                            <tr>
+                                <td style="width:13%"></td>
+                                <td style="width:13%">Invoice:</td>
+                                <td style="width:33%" >'.$sales_order->sr_invoice.'</td>
+                            </tr>
+                        </table>';
+
+                        $main_table = ' <style>
+                            th, td { padding: 4px; font-size: 12px; }
+                            p { font-size: 12px; margin-bottom: 13px; }
+                        </style>
+                        <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
+                            <thead>
+                                <tr>
+                                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
+                                    <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
+                                    <th align="center" style="border-bottom:1px solid;">Qty</th>
+                                    <th align="center" style="border-bottom:1px solid;">Unit</th>
+                                    <th align="center" style="border-bottom:1px solid;">Rate</th>
+                                    <th align="center" style="border-bottom:1px solid;">Disc%</th>
+                                    <th align="center" style="border-bottom:1px solid;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>' . $pdf_data . '</tbody>
+                        </table>';
+
+                        $mpdf->SetHTMLHeader($header_html);
+
+                        $mpdf->SetHTMLFooter($footer_common);
+
+                        //$mpdf->SetAutoPageBreak(true, 50);
+
+                        $mpdf->WriteHTML($main_table);
+
+                        // Output summary just before footer on last page
+                        $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+                        $this->response->setHeader('Content-Type', 'application/pdf');
+                        $mpdf->Output($title . '.pdf', 'I');
     
-            <table  width="100%" style="margin-top:2px;border-top:1px solid;line-height:8px;">
-        
-                <tr>
-                
-                    <td > </td>
-                    
-                    <td >'.$sales_order->cc_customer_name.'</td>
-                
-                </tr>
-        
-        
-            <tr>
-            
-            <td>Customer</td>
-            
-                
-            <td >Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
-    
-            
-            
-            </tr>
-        
-        
-            <tr>
-            
-            <td ></td>
+             
             
            
-    
-             <td>Post Box: ' . $sales_order->cc_post_box . ', ' . $sales_order->cc_city . ', ' . $customers->cc_country . '</td>
-            
-            </tr>
-        
-        
-            <tr>
-            
-            <td >Attention</td>
-            
-             <td >'.$sales_order->contact_person.' - '.$sales_order->contact_designation.', Mobile:-'.$sales_order->contact_mobile.', Email: - '.$sales_order->contact_email.'</td>
-            
-            </tr>
-        
-        
-            </table>
-    
-               
-            
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
-                
-            
-                <tr>
-                
-                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
-                
-                    <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Qty</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Unit</th>
-                
-                    <th align="center" style="border-bottom:1px solid;">Rate</th>
-        
-                    <th align="center" style="border-bottom:1px solid;">Disc%</th>
-        
-                    <th align="center" style="border-bottom:1px solid;">Amount</th>
-        
-                
-                </tr>
-    
-    
-                '.$pdf_data.'
-    
-                 
-                
-            </table>';
-            
-            $footer = '';
-            
-                //echo $html . $footer; exit();
-    
-                $mpdf->WriteHTML($html);
-                $mpdf->SetFooter($footer);
-                $this->response->setHeader('Content-Type', 'application/pdf');
-                $mpdf->Output($title . '.pdf', 'I');
             
             }
     
