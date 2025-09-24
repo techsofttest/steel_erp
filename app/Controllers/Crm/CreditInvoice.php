@@ -1589,51 +1589,29 @@ class CreditInvoice extends BaseController
                             </tr>
                         </table>';
 
-        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
-                            <tr>
-                                <td></td>
-                                <td>IBAN : QA97CBQA000000004570407137001</td>
-                                <td style="font-weight: bold;width: 18%;">Total Invoice value</td>
-                                <td style="font-weight: bold;">' . format_currency($credit_invoice->cci_total_amount) . '</td>
-                            </tr>
-                            <tr>
-                                <td>Bank Details</td>
-                                <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>SWIFT : CBQAQAQA</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Amount in words</td>
-                                <td style="width: 60%;">' . currency_to_words($credit_invoice->cci_total_amount) . '</td>
-                            </tr>
-                        </table>
-                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
+        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
                             <tr>
                                 <td style="width:13%"></td>
                                 <td style="width:13%">LPO Ref</td>
-                                <td style="width:33%">' . $credit_invoice->cci_lpo_reff . '</td>
+                                <td style="width:33%">' . $credit_invoice->cci_lpo_reff. '</td>
                                 <td style="width:13%">Payment:</td>
-                                <td>' . $credit_invoice->cci_payment_term . '</td>
+                                <td>' . $credit_invoice->cci_payment_term. '</td>
                             </tr>
                             <tr>
                                 <td style="width:13%">Invoice Terms</td>
                                 <td style="width:13%">Project:</td>
-                                <td style="width:33%">' . $credit_invoice->cci_project . '</td>
-                                
+                                <td style="width:33%">' . $credit_invoice->cci_project. '</td>
                                 <td style="width:13%">Sales Order:</td>
-                                <td>' . $credit_invoice->so_reffer_no . '</td>
+                                <td>' .$credit_invoice->so_reffer_no. '</td>
                                 
                             </tr>
                             <tr>
                                 <td style="width:13%"></td>
                                 <td style="width:13%">DN No:</td>
-                                <td style="width:33%" >' . $del_data_string . '</td>
+                                <td colspan="3">' .$del_data_string. '</td>
                             </tr>
                         </table>';
+
 
         $main_table = ' <style>
                             th, td { padding: 4px; font-size: 12px; }

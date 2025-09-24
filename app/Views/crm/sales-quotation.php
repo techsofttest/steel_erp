@@ -2722,6 +2722,7 @@
                ],
 
             columnDefs: [
+                
                 { targets: [5], className: "dt-body-center" }
             ],
 
