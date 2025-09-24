@@ -377,7 +377,7 @@ span.select2.customer_width, span.select2 {
                                                                 
                                                                 
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                                                <td align="right" class="total_label">Total</td>
+                                                                <td align="right" class="total_label" style="min-width: 163px;">Total</td>
                                                                 <td><input type="text" name="sr_total" class="amount_total form-control text-end" readonly></td>
                                                             </tr>
                                                             
@@ -930,7 +930,7 @@ span.select2.customer_width, span.select2 {
                                     <tr>
                                        
                                         <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                        <td align="right" class="total_label">Total</td>
+                                        <td align="right" class="total_label" style="min-width: 164px;">Total</td>
                                         <td><input type="text" name="sr_total" class="view_amount_total form-control text-end" readonly></td>
 
                                     </tr>
@@ -1254,7 +1254,7 @@ span.select2.customer_width, span.select2 {
                                         
                                         
                                         <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                        <td align="right" class="total_label">Total</td>
+                                        <td align="right" class="total_label" style="min-width: 164px;">Total</td>
                                         <td><input type="text" name="sr_total" class="edit_amount_total form-control text-end" readonly></td>
                                     </tr>
                                     

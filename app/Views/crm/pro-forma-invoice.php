@@ -55,7 +55,8 @@ height: 37px !important;
     margin-bottom: 0px;
 }
 .total_table {
-    width: 311px !important;
+    width: 252px !important;
+    
    
 }
 span.select2.customer_width, span.select2 {
@@ -786,7 +787,7 @@ span.select2.customer_width, span.select2 {
                                                                 
                                                                
                                                                 
-                                                                <td align="right" class="total_label">Total Order value</td>
+                                                                <td align="right" class="total_label" style="min-width: 161px !important;">Total Order value</td>
                                                                 <td><input type="text" class="view_amount_total form-control text-end" readonly></td>
                                                             </tr>
 

@@ -67,7 +67,7 @@ class CreditInvoice extends BaseController
         foreach($records as $record ){
             $action = '<a  href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
             <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->cci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
-            <a href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
+            <a href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
            
            $data[] = array( 
@@ -578,7 +578,7 @@ class CreditInvoice extends BaseController
 
             $data['total_amount'] = '<tr>
                
-                <td align="right" class="total_label">Total</td>
+                <td align="right" class="total_label" style="min-width: 160px;">Total</td>
                 <td class=""><input type="text" value="'.format_currency($credit_invoice->cci_total_amount).'" class="form-control text-end" readonly></td>
                 
             </tr><tr>
@@ -1072,7 +1072,7 @@ class CreditInvoice extends BaseController
 
             $data['total_amount'] = '<tr>
                 
-                <td align="right" class="total_label">Total</td>
+                <td align="right" class="total_label" style="min-width: 164px;">Total</td>
                 <td><input type="text" value="'.format_currency($credit_invoice->cci_total_amount).'" class="form-control text-end" readonly></td>
                 
             </tr>

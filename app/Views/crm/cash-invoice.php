@@ -40,7 +40,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 250px !important;
+    width: 251px !important;
    
 }
 span.select2.customer_width, span.select2 {
@@ -71,6 +71,10 @@ span.select2.customer_width, span.select2 {
    
    line-height: 18px;
 }
+/*td.total_label {
+   width: 0px;
+    
+}*/
 
 </style>
 
@@ -386,7 +390,7 @@ span.select2.customer_width, span.select2 {
 
                                                             <tr>
                                                                 
-                                                                <td align="right" class="total_label">Total</td>
+                                                                <td align="right" class="total_label" style="min-width: 160px !important;">Total</td>
                                                                 <td><input type="text" name="ci_total_amount" class="amount_total form-control text-end" readonly></td>
                                                             </tr>
 

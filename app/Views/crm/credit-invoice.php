@@ -50,7 +50,8 @@
     margin-bottom: 0px;
 }
 .total_table {
-        width: 251px !important;
+
+    width: 251px !important;
    
    
 }
@@ -396,7 +397,7 @@ span.select2.customer_width, span.select2 {
                                                                 
                                                                 
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                                                <td align="right" class="total_label">Total</td>
+                                                                <td align="right" class="total_label" style="min-width: 160px;">Total</td>
                                                                 <td><input type="text" name="cci_total_amount" class="amount_total form-control text-end" readonly></td>
                                                             </tr>
 
@@ -893,7 +894,7 @@ span.select2.customer_width, span.select2 {
                            
                             
                         </table>
-                        <table class="total_table" style="width: 258px !important;">
+                        <table class="total_table" style="width:259px !important">
                             <tbody  class="travelerinfo edit_total_amount"></tbody>
                         </table>
                     </div>

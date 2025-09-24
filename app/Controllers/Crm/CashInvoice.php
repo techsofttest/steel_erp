@@ -581,7 +581,7 @@ class CashInvoice extends BaseController
         $data['total_amount'] = '<tr>
             
             
-            <td align="right" class="total_label">Total</td>
+            <td align="right" class="total_label" style="min-width: 160px !important;">Total</td>
             <td><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
            
             
@@ -1339,7 +1339,7 @@ class CashInvoice extends BaseController
 
             $data['total_amount'] = '<tr>
                 
-                <td align="right" class="total_label">Total</td>
+                <td align="right" class="total_label" style="">Total</td>
                 <td class=""><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
                 <td></td>
                 
