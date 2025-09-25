@@ -807,9 +807,22 @@ class Payroll extends BaseController
         }
 
 
-        $jv_total_credit = array_sum(str_replace(",","",$this->request->getPost('jv_credit')));
+        $jv_credit_arr = $this->request->getPost('jv_credit'); // array of credit values
+        $jv_debit_arr  = $this->request->getPost('jv_debit');  // array of debit values
 
-        $jv_total_debit = array_sum(str_replace(",","",$this->request->getPost('jv_debit')));
+        // Remove commas from each value and convert to float
+        $jv_credit_arr = array_map(function($v){ return floatval(str_replace(",", "", $v)); }, $jv_credit_arr);
+        $jv_debit_arr  = array_map(function($v){ return floatval(str_replace(",", "", $v)); }, $jv_debit_arr);
+
+        // Sum the arrays
+        $jv_total_credit = array_sum($jv_credit_arr);
+        $jv_total_debit  = array_sum($jv_debit_arr);
+
+
+
+        //$jv_total_credit = array_sum(str_replace(",","",$this->request->getPost('jv_credit')));
+
+        //$jv_total_debit = array_sum(str_replace(",","",$this->request->getPost('jv_debit')));
 
 
         if($jv_total_credit!=$jv_total_debit)
