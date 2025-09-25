@@ -78,7 +78,7 @@ class VacationTravel extends BaseController
               "vt_date" => date('d M Y',strtotime($record->vt_date)),
               "vt_debit_account" => $debit_account,
               "vt_credit_account" => $credit_account,
-              "vt_total" => $record->vt_total,
+              "vt_total" => format_currency($record->vt_total),
               "action" =>$action,
         );
 
@@ -471,6 +471,8 @@ class VacationTravel extends BaseController
         $return['msg'] = "Added to journal";
 
         $return['status'] = 1;
+
+        $return['insert_id'] = $vt_id;
 
         }
 

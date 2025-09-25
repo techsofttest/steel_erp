@@ -44,7 +44,15 @@ class Payroll extends BaseController
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_payrolls','pr_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
-        $joins = array();
+        $joins = array(
+
+              array(
+            'table' => 'accounts_journal_vouchers',
+            'pk' => 'jv_id',
+            'fk' => 'pr_journal_id',
+            ),
+
+        );
         ## Fetch records
         $records = $this->common_model->GetRecord('hr_payrolls','pr_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
@@ -58,12 +66,13 @@ class Payroll extends BaseController
            
         $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> </a> 
         <a href="javascript:void(0);" data-id="'.$record->pr_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i> </a>
-        <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
+        <!--<a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>-->';
 
         $data[] = array( 
               "pr_id"=>$i,
               "pr_month" => date('M Y',strtotime("1-{$record->pr_month}-{$record->pr_year}")),
               "total_salary" => format_currency($record->pr_total_salary),
+              "jv" => $record->jv_voucher_no,
               "action" =>$action,
         );
 
@@ -480,6 +489,8 @@ class Payroll extends BaseController
 
             $data['total_debit'] = $staff_salary+$salaries_wages+$total_ot+$house_rent_allow+$transport_allow+$telephone_allow;
 
+            $data['total_debit'] = format_currency($data['total_debit']);
+
             $jv_sl=0;
 
             $data['jv_rows'] .='
@@ -501,9 +512,9 @@ class Payroll extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$staff_salary.'" readonly></th>
+                                        <th width="10%"><input name="jv_debit[]" type="text" class="text-end number_format form-control debit_amount" value="'.format_currency($staff_salary).'" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                        <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
 
             </tr>
 
@@ -525,9 +536,9 @@ class Payroll extends BaseController
                                       
                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                      <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$salaries_wages.'" readonly ></th>
+                                      <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end number_format form-control debit_amount" value="'.format_currency($salaries_wages).'" readonly ></th>
 
-                                      <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                      <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
 
           </tr>
 
@@ -549,9 +560,9 @@ class Payroll extends BaseController
                                       
                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                      <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$total_ot.'" readonly></th>
+                                      <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end number_format form-control debit_amount" value="'.format_currency($total_ot).'" readonly></th>
 
-                                      <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                      <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
 
           </tr>
           
@@ -578,9 +589,9 @@ class Payroll extends BaseController
                                       
                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                      <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$house_rent_allow.'" readonly></th>
+                                      <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end number_format form-control debit_amount" value="'.format_currency($house_rent_allow).'" readonly></th>
 
-                                      <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                      <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
 
           </tr>
           
@@ -611,9 +622,9 @@ class Payroll extends BaseController
                                     
                                     <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                    <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$transport_allow.'" readonly></th>
+                                    <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end form-control number_format debit_amount" value="'.format_currency($transport_allow).'" readonly></th>
 
-                                    <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                    <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
 
         </tr>
         
@@ -645,9 +656,9 @@ class Payroll extends BaseController
                                   
                                   <th><input name="jv_remarks[]" type="text" class="form-control" value=""></th>
 
-                                  <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$telephone_allow.'" readonly></th>
+                                  <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end number_format form-control debit_amount" value="'.format_currency($telephone_allow).'" readonly></th>
 
-                                  <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                  <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
 
       </tr>
       
@@ -742,15 +753,17 @@ class Payroll extends BaseController
                                
                                <th><input name="jv_remarks[]" type="text" class="form-control" value="Salary : '.date("M Y",strtotime(date("01-{$month}-{$year} "))).'"></th>
 
-                               <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="" readonly></th>
+                               <th width="10%"><input name="jv_debit[]" type="number" step="0.01" class="text-end form-control debit_amount" value="" readonly></th>
 
-                               <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$ts->ts_cur_month_salary.'" readonly></th>
+                               <th width="10%"><input name="jv_credit[]" type="text" class="text-end form-control number_format credit_amount" value="'.format_currency($ts->ts_cur_month_salary).'" readonly></th>
 
     </tr>
 
    ';
 
             }
+
+    $data['total_credit'] = format_currency($data['total_credit']);
 
     $data['jv_rows'].=$emp_journal;
             
@@ -794,9 +807,9 @@ class Payroll extends BaseController
         }
 
 
-        $jv_total_credit = array_sum($this->request->getPost('jv_credit'));
+        $jv_total_credit = array_sum(str_replace(",","",$this->request->getPost('jv_credit')));
 
-        $jv_total_debit = array_sum($this->request->getPost('jv_debit'));
+        $jv_total_debit = array_sum(str_replace(",","",$this->request->getPost('jv_debit')));
 
 
         if($jv_total_credit!=$jv_total_debit)
@@ -924,9 +937,9 @@ class Payroll extends BaseController
 
         $insert_journal['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
 
-        $insert_journal['jv_debit_total'] = $this->request->getPost('total_debit');
+        $insert_journal['jv_debit_total'] = str_replace(",","",$this->request->getPost('total_debit'));
 
-        $insert_journal['jv_credit_total'] = $this->request->getPost('total_credit');
+        $insert_journal['jv_credit_total'] = str_replace(",","",$this->request->getPost('total_credit'));
 
         $insert_journal['jv_added_date'] = date('Y-m-d');
 
@@ -956,8 +969,8 @@ class Payroll extends BaseController
         $insert_journal_invoice['ji_voucher_id'] = $journal_id;
         //$insert_journal_invoice['ji_sales_order_id'] = ''; // Populate if needed
         $insert_journal_invoice['ji_account'] = $account_id;
-        $insert_journal_invoice['ji_debit'] = $debit;
-        $insert_journal_invoice['ji_credit'] = $credit;
+        $insert_journal_invoice['ji_debit'] = str_replace(",","",$debit);
+        $insert_journal_invoice['ji_credit'] = str_replace(",","",$credit);
         $insert_journal_invoice['ji_narration'] = $narration;
 
         $this->common_model->InsertData('accounts_journal_invoices',$insert_journal_invoice);
@@ -967,6 +980,8 @@ class Payroll extends BaseController
         $return['msg'] = "Added to journal";
 
         $return['status'] = 1;
+
+        $return['insert_id'] = $payroll_id; 
 
         }
 

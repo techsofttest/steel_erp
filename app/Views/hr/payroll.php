@@ -277,7 +277,7 @@
 
                         <th class="">Division</th>
 
-                        <th class="text-end" style="width: 10%;">Basic Salary</th>
+                        <th class="text-end" style="width: 10%;">Salary</th>
                         <th class="text-end" style="width: 10%;">Leave</th>
                         <th class="text-end" style="width: 10%;">Overtime</th>
                         <th class="text-end" style="width: 10%;">HRA</th>
@@ -518,9 +518,10 @@
                     <table id="datatable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
-                                <th class="no-sort">Sl no</th>
+                                <th class="no-sort">Sl</th>
                                 <th>Month</th>
-                                <th>Total Salary</th>
+                                <th>Amount</th>
+                                <th>JV</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -662,9 +663,9 @@
 
                                     <td colspan="3" align="right">Total</td>
                                    
-                                    <th id="total_amount_debit_disp">0</th>
+                                    <th id="total_amount_debit_disp" class="text-end">0</th>
 
-                                    <th  id="total_amount_credit_disp">0</th>
+                                    <th  id="total_amount_credit_disp" class="text-end">0</th>
                                     
                                     <input type="hidden" id="total_amount_inp" name="total_amount">
 
@@ -699,6 +700,7 @@
             -->
             <tr>
 
+                <button class="btn btn-success me-2 print_btn" name="" type="submit">Print</button>
                 <button class="btn btn-success submit_btn" name="" type="submit">Save</button>
                 <!--<td><button class="submit_btn">PDF</button></td>-->
             </tr>
@@ -871,6 +873,12 @@
 
 
 
+        var clickedBtn = null;
+        // Detect which submit button was clicked
+        $('#add_journal_form button[type=submit]').click(function() {
+            clickedBtn = $(this);
+        });
+
 
         $('#add_journal_form').submit(function(e){
 
@@ -901,6 +909,17 @@
                             datatable.ajax.reload( null, false);
 
                             $('#AddToJournalModal').modal('hide');
+
+                             if(clickedBtn && clickedBtn.hasClass('print_btn'))
+                            {
+                                
+                            var pdfWindow = window.open('<?= base_url()?>HR/Payroll/Print/'+data.insert_id, '_blank');
+                            // Automatically print when the PDF is loaded
+                            pdfWindow.onload = function() {
+                            pdfWindow.print();
+                            };
+
+                            }
 
                             }
 
@@ -1151,10 +1170,15 @@
                         return data.aaData;
                     }
                 },
+                'columnDefs' : [
+                    { width: '10px', targets: 0 },
+                    { width: '10px', targets: 0 },
+                ],
                 'columns': [
                     { data: 'pr_id' },
                     { data : "pr_month"},
                     { data : "total_salary" },
+                    { data : "jv" },
                     { data: 'action' },
                 ]
                 
