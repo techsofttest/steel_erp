@@ -1693,7 +1693,7 @@ class SalesOrder extends BaseController
                 'setAutoTopMargin'   => 'stretch',
             ]);
 
-           $mpdf->SetAutoPageBreak(true, 50);
+           $mpdf->SetAutoPageBreak(true, 40);
 
             $mpdf->SetTitle($title);
 
