@@ -1901,7 +1901,7 @@ class DeliverNote extends BaseController
                             $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
                 
                                     <tr>
-                                        <td >Order Terms</td>
+                                        <td rowspan="2">Order Terms</td>
                         
                                         <td style="width:10%">Lpo Ref</td>
                         
@@ -1914,7 +1914,7 @@ class DeliverNote extends BaseController
                                     </tr>
     
                                     <tr>
-                                        <td></td>
+                                        
                         
                                         <td>Project:</td>
 
