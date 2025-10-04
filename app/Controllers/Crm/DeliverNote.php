@@ -1750,7 +1750,7 @@ class DeliverNote extends BaseController
                     'setAutoTopMargin'   => 'stretch',
                 ]);
 
-                $mpdf->SetAutoPageBreak(true, 20);
+                $mpdf->SetAutoPageBreak(true, 30);
 
                 $mpdf->SetTitle($title);
 
