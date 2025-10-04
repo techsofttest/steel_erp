@@ -1591,46 +1591,47 @@ class CreditInvoice extends BaseController
 
         $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
                 
-                                    <tr>
-                                        <td width="15%"></td>
+                            <tr>
 
-                                        <td>IBAN : QA97CBQA000000004570407137001</td>
+                                <td width="15%"></td>
 
-                                        <td style="font-weight: bold;width: 20%;">Total Invoice value</td>
-                            
-                                        <td  align="right" style="font-weight: bold;">'.format_currency($credit_invoice->cci_total_amount).'</td>
+                                <td>IBAN : QA97CBQA000000004570407137001</td>
+
+                                <td style="font-weight: bold;width: 20%;">Total Invoice value</td>
+                    
+                                <td  align="right" style="font-weight: bold;">'.format_currency($credit_invoice->cci_total_amount).'</td>
                                     
                                         
-                                    </tr>
+                            </tr>
     
-                                    <tr>
-                        
-                                        <td>Bank Details</td>
-                                    
-                                        <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
-
-                                    
-                                    </tr>
-
-
-                                    <tr>
-                        
-                                        <td></td>
-                                    
-                                        <td>SWIFT : CBQAQAQA</td>
-                                    
-                                    </tr>
-    
-    
-                                    <tr style="width:100%";>
-                        
-                                        <td style="">Amount in words</td>
-                                    
-                                        <td style="" align="left">'.currency_to_words($credit_invoice->cci_total_amount).'</td>
+                            <tr>
+                
+                                <td>Bank Details</td>
                             
-                                    </tr>
+                                <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+
+                            
+                            </tr>
+
+
+                            <tr>
+                
+                                <td></td>
+                            
+                                <td>SWIFT : CBQAQAQA</td>
+                            
+                            </tr>
     
-                                </table>
+    
+                            <tr style="width:100%";>
+                
+                                <td style="">Amount in words</td>
+                            
+                                <td style="" align="left">'.currency_to_words($credit_invoice->cci_total_amount).'</td>
+                    
+                            </tr>
+    
+                        </table>
         
                         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
                             <tr>

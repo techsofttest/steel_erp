@@ -1901,11 +1901,11 @@ class DeliverNote extends BaseController
                             $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
                 
                                     <tr>
-                                        <td rowspan="2">Order Terms</td>
+                                        <td >Order Terms</td>
                         
-                                        <td style="width:10%"></td>
+                                        <td style="width:10%">Lpo Ref</td>
                         
-                                        <td style="width:30%"></td>
+                                        <td style="width:30%">'.$delivery_note->dn_lpo_reference.'</td>
 
                                         <td style="width:12%">Payment:</td>
                         
@@ -1916,13 +1916,15 @@ class DeliverNote extends BaseController
                                     <tr>
                                         <td></td>
                         
-                                        <td style=""></td>
-                        
-                                        <td style="">Sales Order:</td>
+                                        <td>Project:</td>
 
-                                        <td style="">'.$delivery_note->so_reffer_no.'</td>
+                                        <td>'.$delivery_note->dn_project.'</td>
                         
-                                        <td ></td>
+                                        <td>Sales Order:</td>
+
+                                        <td>'.$delivery_note->so_reffer_no.'</td>
+                        
+                                        
                         
                                     </tr>
                 
