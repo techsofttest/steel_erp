@@ -80,7 +80,6 @@ class TimeSheets extends BaseController
               "employee_name" => $record->emp_name,
               "month" => $monthName,
               "year" => $record->ts_year,
-              "working_days" => $record->ts_working_days,
               "total_salary" => format_currency($record->ts_cur_month_salary),
               "action" =>$action,
            );
@@ -1371,7 +1370,7 @@ class TimeSheets extends BaseController
 
   <tr class="no-border">
     <td colspan="6" align="center">
-    <h3 style="font-weight:600;"><i>Pay slip of the month '.date('M',strtotime($ts->ts_month)).' '.date('Y',strtotime($ts->ts_year)).'</i></h3>
+    <h3 style="font-weight:600;"><i>Pay slip of the month '.date('M',mktime(0, 0, 0, $ts->ts_month, 1)).' '.date('Y',strtotime($ts->ts_year)).'</i></h3>
     </td>
   </tr>
 

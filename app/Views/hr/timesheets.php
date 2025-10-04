@@ -2260,13 +2260,12 @@
                     <table id="accountTable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
-                                <th class="no-sort">Sl no</th>
-                                <th>Employee ID</th>
+                                <th class="no-sort">Sl</th>
+                                <th>Emp ID</th>
                                 <th>Name</th>
                                 <th>Month</th>
                                 <th>Year</th>
-                                <th>Working Days</th>
-                                <th>Total Salary</th>
+                                <th>Amount</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -2828,13 +2827,20 @@
                         return data.aaData;
                     }
                 },
+                'columnDefs' : [
+                    { width: '10px', targets: 0 },
+                    { width: '70px', targets: 1 },
+                    { width: '60px', targets: 3 },
+                    { width: '40px', targets: 4 },
+                    { width: '80px', targets: 5 },
+                    { width: '80px', targets: 6 },
+                ],
                 'columns': [
                     { data: 'ts_id' },
                     { data : "employee_id"},
                     { data : "employee_name" },
                     { data: 'month' },
                     { data : 'year'},
-                    { data : 'working_days'},
                     { data: 'total_salary'},
                     { data: 'action' },
                 ]
@@ -3614,7 +3620,7 @@
 
 
             //Medical Leave default 0
-            $('input[name=total_medical_leave_salary]').val(0);
+            $('input[name=total_medical_leave_salary]').val('0.00');
 
 
 

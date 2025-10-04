@@ -571,7 +571,7 @@
                     <table id="datatable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
-                                <th class="no-sort">Sl no</th>
+                                <th class="no-sort">Sl</th>
                                 <th>Date</th>
                                 <th>Debit Account</th>
                                 <th>Credit Account</th>
@@ -754,8 +754,9 @@
             -->
             <tr>
 
+                <button type="submit" class="btn btn-success me-2 print_btn">Print</button>
                 <button class="btn btn-success submit_btn" name="" type="submit">Save</button>
-                <!--<td><button class="submit_btn">PDF</button></td>-->
+                
             </tr>
         </table>
     </div>
@@ -939,11 +940,17 @@
 
 
 
+        var clickedBtn = null;
+        // Detect which submit button was clicked
+        $('#add_journal_form button[type=submit]').click(function() {
+            clickedBtn = $(this);
+        });
 
         
         $('#add_journal_form').submit(function(e){
 
             e.preventDefault();
+
 
             var journal_form = $(this).serialize();
 
@@ -980,6 +987,16 @@
                             datatable.ajax.reload( null, false);
 
                             $('#AddToJournalModal').modal('hide');
+
+                            if(clickedBtn && clickedBtn.hasClass('print_btn'))
+                            {
+                            var pdfWindow = window.open('<?= base_url()?>HR/VacationTravel/Print/'+data.insert_id, '_blank');
+                            // Automatically print when the PDF is loaded
+                            pdfWindow.onload = function() {
+                            pdfWindow.print();
+                            };
+                            }
+
 
                             }       
 
@@ -1109,14 +1126,6 @@
 
 
 
-
-
-       
-
-
-
-
-
         /*data table start*/ 
 
 
@@ -1153,6 +1162,10 @@
                         return data.aaData;
                     }
                 },
+                'columnDefs' : [
+                    { width: '10px', targets: 0 },
+                    { width: '70px', targets: 1 },
+                ],
                 'columns': [
                     { data: 'vt_id' },
                     { data : "vt_date"},

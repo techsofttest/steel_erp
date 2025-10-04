@@ -274,6 +274,8 @@ class Indemnity extends BaseController
 
         $return['status'] = 1;
 
+        $return['insert_id'] = $indem_id;
+
         }
 
         echo json_encode($return);

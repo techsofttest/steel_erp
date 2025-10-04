@@ -1491,12 +1491,12 @@
                     <table id="accountTable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
-                                <th class="no-sort">Sl no</th>
-                                <th>Employee ID</th>
+                                <th class="no-sort">Sl</th>
+                                <th>Emp ID</th>
                                 <th>Name</th>
                                 <th>Division</th>
                                 <th>Designation</th>
-                                <th>Date Of Join</th>
+                                <th>DOJ</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -3309,6 +3309,13 @@
                         return data.aaData;
                     }
                 },
+                'columnDefs' : [
+                    { width: '10px', targets: 0 },
+                    { width: '50px', targets: 1 },
+                    { width: '50px', targets: 3 },
+                    { width: '65px', targets: 5 },
+                ],
+
                 'columns': [
                     { data: 'emp_id' },
                     { data : "employee_id"},

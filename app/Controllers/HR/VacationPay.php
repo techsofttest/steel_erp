@@ -550,6 +550,8 @@ class VacationPay extends BaseController
 
         $return['status'] = 1;
 
+        $return['insert_id'] = $vp_id;
+
         }
 
         echo json_encode($return);
