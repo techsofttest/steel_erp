@@ -1977,7 +1977,4 @@ class DeliverNote extends BaseController
            
         }
 
-        
-
-
 }
