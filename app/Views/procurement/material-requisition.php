@@ -896,14 +896,18 @@
         $("#add_product").click(function(){
             var max_fieldspp  = 30;
             var pp = 1;
-            var jj = 0;
+            //var jj = 0;
+            
+            var jj  = $('.prod_row_add').length
+
+            
 			if(pp < max_fieldspp){ 
 			    pp++;
                 jj++;
                 console.log(jj)
                 
                $("#product-more").append(
-                    "<tr class='prod_row mr_remove prod_row_lenght'>" +
+                    "<tr class='prod_row mr_remove prod_row_lenght prod_row_add'>" +
                     "<td class='si_no text-center' style='padding:10px; 10px;'><input type='number' value='" + pp + "' name='pd_serial_no["+jj+"]' class='form-control' required='' readonly></td>" +
                     "<td>" +
                     "<select class='form-select add_sales_order' name='mrp_sales_order["+jj+"]' style='text-align: center;' required>" +
@@ -1691,7 +1695,7 @@
             
             $('body .edit_prod_row').each(function() {
 
-                $(this).find('.si_no_edit').html('<td class="edit_prod_row" style="border:unset;">' + pp + '</td>');
+                $(this).find('.si_no_edit').html('<td class="edit_prod_row" style="border:unset;padding: 10px 15px;">' + pp + '</td>');
 
                 pp++;
 
