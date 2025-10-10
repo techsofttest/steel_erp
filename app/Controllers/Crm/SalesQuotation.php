@@ -2247,9 +2247,7 @@ class SalesQuotation extends BaseController
     </table>
 </div>';
 
-        $footer_common = '
-       
-        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
             <tr>
                 <td>Antony Raphel - Production In-charge</td>
                 <td style="text-align:right;">Justin Jose - Operations Manager</td>
@@ -2258,51 +2256,7 @@ class SalesQuotation extends BaseController
                 <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
                 <td style="text-align:right;">Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
             </tr>
-        </table>
-       
-        ';
-
-        $last_page_footer ='
-        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:0px;margin-right:0px">
-            <tr>
-                <td>Quote Validity</td>
-                <td width="62%">' . $quotation_details->qd_validity . '</td>
-                <td style="font-weight: bold;width: 15%;">Net Quote Value</td>
-                <td style="font-weight: bold;">' . format_currency($quotation_details->qd_sales_amount) . '</td>
-            </tr>
-            <tr><td>Currency</td><td>Qatar Riyals</td></tr>
-            <tr><td>Amount in words</td><td>' . $amount_in_words . '</td></tr>
-        </table>
-     
-
-        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin: 0 0px 0 0px;padding: 0">
-            <tr>
-                <td style="width:14%;" rowspan="2">Quote Terms</td>
-               
-                <td style="width:15%">Payment:</td>
-                <td style="">' . $quotation_details->qd_payment_term . '</td>
-            </tr>
-            <tr style="margin-bottom:0px">
-                
-                <td style="width:15%" rowspan="2">Delivery Period:</td>
-                <td style="">' . $quotation_details->dt_name . '</td>
-                
-            </tr>
-        </table>
-         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
-            
-
-             <tr>
-                <td>Antony Raphel - Production In-charge</td>
-                <td style="text-align:right;">Justin Jose - Operations Manager</td>
-            </tr>
-            <tr>
-                <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
-                <td style="text-align:right;">Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
-            </tr>
-
-        </table>
-        ';
+        </table>';
 
         $summary_html = '
         
@@ -2354,26 +2308,15 @@ class SalesQuotation extends BaseController
 
         $mpdf->SetHTMLHeader($header_html);
 
-
-        $mpdf->WriteHTML($footer_common, \Mpdf\HTMLParserMode::HEADER_CSS);
-
-        $mpdf->setHTMLFooter($footer_common);
-
-        //$mpdf->SetHTMLFooter($footer_common);
+        $mpdf->SetHTMLFooter($footer_common);
 
         //$mpdf->SetAutoPageBreak(true, 50);
 
         $mpdf->WriteHTML($main_table);
 
-        
 
-
-        
-        //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
-
-        //$mpdf->WriteHTML('<div style="font-size: 12px;height: 100px">' . $summary_html . '</div>');
-
-        $mpdf->setHTMLFooter($last_page_footer);
+        // Output summary just before footer on last page
+        $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
         $this->response->setHeader('Content-Type', 'application/pdf');
 
@@ -2381,8 +2324,6 @@ class SalesQuotation extends BaseController
 
     }
 }
-
-
 
 
 

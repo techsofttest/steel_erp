@@ -500,12 +500,12 @@
                                                         <thead class="travelerinfo">
                                                             
                                                             <tr>
-                                                                
+                                                               
                                                                 <td style="width:115px">Sales Order</td>
                                                                 <td >Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
                                                                 <td style="width:300px;">Debit A/C</td>
-                                                                <td style="width: 49px;">Qty</td>
-                                                                <td style="width: 49px;">Unit</td>
+                                                                <td style="width: 60px;">Qty</td>
+                                                                <td style="width: 60px;">Unit</td>
                                                                 <td style="width: 70px;">Rate</td>
                                                                 <td style="width: 67px;">Discount</td>
                                                                 <td style="width: 85px">Amount</td>
@@ -821,8 +821,8 @@
                                                                 <td class="text-center" style="width:115px">Sales Order</td>
                                                                 <td class="text-center">Product Description</td>
                                                                 <td class="text-center" style="width:300px;">Debit A/C</td>
-                                                                <td class="text-center" style="width: 49px;">Qty</td>
-                                                                <td class="text-center" style="width: 49px;">Unit</td>
+                                                                <td class="text-center" style="width: 60px;">Qty</td>
+                                                                <td class="text-center" style="width: 60px;">Unit</td>
                                                                 <td class="text-center" style="width: 70px">Rate</td>
                                                                 <td class="text-center" style="width: 67px;">Discount</td>
                                                                 <td class="text-center" style="width: 85px;">Amount</td>
@@ -1120,8 +1120,8 @@
                                                             <td style="width:115px">Sales Order</td>
                                                             <td >Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
                                                             <td style="width:300px">Debit A/C</td>
-                                                            <td style="width:49px">Qty</td>
-                                                            <td style="width:49px">Unit</td>
+                                                            <td style="width:60px">Qty</td>
+                                                            <td style="width:60px">Unit</td>
                                                             <td style="width:70px">Rate</td>
                                                             <td style="width:67px">Discount</td>
                                                             <td style="width:85px">Amount</td>

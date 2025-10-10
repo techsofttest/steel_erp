@@ -49,6 +49,13 @@ class MaterialReceivedNote extends BaseController
                 'pk'    => 'po_id',
                 'fk'    => 'mrn_purchase_order',
             ), 
+
+
+             array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'mrn_vendor_name',
+            ), 
            
         );
 
@@ -70,11 +77,12 @@ class MaterialReceivedNote extends BaseController
             ';
            
            $data[] = array( 
-              "mrn_id"      => $i,
-              'mrn_reffer'  => $record->mrn_reffer,
-              'mrn_purchase_order'  => $record->po_reffer_no,
-              'mrn_date'    => date('d-m-Y',strtotime($record->mrn_date)),
-              "action"      => $action,
+              "mrn_id"             => $i,
+              'mrn_reffer'         => $record->mrn_reffer,
+              'mrn_purchase_order' => $record->po_reffer_no,
+              'mrn_vendor_name'    => $record->cc_customer_name,
+              'mrn_date'           => date('d-m-Y',strtotime($record->mrn_date)),
+              "action"             => $action,
            );
            $i++; 
         }

@@ -47,7 +47,13 @@ class PurchaseOrder extends BaseController
                 'table' => 'pro_material_requisition',
                 'pk'    => 'mr_id',
                 'fk'    => 'po_mrn_reff',
-            ), 
+            ),
+            
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'po_vendor_name',
+            ),
            
         );
 
@@ -64,13 +70,15 @@ class PurchaseOrder extends BaseController
             $action = ' <a  href="javascript:void(0)" data-id="'.$record->po_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
             <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->po_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->po_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
-            <a href="javascript:void(0)" data-id="'.$record->po_id.'" class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
+            <a href="javascript:void(0)" data-id="'.$record->po_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
            ';
            
            $data[] = array( 
               "po_id"         => $i,
               'po_reffer_no'  => $record->po_reffer_no,
               'po_mrn_reff'   => $record->mr_reffer_no,
+              'ven_name'      => $record->cc_customer_name,
+              'po_amount'     => $record->po_amount,
               'po_date'       => date('d-m-Y',strtotime($record->po_date)),
               "action"        => $action,
            );
@@ -1375,7 +1383,7 @@ class PurchaseOrder extends BaseController
             $title = $purchase_order->po_reffer_no;
 
             $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 72,
+                    'margin_top' => 76,
                     'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
@@ -1403,8 +1411,9 @@ class PurchaseOrder extends BaseController
                             <table><tr><td></td></tr></table>
 							
 							<table><tr><td></td></tr></table>
-							 
-				            
+
+                            <table><tr><td></td></tr></table>
+
                             
 
                             
@@ -1495,7 +1504,7 @@ class PurchaseOrder extends BaseController
                                 
                                     <td style="width: 50%;">'.currency_to_words($purchase_order->po_amount).'</td>
 
-                                    <td style="font-weight: bold;width: 20%;" align="right">Qr</td>
+                                    <td style="font-weight: bold;width: 25%;" align="right">Qr - </td>
                         
                                     <td style="font-weight: bold;" align="right">'.format_currency($purchase_order->po_amount).'</td>
 
@@ -1507,9 +1516,9 @@ class PurchaseOrder extends BaseController
                             <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
             
                                 <tr>
-                                    <td style="width:12%" rowspan="2">Order Terms</td>
+                                    <td style="width:16%" rowspan="2">Order Terms</td>
 
-                                    <td style="width:15%">Payment</td>
+                                    <td style="width:8%">Payment:</td>
 
                                     <td style="width:29%">'.$purchase_order->po_payment_term.'</td>
 
