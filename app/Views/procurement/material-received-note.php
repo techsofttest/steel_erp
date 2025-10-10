@@ -377,10 +377,11 @@
 
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
-                                                    <th>Purchase Order</th>
-                                                    <th>Date</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 85px !important;">Reference</th>
+                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th>Vendor</th>
+                                                    <th style="width: 150px !important;">Purchase Order</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1521,11 +1522,15 @@
                     {
                         data: 'mrn_reffer'
                     },
-                    {
-                        data: 'mrn_purchase_order'
-                    },
+                    
                     {
                         data: 'mrn_date'
+                    },
+                    {
+                        data: 'mrn_vendor_name'
+                    },
+                    {
+                        data: 'mrn_purchase_order'
                     },
                     {
                         data: 'action'

@@ -1151,10 +1151,11 @@
                                             
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
-                                                    <th>Material Requisition</th>
-                                                    <th>Date</th>
+                                                    <th class="no-sort" style="width: 35px !important;">Sl no</th>
+                                                    <th style="width: 85px !important;">Reference</th>
+                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th>Vendor</th>
+                                                    <th style="width: 100px;">Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1747,11 +1748,16 @@
             'columns': [
                 { data: 'po_id'},
                 { data: 'po_reffer_no'},
-                { data: 'po_mrn_reff'},
                 { data: 'po_date'},
+                { data: 'ven_name'},
+                { data: 'po_amount'},
                 { data: 'action'},
                 
-               ]
+               ],
+               columnDefs: [
+                
+                { targets: [4], className: "dt-body-center" }
+            ],
     
             });
         }

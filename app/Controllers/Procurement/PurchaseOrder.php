@@ -47,7 +47,13 @@ class PurchaseOrder extends BaseController
                 'table' => 'pro_material_requisition',
                 'pk'    => 'mr_id',
                 'fk'    => 'po_mrn_reff',
-            ), 
+            ),
+            
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'po_vendor_name',
+            ),
            
         );
 
@@ -71,6 +77,8 @@ class PurchaseOrder extends BaseController
               "po_id"         => $i,
               'po_reffer_no'  => $record->po_reffer_no,
               'po_mrn_reff'   => $record->mr_reffer_no,
+              'ven_name'      => $record->cc_customer_name,
+              'po_amount'     => $record->po_amount,
               'po_date'       => date('d-m-Y',strtotime($record->po_date)),
               "action"        => $action,
            );
@@ -1375,7 +1383,7 @@ class PurchaseOrder extends BaseController
             $title = $purchase_order->po_reffer_no;
 
             $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 72,
+                    'margin_top' => 76,
                     'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
@@ -1403,8 +1411,9 @@ class PurchaseOrder extends BaseController
                             <table><tr><td></td></tr></table>
 							
 							<table><tr><td></td></tr></table>
-							 
-				            
+
+                            <table><tr><td></td></tr></table>
+
                             
 
                             
@@ -1507,7 +1516,7 @@ class PurchaseOrder extends BaseController
                             <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
             
                                 <tr>
-                                    <td style="width:19%" rowspan="2">Order Terms</td>
+                                    <td style="width:16%" rowspan="2">Order Terms</td>
 
                                     <td style="width:8%">Payment:</td>
 
