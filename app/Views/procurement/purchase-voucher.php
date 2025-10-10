@@ -1201,12 +1201,12 @@
                                             
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
-                                                    <th>Purchase Order</th>
-                                                    <th>Date</th>
-                                                    <th>Total</th>
-                                                    <th>Paid</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 85px !important;">Reference</th>
+                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th>Vendor</th>
+                                                    <th style="width: 150px !important;">Purchase Order</th>
+                                                    <th style="width: 100px;">Total</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1831,10 +1831,10 @@
             'columns': [
                 { data: 'pv_id'},
                 { data: 'pv_reffer_id'},
-                { data: 'pv_purchase_order'},
                 { data: 'pv_date'},
+                { data: 'pv_vendor_name'},
+                { data: 'pv_purchase_order'},
                 { data: 'pv_total'},
-                { data: 'pv_paid'},
                 { data: 'action'},
                 
                ],

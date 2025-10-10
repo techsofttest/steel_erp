@@ -1865,97 +1865,22 @@ class CommonModel extends Model
     }
 
 
-    /*public function FetchUserDet($userId){
-        
-        $query = $this->db->table('users')
-        
-        ->select('*');
-
-        $query->where('user_id',$userId);
-
-        $result = $query->get()->getResult();
-
-        $i = 0;
-
-        foreach ($result as $res) {
-            
-            $result[$i]->steel_module_permission = $this->steel_module_permission('user_permission',array('up_user_id' => $res->user_id));
-           
-            $i++;
-        }
-
-        return $result;
-
-    }
-
-    public function steel_module_permission($table,$user_id){
-       
+     public function FetchVoucherWhere($table,$id_coloum,$id,$cond)
+    {
         $query = $this->db->table($table)
-        
-        ->select('*');
-         
-        $query->join('permission','permission.per_id  = user_permission.up_permission','left');
-
-        $query->where($user_id);
-
-        $query->groupBy('user_permission.up_permission');
-
-        $result = $query->get()->getResult();
-        
-        $i = 0;
-
-        foreach ($result as $res) {
-            
-            $result[$i]->steel_sub_module_permission = $this->steel_sub_module_permission('premission_sub_module',array('psm_module' => $res->up_permission));
-           
-            $i++;
-        }
-       
-
-        return $result;
+        ->whereNotIn($id_coloum,(array)$id)
+        ->where($cond)
+        ->get();
+        return $query->getResult();
 
     }
 
 
-    public function steel_sub_module_permission($table,$cond){
-           
-        $query = $this->db->table($table)
-
-        ->select('*');
-
-        $query->where($cond);
-
-        $result = $query->get()->getResult();
-
-       return $result;
-
-    }*/
+   
 
 
 
-    /*public function FetchUserDet($userId){
-        
-        $query = $this->db->table('users')
-        
-        ->select('*');
-
-        $query->where('user_id',$userId);
-
-        $result = $query->get()->getResult();
-
-        $i = 0;
-
-        foreach ($result as $res) {
-            
-            $result[$i]->steel_module_permission = $this->steel_module_permission('user_permission',array('up_user_id' => $res->user_id));
-           
-            $i++;
-        }
-
-        return $result;
-
-    }*/
-
+    
 
 }
 

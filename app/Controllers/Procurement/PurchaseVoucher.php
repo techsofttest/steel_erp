@@ -50,6 +50,15 @@ class PurchaseVoucher extends BaseController
                 'fk'    => 'pv_purchase_order',
             ),
 
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'pv_vendor_name',
+            ),
+
+
+           
+
            
         );
 
@@ -70,16 +79,16 @@ class PurchaseVoucher extends BaseController
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pv_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
            ';
            
-           $data[] = array( 
+            $data[] = array( 
               "pv_id"             => $i,
-              'pv_reffer_id'      => $record->pv_reffer_id,
-              'pv_purchase_order' => $record->po_reffer_no,
+              'pv_reffer_id'      => $record->pv_vendor_inv,
               'pv_date'           => date('d M Y',strtotime($record->pv_date)),
+              'pv_vendor_name'    => $record->cc_customer_name,
+              'pv_purchase_order' => $record->po_reffer_no,
               'pv_total'          => format_currency($record->pv_total),
-              'pv_paid'          => format_currency($record->pv_paid),
               "action"            => $action,
-           );
-           $i++; 
+            );
+            $i++; 
         }
  
         ## Response
@@ -1521,9 +1530,9 @@ class PurchaseVoucher extends BaseController
 
         $purchase_id =  $this->request->getPost('ID');
 
-        $material_received_note = $this->common_model->FetchWhere('pro_material_received_note' ,array('mrn_purchase_order' => $purchase_id));
+       // $material_received_note = $this->common_model->FetchWhere('pro_material_received_note' ,array('mrn_purchase_order' => $purchase_id));
 
-       
+       $material_received_note = $this->common_model->FetchVoucherWhere('pro_material_received_note','mrn_status' ,1 ,array('mrn_purchase_order' => $purchase_id));
 
         //$data['delivery_note'] = $material_received_note->mrn_delivery_note;
 
@@ -1535,8 +1544,6 @@ class PurchaseVoucher extends BaseController
 	
         }
 
-        
-
         echo json_encode($data); 
 
     }
@@ -1545,7 +1552,6 @@ class PurchaseVoucher extends BaseController
     public function Update()
     {
       
-
         $update_data = [
 
             'pv_date'            => date('Y-m-d',strtotime($this->request->getPost('pv_date'))),
@@ -1561,7 +1567,6 @@ class PurchaseVoucher extends BaseController
 
         ];
       
-
         $this->common_model->EditData($update_data, array('pv_id' => $this->request->getPost('pv_id')), 'pro_purchase_voucher');
         
     }
@@ -1605,7 +1610,6 @@ class PurchaseVoucher extends BaseController
 
         $this->common_model->EditData(array('pv_total' => $total_amount), array('pv_id' => $pv_single_prod->pvp_reffer_id), 'pro_purchase_voucher');
 
-
     }
 
 
@@ -1629,7 +1633,6 @@ class PurchaseVoucher extends BaseController
 
             $data['msg'] ="Access Denied: You do not have permission for this Action";
  
-
         }
         
 
