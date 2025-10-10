@@ -45,7 +45,7 @@ class Mpdf extends Pdf
         $paperSize = self::$paperSizes[$printPaperSize] ?? PageSetup::getPaperSizeDefault();
 
         //  Create PDF
-        $config = ['tempDir' => $this->tempDir . '/mpdf'];
+        $config = ['tempDir' => WRITEPATH . 'mpdf'];
         $pdf = $this->createExternalWriterInstance($config);
         $ortmp = $orientation;
         $pdf->_setPageSize($paperSize, $ortmp);
