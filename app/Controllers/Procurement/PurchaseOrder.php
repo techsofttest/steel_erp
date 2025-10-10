@@ -64,7 +64,7 @@ class PurchaseOrder extends BaseController
             $action = ' <a  href="javascript:void(0)" data-id="'.$record->po_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
             <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->po_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->po_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
-            <a href="javascript:void(0)" data-id="'.$record->po_id.'" class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
+            <a href="javascript:void(0)" data-id="'.$record->po_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
            ';
            
            $data[] = array( 
@@ -1495,7 +1495,7 @@ class PurchaseOrder extends BaseController
                                 
                                     <td style="width: 50%;">'.currency_to_words($purchase_order->po_amount).'</td>
 
-                                    <td style="font-weight: bold;width: 20%;" align="right">Qr</td>
+                                    <td style="font-weight: bold;width: 25%;" align="right">Qr - </td>
                         
                                     <td style="font-weight: bold;" align="right">'.format_currency($purchase_order->po_amount).'</td>
 
@@ -1507,9 +1507,9 @@ class PurchaseOrder extends BaseController
                             <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
             
                                 <tr>
-                                    <td style="width:12%" rowspan="2">Order Terms</td>
+                                    <td style="width:19%" rowspan="2">Order Terms</td>
 
-                                    <td style="width:15%">Payment</td>
+                                    <td style="width:8%">Payment:</td>
 
                                     <td style="width:29%">'.$purchase_order->po_payment_term.'</td>
 
