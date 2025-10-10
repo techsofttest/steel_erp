@@ -1415,9 +1415,6 @@ class PurchaseOrder extends BaseController
                             <table><tr><td></td></tr></table>
 
                             
-
-                            
-                    
                             <table width="100%" >
                                 <tr>
                                     <td width="9%"></td>

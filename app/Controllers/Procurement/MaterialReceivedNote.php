@@ -293,7 +293,14 @@ class MaterialReceivedNote extends BaseController
                         );
 
 
-                        $this->common_model->InsertData('pro_material_received_note_prod',$insert_data);
+                        $mrn_prod =$this->common_model->InsertData('pro_material_received_note_prod',$insert_data);
+
+                         
+                        $mrn_data = $this->common_model->SingleRow('pro_material_received_note',array('mrn_id' => $this->request->getPost('received_id')));
+
+                        $mrn_total_amount = $mrn_data->mrn_total_amount + $total_amount;
+
+                        $this->common_model->EditData(array('mrn_total_amount' => $mrn_total_amount), array('mrn_id' => $this->request->getPost('received_id')),'pro_material_received_note');
 
                         
                         $this->common_model->EditData(array('pop_delivered_order' => $new_delivery_qty),array('pop_id' => $_POST['purchase_id'][$j]),'pro_purchase_order_product');
@@ -301,11 +308,10 @@ class MaterialReceivedNote extends BaseController
 
                         $purchase_prod = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_id' => $_POST['purchase_id'][$j]));
                         
-                       if($purchase_prod->pop_qty == $purchase_prod->pop_delivered_order)
+                        if($purchase_prod->pop_qty == $purchase_prod->pop_delivered_order)
                         {
                             $this->common_model->EditData(array('pop_delivered_status' => 1),array('pop_id' => $_POST['purchase_id'][$j]),'pro_purchase_order_product');
-
-                            
+                   
                         }
 
 
