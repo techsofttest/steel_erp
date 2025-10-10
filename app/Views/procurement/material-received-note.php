@@ -382,6 +382,8 @@
                                                     <th style="width: 75px !important;">Date</th>
                                                     <th>Vendor</th>
                                                     <th style="width: 150px !important;">Purchase Order</th>
+
+                                                    <th style="width: 100px !important;">Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1533,10 +1535,17 @@
                         data: 'mrn_purchase_order'
                     },
                     {
+                        data: 'mrn_total_amount'
+                    },
+                    {
                         data: 'action'
                     },
 
-                ]
+                ],
+                columnDefs: [
+                { targets: [5], className: "dt-body-center" }
+                ],
+
 
             });
         }
