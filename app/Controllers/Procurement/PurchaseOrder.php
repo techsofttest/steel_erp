@@ -1513,7 +1513,7 @@ class PurchaseOrder extends BaseController
                             <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
             
                                 <tr>
-                                    <td style="width:17%" rowspan="2">Order Terms</td>
+                                    <td style="width:5%" rowspan="2">Order Terms</td>
 
                                     <td style="width:8%">Payment:</td>
 
