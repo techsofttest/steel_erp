@@ -1383,7 +1383,7 @@ class PurchaseOrder extends BaseController
             $title = $purchase_order->po_reffer_no;
 
             $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 76,
+                    'margin_top' => 78,
                     'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
@@ -1428,9 +1428,12 @@ class PurchaseOrder extends BaseController
 
                             <table  width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
     
+                                <tr><td></td><td></td></tr>
+                            
                                 <tr>
                                 
                                     <td> </td>
+                                    
                                     
                                     <td>'.$purchase_order->cc_customer_name.'</td>
                                 
@@ -1451,7 +1454,7 @@ class PurchaseOrder extends BaseController
                                 
                                 <td></td>
                                 
-                                <td >Post Box :  '.$purchase_order->cc_post_box.' , '.$customers->cc_city.' , '.$customers->cc_country.'</td>
+                                <td>Post Box :  '.$purchase_order->cc_post_box.' , '.$customers->cc_city.' , '.$customers->cc_country.'</td>
                                 
                                 </tr>
     

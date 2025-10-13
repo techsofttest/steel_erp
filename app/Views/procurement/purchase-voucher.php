@@ -96,7 +96,9 @@
         margin-bottom: 0px;
     }
     .total_table {
-        width: 236px !important;
+        /*width: 236px !important;*/
+
+        width: 245px !important;
     
     }
     .select_prod_add td{
@@ -151,11 +153,10 @@
     td.total_label {
        /* width: 44%;*/
 
-       width: 64%;
+       width: 65%;
     
     }
     
-
     .modal-xxl {
         max-width: 95% !important; /* Or use 100%, or a fixed px like 1400px */
     }
@@ -167,9 +168,7 @@
     .select_width1{
 
         border: unset !important;
-        
-
-
+    
     }
 
     .total_table tr{
@@ -508,7 +507,7 @@
                                                                 <td style="width:300px;">Debit A/C</td>
                                                                 <td style="width: 60px;">Qty</td>
                                                                 <td style="width: 60px;">Unit</td>
-                                                                <td style="width: 70px;">Rate</td>
+                                                                <td style="width: 80px;">Rate</td>
                                                                 <td style="width: 67px;">Discount</td>
                                                                 <td style="width: 85px">Amount</td>
                                                                 <td style="width:55px;display:none" class="show_action">Action</td> 
@@ -825,7 +824,7 @@
                                                                 <td class="text-center" style="width:300px;">Debit A/C</td>
                                                                 <td class="text-center" style="width: 60px;">Qty</td>
                                                                 <td class="text-center" style="width: 60px;">Unit</td>
-                                                                <td class="text-center" style="width: 70px">Rate</td>
+                                                                <td class="text-center" style="width: 80px">Rate</td>
                                                                 <td class="text-center" style="width: 67px;">Discount</td>
                                                                 <td class="text-center" style="width: 85px;">Amount</td>
 
@@ -1120,11 +1119,11 @@
                                                             <tr>
                                                                 
                                                             <td style="width:115px">Sales Order</td>
-                                                            <td >Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
+                                                            <td>Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
                                                             <td style="width:300px">Debit A/C</td>
                                                             <td style="width:60px">Qty</td>
                                                             <td style="width:60px">Unit</td>
-                                                            <td style="width:70px">Rate</td>
+                                                            <td style="width:80px">Rate</td>
                                                             <td style="width:67px">Discount</td>
                                                             <td style="width:85px">Amount</td>
                                                             <td style="width:55px;display:none" class="edit_action">Action</td> 

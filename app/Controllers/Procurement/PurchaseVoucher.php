@@ -614,7 +614,7 @@ class PurchaseVoucher extends BaseController
         
         $data['reffer_id']       = $purchase_voucher->pv_reffer_id;
 
-        $data['date']            = $purchase_voucher->pv_date;
+        $data['date']            = date('d-m-Y',strtotime($purchase_voucher->pv_date));
 
         $data['vendor_name']     = $purchase_voucher->cc_customer_name;
 
@@ -658,9 +658,9 @@ class PurchaseVoucher extends BaseController
             <td> '.$pur_vou_prod->ca_name.'</td>
             <td>'.format_currency($pur_vou_prod->pvp_qty).'</td>
             <td>'.$pur_vou_prod->pvp_unit.'</td>
-            <td>'.format_currency($pur_vou_prod->pvp_rate).'</td>
+            <td class="text-end">'.format_currency($pur_vou_prod->pvp_rate).'</td>
             <td>'.format_currency($pur_vou_prod->pvp_discount).'</td>
-            <td>'.format_currency($pur_vou_prod->pvp_amount).'</td>
+            <td class="text-end">'.format_currency($pur_vou_prod->pvp_amount).'</td>
             </tr>
             ';
             $i++; 
@@ -836,9 +836,9 @@ class PurchaseVoucher extends BaseController
             <td>'.$pur_vou_prod->ca_name.'</td>
             <td>'.format_currency($pur_vou_prod->pvp_qty).'</td>
             <td>'.$pur_vou_prod->pvp_unit.'</td>
-            <td>'.format_currency($pur_vou_prod->pvp_rate).'</td>
+            <td class="text-end">'.format_currency($pur_vou_prod->pvp_rate).'</td>
             <td>'.format_currency($pur_vou_prod->pvp_discount).'</td>
-            <td>'.format_currency($pur_vou_prod->pvp_amount).'</td>
+            <td class="text-end">'.format_currency($pur_vou_prod->pvp_amount).'</td>
             ';
 
             if(empty($pur_vou_prod->pv_purchase_order)){
