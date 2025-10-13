@@ -149,7 +149,9 @@
         line-height: 18px;
     }
     td.total_label {
-        width: 44%;
+       /* width: 44%;*/
+
+       width: 64%;
     
     }
     

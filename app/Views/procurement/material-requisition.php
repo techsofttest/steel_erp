@@ -604,8 +604,8 @@
                                                                 <td style="width: 4%;">SI</td>
                                                                 <td style="width: 11%;">sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 5%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
                                                                 <td style="width: 14%;">Action</td>
                                                                
                                                             </tr>

@@ -1610,7 +1610,7 @@ class PurchaseVoucher extends BaseController
 
         $this->common_model->EditData(array('pv_total' => $total_amount), array('pv_id' => $pv_single_prod->pvp_reffer_id), 'pro_purchase_voucher');
 
-    }
+    } 
 
 
     public function AddAccess(){

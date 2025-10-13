@@ -75,22 +75,26 @@
     }
     .select2-container--default .select2-selection--single .select2-selection__rendered {
    
-   line-height: 18px;
-}
+        line-height: 18px;
+    }
 
-.modal-xxl {
-        max-width: 95% !important; /* Or use 100%, or a fixed px like 1400px */
+    .modal-xxl {
+        max-width: 95% !important; 
     }
 
     .total_table {
-    width: 240px !important;
-    margin-top: -16px;
-}
+        width: 240px !important;
+        margin-top: -16px;
+    }
 
-.total_table tr {
-    
-    border: 1px solid black;
-}
+    .total_table tr {
+        
+        border: 1px solid black;
+    }
+    td.total_label {
+        width: 62%;
+        
+    }
 
 </style>
 
@@ -362,6 +366,7 @@
                                                                 
                                                                 <td align="right" class="total_label">Total</td>
                                                                 <td><input type="text" name="pr_total_amount" class=" form-control amount_total text-end" readonly=""></td>
+                                                                <input type="hidden" value="" class="org_amount_total">
                                                             </tr>
 
                                                         </tbody>
@@ -1754,6 +1759,8 @@
 
                     $('.amount_total').val(data.total_amount);
 
+                    $('.org_amount_total').val(data.total_amount);
+
                     $('#SelectProduct').modal("hide");
 
                     $('#AddPurchaseReturn').modal("show");
@@ -1765,8 +1772,6 @@
                     $('#purchase_form').attr('data_fill','true');
 
                     $(".total_table").show();
-
-                    
 
                 }
 
@@ -1913,6 +1918,7 @@
 
 
 $("body").on('keyup', '.add_prod_qty', function() { 
+
     var $discountSelect = $(this);
 
     var discount = parseFloat($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
@@ -1935,10 +1941,12 @@ $("body").on('keyup', '.add_prod_qty', function() {
         maximumFractionDigits: 2 
     });
 
+  
+
     var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
     $amountElement.val(formattedPrice);
 
-    // ✅ Fixed this: Compare quantity with total_qty
+    
     if (quantity > total_qty) {
         $quantitySelectElement.val("");  
         alertify.error('Quantity should not be greater than ' + total_qty).dismissOthers();
@@ -1959,11 +1967,21 @@ $("body").on('keyup', '.add_prod_qty', function() {
             total += sub_tot; // Add to total
         });
 
+        var org_amount_total = parseFloat($('.org_amount_total').val().replace(/,/g, "")) || 0;
+
+        if (total > org_amount_total) {
+
+            total = org_amount_total;
+        }
+
         // Keep raw value with two decimal places
         var rawPrice = total.toFixed(2);
 
         // Format with commas
-        var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        var formattedPrice = Number(rawPrice).toLocaleString(undefined, { 
+            
+            
+            maximumFractionDigits: 2 });
 
 
         // Set formatted value in input

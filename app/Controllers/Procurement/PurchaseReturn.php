@@ -512,7 +512,7 @@ class PurchaseReturn extends BaseController
 
             $products = $this->common_model->FetchWhereJoin('pro_purchase_voucher_prod',$cond,$joins1);
 
-            $debit_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');    
+            //$debit_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');    
             
             $j = 1;
             foreach($products as $product){
@@ -548,14 +548,16 @@ class PurchaseReturn extends BaseController
 
                     $new_amount =    $new_amount += $originalPrice;   
                     
-                    //echo $new_amount."<br>"; 
                     
+                $voucher_single = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $product->pvp_reffer_id));    
                                     
             }
             
-           // echo $new_amount;
-            
-            //exit();
+           
+
+            $new_amount = $voucher_single->pv_total - $voucher_single->pv_paid;
+
+
            
             $data['total_amount'] = format_currency($new_amount);
 
