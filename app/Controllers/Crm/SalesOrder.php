@@ -1601,6 +1601,8 @@ class SalesOrder extends BaseController
 
             $product_details = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$id),$joins1);
                 
+
+            $max_chars_per_line = 55;
             
             $pdf_data = "";
              $k=1;
@@ -1612,10 +1614,19 @@ class SalesOrder extends BaseController
 
                 $disc = number_format($prod_det->spd_discount, 2);
 
+                // Wrap text by words, not in middle of a word
+                $wrapped = wordwrap(trim(strip_tags($prod_det->product_details)), $max_chars_per_line, "\n", true);
+                $lines = explode("\n", $wrapped);
+
+                $first_line = true;
+
+                foreach ($lines as $line) {
+                if ($first_line) {
+                    // Full row with all details
 
                 $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
 
-                $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.$prod_det->product_details.'</td>';
+                $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
 
                 $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->spd_quantity.'</td>';
 
@@ -1628,6 +1639,30 @@ class SalesOrder extends BaseController
                 $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$amount.'</td></tr>';
 
                 $k++;
+
+                $first_line = false;
+
+                }
+                 else
+                {
+
+                     // Extra line → only description column
+                $pdf_data .= '<tr>
+                <td align="center" width="8%" >&nbsp;</td>
+                <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                <td align="center" style="padding:2px;">&nbsp;</td>
+                <td align="center" style="padding:2px;">&nbsp;</td>
+                <td align="right" style="padding:2px;">&nbsp;</td>
+                <td align="center" style="padding:2px;">&nbsp;</td>
+                <td align="right" style="padding:2px;">&nbsp;</td>
+                </tr>';
+
+                }
+
+            }
+           
+
+
             }
 
             $join =  array(
@@ -1686,16 +1721,19 @@ class SalesOrder extends BaseController
 
             $mpdf = new \Mpdf\Mpdf([
                 'margin_top' => 68,
-                'margin_bottom' => 10,
+                //'margin_bottom' => 20,
+                'margin_header' => 10, //Fix Footer
+                'margin_footer' => 15, //Fix Footer
                 'margin_left' => 5,
                 'margin_right' => 5,
                 'defaultfooterline' => 0,
                 'setAutoTopMargin'   => 'stretch',
+                'setAutoBottomMargin'   => 'stretch',
             ]);
 
-           $mpdf->SetAutoPageBreak(true, 40);
+           $mpdf->SetAutoPageBreak(true, 20); //Fix Footer
 
-            $mpdf->SetTitle($title);
+        $mpdf->SetTitle($title);
 
 
             $header_html = '<div style="margin-top: -20px;"><table>
@@ -1800,16 +1838,16 @@ class SalesOrder extends BaseController
 
                     </tr>
 
-
                 </table>
-           
-            
+
+               
             ';
+           
 
+            //Fix Footer
+            $last_page_footer = '
 
-            $summary_html = '
-            
-               <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+             <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-bottom:2px;">
             
                     <tr>
                         <td>Promised Date</td>
@@ -1835,7 +1873,7 @@ class SalesOrder extends BaseController
                 </table>
 
 
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin: 0 20px 0 20px;padding: 0">
+                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;padding: 0">
             
                     <tr>
                         <td style="width:12%" rowspan="2">Order Terms</td>
@@ -1861,6 +1899,34 @@ class SalesOrder extends BaseController
                     </tr>
             
                 </table>
+
+
+
+                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+
+                    <tr>
+                    
+                        <td>Antony Raphel - Production In-charge</td>
+                        <td style="text-align:right;">Justin Jose - Operations Manager</td>
+                    
+
+                    </tr>
+
+
+                    <tr>
+                    
+                        <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
+                        <td style="text-align:right;">Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+                
+
+                    </tr>
+
+
+                </table>
+           
+
+
+
             
             ';
 
@@ -1899,19 +1965,34 @@ class SalesOrder extends BaseController
 
                 </table>';
 
-                $mpdf->SetHTMLHeader($header_html);
+
+               //$mpdf->WriteHTML($footer_common, \Mpdf\HTMLParserMode::HEADER_CSS);
+
+               $mpdf->SetHTMLHeader($header_html);
                
-                $mpdf->SetHTMLFooter($footer_common);
+               $mpdf->SetHTMLFooter($footer_common);
 
-               // $mpdf->SetAutoPageBreak(true, 50);
+                // $mpdf->SetAutoPageBreak(true, 50);
 
-                $mpdf->WriteHTML($main_table);
+               $mpdf->WriteHTML($main_table);
+
+               // Check if we're still on page 1 (meaning content fits on one page)
+                if ($mpdf->page == 1) {
+                    // Single page scenario - need to adjust margin for larger footer
+                    $mpdf->SetAutoPageBreak(true, 40);  // Increase bottom margin
+                    // Force a check to see if content now overflows
+                    $mpdf->WriteHTML('<div style="margin:0;padding:0;"></div>'); // Trigger reflow
+                    
+                }
 
                 
-                $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+            //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
-                $this->response->setHeader('Content-Type', 'application/pdf');
-                $mpdf->Output($title . '.pdf', 'I');
+            $mpdf->SetHTMLFooter($last_page_footer); // Fix Footer
+
+
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
 
         
         }

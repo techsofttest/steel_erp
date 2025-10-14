@@ -2155,7 +2155,7 @@ class SalesQuotation extends BaseController
         $pdf_data = '';
         $k = 1;
 
-        $max_chars_per_line = 50;
+        $max_chars_per_line = 55;
 
     foreach ($product_details as $prod_det) {
     $rate = format_currency($prod_det->qpd_rate);
