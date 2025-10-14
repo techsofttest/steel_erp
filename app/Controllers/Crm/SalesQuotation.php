@@ -2155,22 +2155,50 @@ class SalesQuotation extends BaseController
         $pdf_data = '';
         $k = 1;
 
-        foreach ($product_details as $prod_det) {
-            $rate = format_currency($prod_det->qpd_rate);
-            $amount = format_currency($prod_det->qpd_amount);
-            $disc = number_format($prod_det->qpd_discount, 2);
+        $max_chars_per_line = 50;
 
+    foreach ($product_details as $prod_det) {
+    $rate = format_currency($prod_det->qpd_rate);
+    $amount = format_currency($prod_det->qpd_amount);
+    $disc = number_format($prod_det->qpd_discount, 2);
+
+    // Wrap text by words, not in middle of a word
+    $wrapped = wordwrap(trim(strip_tags($prod_det->product_details)), $max_chars_per_line, "\n", true);
+    $lines = explode("\n", $wrapped);
+
+    $first_line = true;
+
+    foreach ($lines as $line) {
+        if ($first_line) {
+            // Full row with all details
             $pdf_data .= '<tr>
-                <td align="center" width="8%" style="padding: 2px; vertical-align: top;">' . $k . '</td>
-                <td align="left" width="45%" style="padding: 2px;" vertical-align: top;>' . $prod_det->product_details . '</td>
-                <td align="center" style="padding: 2px; vertical-align: top;" >' . $prod_det->qpd_quantity . '</td>
-                <td align="center" style="padding: 2px; vertical-align: top;" >' . $prod_det->qpd_unit . '</td>
-                <td align="right" style="padding: 2px; vertical-align: top;" >' . $rate . '</td>
-                <td align="center" style="padding: 2px; color:red; vertical-align: top;" ><i>' . $disc . '</i></td>
-                <td align="right" style="padding: 2px; vertical-align: top">' . $amount . '</td>
+                <td align="center" width="8%" style="padding:2px; vertical-align:top;">' . $k . '</td>
+                <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                <td align="center" style="padding:2px; vertical-align:top;">' . $prod_det->qpd_quantity . '</td>
+                <td align="center" style="padding:2px; vertical-align:top;">' . $prod_det->qpd_unit . '</td>
+                <td align="right" style="padding:2px; vertical-align:top;">' . $rate . '</td>
+                <td align="center" style="padding:2px; color:red; vertical-align:top;"><i>' . $disc . '</i></td>
+                <td align="right" style="padding:2px; vertical-align:top;">' . $amount . '</td>
             </tr>';
+            $first_line = false;
             $k++;
+        } else {
+            // Extra line → only description column
+            $pdf_data .= '<tr>
+                <td align="center" width="8%" style="padding:2px;">&nbsp;</td>
+                <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                <td align="center" style="padding:2px;">&nbsp;</td>
+                <td align="center" style="padding:2px;">&nbsp;</td>
+                <td align="right" style="padding:2px;">&nbsp;</td>
+                <td align="center" style="padding:2px;">&nbsp;</td>
+                <td align="right" style="padding:2px;">&nbsp;</td>
+            </tr>';
         }
+    }
+
+
+}
+
 
         $join = [
             ['table' => 'crm_customer_creation', 'pk' => 'cc_id', 'fk' => 'qd_customer'],
@@ -2188,18 +2216,21 @@ class SalesQuotation extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 68,
-            'margin_bottom' => 20,
+            //'margin_bottom' => 50,
+            'margin_header' => 10,
+            //'margin_footer' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
             'defaultfooterline' => 0,
             'setAutoTopMargin'   => 'stretch',
+            'setAutoBottomMargin'   => 40,
         ]);
 
         $mpdf->SetAutoPageBreak(true, 20);
 
         $mpdf->SetTitle($title);
 
-        $header_html = '<div style="margin-top: -20px;"> <!-- pull header up -->
+        $header_html = '
     <table>
         <tr>
             <td style="padding: 0; margin: 0; vertical-align: top; width:100px;">
@@ -2245,9 +2276,10 @@ class SalesQuotation extends BaseController
             <td>' . $quotation_details->contact_person. ' - ' . $quotation_details->contact_designation . ', Mobile:-' . $quotation_details->contact_mobile . ', Email: - ' . $quotation_details->contact_email . '</td>
         </tr>
     </table>
-</div>';
+';
 
-        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+        $footer_common = '
+        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
             <tr>
                 <td>Antony Raphel - Production In-charge</td>
                 <td style="text-align:right;">Justin Jose - Operations Manager</td>
@@ -2256,11 +2288,12 @@ class SalesQuotation extends BaseController
                 <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
                 <td style="text-align:right;">Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
             </tr>
-        </table>';
-
-        $summary_html = '
+        </table>
+        ';
         
-        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+        
+        $summary_html = '
+        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
             <tr>
                 <td>Quote Validity</td>
                 <td width="62%">' . $quotation_details->qd_validity . '</td>
@@ -2272,7 +2305,7 @@ class SalesQuotation extends BaseController
         </table>
      
 
-        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin: 0 20px 0 20px;padding: 0">
+        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
             <tr>
                 <td style="width:14%;" rowspan="2">Quote Terms</td>
                
@@ -2285,10 +2318,62 @@ class SalesQuotation extends BaseController
                 <td style="">' . $quotation_details->dt_name . '</td>
                 
             </tr>
-        </table>';
+        </table>
+        ';
+
+
+        $last_page_footer = '
+        
+        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+        
+            <tr>
+                <td>Quote Validity</td>
+                <td width="62%">' . $quotation_details->qd_validity . '</td>
+                <td style="font-weight: bold;width: 15%;">Net Quote Value</td>
+                <td style="font-weight: bold;">' . format_currency($quotation_details->qd_sales_amount) . '</td>
+            </tr>
+            <tr><td>Currency</td><td>Qatar Riyals</td></tr>
+            <tr><td>Amount in words</td><td>' . $amount_in_words . '</td></tr>
+        
+        </table>
+     
+
+        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+        
+            <tr>
+                <td style="width:14%;" rowspan="2">Quote Terms</td>
+               
+                <td style="width:15%">Payment:</td>
+                <td style="">' . $quotation_details->qd_payment_term . '</td>
+            </tr>
+            <tr style="margin-bottom:0px">
+                
+                <td style="width:15%" rowspan="2">Delivery Period:</td>
+                <td style="">' . $quotation_details->dt_name . '</td>
+                
+            </tr>
+        
+        </table>
+        
+
+         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+         
+            <tr>
+                <td>Antony Raphel - Production In-charge</td>
+                <td style="text-align:right;">Justin Jose - Operations Manager</td>
+            </tr>
+            <tr>
+                <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
+                <td style="text-align:right;">Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+            </tr>
+        
+        </table>
+
+
+        ';
 
         $main_table = '<style>
-                th, td { padding: 4px; font-size: 12px; }
+                th, td {padding: 4px; font-size: 12px; }
                 p { font-size: 12px; margin-bottom: 13px; } 
             </style>
             <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
@@ -2304,19 +2389,37 @@ class SalesQuotation extends BaseController
                     </tr>
                 </thead>
                 <tbody>' . $pdf_data . '</tbody>
-            </table>';
+            </table>
+            
+            ';
 
         $mpdf->SetHTMLHeader($header_html);
 
-        $mpdf->SetHTMLFooter($footer_common);
+        $mpdf->SetHTMLFooter($footer_common); 
 
-        //$mpdf->SetAutoPageBreak(true, 50);
-
+        //$mpdf->WriteHTML($main_table,\Mpdf\HTMLParserMode::HTML_PARSE_NO_WRITE);
+ 
         $mpdf->WriteHTML($main_table);
 
 
+        // Check if we're still on page 1 (meaning content fits on one page)
+        if ($mpdf->page == 1) {
+            // Single page scenario - need to adjust margin for larger footer
+            $mpdf->SetAutoPageBreak(true, 40);  // Increase bottom margin
+            // Force a check to see if content now overflows
+            $mpdf->WriteHTML('<div style="margin:0;padding:0;"></div>'); // Trigger reflow
+            
+        }
+
+        // Now set the last page footer
+        
+        $mpdf->SetHTMLFooter($last_page_footer);
+
+        //$mpdf->SetHtmlFooterByName('last');
+       
+
         // Output summary just before footer on last page
-        $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+        //$mpdf->SetHTMLFooter($last_page_footer);
 
         $this->response->setHeader('Content-Type', 'application/pdf');
 
