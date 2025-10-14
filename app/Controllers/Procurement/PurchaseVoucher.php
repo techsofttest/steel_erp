@@ -614,7 +614,7 @@ class PurchaseVoucher extends BaseController
         
         $data['reffer_id']       = $purchase_voucher->pv_reffer_id;
 
-        $data['date']            = date('d-m-Y',strtotime($purchase_voucher->pv_date));
+        $data['date']            = date('d-M-Y',strtotime($purchase_voucher->pv_date));
 
         $data['vendor_name']     = $purchase_voucher->cc_customer_name;
 
