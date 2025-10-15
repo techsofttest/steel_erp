@@ -1611,7 +1611,7 @@ class CrmReportModel extends Model
         
         ->select('*');
 
-        $query->join('pro_vendor','pro_vendor.ven_id=pro_purchase_voucher.pv_vendor_name','left');
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id=pro_purchase_voucher.pv_vendor_name','left');
 
         if (!empty($from_date)) {
            
