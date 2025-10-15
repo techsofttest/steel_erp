@@ -109,6 +109,23 @@
    
         border: 1px solid black;
     }
+    td.total_label {
+        
+        width: 163px;
+
+    
+    }
+
+    @media only screen and (max-width: 1199px) and (min-width: 1000px){
+
+	    .total_table {
+            width: 30% !important;
+        }
+
+        td.total_label {
+            width: 137px;
+        }
+    }
    
     
 </style>
