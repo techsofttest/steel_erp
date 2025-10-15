@@ -1383,7 +1383,7 @@ class PurchaseOrder extends BaseController
             $title = $purchase_order->po_reffer_no;
 
             $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 78,
+                    'margin_top' => 79,
                     'margin_bottom' => 45,
                     'margin_left' => 5,
                     'margin_right' => 5,
