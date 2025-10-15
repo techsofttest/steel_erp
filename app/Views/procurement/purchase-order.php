@@ -72,7 +72,7 @@
         margin-bottom: 0px;
     }
     .total_table {
-        width: 258px !important;
+        width: 251px !important;
     
     }
     .select_prod_add td{
@@ -111,12 +111,12 @@
     }
     td.total_label {
         
-        width: 163px;
+        width: 160px;
 
     
     }
 
-    @media only screen and (max-width: 1199px) and (min-width: 1000px){
+    /*@media only screen and (max-width: 1199px) and (min-width: 1000px){
 
 	    .total_table {
             width: 30% !important;
@@ -125,7 +125,7 @@
         td.total_label {
             width: 137px;
         }
-    }
+    }*/
    
     
 </style>
@@ -388,14 +388,14 @@
                                                     <table class="table table-bordered table-striped delTable selected_table add_table" style="display:none;">
                                                         <thead class="travelerinfo">
                                                             <tr>
-                                                                <td style="width:4%">SI</td>
-                                                                <td style="width:10%">Sales Order</td>
+                                                                <td style="width: 45px;">SI</td>
+                                                                <td style="width: 110px;">Sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:6%">Unit</td>
-                                                                <td style="width:6%">Qty</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:7%">Discount</td>
-                                                                <td style="width:9%">Amount</td>
+                                                                <td style="width: 65px;">Unit</td>
+                                                                <td style="width: 60px;">Qty</td>
+                                                                <td style="width: 80px;">Rate</td>
+                                                                <td style="width: 69px;">Discount</td>
+                                                                <td style="width: 90px;">Amount</td>
                                                                 
                                                             </tr>
                                                             
@@ -700,14 +700,14 @@
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 
-                                                                <td style="width:4%">SI</td>
-                                                                <td style="width:10%">Sales Order</td>
+                                                                <td style="width: 45px;">SI</td>
+                                                                <td style="width: 110px;">Sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:6%">Unit</td>
-                                                                <td style="width:6%">Qty</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:7%">Discount</td>
-                                                                <td style="text-align: center;width:9%">Amount</td>
+                                                                <td style="width: 65px;">Unit</td>
+                                                                <td style="width: 60px;">Qty</td>
+                                                                <td style="width: 80px;">Rate</td>
+                                                                <td style="width: 69px;">Discount</td>
+                                                                <td style="text-align: center;width: 90px;">Amount</td>
                                                                
                                                             </tr>
                                                             
@@ -999,14 +999,14 @@
                                                         <thead class="travelerinfo">
                                                             
                                                             <tr>
-                                                                <td style="width:4%">SI</td>
-                                                                <td style="width:10%">sales Order</td>
+                                                                <td style="width: 45px;">SI</td>
+                                                                <td style="width: 110px;">sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:6%">Unit</td>
-                                                                <td style="width:6%">Qty</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:7%">Discount</td>
-                                                                <td style="text-align: center;width:9%">Amount</td>
+                                                                <td style="width: 65px;">Unit</td>
+                                                                <td style="width: 60px;">Qty</td>
+                                                                <td style="width: 80px;">Rate</td>
+                                                                <td style="width: 69px;">Discount</td>
+                                                                <td style="text-align: center;width: 90px;">Amount</td>
                                                                 <td style="width:8%">Actions</td>
                                                                 
                                                             </tr>
@@ -1020,12 +1020,12 @@
                                                         
                                                     </table>
 
-                                                    <table class="total_table">
+                                                    <table class="total_table" style="width: 255px !important;">
                                                         <tbody>
 
                                                             <tr>
                                                                 
-                                                                <td align="right" class="total_label">Total</td>
+                                                                <td align="right" class="total_label" style="width: 170px;">Total</td>
                                                                 <td><input type="text" name="" class="edit_total_prod form-control" readonly="" style="text-align: right;"></td>
                                                                 <td></td>
                                                             </tr>

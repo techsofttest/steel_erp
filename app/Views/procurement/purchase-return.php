@@ -92,7 +92,9 @@
         border: 1px solid black;
     }
     td.total_label {
-        width: 62%;
+        /*width: 62%;*/
+
+            width: 150px;
         
     }
 
