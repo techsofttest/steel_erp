@@ -20,7 +20,7 @@
     }
 
     #DataTable td {
-        line-height: 1.1;
+        line-height: 1.5;
     }
     .modal-dialog{
         width: 500px;
