@@ -290,7 +290,8 @@
 
                                                             <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_order->po_date; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->po_reffer_no; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                 <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> <?php echo $pur_order->po_reffer_no; ?></a></td>
                                                             <td style="white-space: nowrap;width:300px">
                                                                 <?php foreach ($vendors as $vendor) { echo $pur_order->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : ''; } ?>
                                                             </td>
@@ -303,7 +304,8 @@
                                                                         <?php $k=0; foreach ($pur_order->product_orders as $orders) { $k++; ?>
                                                                             <tr style="background: unset;border-bottom: hidden !important;">
                                                                                 <td class=" text-center" style="white-space: nowrap;width:100px">
-                                                                                    <?php echo $orders->so_reffer_no; ?><br>
+                                                                                    <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a>
+                                                                                    <br>
                                                                                 </td>
 
                                                                                 <td class="text-end " style="white-space: nowrap;width:80px">
@@ -333,7 +335,8 @@
                                                                                 </td>
 
                                                                                 <td class="text-center" style="width:105px;white-space: nowrap">
-                                                                                    <?php echo $pur_order->mrn_reffer; ?><br>
+                                                                                    <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank"><?php echo $pur_order->mrn_reffer; ?></a>
+                                                                                    <br>
                                                                                 </td>
 
                                                                                 <td class="text-end" style="width:80px;white-space: nowrap">

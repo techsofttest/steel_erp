@@ -673,8 +673,8 @@
                                                             
                                                             <td style="width:11%">Sales Order</td>
                                                             <td>Product Description</td>
-                                                            <td style="5%">Unit</td>
-                                                            <td style="5%">Qty</td>
+                                                            <td style="width:5%">Unit</td>
+                                                            <td style="width:5%">Qty</td>
                                                             
                                                         </tr>
                                                         
@@ -1228,7 +1228,14 @@
                 { data: 'mr_date'},
                 { data: 'action'},
                 
-               ]
+               ],
+               "initComplete": function () {
+                    var dataId = '<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>';
+                    $('#DataTable').dataTable().fnFilter(dataId);
+                },
+                "drawCallback": function() {
+                $('.view_btn[data-id="<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>"]').trigger('click');
+                }
     
             });
         }

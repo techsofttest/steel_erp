@@ -305,12 +305,16 @@
                                                         <tr>
                                                             <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_order->po_date; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->po_reffer_no; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank">
+                                                                    <?php echo $pur_order->po_reffer_no; ?></a></td>
                                                             <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
                                                                                                     echo $pur_order->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
                                                                                                 } ?>
                                                             </td>
-                                                            <td class="text-center"  style="white-space: nowrap;width:100px"><?php echo $pur_order->mrn_reffer; ?></td>
+                                                            <td class="text-center"  style="white-space: nowrap;width:100px">
+                                                                <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank">
+                                                                    <?php echo $pur_order->mrn_reffer; ?></a></td>
 
                                                             <td colspan="9" align="left" class="p-0">
                                                                 <table>

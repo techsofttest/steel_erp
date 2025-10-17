@@ -304,7 +304,7 @@
                                                             <td class="text-center" style="white-space: nowrap;width:70px">
                                                                 <?php echo $material_req->mrn_date; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                <?php echo $material_req->mrn_reffer; ?></td>
+                                                               <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $material_req->mrn_id; ?>" target="_blank"><?php echo $material_req->mrn_reffer; ?></a></td>
 
                                                             <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
                                                                 echo $material_req->mrn_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
@@ -312,7 +312,7 @@
                                                             </td>
 
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                <?php echo $material_req->po_reffer_no; ?></td>
+                                                               <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $material_req->po_id; ?>" target="_blank"> <?php echo $material_req->po_reffer_no; ?></td>
 
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
                                                                 <?php echo $material_req->mrn_delivery_note; ?></td>

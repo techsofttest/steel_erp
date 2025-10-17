@@ -1546,6 +1546,13 @@
                 { targets: [5], className: "dt-body-center" }
                 ],
 
+                "initComplete": function () {
+                    var dataId = '<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>';
+                    $('#DataTable').dataTable().fnFilter(dataId);
+                },
+                "drawCallback": function() {
+                $('.view_btn[data-id="<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>"]').trigger('click');
+                }
 
             });
         }

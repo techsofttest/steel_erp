@@ -240,93 +240,78 @@
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style=" overflow-x:scroll;">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
-                                                    <th class="" style="width:300px">Vendor</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th style="white-space: nowrap;min-width:500px">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                </tr>
-                                            </thead>
+    <thead>
+        <tr>
+            <th class="text-center" style="white-space: nowrap;width:60px">Sl No</th>
+            <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+            <th class="text-center" style="white-space: nowrap;width:120px">Purchase Order Ref</th>
+            <th class="" style="min-width:250px">Vendor</th>
+            <th class="text-center" style="white-space: nowrap;width:120px">Sales Order Ref</th>
+            <th class="text-end" style="white-space: nowrap;width:100px">PO Amount</th>
+            <th class="" style="min-width:300px">Product</th>
+            <th class="text-center" style="white-space: nowrap;width:80px">Qty</th>
+            <th class="text-end" style="white-space: nowrap;width:100px">Rate</th>
+            <th class="text-end" style="white-space: nowrap;width:100px">Discount</th>
+            <th class="text-end" style="white-space: nowrap;width:120px">Line Amount</th>
+        </tr>
+    </thead>
 
-                                            <tbody class="tbody_data">
-                                                <?php
-                                                if (!empty($purchase_order)) {
-                                                    $i = 1;
-                                                    $total = $po_total = 0;
-                                                    foreach ($purchase_order as $pur_order) { ?>
-                                                        <tr>
+    <tbody class="tbody_data">
+        <?php if (!empty($purchase_order)): 
+            $i = 1;
+            $total = $po_total = 0;
+            foreach ($purchase_order as $pur_order): 
+                $rowCount = count($pur_order->product_orders);
+        ?>
+        <?php foreach ($pur_order->product_orders as $index => $orders): ?>
+            <tr>
+                <?php if ($index === 0): ?>
+                    <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><?php echo $i; ?></td>
+                    <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><?php echo $pur_order->po_date; ?></td>
+                    <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"><?php echo $pur_order->po_reffer_no; ?></a></td>
+                    <td class="align-middle" rowspan="<?= $rowCount ?>">
+                        <?php 
+                            foreach ($vendors as $vendor) {
+                                if ($pur_order->po_vendor_name == $vendor->cc_id) {
+                                    echo $vendor->cc_customer_name;
+                                    break;
+                                }
+                            } 
+                        ?>
+                    </td>
+                <?php endif; ?>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_order->po_date; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->po_reffer_no; ?></td>
-                                                            <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
-                                                                                                                        echo $pur_order->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name: '';
-                                                                                                                    } ?>
-                                                            </td>
+                <td class="text-center align-middle"><a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
 
-                                                            <td colspan="7" align="left" class="p-0">
-                                                                <table>
-                                                                    <?php $k=0 ; foreach ($pur_order->product_orders as $orders) { $k++; ?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;">
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                                <?php echo $orders->so_reffer_no;  ?><br>
-                                                                            </td>
+                <?php if ($index === 0): ?>
+                    <td class="text-end align-middle" rowspan="<?= $rowCount ?>">
+                        <?php echo format_currency($pur_order->po_amount); ?>
+                        <?php $total += $pur_order->po_amount; ?>
+                    </td>
+                <?php endif; ?>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px"><?php
-                                                                            if($k==1){
-                                                                                echo format_currency($pur_order->po_amount);
-                                                                                $total += $pur_order->po_amount; 
-                                                                            }
-                                                                            ?></td>
+                <td><?php echo $orders->product_details; ?></td>
+                <td class="text-center"><?php echo $orders->pop_qty; ?></td>
+                <td class="text-end"><?php echo format_currency($orders->pop_rate); ?></td>
+                <td class="text-end"><?php echo format_currency($orders->pop_discount); ?>%</td>
+                <td class="text-end"><?php echo format_currency($orders->pop_amount); $po_total += $orders->pop_amount; ?></td>
+            </tr>
+        <?php endforeach; ?>
+        <?php $i++; endforeach; ?>
 
-                                                                            <td style="min-width:500px">
-                                                                                    <?php echo $orders->product_details; ?></td>
-                                                                            <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $orders->pop_qty; ?></td>
+        <!-- TOTAL ROW -->
+        <tr class="fw-bold ">
+            <th  class="text-end">Total</th>
+            <th colspan="4" class="text-end"></th>
+            <th class="text-end"><?php echo format_currency($total); ?></th>
+            <th colspan="4"></th>
+            <th class="text-end"><?php echo format_currency($po_total); ?></th>
+        </tr>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px"> <?php echo format_currency($orders->pop_rate); ?></td>
+        <?php endif; ?>
+    </tbody>
+</table>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pop_discount); ?>%</td>
-
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pop_amount);
-                                                                                                        $po_total += $orders->pop_amount; ?></td>
-
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-
-                                                    <?php $i++;
-                                                    } ?>
-
-                                                    <tr>
-                                                        <th></th>
-                                                        <th style="width:70px">Total</th>
-                                                        <th style="width:100px"></th>
-                                                        <th style="width:300px"></th>
-                                                        <th style="width:100px"></th>
-                                                        <th class="text-end" style="width:80px"><?php echo format_currency($total); ?></th>
-                                                        <th style="min-width:500px"></th>
-                                                        <th style="width:80px"></th>
-                                                        <th style="width:80px"></th>
-                                                        <th style="width:80px"></th>
-                                                        <th class="text-center" style="    padding: 10px 0px 0px 10px !important;"><?php echo format_currency($po_total); ?></th>
-                                                    </tr>
-
-                                                <?php
-                                                } ?>
-
-                                            </tbody>
-
-                                        </table>
 
                                     </div>
                                 </div>

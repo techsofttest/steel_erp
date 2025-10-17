@@ -311,7 +311,7 @@
             foreach ($purchase_order as $pur_vouc) { ?>
                 <tr>
                     <td class="text-center"><?php echo $i; ?></td>
-                    <td class="text-center"><?php echo $pur_vouc->pv_date; ?></td>
+                    <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_date; ?></td>
                     <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
 
                     <td>
@@ -320,7 +320,9 @@
                         } ?>
                     </td>
 
-                    <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->po_reffer_no ?? ''; ?></td>
+                    <td class="text-center" style="white-space: nowrap;">
+                         <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_vouc->po_id; ?>" target="_blank"> 
+                         <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a></td>
 
                     <td colspan="7" class="p-0">
                         <table style="width:100%; table-layout:fixed;">
@@ -337,7 +339,10 @@
 
                             <?php $k=0; foreach ($pur_vouc->product_orders as $orders) { $k++;?>
                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                    <td style="white-space: nowrap;"><?php echo $orders->mrn_reffer; ?></td>
+                                    <td style="white-space: nowrap;">
+                                         <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_vouc->mrn_id; ?>" target="_blank"> 
+                                            <?php echo $orders->mrn_reffer; ?>
+                                        </a></td>
                                     <td class="text-end" style="white-space: nowrap;">
                                         <?php if($k == 1){ echo format_currency($pur_vouc->pv_total);
                                             $total += $pur_vouc->pv_total; } ?>
@@ -346,7 +351,7 @@
                                     <td class="text-center"><?php echo format_currency($orders->pvp_qty); ?></td>
                                     <td class="text-end"><?php echo format_currency($orders->pvp_rate); ?></td>
                                     <td class="text-end"><?php echo format_currency($orders->pvp_discount); ?>%</td>
-                                    <td class="text-end">
+                                    <td class="text-end" style="white-space: nowrap;">
                                         <?php echo format_currency($orders->pvp_amount);
                                         $pv_total += $orders->pvp_amount; ?>
                                     </td>
@@ -374,7 +379,7 @@
                             <th></th>
                             <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
                             <th></th><th></th><th></th><th></th>
-                            <th class="text-end"><?php echo format_currency($pv_total); ?></th>
+                            <th class="text-end" style="white-space: nowrap;" ><?php echo format_currency($pv_total); ?></th>
                         </tr>
                     </table>
                 </td>

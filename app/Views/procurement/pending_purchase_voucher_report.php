@@ -293,7 +293,8 @@
 
                                                             <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_vouc->po_date; ?></td>
-                                                            <td class="text-center"><?php echo $pur_vouc->po_reffer_no; ?></td>
+                                                            <td class="text-center">  <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_vouc->po_id; ?>" target="_blank"> 
+                                                                <?php echo $pur_vouc->po_reffer_no; ?></a> </td>
 
                                                             <td class="rotate" style="width:300px"><?php foreach ($vendors as $vendor) {
                                                                     echo $pur_vouc->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';

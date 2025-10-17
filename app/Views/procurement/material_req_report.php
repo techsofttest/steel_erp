@@ -253,7 +253,7 @@
 
                                                             <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $material_req->mr_date; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $material_req->mr_reffer_no; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url().'Procurement/MaterialRequisition?view_so=' . $material_req->mr_id; ?>" target="_blank"><?php echo $material_req->mr_reffer_no; ?></a></td>
 
 
                                                             <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
@@ -266,7 +266,7 @@
                                                                     <?php foreach ($material_req->product_orders as $orders) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
 
-                                                                            <td class="rotate text-center" style="white-space: nowrap;width:100px"><?php echo $orders->so_reffer_no; ?></td>
+                                                                            <td class="rotate text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
 
 
                                                                             <td style="rotate white-space: nowrap;min-width:500px"> <?php echo $orders->product_details; ?></td>

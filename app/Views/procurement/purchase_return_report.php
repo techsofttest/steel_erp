@@ -280,11 +280,17 @@
                                                         <tr>
                                                             <td class="text-center" style="width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="width:70px"><?php echo $pur_order->pr_date; ?></td>
-                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pr_reffer_id; ?></td>
+                                                            <td class="text-center" style="width:100px">
+                                                                 <a href="<?php echo base_url().'Procurement/PurchaseReturn?view_so=' . $pur_order->pr_id; ?>" target="_blank"> 
+                                                                    <?php echo $pur_order->pr_reffer_id; ?></a>
+                                                            </td>
                                                             <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
                                                                                                                         echo $pur_order->pr_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';  } ?>
                                                             </td>
-                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->po_reffer_no ?? ''; ?></td>
+                                                            <td class="text-center" style="width:100px">
+                                                                 <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> 
+                                                                    <?php echo $pur_order->po_reffer_no ?? ''; ?>
+                                                            </a></td>
                                                             <td class="text-center" style="width:100px"><?php echo $pur_order->pv_reffer_id; ?></td>
                                                             <td class="text-end" style="width:80px"><?php echo format_currency($pur_order->prp_amount); $total +=$pur_order->prp_amount; ?></td>
                                                         </tr>
