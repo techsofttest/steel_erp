@@ -522,16 +522,7 @@ class SalesOrderReport extends BaseController
                 'margin_left' => 5, 
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
-                'fontDir' => array_merge($fontDirs, [
-                   FCPATH . 'assets\fonts'
-                ]),
-                'fontdata' => $fontData + [
-                    'bentonsans' => [
-                      
-                        'R' => 'OpenSans-Regular.ttf',
-                        'B' => 'OpenSans-Bold.ttf',
-                    ],
-                ],
+                
                 'default_font' => 'bentonsans'
                 
             ]);
