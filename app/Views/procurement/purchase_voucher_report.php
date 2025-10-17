@@ -338,7 +338,7 @@
                             <?php $k=0; foreach ($pur_vouc->product_orders as $orders) { $k++;?>
                                 <tr style="background: unset;border-bottom: hidden !important;">
                                     <td style="white-space: nowrap;"><?php echo $orders->mrn_reffer; ?></td>
-                                    <td class="text-end">
+                                    <td class="text-end" style="white-space: nowrap;">
                                         <?php if($k == 1){ echo format_currency($pur_vouc->pv_total);
                                             $total += $pur_vouc->pv_total; } ?>
                                     </td>
@@ -372,7 +372,7 @@
                         </colgroup>
                         <tr>
                             <th></th>
-                            <th class="text-end"><?php echo format_currency($total); ?></th>
+                            <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
                             <th></th><th></th><th></th><th></th>
                             <th class="text-end"><?php echo format_currency($pv_total); ?></th>
                         </tr>
