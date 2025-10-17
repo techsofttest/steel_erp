@@ -2306,18 +2306,24 @@ class SalesQuotation extends BaseController
      
 
         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+        
             <tr>
                 <td style="width:14%;" rowspan="2">Quote Terms</td>
                
                 <td style="width:15%">Payment:</td>
+
                 <td style="">' . $quotation_details->qd_payment_term . '</td>
+
             </tr>
+
             <tr style="margin-bottom:0px">
                 
                 <td style="width:15%" rowspan="2">Delivery Period:</td>
-                <td style="">' . $quotation_details->dt_name . '</td>
+                
+                <td style="">' .$quotation_details->dt_name. '</td>
                 
             </tr>
+
         </table>
         ';
 

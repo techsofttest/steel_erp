@@ -631,7 +631,6 @@ class PurchaseVoucher extends BaseController
         $data['total_amount']    = format_currency($purchase_voucher->pv_total);
 
         
-
         $join1 =  array(
             
             array(

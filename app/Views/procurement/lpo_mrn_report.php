@@ -20,7 +20,7 @@
     }
 
     #DataTable td {
-        line-height: 1.3
+        line-height: 1.5 
     }
 
     #DataTable {

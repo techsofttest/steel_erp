@@ -141,6 +141,8 @@ class WorkProgress extends BaseController
         }
 
         $data['work_progress'] = $this->crm_modal->PurchaseVoucher($from_date,'	pv_date');  
+
+       //print_r($data['work_progress']); exit();
         
 
         if(!empty($from_date))

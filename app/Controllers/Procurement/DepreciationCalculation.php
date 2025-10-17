@@ -257,7 +257,6 @@ class DepreciationCalculation extends BaseController
             $fixed_amount -=  ($fixed_amount*$cfs_last_yr_depreciation)/100;
 
 
-
             // Ensure $sel_date is in year format (extract only the year part)
             $sel_year = date('Y-m-d', strtotime($sel_date));
 

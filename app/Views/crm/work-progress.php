@@ -168,6 +168,7 @@
                                                     $i = 1;
                                                     $total_amount = 0; 
                                                     foreach ($work_progress as $work_prog) { 
+                                                       // print_r($work_prog); exit();
                                                     // Check if all purchase_sales_order arrays are empty
                                                     $hasData = false;
                                                     foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) {
@@ -190,7 +191,7 @@
                                                             <?php echo $work_prog->pv_reffer_id; ?>
                                                         </a>
                                                     </td>
-                                                    <td class="text-center" style="white-space: nowrap;width:200px"><?php echo $work_prog->ven_name; ?></td>
+                                                    <td class="text-center" style="white-space: nowrap;width:200px"><?php echo $work_prog->cc_customer_name; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:300px"><?php echo $work_prog->	pv_vendor_inv; ?></td>
                                                     <td colspan="2" align="left" class="p-0">
                                                         <table>

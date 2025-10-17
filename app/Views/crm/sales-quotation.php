@@ -1930,7 +1930,7 @@
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
+                                                    <th class="no-sort" >Sl no</th>
                                                     <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
