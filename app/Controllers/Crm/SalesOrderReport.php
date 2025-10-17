@@ -492,9 +492,6 @@ class SalesOrderReport extends BaseController
 
                // $pdf_data .="</tr>";
                  
-                
-               
-                
             }
 
 
@@ -526,7 +523,7 @@ class SalesOrderReport extends BaseController
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
                 'fontDir' => array_merge($fontDirs, [
-                    __DIR__ . '/fonts'
+                   FCPATH . 'assets\fonts'
                 ]),
                 'fontdata' => $fontData + [
                     'bentonsans' => [
