@@ -309,7 +309,7 @@ class PurchaseOrderReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->cc_customer_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>".($vendor->cc_customer_name ?? '')."</td>";
                 
                 // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->so_reffer_no}</td>";
 
