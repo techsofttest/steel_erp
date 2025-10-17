@@ -243,99 +243,148 @@
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
-                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Invoice Ref</th>
-                                                    <th class="" style="white-space: nowrap;width:300px">Vendor</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th style="white-space: nowrap;min-width:500px">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                </tr>
-                                            </thead>
+                                      <style>
+/* ✅ Keep widths consistent across parent and nested tables */
+#DataTable, 
+#DataTable table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
 
-                                            <tbody class="tbody_data">
-                                                <?php
-                                                if (!empty($purchase_order)) {
-                                                    $i = 1;
-                                                    $total = $pv_total = 0;
-                                                    foreach ($purchase_order as $pur_vouc) { ?>
-                                                        <tr>
+#DataTable th, 
+#DataTable td {
+    white-space: wrap;
+}
 
-                                                            <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_vouc->pv_date; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
+#DataTable table td, 
+#DataTable table th {
+    border: none; /* keep inner table seamless */
+}
 
-                                                            <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
-                                                                                                            echo $pur_vouc->pv_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
-                                                                                                        } ?>
-                                                            </td>
+/* Optional: add horizontal scroll on smaller screens */
+.table-wrapper {
+    overflow-x: auto;
+}
+</style>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_vouc->po_reffer_no ?? ''; ?></td>
+<div class="table-wrapper">
+<table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+    <!-- 🔹 Added this colgroup so widths are consistent -->
+    <colgroup>
+        <col style="width:60px;">
+        <col style="width:70px;">
+        <col style="width:100px;">
+        <col style="width:300px;">
+        <col style="width:100px;">
+        <col style="width:100px;">
+        <col style="width:80px;">
+        <col style="width:500px;">
+        <col style="width:80px;">
+        <col style="width:80px;">
+        <col style="width:80px;">
+        <col style="width:80px;">
+    </colgroup>
 
-                                                            <!-- <td class="text-center"><?php echo $pur_vouc->mrn_reffer ?? ''; ?></td> -->
+    <thead>
+        <tr>
+            <th class="no-sort text-center">Sl no</th>
+            <th class="text-center">Date</th>
+            <th class="text-center" style="white-space: nowrap;">Vendor Inv Ref</th>
+            <th>Vendor</th>
+            <th class="text-center" style="white-space: nowrap;">PO Ref</th>
+            <th class="text-center" style="white-space: nowrap;">MRN Ref</th>
+            <th class="text-end">Amount</th>
+            <th>Product</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-end">Rate</th>
+            <th class="text-end">Discount</th>
+            <th class="text-end">Amount</th>
+        </tr>
+    </thead>
 
-                                                            <td colspan="7" align="left" class="p-0">
-                                                                <table>
-                                                                    <?php $k=0; foreach ($pur_vouc->product_orders as $orders) { $k++;?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;">
+    <tbody class="tbody_data">
+        <?php
+        if (!empty($purchase_order)) {
+            $i = 1;
+            $total = $pv_total = 0;
+            foreach ($purchase_order as $pur_vouc) { ?>
+                <tr>
+                    <td class="text-center"><?php echo $i; ?></td>
+                    <td class="text-center"><?php echo $pur_vouc->pv_date; ?></td>
+                    <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
 
-                                                                            <td style="white-space: nowrap;width:100px">
-                                                                                <?php echo $orders->mrn_reffer; ?><br>
-                                                                            </td>
+                    <td>
+                        <?php foreach ($vendors as $vendor) {
+                            echo $pur_vouc->pv_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
+                        } ?>
+                    </td>
 
+                    <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->po_reffer_no ?? ''; ?></td>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px">
-                                                                                <?php if($k ==1){ echo format_currency($pur_vouc->pv_total);
-                                                                                                    $total += $pur_vouc->pv_total; } ?> </td>
+                    <td colspan="7" class="p-0">
+                        <table style="width:100%; table-layout:fixed;">
+                            <!-- 🔹 Added nested colgroup matching parent widths -->
+                            <colgroup>
+                                <col style="width:100px;" > <!-- MRN Ref -->
+                                <col style="width:80px;">  <!-- Amount -->
+                                <col style="width:500px;"> <!-- Product -->
+                                <col style="width:80px;">  <!-- Quantity -->
+                                <col style="width:80px;">  <!-- Rate -->
+                                <col style="width:80px;">  <!-- Discount -->
+                                <col style="width:80px;">  <!-- Amount -->
+                            </colgroup>
 
-                                                                            <td style="min-width:500px"> <?php echo $orders->pvp_prod_dec; ?></td>
+                            <?php $k=0; foreach ($pur_vouc->product_orders as $orders) { $k++;?>
+                                <tr style="background: unset;border-bottom: hidden !important;">
+                                    <td style="white-space: nowrap;"><?php echo $orders->mrn_reffer; ?></td>
+                                    <td class="text-end">
+                                        <?php if($k == 1){ echo format_currency($pur_vouc->pv_total);
+                                            $total += $pur_vouc->pv_total; } ?>
+                                    </td>
+                                    <td><?php echo $orders->pvp_prod_dec; ?></td>
+                                    <td class="text-center"><?php echo format_currency($orders->pvp_qty); ?></td>
+                                    <td class="text-end"><?php echo format_currency($orders->pvp_rate); ?></td>
+                                    <td class="text-end"><?php echo format_currency($orders->pvp_discount); ?>%</td>
+                                    <td class="text-end">
+                                        <?php echo format_currency($orders->pvp_amount);
+                                        $pv_total += $orders->pvp_amount; ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </table>
+                    </td>
+                </tr>
+            <?php $i++; } ?>
 
-                                                                            <td class="text-center" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pvp_qty); ?></td>
+            <tr>
+                <th colspan="5"></th>
+                <td colspan="7" class="p-0">
+                    <table style="width:100%; table-layout:fixed;">
+                        <colgroup>
+                            <col style="width:100px;">
+                            <col style="width:80px;">
+                            <col style="width:500px;">
+                            <col style="width:80px;">
+                            <col style="width:80px;">
+                            <col style="width:80px;">
+                            <col style="width:80px;">
+                        </colgroup>
+                        <tr>
+                            <th></th>
+                            <th class="text-end"><?php echo format_currency($total); ?></th>
+                            <th></th><th></th><th></th><th></th>
+                            <th class="text-end"><?php echo format_currency($pv_total); ?></th>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px"> <?php echo format_currency($orders->pvp_rate); ?></td>
+        <?php } ?>
+    </tbody>
+</table>
+</div>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px"> <?php echo format_currency($orders->pvp_discount); ?>%</td>
-
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px"> <?php echo format_currency($orders->pvp_amount);
-                                                                                                        $pv_total += $orders->pvp_amount; ?> </td>
-
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                </table>
-                                                            </td>
-
-                                                        <?php $i++;
-                                                    } ?>
-
-                                                        <tr>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th class="text-end"><?php echo format_currency($total); ?></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th class="text-end"><?php echo format_currency($pv_total); ?></th>
-                                                        </tr>
-
-                                                    <?php
-                                                } ?>
-
-                                            </tbody>
-
-                                        </table>
 
                                     </div>
                                 </div>
