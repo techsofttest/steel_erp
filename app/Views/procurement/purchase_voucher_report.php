@@ -326,7 +326,7 @@
                         <table style="width:100%; table-layout:fixed;">
                             <!-- 🔹 Added nested colgroup matching parent widths -->
                             <colgroup>
-                                <col style="width:100px;" > <!-- MRN Ref -->
+                                <col style="width:100px;"> <!-- MRN Ref -->
                                 <col style="width:80px;">  <!-- Amount -->
                                 <col style="width:500px;"> <!-- Product -->
                                 <col style="width:80px;">  <!-- Quantity -->
