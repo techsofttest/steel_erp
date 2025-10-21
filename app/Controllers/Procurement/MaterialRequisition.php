@@ -38,7 +38,7 @@ class MaterialRequisition extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('mr_reffer_no');
+        $searchColumns = array('mr_reffer_no','mr_id');
 
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('pro_material_requisition','mr_id',$searchValue,$searchColumns);
     

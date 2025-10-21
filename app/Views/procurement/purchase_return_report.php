@@ -35,6 +35,19 @@
     .adjust_width {
     width: 86%;
     }
+        .Dashboard-form .form-select {
+    border: 1px solid #434343 !important;
+    margin-bottom: 0px;
+    background: #f5f5f56e;
+    height: 40px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.travelerinfo td {
+    color: black;
+    vertical-align: middle;
+}
 </style>
 
 <div class="tab-content text-muted">
@@ -116,11 +129,11 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                         <tr>
                                                                                 
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px;margin-top: 15px;">From</td>
-                                                                                <td ><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
+                                                                                <td ><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
                                                                                 <td>
-                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width">
+                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control ">
                                                                                 </td>
 
                                                                             </tr>
