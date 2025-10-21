@@ -302,7 +302,7 @@
                                                             <td class="text-center" style="white-space: nowrap;width:60px">
                                                                 <?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px">
-                                                                <?php echo $material_req->mrn_date; ?></td>
+                                                                <?php echo date('d-M-Y', strtotime($material_req->mrn_date)); ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
                                                                <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $material_req->mrn_id; ?>" target="_blank"><?php echo $material_req->mrn_reffer; ?></a></td>
 

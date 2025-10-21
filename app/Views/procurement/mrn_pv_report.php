@@ -302,7 +302,7 @@
                                                         $l_mr_total = $l_pv_total = 0; ?>
                                                         <tr>
                                                             <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_order->mrn_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($pur_order->mrn_date)); ?></td>
 
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
                                                                 <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank"><?php echo $pur_order->mrn_reffer; ?></a>

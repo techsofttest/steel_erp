@@ -267,7 +267,7 @@
             <tr>
                 <?php if ($index === 0): ?>
                     <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><?php echo $i; ?></td>
-                    <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><?php echo $pur_order->po_date; ?></td>
+                    <td class="text-center align-middle" style="white-space: nowrap;" rowspan="<?= $rowCount ?>"><?php echo  date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
                     <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"><?php echo $pur_order->po_reffer_no; ?></a></td>
                     <td class="align-middle" rowspan="<?= $rowCount ?>">
                         <?php 

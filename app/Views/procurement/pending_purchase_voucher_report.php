@@ -292,7 +292,7 @@
                                                         <tr>
 
                                                             <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_vouc->po_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($pur_vouc->po_date)); ?></td>
                                                             <td class="text-center">  <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_vouc->po_id; ?>" target="_blank"> 
                                                                 <?php echo $pur_vouc->po_reffer_no; ?></a> </td>
 

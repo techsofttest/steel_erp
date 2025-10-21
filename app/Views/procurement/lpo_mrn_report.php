@@ -289,7 +289,7 @@
                                                         <tr>
 
                                                             <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_order->po_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
                                                                  <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> <?php echo $pur_order->po_reffer_no; ?></a></td>
                                                             <td style="white-space: nowrap;width:300px">

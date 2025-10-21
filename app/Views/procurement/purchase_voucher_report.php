@@ -311,7 +311,7 @@
             foreach ($purchase_order as $pur_vouc) { ?>
                 <tr>
                     <td class="text-center"><?php echo $i; ?></td>
-                    <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_date; ?></td>
+                    <td class="text-center" style="white-space: nowrap;"><?php echo date('d-M-Y', strtotime($pur_vouc->pv_date)); ?></td>
                     <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
 
                     <td>

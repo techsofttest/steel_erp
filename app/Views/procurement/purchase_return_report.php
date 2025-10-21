@@ -279,7 +279,7 @@
                                                     foreach ($purchase_order as $pur_order) { ?>
                                                         <tr>
                                                             <td class="text-center" style="width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="width:70px"><?php echo $pur_order->pr_date; ?></td>
+                                                            <td class="text-center" style="width:70px"><?php echo date('d-M-Y', strtotime($pur_order->pr_date)); ?></td>
                                                             <td class="text-center" style="width:100px">
                                                                  <a href="<?php echo base_url().'Procurement/PurchaseReturn?view_so=' . $pur_order->pr_id; ?>" target="_blank"> 
                                                                     <?php echo $pur_order->pr_reffer_id; ?></a>
