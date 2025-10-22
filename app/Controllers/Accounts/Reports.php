@@ -302,13 +302,13 @@ class Reports extends BaseController
                         'fontDir' => array_merge($fontDirs, [
                             __DIR__ . '/fonts'
                         ]),
-                        'fontdata' => $fontData + [
+                        /*'fontdata' => $fontData + [
                             'bentonsans' => [
                               
                                 'R' => 'OpenSans-Regular.ttf',
                                 'B' => 'OpenSans-Bold.ttf',
                             ],
-                        ],
+                        ],*/
                         'default_font' => 'bentonsans'
                         
                     ]);
@@ -687,13 +687,13 @@ class Reports extends BaseController
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
+                    ],*/
                     'default_font' => 'bentonsans'
                     
                 ]);
@@ -1209,16 +1209,6 @@ class Reports extends BaseController
                     'default_font_size' => 9, 
                     'margin_left' => 5, 
                     'margin_right' => 5,
-                    'fontDir' => array_merge($fontDirs, [
-                        __DIR__ . '/fonts'
-                    ]),
-                    'fontdata' => $fontData + [
-                        'bentonsans' => [
-                          
-                            'R' => 'OpenSans-Regular.ttf',
-                            'B' => 'OpenSans-Bold.ttf',
-                        ],
-                    ],
                     'default_font' => 'bentonsans'
                     
                 ]);
@@ -1890,13 +1880,13 @@ class Reports extends BaseController
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
+                    ],*/
                     'default_font' => 'bentonsans'
                     
                 ]);
@@ -2428,13 +2418,13 @@ class Reports extends BaseController
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
+                    ],*/
                     'default_font' => 'bentonsans'
                     
                 ]);
@@ -2993,13 +2983,13 @@ EOD;
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
+                    ],*/
                     'default_font' => 'bentonsans'
                     
                 ]);
@@ -3306,13 +3296,13 @@ EOD;
             'fontDir' => array_merge($fontDirs, [
                 __DIR__ . '/fonts'
             ]),
-            'fontdata' => $fontData + [
+            /*'fontdata' => $fontData + [
                 'bentonsans' => [
                   
                     'R' => 'OpenSans-Regular.ttf',
                     'B' => 'OpenSans-Bold.ttf',
                 ],
-            ],
+            ],*/
             'default_font' => 'bentonsans'
             
         ]);
@@ -3674,13 +3664,13 @@ EOD;
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
+                    ],*/
                     'default_font' => 'bentonsans'
                     
                 ]);
@@ -4081,13 +4071,13 @@ foreach ($data['transactions'] as $trn_credit) {
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
+                    ],*/
                     'default_font' => 'bentonsans'
                     
                 ]);
@@ -4373,13 +4363,13 @@ $pdf_data .= '
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
+                    ],*/
                     'default_font' => 'bentonsans'
                     
                 ]);
