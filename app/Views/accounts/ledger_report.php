@@ -429,7 +429,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Date</th>
-                                                    <th>Voucher Number</th>
+                                                    <th>Voucher No</th>
                                                     <th>Voucher Type</th>
                                                     <th>Related Account</th>
                                                     <th class="text-end">Debit Amount</th>
