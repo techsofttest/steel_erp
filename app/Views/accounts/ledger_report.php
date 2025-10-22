@@ -537,7 +537,7 @@
 
 
                                             <tr class="no-sort">
-                                            <td><b style="font-size:23px;"><?= $vc->account_name ?></b></td>
+                                            <td><b style="font-size:18px;"><?= $vc->account_name ?></b></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
