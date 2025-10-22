@@ -20,6 +20,12 @@
 
 
     <style>
+
+        .text-end
+        {
+            vertical-align:middle;
+        }
+
         #page-topbar{
             width: 100%;
             left: unset;
