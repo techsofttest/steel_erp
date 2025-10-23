@@ -50,6 +50,17 @@
     vertical-align: middle;
 }
 
+/* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
+
+.nested-table td{
+    vertical-align: middle;
+}
 </style>
 
 <div class="tab-content text-muted">
@@ -294,7 +305,7 @@
                                                     <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
                                                     <th class="" style="white-space: nowrap;width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">SO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor Inv Ref</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                     <th style="white-space: nowrap;width:500px">Product</th>
@@ -302,7 +313,7 @@
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor inv Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <!-- <th class="text-end" style="white-space: nowrap;width:70px">Discount</th> -->
@@ -332,17 +343,17 @@
                                                                     <?php echo $pur_order->mrn_reffer; ?></a></td>
 
                                                             <td colspan="9" align="left" class="p-0">
-                                                                <table>
+                                                                <table class="nested-table">
                                                                     <?php $po_amt = 0; $k=0; $l_po_total = $l_pv_total = 0;
                                                                     foreach ($pur_order->product_orders as $orders) { $k++; ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
 
-                                                                            <td class="text-center" style="width:100px">
+                                                                            <td class="text-center" style="width:100px;vertical-align:top;">
                                                                                 <?php echo $orders->so_reffer_no; ?><br> </td>
 
-                                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->po_vendor_ref; ?></td>
+                                                                            <td class="text-center" style="width:100px;vertical-align:top;"><?php echo $pur_order->po_vendor_ref; ?></td>
 
-                                                                            <td class="text-end" style="width:80px"><?php if($k==1){ echo format_currency($pur_order->po_amount);
+                                                                            <td class="text-end" style="width:80px;vertical-align:top;"><?php if($k==1){ echo format_currency($pur_order->po_amount);
                                                                                                                         $tot_amount += $pur_order->po_amount; }?></td>
 
                                                                             <td style="width:500px"> <?php echo $orders->product_details; ?> </td>
@@ -405,7 +416,7 @@
                                                             <?php
                                                             if (isset($pur_order->voucher_prod) || isset($pur_order->product_orders)) { ?>
 
-                                                                <td colspan="1" align="left" class="p-0" style="vertical-align:middle">
+                                                                <td colspan="1" align="left" class="p-0" style="">
                                                                     <table>
                                                                         <?php if (isset($pur_order->voucher_prod)) {
                                                                             $voc_count = count($pur_order->voucher_prod);

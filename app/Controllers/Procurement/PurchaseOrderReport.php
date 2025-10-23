@@ -176,11 +176,21 @@ class PurchaseOrderReport extends BaseController
             $data3 = "";
         }
         
-       
+        if (!empty($_GET['pending'])) {
+            $data6 = $_GET['pending'];
+        } else {
+            $data6 = "";
+        }
+
+        if (!empty($_GET['linked'])) {
+            $data7 = $_GET['linked'];
+        } else {
+            $data7 = "";
+        }
+
        
 
-        $joins = array(
-            
+        $joins = array(            
             array(
                 'table' => 'pro_purchase_order',
                 'pk'    => 'po_id',
@@ -196,12 +206,13 @@ class PurchaseOrderReport extends BaseController
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
                 'fk'    => 'pop_prod_desc',
-            ),
-           
-           
-
+            ),       
+              array(
+                'table' => 'pro_purchase_voucher',
+                'pk'    => 'pv_purchase_order',
+                'fk'    => 'pop_purchase_order',
+            ),  
         );
-
 
         $joins1 = array(
             array(
@@ -209,14 +220,11 @@ class PurchaseOrderReport extends BaseController
                 'pk'    => 'product_id',
                 'fk'    => 'pop_prod_desc',
             ),
-
             array(
                 'table' => 'crm_sales_orders',
                 'pk'    => 'so_id',
                 'fk'    => 'pop_sales_order',
-            ),
-
-           
+            ),           
         );
 
 
@@ -224,6 +232,33 @@ class PurchaseOrderReport extends BaseController
         
         $data['purchase_order'] = $this->pro_model->CheckData($from_date,'po_date',$to_date,'',$data1,'po_vendor_name',$data2,'pop_sales_order',$data3,'pop_prod_desc','','','pro_purchase_order_product',$joins,'pop_purchase_order',$joins1);  
         
+
+          if ($data6 != "" || $data7 != "") {
+
+            if ($data6 != "") {
+                // Filter the array to remove instances where 'pv_id' is empty
+                $filterdata = array_filter($data['purchase_order'], function ($item) {
+                    return empty($item->pv_id);
+                });
+            }
+
+            if ($data7 != "") {
+                // Filter the array to remove instances where 'pv_id' is empty
+                $filterdata = array_filter($data['purchase_order'], function ($item) {
+                    return !empty($item->pv_id);
+                });
+            }
+
+            if ($data7 != "" && $data6 != "") {
+                // Filter the array to remove instances where 'pv_id' is empty
+                $filterdata = $data['purchase_order'];
+            }
+
+
+            $data['purchase_order'] = $filterdata;
+        }
+
+
         // echo '<pre>';
         // print_r($data['purchase_order']); exit();
 

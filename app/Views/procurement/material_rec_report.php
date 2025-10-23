@@ -43,6 +43,19 @@
     color: black;
     vertical-align: middle;
 }
+
+/* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
+
+    .nested-table td{
+    vertical-align: middle;
+}
+
 </style>
 
 
@@ -199,6 +212,15 @@
                                                                                
                                                                             </tr>
 
+                                                                               <tr>
+                                                                            <td style="width: 30%;" class="center_padding">Pending</td>                                                                           
+                                                                                <td> <input class="" type="checkbox" value="pending" name="pending"></td>                                                                            
+                                                                            </tr>
+                                                                            <tr>
+                                                                            <td style="width: 30%;" class="center_padding">Linked</td>
+                                                                                <td> <input class="" type="checkbox" value="linked" name="linked"></td>                                                                                   
+                                                                            </tr>
+
 
                                                                         </tbody>
 
@@ -332,14 +354,14 @@
                                                                 <?php echo $material_req->mrn_delivery_note; ?></td>
 
                                                             <td colspan="6" align="left" class="p-0">
-                                                                <table>
+                                                                <table class="nested-table">
                                                                     <?php $tot_amt = 0;$k=0; 
                                                                     foreach ($material_req->product_orders as $orders) { $k++;  ?>
 
                                                                         <tr
                                                                             style="background: unset;border-bottom: hidden !important;">
                                                                             <td class="text-end rotate"
-                                                                                style="white-space: nowrap;width:80px">
+                                                                                style="white-space: nowrap;width:80px; vertical-align: top;">
                                                                                 <?php if($k==1){ $tot_amt = 0;
                                                                                 foreach ($material_req->product_orders as $ord) { ?>
                                                                                     <?php $tot_amt += $ord->rnp_amount; ?>
@@ -363,7 +385,7 @@
 
                                                                             <td class="text-end rotate"
                                                                                 style="white-space: nowrap;width:80px">
-                                                                                <?php echo format_currency($orders->pop_discount); ?><br>
+                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?>%<br>
                                                                             </td>
 
                                                                             <td class="text-end rotate"
