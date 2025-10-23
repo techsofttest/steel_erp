@@ -66,6 +66,10 @@
         vertical-align: top;
         /* Align content to the top */
     }
+
+    .nested-table td{
+    vertical-align: middle;
+}
 </style>
 
 <div class="tab-content text-muted">
@@ -344,13 +348,13 @@
                                                             </td>
 
                                                             <td colspan="3" class="p-0">
-                                                                <table>
+                                                                <table class="nested-table">
                                                                     <?php foreach ($material_req->product_orders as $orders) { ?>
                                                                         <tr
                                                                             style="background: unset;border-bottom: hidden !important;">
 
                                                                             <td class="rotate text-center"
-                                                                                style="white-space: nowrap;width:100px"><a
+                                                                                style="white-space: nowrap;width:100px;vertical-align: top;"><a
                                                                                     href="<?php echo base_url() . 'Crm/SalesOrder?view_so=' . $orders->so_id; ?>"
                                                                                     target="_blank"><?php echo $orders->so_reffer_no; ?></a>
                                                                             </td>

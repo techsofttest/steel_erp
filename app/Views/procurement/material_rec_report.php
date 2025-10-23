@@ -52,6 +52,10 @@
         vertical-align: top; /* Align content to the top */
     }
 
+    .nested-table td{
+    vertical-align: middle;
+}
+
 </style>
 
 
@@ -350,14 +354,14 @@
                                                                 <?php echo $material_req->mrn_delivery_note; ?></td>
 
                                                             <td colspan="6" align="left" class="p-0">
-                                                                <table>
+                                                                <table class="nested-table">
                                                                     <?php $tot_amt = 0;$k=0; 
                                                                     foreach ($material_req->product_orders as $orders) { $k++;  ?>
 
                                                                         <tr
                                                                             style="background: unset;border-bottom: hidden !important;">
                                                                             <td class="text-end rotate"
-                                                                                style="white-space: nowrap;width:80px">
+                                                                                style="white-space: nowrap;width:80px; vertical-align: top;">
                                                                                 <?php if($k==1){ $tot_amt = 0;
                                                                                 foreach ($material_req->product_orders as $ord) { ?>
                                                                                     <?php $tot_amt += $ord->rnp_amount; ?>

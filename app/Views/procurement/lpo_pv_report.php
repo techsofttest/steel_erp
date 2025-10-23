@@ -58,7 +58,9 @@
         vertical-align: top; /* Align content to the top */
     }
 
-
+.nested-table td{
+    vertical-align: middle;
+}
 </style>
 
 <div class="tab-content text-muted">
@@ -341,17 +343,17 @@
                                                                     <?php echo $pur_order->mrn_reffer; ?></a></td>
 
                                                             <td colspan="9" align="left" class="p-0">
-                                                                <table>
+                                                                <table class="nested-table">
                                                                     <?php $po_amt = 0; $k=0; $l_po_total = $l_pv_total = 0;
                                                                     foreach ($pur_order->product_orders as $orders) { $k++; ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
 
-                                                                            <td class="text-center" style="width:100px">
+                                                                            <td class="text-center" style="width:100px;vertical-align:top;">
                                                                                 <?php echo $orders->so_reffer_no; ?><br> </td>
 
-                                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->po_vendor_ref; ?></td>
+                                                                            <td class="text-center" style="width:100px;vertical-align:top;"><?php echo $pur_order->po_vendor_ref; ?></td>
 
-                                                                            <td class="text-end" style="width:80px"><?php if($k==1){ echo format_currency($pur_order->po_amount);
+                                                                            <td class="text-end" style="width:80px;vertical-align:top;"><?php if($k==1){ echo format_currency($pur_order->po_amount);
                                                                                                                         $tot_amount += $pur_order->po_amount; }?></td>
 
                                                                             <td style="width:500px"> <?php echo $orders->product_details; ?> </td>

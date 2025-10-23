@@ -55,7 +55,9 @@
         vertical-align: top; /* Align content to the top */
     }
 
-
+.nested-table td{
+    vertical-align: middle;
+}
 </style>
 
 
@@ -339,7 +341,7 @@
                                                             <td class="text-center" style="white-space: nowrap;width:100px"> <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> <?php echo $pur_order->po_reffer_no; ?></a></td>
 
                                                             <td colspan="9" align="left" class="p-0">
-                                                                <table>
+                                                                <table class="nested-table">
                                                                     <?php
                                                                     $k=0;
                                                                     foreach ($pur_order->product_orders as $orders) { $k++; ?>
@@ -347,11 +349,11 @@
 
 
 
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px"> <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
+                                                                            <td class="text-center" style="white-space: nowrap;width:100px; vertical-align:top;"> <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
 
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->mrn_delivery_note; ?></td>
+                                                                            <td class="text-center" style="white-space: nowrap;width:100px;vertical-align:top;  " ><?php echo $pur_order->mrn_delivery_note; ?></td>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px">
+                                                                            <td class="text-end" style="white-space: nowrap;width:80px; vertical-align:top;">
                                                                                 <?php if($k== 1){ $total_amt = 0;
                                                                                    foreach ($pur_order->product_orders as $ord) {
                                                                                     $total_amt += $ord->rnp_amount; 

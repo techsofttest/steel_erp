@@ -48,6 +48,10 @@
     color: black;
     vertical-align: middle;
 }
+
+.nested-table td{
+    vertical-align: middle;
+}
 </style>
 
 <div class="tab-content text-muted">
