@@ -355,7 +355,7 @@
                             <?php $k=0; foreach ($pur_vouc->product_orders as $orders) { $k++;?>
                                 <tr style="background: unset;border-bottom: hidden !important;">
                                     <td style="white-space: nowrap;">
-                                         <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_vouc->mrn_id; ?>" target="_blank"> 
+                                         <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . ($pur_vouc->mrn_id ?? ''); ?>" target="_blank"> 
                                             <?php echo $orders->mrn_reffer; ?>
                                         </a></td>
                                     <td class="text-end" style="white-space: nowrap;">
