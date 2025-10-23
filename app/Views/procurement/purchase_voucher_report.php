@@ -336,8 +336,8 @@
                     </td>
 
                     <td class="text-center" style="white-space: nowrap;">
-                         <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_vouc->po_id ?? ''; ?>" target="_blank"> 
-                         <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a></td>
+                        <a href="<?php echo base_url('Procurement/PurchaseOrder?view_so=' . ($pur_vouc->po_id ?? '')); ?>" target="_blank">
+                    </td>
 
                     <td colspan="7" class="p-0">
                         <table style="width:100%; table-layout:fixed;">
