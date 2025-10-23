@@ -692,7 +692,7 @@ class VacationTravel extends BaseController
     body {
       font-family: bentonsans, sans-serif;
       margin: 40px;
-      font-size:9px;
+      font-size:12px;
     }
     h2 {
       text-align: center;
@@ -875,13 +875,13 @@ class VacationTravel extends BaseController
 
 <th align="center">Contact</th>
 
-<th align="center">Vacation Due From</th>
+<th align="center">Vacation Due</th>
 
 <th align="center">Ticket Rate</th>
 
-<th align="center">Vacation Utilised</th>
+<th align="center">Utilised</th>
 
-<th align="center">Tickets Per Year</th>
+<th align="center">Ticket/Year</th>
 
 <th align="center">Entitlement</th>
 

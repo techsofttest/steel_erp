@@ -20,6 +20,12 @@
 
 
     <style>
+
+        .text-end
+        {
+            vertical-align:middle;
+        }
+
         #page-topbar{
             width: 100%;
             left: unset;
@@ -429,7 +435,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Date</th>
-                                                    <th>Voucher Number</th>
+                                                    <th>Voucher No</th>
                                                     <th>Voucher Type</th>
                                                     <th>Related Account</th>
                                                     <th class="text-end">Debit Amount</th>
@@ -537,7 +543,7 @@
 
 
                                             <tr class="no-sort">
-                                            <td><b style="font-size:23px;"><?= $vc->account_name ?></b></td>
+                                            <td><b style="font-size:18px;"><?= $vc->account_name ?></b></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
