@@ -43,6 +43,13 @@
     vertical-align: middle;
 }
 
+/* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
 
 </style>
 
@@ -173,6 +180,15 @@
                                                                           
                                                                             </tr>
 
+                                                                             <tr>
+                                                                            <td style="width: 30%;" class="center_padding">Pending</td>                                                                           
+                                                                                <td> <input class="" type="checkbox" value="pending" name="pending"></td>                                                                            
+                                                                            </tr>
+                                                                            <tr>
+                                                                            <td style="width: 30%;" class="center_padding">Linked</td>
+                                                                                <td> <input class="" type="checkbox" value="linked" name="linked"></td>                                                                                   
+                                                                            </tr>
+
 
                                                                         </tbody>
 
@@ -282,10 +298,10 @@
         <?php foreach ($pur_order->product_orders as $index => $orders): ?>
             <tr>
                 <?php if ($index === 0): ?>
-                    <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><?php echo $i; ?></td>
-                    <td class="text-center align-middle" style="white-space: nowrap;" rowspan="<?= $rowCount ?>"><?php echo  date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
-                    <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"><?php echo $pur_order->po_reffer_no; ?></a></td>
-                    <td class="align-middle" rowspan="<?= $rowCount ?>">
+                    <td class="text-center " rowspan="<?= $rowCount ?>"><?php echo $i; ?></td>
+                    <td class="text-center " style="white-space: nowrap;" rowspan="<?= $rowCount ?>"><?php echo  date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
+                    <td class="text-center " rowspan="<?= $rowCount ?>"><a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"><?php echo $pur_order->po_reffer_no; ?></a></td>
+                    <td class="" rowspan="<?= $rowCount ?>">
                         <?php 
                             foreach ($vendors as $vendor) {
                                 if ($pur_order->po_vendor_name == $vendor->cc_id) {
@@ -297,10 +313,10 @@
                     </td>
                 <?php endif; ?>
 
-                <td class="text-center align-middle"><a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
+                <td class="text-center "><a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
 
                 <?php if ($index === 0): ?>
-                    <td class="text-end align-middle" rowspan="<?= $rowCount ?>">
+                    <td class="text-end " rowspan="<?= $rowCount ?>">
                         <?php echo format_currency($pur_order->po_amount); ?>
                         <?php $total += $pur_order->po_amount; ?>
                     </td>

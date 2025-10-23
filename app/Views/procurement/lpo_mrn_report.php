@@ -52,6 +52,39 @@
     color: black;
     vertical-align: middle;
 }
+
+ /* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
+
+    /* For cells that should not wrap and might exceed width */
+    .text-truncate-ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        /* text-overflow: ellipsis; */
+    }
+
+    /* Allow wrapping for Vendor and Product */
+    .wrap-content {
+        white-space: normal !important; /* Override nowrap */
+        word-wrap: break-word; /* For long words */
+    }
+
+    /* Ensure nested table rows don't have extra borders */
+    .delTable tbody .nested-table tr:last-child > td {
+        border-bottom: 0px !important;
+    }
+
+    /* Adjust padding for nested table to align with parent table structure */
+    .delTable tbody td.p-0 {
+        padding: 0 !important;
+    }
+
+
 </style>
 
 
@@ -240,170 +273,199 @@
 
                         <!--datatable section start-->
 
-                        <div class="row">
-                            <div class="col-lg-12" style="padding: 0px;">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-12%">Purchase Order to Material Received Note Analysis</h4>
+ 
+<div class="row">
+    <div class="col-lg-12" style="padding: 0px;">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-12%">Purchase Order to Material Received Note Analysis</h4>
 
-                                        <form method="POST" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button type="submit" class="pdf_button report_button">PDF</button>
-                                        </form>
+                <form method="POST" target="_blank">
+                    <input type="hidden" name="pdf" value="1">
+                    <button type="submit" class="pdf_button report_button">PDF</button>
+                </form>
 
+                <button class="excel_button report_button" type="submit">Excel</button>
 
-                                        <button class="excel_button report_button" type="submit">Excel</button>
+                <form method="POST" action="" target="_blank">
+                    <input type="hidden" name="pdf" value="1">
+                    <button class="print_button report_button" type="submit">Print</button>
+                </form>
 
+                <button class="email_button report_button" type="submit" id="email_button">Email</button>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
-                                        <!-- 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1"> -->
-                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
-                                        <!-- </form> -->
+                <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
+            </div><!-- end card header -->
+            <div class="card-body table-responsive divcontainer" style="overflow:scroll">
+                <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                    <colgroup>
+                        <!-- Main Table Colgroup - Use explicit widths. If content *always* fits, fixed width is fine.
+                             If content *might* exceed, use text-truncate-ellipsis on td/th -->
+                        <col style="width:60px">  <!-- Sl no -->
+                        <col style="width:70px">  <!-- Date -->
+                        <col style="width:100px"> <!-- PO Ref -->
+                        <col style="width:300px"> <!-- Vendor -->
+                        <col style="width:100px"> <!-- Sales Order Ref -->
+                        <col style="width:80px">  <!-- Amount (PO) -->
+                        <col style="width:500px"> <!-- Product -->
+                        <col style="width:80px">  <!-- Quantity -->
+                        <col style="width:80px">  <!-- Rate -->
+                        <col style="width:80px">  <!-- Discount -->
+                        <col style="width:80px">  <!-- Amount (Product) -->
+                        <col style="width:100px"> <!-- MRN Ref -->
+                        <col style="width:80px">  <!-- Amount (MRN) -->
+                        <col style="width:80px">  <!-- Difference -->
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!-- Apply text-truncate-ellipsis for non-wrapping fixed-width columns -->
+                            <th class="no-sort text-center text-truncate-ellipsis">Sl no</th>
+                            <th class="text-center text-truncate-ellipsis">Date</th>
+                            <th class="text-center text-truncate-ellipsis">PO Ref</th>
+                            <th class="wrap-content">Vendor</th> <!-- Allow wrapping for Vendor -->
+                            <th class="text-center text-truncate-ellipsis">SO Ref</th>
+                            <th class="text-end text-truncate-ellipsis">Amount <br>(PO)</th>
+                            <th class="wrap-content">Product</th> <!-- Allow wrapping for Product -->
+                            <th class="text-center text-truncate-ellipsis">Quantity</th>
+                            <th class="text-end text-truncate-ellipsis">Rate</th>
+                            <th class="text-end text-truncate-ellipsis">Discount</th>
+                            <th class="text-end text-truncate-ellipsis">Amount <br>(Product)</th>
+                            <th class="text-center text-truncate-ellipsis">MRN Ref</th>
+                            <th class="text-end text-truncate-ellipsis">Amount <br>(MRN)</th>
+                            <th class="text-end text-truncate-ellipsis">Difference</th>
+                        </tr>
+                    </thead>
 
-                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
-                                    </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow:scroll">
-                                    <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
-                                                    <th class="" style="white-space: nowrap;width:300px">Vendor</th>
-                                                    <th class="text-center" style="width:100px">Sales Order Ref</th>
-                                                    <th class="text-end" style="width:80px">Amount</th>
-                                                    <th class="" style="width:500px;">Product</th>
-                                                    <th style="width:80px;" class="text-center">Quantity</th>
-                                                    <th style="width:80px;" class="text-end">Rate</th>
-                                                    <th style="width:80px;" class="text-end">Discount</th>
-                                                    <th style="width:80px;white-space: nowrap" class="text-end">Amount</th>
-                                                    <th class="text-center" style="width:100px;white-space: nowrap">MRN Ref</th>
-                                                    <!-- <th class="text-end">Quantity</th>
-                                                    <th class="text-end">Rate</th> -->
-                                                    <th style="width:80px;white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:80px;white-space: nowrap" class="text-end">Difference</th>
-                                                </tr>
+                    <tbody class="tbody_data">
+                        <?php
+                        if (!empty($purchase_order)) {
+                            $i = 1;
+                            $total_difference = 0;
+                            $total_mr_amount = 0;
+                            $total_po_amount_product_received = 0;
+                            $total_po_main_amount = 0;
 
-                                            </thead>
+                            foreach ($purchase_order as $pur_order) {
+                                $current_po_amount = $pur_order->po_amount;
+                                $total_po_main_amount += $current_po_amount;
+                        ?>
+                                <tr>
+                                    <td class="text-center text-truncate-ellipsis"><?php echo $i; ?></td>
+                                    <td class="text-center text-truncate-ellipsis"><?php echo date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
+                                    <td class="text-center text-truncate-ellipsis">
+                                        <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> <?php echo $pur_order->po_reffer_no; ?></a>
+                                    </td>
+                                    <td class="wrap-content">
+                                        <?php foreach ($vendors as $vendor) { echo $pur_order->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : ''; } ?>
+                                    </td>
 
-                                            <tbody class="tbody_data">
-                                                <?php
-                                                if (!empty($purchase_order)) {
-                                                    $i = 1;
-                                                    $difference = 0;
-                                                    $mr_amount = 0;
-                                                    $po_amount = 0;
-                                                    $tot_amount = 0;
-                                                    foreach ($purchase_order as $pur_order) { ?>
-                                                        <tr>
+                                    <?php if (!empty($pur_order->product_orders)) { ?>
+                                        <td colspan="10" align="left" class="p-0">
+                                            <table class="nested-table" style="width:100%; table-layout:fixed; margin-bottom: 0px !important;">
+                                                <colgroup>
+                                                    <col style="width:100px"> <!-- Sales Order Ref -->
+                                                    <col style="width:80px">  <!-- Amount (PO) -->
+                                                    <col style="width:500px"> <!-- Product -->
+                                                    <col style="width:80px">  <!-- Quantity -->
+                                                    <col style="width:80px">  <!-- Rate -->
+                                                    <col style="width:80px">  <!-- Discount -->
+                                                    <col style="width:80px">  <!-- Amount (Product) -->
+                                                    <col style="width:100px"> <!-- MRN Ref -->
+                                                    <col style="width:80px">  <!-- Amount (MRN) -->
+                                                    <col style="width:80px">  <!-- Difference -->
+                                                </colgroup>
+                                                <?php $k=0; foreach ($pur_order->product_orders as $orders) { $k++; ?>
+                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                        <td class="text-center text-truncate-ellipsis">
+                                                            <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a>
+                                                        </td>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                 <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> <?php echo $pur_order->po_reffer_no; ?></a></td>
-                                                            <td style="white-space: nowrap;width:300px">
-                                                                <?php foreach ($vendors as $vendor) { echo $pur_order->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : ''; } ?>
-                                                            </td>
+                                                        <td class="text-end text-truncate-ellipsis">
+                                                            <?php if($k == 1){ echo format_currency($current_po_amount); } ?>
+                                                        </td>
 
-                                                            <?php if (!empty($pur_order->product_orders)) { ?>
-                                                                <td colspan="10" align="left" class="p-0">
-                                                                <table >
-                                                                   
+                                                        <td class="wrap-content">
+                                                            <?php echo $orders->product_details; ?>
+                                                        </td>
 
-                                                                        <?php $k=0; foreach ($pur_order->product_orders as $orders) { $k++; ?>
-                                                                            <tr style="background: unset;border-bottom: hidden !important;">
-                                                                                <td class=" text-center" style="white-space: nowrap;width:100px">
-                                                                                    <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a>
-                                                                                    <br>
-                                                                                </td>
+                                                        <td class="text-center text-truncate-ellipsis">
+                                                            <?php echo $orders->pop_qty; ?>
+                                                        </td>
 
-                                                                                <td class="text-end " style="white-space: nowrap;width:80px">
-                                                                                    <?php if($k == 1){ $tot_amount += $pur_order->po_amount;
-                                                                                                            echo format_currency($pur_order->po_amount); }?>
-                                                                                </td>
+                                                        <td class="text-end text-truncate-ellipsis">
+                                                            <?php echo format_currency($orders->pop_rate); ?>
+                                                        </td>
 
-                                                                                <td class="" style="width:500px;">
-                                                                                    <?php echo $orders->product_details; ?><br>
-                                                                                </td>
+                                                        <td class="text-end text-truncate-ellipsis">
+                                                            <?php echo format_currency($orders->pop_discount); ?>%
+                                                        </td>
 
-                                                                                <td class="text-center " style="width:100px;white-space: nowrap">
-                                                                                    <?php echo $orders->pop_qty; ?><br>
-                                                                                </td>
-
-                                                                                <td class="text-end " style="width:80px;white-space: nowrap">
-                                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
-                                                                                </td>
-
-                                                                                <td class="text-end " style="width:80px;white-space: nowrap">
-                                                                                    <?php echo format_currency($orders->pop_discount); ?>%<br>
-                                                                                </td>
-
-                                                                                <td class="text-end " style="width:85px;white-space: nowrap">
-                                                                                    <?php $mr_amount += $orders->pop_amount;
-                                                                                    echo format_currency($orders->pop_amount); ?><br>
-                                                                                </td>
-
-                                                                                <td class="text-center" style="width:105px;white-space: nowrap">
-                                                                                    <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank"><?php echo $pur_order->mrn_reffer; ?></a>
-                                                                                    <br>
-                                                                                </td>
-
-                                                                                <td class="text-end" style="width:80px;white-space: nowrap">
-                                                                                    <?php $po_amount += $orders->rnp_amount;
-                                                                                    echo format_currency($orders->rnp_amount); ?><br>
-                                                                                </td>
-
-                                                                                <td class="text-end" style="width:83px;white-space: nowrap">
-                                                                                    <?php $difference += $orders->pop_amount - $orders->rnp_amount;
-                                                                                    echo format_currency($orders->pop_amount - $orders->rnp_amount); ?><br>
-                                                                                </td>
-
-                                                                            <?php } ?>
-
-                                                                    </table>
-
-                                                                </td>
-
+                                                        <td class="text-end text-truncate-ellipsis">
                                                             <?php
-                                                            } ?>
+                                                            $total_mr_amount += $orders->pop_amount;
+                                                            echo format_currency($orders->pop_amount);
+                                                            ?>
+                                                        </td>
 
-                                                        </tr>
+                                                        <td class="text-center text-truncate-ellipsis">
+                                                            <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank"><?php echo $pur_order->mrn_reffer; ?></a>
+                                                        </td>
 
-                                                    <?php $i++;
-                                                    } ?>
+                                                        <td class="text-end text-truncate-ellipsis">
+                                                            <?php
+                                                            $total_po_amount_product_received += $orders->rnp_amount;
+                                                            echo format_currency($orders->rnp_amount);
+                                                            ?>
+                                                        </td>
 
-                                                    <th></th>
-                                                    <th class="text-center">Total</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th class="text-end"><?php echo format_currency($tot_amount); ?></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th class="text-end"><?php echo format_currency($mr_amount); ?></th>
-                                                    <th></th>
-                                                    <!-- <th></th>
-                                                    <th></th> -->
-                                                    <th class="text-end"><?php echo format_currency($po_amount); ?></th>
-                                                    <th class="text-end"><?php echo format_currency($difference); ?></th>
-                                                <?php   } ?>
+                                                        <td class="text-end text-truncate-ellipsis">
+                                                            <?php
+                                                            $item_difference = $orders->pop_amount - $orders->rnp_amount;
+                                                            $total_difference += $item_difference;
+                                                            echo format_currency($item_difference);
+                                                            ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </table>
+                                        </td>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <td colspan="10" class="text-center">No product details available for this PO.</td>
+                                    <?php
+                                    }
+                                    ?>
+                                </tr>
+                            <?php $i++;
+                            } ?>
 
-                                            </tbody>
-
-                                        </table>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end col-->
-                        </div>
+                            <!-- Footer Row for Totals -->
+                            <tr>
+                                <th></th> <!-- Sl no -->
+                                <th class="text-center" colspan="4">Total</th>
+                                <th class="text-end text-truncate-ellipsis"><?php echo format_currency($total_po_main_amount); ?></th>
+                                <th></th> <!-- Product -->
+                                <th></th> <!-- Quantity -->
+                                <th></th> <!-- Rate -->
+                                <th></th> <!-- Discount -->
+                                <th class="text-end text-truncate-ellipsis"><?php echo format_currency($total_mr_amount); ?></th>
+                                <th></th> <!-- MRN Ref -->
+                                <th class="text-end text-truncate-ellipsis"><?php echo format_currency($total_po_amount_product_received); ?></th>
+                                <th class="text-end text-truncate-ellipsis"><?php echo format_currency($total_difference); ?></th>
+                            </tr>
+                        <?php } else { ?>
+                             <tr>
+                                 <td colspan="14" class="text-center">No data available</td>
+                             </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--end col-->
+</div>
 
                         <!---datatable section end-->
 

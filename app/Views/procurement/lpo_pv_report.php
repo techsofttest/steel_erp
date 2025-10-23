@@ -50,6 +50,15 @@
     vertical-align: middle;
 }
 
+/* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
+
+
 </style>
 
 <div class="tab-content text-muted">
@@ -294,7 +303,7 @@
                                                     <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
                                                     <th class="" style="white-space: nowrap;width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">SO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor Inv Ref</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                     <th style="white-space: nowrap;width:500px">Product</th>
@@ -302,7 +311,7 @@
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor inv Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <!-- <th class="text-end" style="white-space: nowrap;width:70px">Discount</th> -->
@@ -405,7 +414,7 @@
                                                             <?php
                                                             if (isset($pur_order->voucher_prod) || isset($pur_order->product_orders)) { ?>
 
-                                                                <td colspan="1" align="left" class="p-0" style="vertical-align:middle">
+                                                                <td colspan="1" align="left" class="p-0" style="">
                                                                     <table>
                                                                         <?php if (isset($pur_order->voucher_prod)) {
                                                                             $voc_count = count($pur_order->voucher_prod);

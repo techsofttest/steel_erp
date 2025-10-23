@@ -162,6 +162,20 @@ class MaterialRecReport extends BaseController
             $data2 = "";
         }
         
+            if (!empty($_GET['pending'])) {
+            $data6 = $_GET['pending'];
+        } else {
+            $data6 = "";
+        }
+
+
+
+        if (!empty($_GET['linked'])) {
+            $data7 = $_GET['linked'];
+        } else {
+            $data7 = "";
+        }
+
        
 
         $joins = array(
@@ -186,6 +200,11 @@ class MaterialRecReport extends BaseController
                 'table' => 'pro_purchase_order',
                 'pk'    => 'po_id',
                 'fk'    => 'rnp_purchase_id',
+            ),
+              array(
+                'table' => 'pro_purchase_voucher',
+                'pk'    => 'pv_delivery_note',
+                'fk'    => 'rnp_material_received_note',
             ),
 
          
@@ -214,7 +233,38 @@ class MaterialRecReport extends BaseController
         
         $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date,'mrn_date',$to_date,'',$data1,'mrn_sales_order',$data2,'mrn_product_desc','','','','','steel_pro_material_received_note_prod',$joins,'rnp_material_received_note',$joins1);  
         
-        // echo '<pre>';print_r($data['material_requesition']); exit();
+
+
+        
+        if ($data6 != "" || $data7 != "") {
+
+            if ($data6 != "") {
+                // Filter the array to remove instances where 'pv_id' is empty
+                $filterdata = array_filter($data['material_requesition'], function ($item) {
+                    return empty($item->pv_id);
+                });
+            }
+
+            if ($data7 != "") {
+                // Filter the array to remove instances where 'pv_id' is empty
+                $filterdata = array_filter($data['material_requesition'], function ($item) {
+                    return !empty($item->pv_id);
+                });
+            }
+
+            if ($data7 != "" && $data6 != "") {
+                // Filter the array to remove instances where 'pv_id' is empty
+                $filterdata = $data['material_requesition'];
+            }
+
+
+            $data['material_requesition'] = $filterdata;
+        }
+
+
+        // =====================
+
+        //  echo '<pre>';print_r($data['material_requesition']); exit();
 
         if(!empty($from_date))
         {

@@ -47,6 +47,13 @@
     color: black;
     vertical-align: middle;
 }
+/* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
 
 
 </style>
@@ -292,7 +299,7 @@
                                                     <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
                                                     <th class="" style="white-space: nowrap;width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">SO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor DN Ref</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                     <th class="" style="white-space: nowrap;width:500px">Product</th>
@@ -300,7 +307,7 @@
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Inv Ref</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Quantity</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
@@ -366,7 +373,7 @@
                                                                             <td class="text-end" style="width:80px">
                                                                                 <?php echo format_currency($orders->pop_rate ?? 0); ?></td>
                                                                                 <td class="text-end" style="width:80px">
-                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?></td>
+                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?>%</td>
 
                                                                             <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->rnp_amount ?? 0);
                                                                                                                                         $mrn_total += $orders->rnp_amount ?? 0; 
@@ -416,7 +423,7 @@
                                                             <?php  } ?>
 
 
-                                                            <td class="text-end" style="white-space: nowrap;width:80px;vertical-align:middle">
+                                                            <td class="text-end" style="white-space: nowrap;width:80px;">
                                                                 <?php
                                                                 // Ensure the counts of product_orders and voucher_prod are the same
                                                                 // if (isset($pur_order->product_orders) && is_array($pur_order->product_orders) && isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
