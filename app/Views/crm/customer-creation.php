@@ -1257,7 +1257,7 @@
                                                 <tr>
                                                     <th class="no-sort" style="width: 20px !important;">Sl no</th>
                                                     <th >Customer Name</th>
-                                                    <th style="width: 30px !important;">Post Box</th>
+                                                    <th style="width: 60px !important;">Post Box</th>
                                                     <th style="width: 100px !important;">Phone Number</th>
                                                     <th style="width: 70px !important">Actions</th>
                                                 </tr>
@@ -2092,12 +2092,7 @@
                 ],
                 columnDefs: [
 
-                    { targets: 0, className: "dt-center", width: "20px" },
-                    
-                    { targets: 2, className: "dt-center", width: "30px" },
-                    { targets: 3, className: "dt-center",  width: "100px" },
-                    { targets: 4, className: "dt-center", width: "70px" },
-                  
+                    { targets: [0,2,3,4], className: "dt-body-center" }
                 ],
                 headerCallback: function(thead, data, start, end, display) {
                 // use dt-head-center (header-specific) instead of dt-body-center
