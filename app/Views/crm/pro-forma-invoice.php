@@ -1696,8 +1696,16 @@ span.select2.customer_width, span.select2 {
                ],
 
                columnDefs: [
-                { targets: [5], className: "dt-body-center" }
+                { targets: [0,1,2,4,6], className: "dt-body-center" },
+                { targets: [5], className: "dt-body-right" }
             ],
+
+            headerCallback: function(thead, data, start, end, display) {
+                // use dt-head-center (header-specific) instead of dt-body-center
+                [0,1,2,4,5,6].forEach(function(i) {
+                    $(thead).find('th').eq(i).addClass('dt-head-center');
+                });
+            },
 
                "initComplete": function () {
 
