@@ -2092,7 +2092,28 @@
                 ],
                 columnDefs: [
 
-                    { targets: [0,2,3,4], className: "dt-body-center" }
+                    //{ targets: [0,2,3,4], className: "dt-body-center" }
+                    { 
+                        targets: 0,
+                        className: "dt-center",
+                        width: "20px"       
+                    },
+                    
+                    { 
+                        targets: 2,
+                        className: "dt-center",
+                        width: "30px"      
+                    },
+                    { 
+                        targets: 3,
+                        className: "dt-right",
+                        width: "100px"      
+                    },
+                    { 
+                        targets: 4,
+                        className: "dt-center",
+                        width: "70px"     
+                    }
                 ],
                 headerCallback: function(thead, data, start, end, display) {
                 // use dt-head-center (header-specific) instead of dt-body-center
