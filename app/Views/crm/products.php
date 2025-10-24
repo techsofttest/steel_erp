@@ -33,11 +33,11 @@
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Code</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th  style="width: 25px !important;">Code</th>
                                                     <th>Product Name</th>
-                                                    <th>Product Head</th>
-                                                    <th>Actions</th>
+                                                    <th  style="width: 100px !important">Product Head</th>
+                                                    <th  style="width: 50px !important">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -434,7 +434,11 @@
                 { data: 'product_product_head'},
                 { data: 'action'},
                 
-               ]
+            ],
+            columnDefs: [
+                { targets: [0,1,3,4], className: "dt-body-center" }
+            ],
+           
     
             });
         }
