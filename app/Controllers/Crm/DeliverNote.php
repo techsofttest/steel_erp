@@ -1685,12 +1685,25 @@ class DeliverNote extends BaseController
                 $product_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details',array('dpd_delivery_id'=>$id),$joins1);
                    
                 $pdf_data = "";
-                 $k=1;
+                $k=1;
+
+                $max_chars_per_line = 55;
+                
                 foreach($product_details as $prod_det)
                 {
+
+                    // Wrap text by words, not in middle of a word
+                    $wrapped = wordwrap(trim(strip_tags($prod_det->product_details)), $max_chars_per_line, "\n", true);
+                    $lines = explode("\n", $wrapped);
+    
+                    $first_line = true;
+
+                    foreach ($lines as $line) {
+                    if ($first_line) {
+
                     $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
 
-                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.$prod_det->product_details.'</td>';
+                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
 
                     $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->dpd_unit.'</td>';
 
@@ -1699,6 +1712,24 @@ class DeliverNote extends BaseController
                     $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->dpd_current_qty.'</td>';
 
                     $k++;
+                    $first_line = false;
+                    }
+                    else
+                    {
+
+                    $pdf_data .= '<tr>
+                    <td align="center" width="8%" >&nbsp;</td>
+                    <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                    <td align="center" style="padding:2px;">&nbsp;</td>
+                    <td align="center" style="padding:2px;">&nbsp;</td>
+                    <td align="right" style="padding:2px;">&nbsp;</td>
+                    <td align="center" style="padding:2px;">&nbsp;</td>
+                    <td align="right" style="padding:2px;">&nbsp;</td>
+                    </tr>';
+
+                    }
+
+                }
 
                 }
 
