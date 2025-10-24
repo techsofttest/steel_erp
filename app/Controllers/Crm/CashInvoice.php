@@ -2027,7 +2027,7 @@ class CashInvoice extends BaseController
                
                 //$mpdf->SetAutoPageBreak(true, 45);
 
-                $mpdf->SetAutoPageBreak(true, 59);
+                $mpdf->SetAutoPageBreak(true, 20);
 
                 $mpdf->SetTitle($title);
 
