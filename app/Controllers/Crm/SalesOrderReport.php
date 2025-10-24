@@ -522,7 +522,6 @@ class SalesOrderReport extends BaseController
                 'margin_left' => 5, 
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
-                
                 'default_font' => 'bentonsans'
                 
             ]);

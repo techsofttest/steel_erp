@@ -2213,6 +2213,7 @@ class SalesReturn extends BaseController
                 
                 $pdf_data = "";
                 $k=1;
+                $max_chars_per_line = 55;
 
                 foreach($product_details as $prod_det)
                 {   
@@ -2221,11 +2222,19 @@ class SalesReturn extends BaseController
                     $amount = format_currency($prod_det->srp_amount);
     
                     $disc = number_format($prod_det->srp_discount, 2);
+
+                    $wrapped = wordwrap(trim(strip_tags($prod_det->product_details)), $max_chars_per_line, "\n", true);
+                    $lines = explode("\n", $wrapped);
+
+                    $first_line = true;
+
+                    foreach ($lines as $line) {
+                    if ($first_line) {
     
     
                     $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
     
-                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.$prod_det->product_details.'</td>';
+                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.htmlspecialchars($line).'</td>';
     
                     $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->srp_quantity.'</td>';
     
@@ -2238,6 +2247,28 @@ class SalesReturn extends BaseController
                     $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$amount.'</td></tr>';
     
                     $k++;
+
+                    $first_line = false;
+
+                    }
+                    else
+                    {
+
+                    $pdf_data .= '<tr>
+                    <td align="center" width="8%" >&nbsp;</td>
+                    <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                    <td align="center" style="padding:2px;">&nbsp;</td>
+                    <td align="center" style="padding:2px;">&nbsp;</td>
+                    <td align="right" style="padding:2px;">&nbsp;</td>
+                    <td align="center" style="padding:2px;">&nbsp;</td>
+                    <td align="right" style="padding:2px;">&nbsp;</td>
+                    </tr>';
+
+                    }
+
+                }
+
+
                 }
     
                 $join =  array(
@@ -2310,7 +2341,7 @@ class SalesReturn extends BaseController
                     'defaultfooterline' => 0,
                 ]);
 
-                $mpdf->SetAutoPageBreak(true, 59);
+                $mpdf->SetAutoPageBreak(true, 20);
     
                 $mpdf->SetTitle($title); // Set the title
 
