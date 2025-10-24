@@ -28,6 +28,34 @@
     .adjust_width {
     width: 86%;
 }
+
+    .Dashboard-form .form-select {
+    border: 1px solid #434343 !important;
+    margin-bottom: 0px;
+    background: #f5f5f56e;
+    height: 40px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.travelerinfo td {
+    color: black;
+    vertical-align: middle;
+}
+
+/* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
+
+.nested-table td{
+    vertical-align: middle;
+}
+
+
 </style>
 
 
@@ -104,11 +132,11 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                         <tr>
                                                                                 
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px;margin-top: 15px;">From</td>
-                                                                                <td ><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
+                                                                                <td ><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
                                                                                 <td>
-                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width">
+                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control ">
                                                                                 </td>
 
                                                                             </tr>
@@ -155,6 +183,15 @@
                                                                                     </select>
                                                                                 </td>
                                                                           
+                                                                            </tr>
+
+                                                                             <tr>
+                                                                            <td style="width: 30%;" class="center_padding">Pending</td>                                                                           
+                                                                                <td> <input class="" type="checkbox" value="pending" name="pending"></td>                                                                            
+                                                                            </tr>
+                                                                            <tr>
+                                                                            <td style="width: 30%;" class="center_padding">Linked</td>
+                                                                                <td> <input class="" type="checkbox" value="linked" name="linked"></td>                                                                                   
                                                                             </tr>
 
 
@@ -239,80 +276,128 @@
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style=" overflow-x:scroll;">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+
+<table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+    <colgroup>
+        <col style="width:60px"> <!-- Sl no -->
+        <col style="width:80px"> <!-- Date -->
+        <col style="width:120px"> <!-- Purchase Order Ref -->
+        <col style="width:250px"> <!-- Vendor -->
+        <col style="width:120px"> <!-- Sales Order Ref -->
+        <col style="width:100px"> <!-- PO Amount -->
+        <col style="min-width:300px"> <!-- Product -->
+        <col style="width:80px"> <!-- Qty -->
+        <col style="width:100px"> <!-- Rate -->
+        <col style="width:100px"> <!-- Discount -->
+        <col style="width:120px"> <!-- Line Amount -->
+    </colgroup>
     <thead>
         <tr>
-            <th class="text-center" style="white-space: nowrap;width:60px">Sl No</th>
-            <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-            <th class="text-center" style="white-space: nowrap;width:120px">Purchase Order Ref</th>
-            <th class="" style="min-width:250px">Vendor</th>
-            <th class="text-center" style="white-space: nowrap;width:120px">Sales Order Ref</th>
-            <th class="text-end" style="white-space: nowrap;width:100px">PO Amount</th>
-            <th class="" style="min-width:300px">Product</th>
-            <th class="text-center" style="white-space: nowrap;width:80px">Qty</th>
-            <th class="text-end" style="white-space: nowrap;width:100px">Rate</th>
-            <th class="text-end" style="white-space: nowrap;width:100px">Discount</th>
-            <th class="text-end" style="white-space: nowrap;width:120px">Line Amount</th>
+            <th class="no-sort text-center" style="white-space: nowrap;">Sl no</th>
+            <th class="text-center" style="white-space: nowrap;">Date</th>
+            <th class="text-center" style="white-space: nowrap;">PO Ref</th>
+            <th class="" style="white-space: nowrap;">Vendor</th>
+            <th class="text-center" style="white-space: nowrap;">SO Ref</th>
+            <th class="text-end" style="white-space: nowrap;">PO Amount</th>
+            <th style="white-space: nowrap;">Product</th>
+            <th class="text-center" style="white-space: nowrap;">Qty</th>
+            <th class="text-end" style="white-space: nowrap;">Rate</th>
+            <th class="text-end" style="white-space: nowrap;">Discount</th>
+            <th class="text-end" style="white-space: nowrap;">Line Amount</th>
         </tr>
     </thead>
 
     <tbody class="tbody_data">
-        <?php if (!empty($purchase_order)): 
+        <?php if (!empty($purchase_order)):
             $i = 1;
-            $total = $po_total = 0;
-            foreach ($purchase_order as $pur_order): 
-                $rowCount = count($pur_order->product_orders);
-        ?>
-        <?php foreach ($pur_order->product_orders as $index => $orders): ?>
-            <tr>
-                <?php if ($index === 0): ?>
-                    <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><?php echo $i; ?></td>
-                    <td class="text-center align-middle" style="white-space: nowrap;" rowspan="<?= $rowCount ?>"><?php echo  date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
-                    <td class="text-center align-middle" rowspan="<?= $rowCount ?>"><a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"><?php echo $pur_order->po_reffer_no; ?></a></td>
-                    <td class="align-middle" rowspan="<?= $rowCount ?>">
-                        <?php 
+            $total = $po_total_all = 0; // Renamed $po_total to avoid confusion with nested table's $po_total
+            foreach ($purchase_order as $pur_order): ?>
+
+                <tr>
+                    <td class="text-center" style="white-space: nowrap;"><?php echo $i; ?></td>
+                    <td class="text-center" style="white-space: nowrap;"><?php echo date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
+                    <td class="text-center" style="white-space: nowrap;"><a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"><?php echo $pur_order->po_reffer_no; ?></a></td>
+                    <td class="" style="white-space: wrap;">
+                        <?php
                             foreach ($vendors as $vendor) {
                                 if ($pur_order->po_vendor_name == $vendor->cc_id) {
                                     echo $vendor->cc_customer_name;
                                     break;
                                 }
-                            } 
+                            }
                         ?>
                     </td>
-                <?php endif; ?>
-
-                <td class="text-center align-middle"><a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
-
-                <?php if ($index === 0): ?>
-                    <td class="text-end align-middle" rowspan="<?= $rowCount ?>">
-                        <?php echo format_currency($pur_order->po_amount); ?>
-                        <?php $total += $pur_order->po_amount; ?>
+                    <!-- This td now spans across the remaining 7 header columns -->
+                    <td colspan="7" align="left" class="p-0">
+                        <table class="nested-table" style="table-layout:fixed; width:100%; border: none;">
+                            <colgroup>
+                                <!-- Sales Order Ref (matches parent col 5 width: 120px) -->
+                                <col style="width:120px">
+                                <!-- PO Amount (matches parent col 6 width: 100px) -->
+                                <col style="width:100px">
+                                <!-- Product (matches parent col 7 width: min-width:300px) -->
+                                <col style="min-width:300px">
+                                <!-- Qty (matches parent col 8 width: 80px) -->
+                                <col style="width:80px">
+                                <!-- Rate (matches parent col 9 width: 100px) -->
+                                <col style="width:100px">
+                                <!-- Discount (matches parent col 10 width: 100px) -->
+                                <col style="width:100px">
+                                <!-- Line Amount (matches parent col 11 width: 120px) -->
+                                <col style="width:120px">
+                            </colgroup>
+                            <?php $current_po_amount = 0; $current_line_total = 0; $k=0;
+                            foreach ($pur_order->product_orders as $orders) { $k++; ?>
+                                <tr style="background: unset; border-bottom: hidden !important;">
+                                    <td class="text-center" style="white-space: nowrap; vertical-align: top;">
+                                        <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a>
+                                    </td>
+                                    <td class="text-end" style="white-space: nowrap; vertical-align: top;">
+                                        <?php if($k==1){ // Display PO amount only once per PO
+                                            $current_po_amount = $pur_order->po_amount;
+                                            echo format_currency($current_po_amount);
+                                            $total += $current_po_amount; // Accumulate total for the main PO Amount column
+                                        } else {
+                                            echo "&nbsp;"; // Empty cell for subsequent rows in the nested table
+                                        } ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $orders->product_details; ?>
+                                    </td>
+                                    <td class="text-center" style="white-space: nowrap;">
+                                        <?php echo $orders->pop_qty; ?>
+                                    </td>
+                                    <td class="text-end" style="white-space: nowrap;">
+                                        <?php echo format_currency($orders->pop_rate); ?>
+                                    </td>
+                                    <td class="text-end" style="white-space: nowrap;">
+                                        <?php echo format_currency($orders->pop_discount); ?>%
+                                    </td>
+                                    <td class="text-end" style="white-space: nowrap;">
+                                        <?php echo format_currency($orders->pop_amount);
+                                        $po_total_all += $orders->pop_amount; // Accumulate total for the main Line Amount column
+                                        $current_line_total += $orders->pop_amount; // Accumulate for the current PO's line total if needed
+                                        ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </table>
                     </td>
-                <?php endif; ?>
-
-                <td><?php echo $orders->product_details; ?></td>
-                <td class="text-center"><?php echo $orders->pop_qty; ?></td>
-                <td class="text-end"><?php echo format_currency($orders->pop_rate); ?></td>
-                <td class="text-end"><?php echo format_currency($orders->pop_discount); ?>%</td>
-                <td class="text-end"><?php echo format_currency($orders->pop_amount); $po_total += $orders->pop_amount; ?></td>
-            </tr>
-        <?php endforeach; ?>
-        <?php $i++; endforeach; ?>
+                </tr>
+                <?php $i++;
+            endforeach; ?>
 
         <!-- TOTAL ROW -->
-        <tr class="fw-bold ">
-            <th  class="text-end">Total</th>
-            <th colspan="4" class="text-end"></th>
-            <th class="text-end"><?php echo format_currency($total); ?></th>
-            <th colspan="4"></th>
-            <th class="text-end"><?php echo format_currency($po_total); ?></th>
+        <tr class="fw-bold">
+            <th colspan="5" class="text-start" style="white-space: nowrap;">Total</th>
+            <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
+            <th colspan="4" style="white-space: nowrap;"></th> <!-- These colspan 4 columns now align with Product, Qty, Rate, Discount -->
+            <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($po_total_all); ?></th>
         </tr>
 
         <?php endif; ?>
     </tbody>
 </table>
-
-
                                     </div>
                                 </div>
                             </div>

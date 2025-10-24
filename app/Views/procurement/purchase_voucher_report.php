@@ -36,6 +36,48 @@
     .adjust_width {
     width: 86%;
     }
+
+        .Dashboard-form .form-select {
+    border: 1px solid #434343 !important;
+    margin-bottom: 0px;
+    background: #f5f5f56e;
+    height: 40px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.travelerinfo td {
+    color: black;
+    vertical-align: middle;
+}
+
+/* ✅ Keep widths consistent across parent and nested tables */
+#DataTable, 
+#DataTable table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#DataTable th, 
+#DataTable td {
+    white-space: wrap;
+}
+
+#DataTable table td, 
+#DataTable table th {
+    border: none; /* keep inner table seamless */
+}
+
+/* Optional: add horizontal scroll on smaller screens */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.nested-table td{
+    vertical-align: middle;
+}
+
 </style>
 <div class="tab-content text-muted">
 
@@ -116,11 +158,11 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                         <tr>
                                                                                 
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px;margin-top: 15px;">From</td>
-                                                                                <td ><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
+                                                                                <td ><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
                                                                                 <td>
-                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width">
+                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control ">
                                                                                 </td>
 
                                                                             </tr>
@@ -243,31 +285,7 @@
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
-                                      <style>
-/* ✅ Keep widths consistent across parent and nested tables */
-#DataTable, 
-#DataTable table {
-    table-layout: fixed;
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#DataTable th, 
-#DataTable td {
-    white-space: wrap;
-}
-
-#DataTable table td, 
-#DataTable table th {
-    border: none; /* keep inner table seamless */
-}
-
-/* Optional: add horizontal scroll on smaller screens */
-.table-wrapper {
-    overflow-x: auto;
-}
-</style>
-
+    
 <div class="table-wrapper">
 <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
     <!-- 🔹 Added this colgroup so widths are consistent -->
@@ -321,11 +339,11 @@
                     </td>
 
                     <td class="text-center" style="white-space: nowrap;">
-                         <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_vouc->po_id; ?>" target="_blank"> 
-                         <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a></td>
+                        <a href="<?php echo base_url('Procurement/PurchaseOrder?view_so=' . ($pur_vouc->po_id ?? '')); ?>" target="_blank">
+                    </td>
 
                     <td colspan="7" class="p-0">
-                        <table style="width:100%; table-layout:fixed;">
+                        <table class="nested-table" style="width:100%; table-layout:fixed;">
                             <!-- 🔹 Added nested colgroup matching parent widths -->
                             <colgroup>
                                 <col style="width:100px;"> <!-- MRN Ref -->
@@ -339,16 +357,16 @@
 
                             <?php $k=0; foreach ($pur_vouc->product_orders as $orders) { $k++;?>
                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                    <td style="white-space: nowrap;">
-                                         <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_vouc->mrn_id; ?>" target="_blank"> 
+                                    <td style="white-space: nowrap;vertical-align: top;">
+                                         <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . ($pur_vouc->mrn_id ?? ''); ?>" target="_blank"> 
                                             <?php echo $orders->mrn_reffer; ?>
                                         </a></td>
-                                    <td class="text-end" style="white-space: nowrap;">
+                                    <td class="text-end " style="white-space: nowrap;vertical-align: top;">
                                         <?php if($k == 1){ echo format_currency($pur_vouc->pv_total);
                                             $total += $pur_vouc->pv_total; } ?>
                                     </td>
                                     <td><?php echo $orders->pvp_prod_dec; ?></td>
-                                    <td class="text-center"><?php echo format_currency($orders->pvp_qty); ?></td>
+                                    <td class="text-center "><?php echo format_currency($orders->pvp_qty); ?></td>
                                     <td class="text-end"><?php echo format_currency($orders->pvp_rate); ?></td>
                                     <td class="text-end"><?php echo format_currency($orders->pvp_discount); ?>%</td>
                                     <td class="text-end" style="white-space: nowrap;">

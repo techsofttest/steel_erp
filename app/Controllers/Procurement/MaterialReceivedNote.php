@@ -39,7 +39,7 @@ class MaterialReceivedNote extends BaseController
         
         ## Total number of records with filtering
        
-        $searchColumns = array('mrn_reffer','po_reffer_no');
+        $searchColumns = array('mrn_reffer','po_reffer_no','mrn_id');
 
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(

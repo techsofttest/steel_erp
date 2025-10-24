@@ -29,6 +29,33 @@
     .adjust_width {
     width: 86%;
 }
+
+    .Dashboard-form .form-select {
+    border: 1px solid #434343 !important;
+    margin-bottom: 0px;
+    background: #f5f5f56e;
+    height: 40px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.travelerinfo td {
+    color: black;
+    vertical-align: middle;
+}
+
+/* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
+
+    .nested-table td{
+    vertical-align: middle;
+}
+
 </style>
 
 
@@ -112,11 +139,11 @@
                                             
                                                                             <tr>
                                                                                 
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px;margin-top: 15px;">From</td>
-                                                                                <td ><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
+                                                                                <td ><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
                                                                                 <td>
-                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width">
+                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control ">
                                                                                 </td>
 
                                                                             </tr>
@@ -183,6 +210,15 @@
                                                                                     </select>
                                                                                 </td>
                                                                                
+                                                                            </tr>
+
+                                                                               <tr>
+                                                                            <td style="width: 30%;" class="center_padding">Pending</td>                                                                           
+                                                                                <td> <input class="" type="checkbox" value="pending" name="pending"></td>                                                                            
+                                                                            </tr>
+                                                                            <tr>
+                                                                            <td style="width: 30%;" class="center_padding">Linked</td>
+                                                                                <td> <input class="" type="checkbox" value="linked" name="linked"></td>                                                                                   
                                                                             </tr>
 
 
@@ -318,14 +354,14 @@
                                                                 <?php echo $material_req->mrn_delivery_note; ?></td>
 
                                                             <td colspan="6" align="left" class="p-0">
-                                                                <table>
+                                                                <table class="nested-table">
                                                                     <?php $tot_amt = 0;$k=0; 
                                                                     foreach ($material_req->product_orders as $orders) { $k++;  ?>
 
                                                                         <tr
                                                                             style="background: unset;border-bottom: hidden !important;">
                                                                             <td class="text-end rotate"
-                                                                                style="white-space: nowrap;width:80px">
+                                                                                style="white-space: nowrap;width:80px; vertical-align: top;">
                                                                                 <?php if($k==1){ $tot_amt = 0;
                                                                                 foreach ($material_req->product_orders as $ord) { ?>
                                                                                     <?php $tot_amt += $ord->rnp_amount; ?>
@@ -349,7 +385,7 @@
 
                                                                             <td class="text-end rotate"
                                                                                 style="white-space: nowrap;width:80px">
-                                                                                <?php echo format_currency($orders->pop_discount); ?><br>
+                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?>%<br>
                                                                             </td>
 
                                                                             <td class="text-end rotate"

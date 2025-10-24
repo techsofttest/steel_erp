@@ -302,13 +302,13 @@ class Reports extends BaseController
                         'fontDir' => array_merge($fontDirs, [
                             __DIR__ . '/fonts'
                         ]),
-                        'fontdata' => $fontData + [
+                        /*'fontdata' => $fontData + [
                             'bentonsans' => [
                               
                                 'R' => 'OpenSans-Regular.ttf',
                                 'B' => 'OpenSans-Bold.ttf',
                             ],
-                        ],
+                        ],*/
                         'default_font' => 'bentonsans'
                         
                     ]);
@@ -681,20 +681,21 @@ class Reports extends BaseController
                 $mpdf = new \Mpdf\Mpdf([
                     'format' => 'Letter', // Custom page size in millimeters
                     //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
-                    'default_font_size' => 9, 
+                    'default_font_size' => 12, 
+                    'margin_top' => 15, 
                     'margin_left' => 5, 
                     'margin_right' => 5,
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
-                    'default_font' => 'bentonsans'
+                    ],*/
+                    //'default_font' => 'bentonsans'
                     
                 ]);
     
@@ -758,9 +759,10 @@ class Reports extends BaseController
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
-                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:13px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
                 
                 </td>
@@ -775,7 +777,15 @@ class Reports extends BaseController
                 
             
                 <tr width="100%">
-                <td align="right"><h3>Statements Of Accounts</h3></td>
+
+                <td align="right">
+                
+                <h3 style="font-size:20px;">Statements Of Accounts</h3>
+
+                <hr style="height:2px;border:none;color:#333;background-color:#333;margin-top:0">
+
+                
+                </td>
             
                 </tr>
 
@@ -1181,14 +1191,14 @@ class Reports extends BaseController
                 </tr>";
 
     
-                if(empty($start_date) && empty($end_date))
+                if(empty($end_date))
                 {
                  
                    $dates = "-";
                 }
                 else
                 {
-                   $dates = date('d-M-Y',strtotime($end_date));
+                   $dates = date('d M Y',strtotime($end_date));
                 }
     
                 
@@ -1209,17 +1219,7 @@ class Reports extends BaseController
                     'default_font_size' => 9, 
                     'margin_left' => 5, 
                     'margin_right' => 5,
-                    'fontDir' => array_merge($fontDirs, [
-                        __DIR__ . '/fonts'
-                    ]),
-                    'fontdata' => $fontData + [
-                        'bentonsans' => [
-                          
-                            'R' => 'OpenSans-Regular.ttf',
-                            'B' => 'OpenSans-Bold.ttf',
-                        ],
-                    ],
-                    'default_font' => 'bentonsans'
+                    //'default_font' => 'bentonsans'
                     
                 ]);
     
@@ -1261,9 +1261,10 @@ class Reports extends BaseController
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
-                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:13px;margin-top:10px;" >Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
                 
                 </td>
@@ -1274,12 +1275,18 @@ class Reports extends BaseController
             
             
             
-                <table width="100%" style="margin-top:5px;">
+                <table width="100%" style="margin-top:2px;">
                 
             
                 <tr width="100%">
 
-                <td width="100%" colspan="5" align="right"><h3>Aged Receivables Payables</h3></td>
+                <td width="100%" colspan="5" align="right">
+
+                <h3 style="font-size:20px;padding-right: 20px;">SOA- Unpaid Invoice Details</h3>
+                
+                <hr style="height:2px;border:none;color:#333;background-color:#333;margin-top:0">
+
+                </td>
             
                 
 
@@ -1289,7 +1296,7 @@ class Reports extends BaseController
                 <tr width="100%">
 
                 <td width="15%">
-                Account : 
+                Customer : 
                 </td>
 
                 <td>
@@ -1301,11 +1308,25 @@ class Reports extends BaseController
                 </tr>
 
 
+                <tr width="100%">
+
+                <td width="15%">
+                Attention :    
+                </td>
+
+                <td>
+                
+                Accounts Department
+
+                </td>
+
+                </tr>
+
 
                 <tr width="100%">
 
                 <td width="15%">
-                Period :
+                Date :
                 </td>
 
                 <td >
@@ -1315,24 +1336,6 @@ class Reports extends BaseController
                 </td>
 
                 </tr>
-
-
-                <tr width="100%">
-
-                <td width="15%">
-                Division :    
-                </td>
-
-                <td>
-                
-                Al Fuzail
-
-                </td>
-
-                </tr>
-
-
-
             
                 </table>
                
@@ -1499,7 +1502,7 @@ class Reports extends BaseController
 
                 <tr>
                 
-                <td style="border-top:2px solid;border-bottom:2px solid;" align="center">Net Amount Due : '.currency_to_words($balance).'</td>
+                <td style="border-top:2px solid;border-bottom:2px solid;" align="center"><b>Net Amount Due : '.currency_to_words($balance).'</b></td>
 
                 </tr>
 
@@ -1528,7 +1531,7 @@ class Reports extends BaseController
                 ';
 
 
-                $html .= $pdc_data;
+                //$html .= $pdc_data;
 
                 //echo $html; exit;
             
@@ -1536,8 +1539,10 @@ class Reports extends BaseController
             
                 
                 $mpdf->WriteHTML($html);
+
+                $mpdf->SetHTMLFooter($pdc_data);
                
-               // $mpdf->SetFooter($footer);
+                // $mpdf->SetFooter($footer);
 
                 $this->response->setHeader('Content-Type', 'application/pdf');
 
@@ -1866,7 +1871,7 @@ class Reports extends BaseController
                 }
                 else
                 {
-                    $dates = date('d-M-Y',strtotime($start_date)) . " to " . date('d-M-Y',strtotime($end_date)); 
+                    $dates = date('d M Y',strtotime($start_date)) . " to " . date('d M Y',strtotime($end_date)); 
                 }
     
                 
@@ -1885,19 +1890,20 @@ class Reports extends BaseController
                     'format' => 'Letter', // Custom page size in millimeters
                     //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
                     'default_font_size' => 9, 
+                    'margin_top' => 15, 
                     'margin_left' => 5, 
                     'margin_right' => 5,
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
-                    'default_font' => 'bentonsans'
+                    ],*/
+                    //'default_font' => 'bentonsans'
                     
                 ]);
     
@@ -1913,11 +1919,11 @@ class Reports extends BaseController
                     padding-bottom: 5px;
                     padding-left: 5px;
                     padding-right: 5px;
-                    font-size: 10px;
+                    font-size: 12px;
                 }
                 p{
                     
-                    font-size: 10px;
+                    font-size: 12px;
     
                 }
                 .dec_width
@@ -1939,9 +1945,10 @@ class Reports extends BaseController
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
-                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:13px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
                 
                 </td>
@@ -1955,16 +1962,20 @@ class Reports extends BaseController
                 <table width="100%" style="margin-top:5px;">
                 
             
-                <tr width="100%">
+                <tr width="100%" style="padding:0;">
 
-                <td style="border-bottom:1px solid;" width="100%" colspan="5" align="right"><h3>Statement Of Account</h3></td>
+                <td style="border-bottom:1px solid;" width="100%" colspan="5" align="right">
+                
+                <h3 style="font-size:20px;">Statement Of Accounts</h3>
+         
+                </td>
             
                 </tr>
 
 
-                <tr width="100%">
+                <tr width="100%" style="border-right:1px solid;">
 
-                <td width="15%" height="100%" style="border-right:1px solid;" align="left">
+                <td width="15%" height="100%"  align="left">
                 Customer : 
                 </td>
 
@@ -1978,9 +1989,9 @@ class Reports extends BaseController
 
 
 
-                 <tr width="100%">
+                <tr width="100%" style="border-right:1px solid;">
 
-                <td width="15%" style="border-right:1px solid;" align="left">
+                <td width="15%" align="left">
                 Attention :    
                 </td>
 
@@ -1997,9 +2008,9 @@ class Reports extends BaseController
 
 
 
-                <tr width="100%">
+                <tr width="100%" style="border-right:1px solid;">
 
-                <td width="15%" style="border-right:1px solid;" align="left">
+                <td width="15%" align="left">
                 Period :
                 </td>
 
@@ -2044,7 +2055,7 @@ class Reports extends BaseController
 
                 <tr>
 
-                <td align="left" style="border-top: 1px solid">Op. Balance</td>
+                <td align="left" style="border-top: 1px solid">Opening Balance</td>
             
                 <td align="left" style="border-top: 1px solid"></td>
             
@@ -2403,11 +2414,11 @@ class Reports extends BaseController
                 }
                 else
                 {
-                   $dates = date('d-F-Y',strtotime($date_from)) ." to ". date('d-F-Y',strtotime($date_to));
+                   $dates = date('d M Y',strtotime($date_from)) ." to ". date('d M Y',strtotime($date_to));
                 }
 
 
-                $title = "General Ledger Report ".date('d-M-Y')."";
+                $title = "Trial Balance Report - ".date('d-M-Y')."";
 
 
                 $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
@@ -2422,20 +2433,20 @@ class Reports extends BaseController
                     'format' => 'Letter', // Custom page size in millimeters
                     //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
                     'default_font_size' => 9,
-                    'margin_top' => 0,
+                    'margin_top' => 15,
                     'margin_left' => 5, 
                     'margin_right' => 5,
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
-                    'default_font' => 'bentonsans'
+                    ],*/
+                    //'default_font' => 'bentonsans'
                     
                 ]);
              
@@ -2465,6 +2476,11 @@ class Reports extends BaseController
                 {
                     color:red;
                 }
+
+                h2
+                {
+                margin: 1pt;
+                }
                 
                 </style>
             
@@ -2476,9 +2492,10 @@ class Reports extends BaseController
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
-                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:13px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
                 
                 </td>
@@ -2495,17 +2512,19 @@ class Reports extends BaseController
                 <tr width="100%">
 
                 <td colspan="5" align="right">
-                <h3>Trial Balance</h3>
+
+                <h3 style="font-size:20px;padding-right: 20px;">Trial Balance </h3>
+
                 </td>
             
-                <!--<hr style="height:3px;border:none;color:#333;background-color:#333;margin-top:0">-->
+                <hr style="height:2px;border:none;color:#333;background-color:#333;margin-top:0">
 
                 </tr>
 
 
                 <tr width="100%">
 
-                <td width="15%" style="border-right:2px solid;">
+                <td width="15%" style="">
                 Period : 
                 </td>
 
@@ -2535,15 +2554,15 @@ class Reports extends BaseController
                 
                 <td align="center" style="border-bottom: 1px solid">Account</td>
             
-                <td align="right" style="border-bottom: 1px solid">Begining Balance</td>
+                <td align="right" style="border-bottom: 1px solid">Begining <br> Balance</td>
             
-                <td align="right" style="border-bottom: 1px solid">Debit Change</td>
+                <td align="right" style="border-bottom: 1px solid">Debit <br> Change</td>
             
-                <td align="right" style="border-bottom: 1px solid">Credit Change</td>
+                <td align="right" style="border-bottom: 1px solid">Credit <br> Change</td>
             
-                <td align="right" style="border-bottom: 1px solid">Net Change</td>
+                <td align="right" style="border-bottom: 1px solid">Net <br> Change</td>
     
-                <td align="right" style="border-bottom: 1px solid">Ending Balance</td>
+                <td align="right" style="border-bottom: 1px solid">Ending <br> Balance</td>
     
                 </tr>
 
@@ -2805,8 +2824,13 @@ EOD;
 }
 
 $pdf_data .= <<<EOD
+
 <tr>
-    <th align="center" style="text-align:center"><b style="font-size:14px;">Total Revenues</b></th>
+    <td colspan="5" style="border-top:1px solid black; height:1px; padding:0;"></td>
+</tr>
+
+<tr style="border-top:1px solid red;">
+    <th align="center" style="text-align:center"><b style="font-size:13px;">Total Revenues</b></th>
     <td class="text-end" align="right"><b>{$total_revenue_month}</b></td>
     <td class="text-end" align="right"><b>100.00</b></td>
     <td class="text-end" align="right"><b>{$total_revenue_year}</b></td>
@@ -2853,6 +2877,11 @@ $total_cos_month_perc = ($total_cos_month != 0 && $total_revenue_month != 0) ? (
 $total_cos_year_perc = ($total_cos_year != 0 && $total_revenue_year != 0) ? ($total_cos_year / $total_revenue_year * 100) : 0.00;
 
 $pdf_data .= <<<EOD
+
+<tr>
+    <td colspan="5" style="border-top:1px solid black; height:1px; padding:0;"></td>
+</tr>
+
 <tr>
     <th align="center" style="text-align:center"><b style="font-size:14px;">Total Cost Of Sales</b></th>
     <td class="text-end" align="right">{$total_cos_month}</td>
@@ -2918,6 +2947,11 @@ $total_expense_month_perc = ($total_expense_month != 0 && $total_revenue_month !
 $total_expense_year_perc = ($total_expense_year != 0 && $total_revenue_year != 0) ? ($total_expense_year / $total_revenue_year * 100) : 0.00;
 
 $pdf_data .= <<<EOD
+
+<tr>
+    <td colspan="5" style="border-top:1px solid black; height:1px; padding:0;"></td>
+</tr>
+
 <tr>
     <th align="center" style="text-align:center"><b style="font-size:14px;">Total Expenses</b></th>
     <td class="text-end" align="right">{$total_expense_month}</td>
@@ -2935,6 +2969,11 @@ $net_profit_month_perc = $gross_perc_month - $total_expense_month_perc;
 $net_profit_year_perc = $gross_perc_year - $total_expense_year_perc;
 
 $pdf_data .= <<<EOD
+
+<tr>
+    <td colspan="5" style="border-top:1px solid black; height:1px; padding:0;"></td>
+</tr>
+
 <tr>
     <th align="center" style="text-align:center;"><b style="font-size:14px;">Net Profit</b></th>
     <td class="text-end" align="right">{$net_profit_month}</td>
@@ -2942,6 +2981,11 @@ $pdf_data .= <<<EOD
     <td class="text-end" align="right">{$net_profit_year}</td>
     <td class="text-end" align="right">{$net_profit_year_perc}</td>
 </tr>
+
+<tr>
+    <td colspan="5" style="border-top:1px solid black; height:1px; padding:0;"></td>
+</tr>
+
 EOD;
 
 
@@ -2988,19 +3032,20 @@ EOD;
                     'format' => 'Letter', // Custom page size in millimeters
                     //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
                     'default_font_size' => 9, 
+                    'margin_top' => 15, 
                     'margin_left' => 5, 
                     'margin_right' => 5,
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
-                    'default_font' => 'bentonsans'
+                    ],*/
+                    //'default_font' => 'bentonsans'
                     
                 ]);
     
@@ -3045,9 +3090,10 @@ EOD;
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
-                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:13px;margin-top:10px;" >Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
                 
                 </td>
@@ -3063,7 +3109,13 @@ EOD;
             
                 <tr width="100%">
 
-                <td align="right" colspan="5"><h3>Income Statement</h3></td>
+                <td align="right" colspan="5">
+                
+                <h3 style="font-size:20px;padding-right: 20px;">Income Statement</h3>
+                
+                <hr style="height:2px;border:none;color:#333;background-color:#333;margin-top:0">
+
+                </td>
             
                 </tr>
 
@@ -3251,12 +3303,12 @@ EOD;
             $pdf_data .='
             
             <tr> 
-                <td align="left" class="border-top">'.$ac->ca_name.'</td>
-                <td align="right" class="border-top">'.format_currency($ac->Invoices->total_dues).'</td>
-                <td align="right" class="border-top">'.format_currency($ac->Invoices->{"0_30_days"}).'</td>
-                <td align="right" class="border-top">'.format_currency($ac->Invoices->{"31_60_days"}).'</td>
-                <td align="right" class="border-top">'.format_currency($ac->Invoices->{"61_90_days"}).'</td>
-                <td align="right" class="border-top">'.format_currency($ac->Invoices->{"90_plus_days"}).'</td>
+                <td align="left" class="">'.$ac->ca_name.'</td>
+                <td align="right" class="">'.format_currency($ac->Invoices->total_dues).'</td>
+                <td align="right" class="">'.format_currency($ac->Invoices->{"0_30_days"}).'</td>
+                <td align="right" class="">'.format_currency($ac->Invoices->{"31_60_days"}).'</td>
+                <td align="right" class="">'.format_currency($ac->Invoices->{"61_90_days"}).'</td>
+                <td align="right" class="">'.format_currency($ac->Invoices->{"90_plus_days"}).'</td>
                 
             </tr>
 
@@ -3272,7 +3324,7 @@ EOD;
 
         <tr class="no-sort">
        
-        <td class="border-top"><b style="font-size:20px;" align="right">Total</b></td>
+        <td class="border-top"><b align="right">Total</b></td>
         <td align="right" class="border-top"><b>'.format_currency($totals['total_dues']).'</b></td>
         <td align="right" class="border-top"><b>'.format_currency($totals['0_30_days']).'</b></td>
         <td align="right" class="border-top"><b>'.format_currency($totals['31_60_days']).'</b></td>
@@ -3301,19 +3353,20 @@ EOD;
             'format' => 'Letter', // Custom page size in millimeters
             //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
             'default_font_size' => 9, 
+            'margin_top' => 15, 
             'margin_left' => 5, 
             'margin_right' => 5,
             'fontDir' => array_merge($fontDirs, [
                 __DIR__ . '/fonts'
             ]),
-            'fontdata' => $fontData + [
+            /*'fontdata' => $fontData + [
                 'bentonsans' => [
                   
                     'R' => 'OpenSans-Regular.ttf',
                     'B' => 'OpenSans-Bold.ttf',
                 ],
-            ],
-            'default_font' => 'bentonsans'
+            ],*/
+            //'default_font' => 'bentonsans'
             
         ]);
 
@@ -3369,9 +3422,10 @@ EOD;
         
             <td>
         
-            <h3>Al Fuzail Engineering Services WLL</h3>
-            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+            <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+            <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p style="font-size:13px;margin-top:10px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
             
             
             </td>
@@ -3386,8 +3440,14 @@ EOD;
             
             <tr width="100%">
 
-            <td align="right" colspan="5"><h3>Receivables / Payables Summery</h3></td>
-        
+            <td align="right" colspan="5">
+            
+            <h3 style="font-size:20px;padding-right: 20px;">Receivables / Payables Summery</h3>
+            
+            <hr style="height:2px;border:none;color:#333;background-color:#333;margin-top:0">
+            
+            </td>
+
             </tr>
 
 
@@ -3428,6 +3488,7 @@ EOD;
         
             <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
             
+
         
             <tr>
             
@@ -3444,6 +3505,10 @@ EOD;
 
             <td align="right">Above 90 Days</td>
 
+            </tr>
+
+            <tr>
+                <td colspan="6" style="border-top:1px solid black; height:1px; padding:0;"></td>
             </tr>
 
              
@@ -3669,19 +3734,20 @@ EOD;
                     'format' => 'Letter', // Custom page size in millimeters
                     //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
                     'default_font_size' => 9, 
+                    'margin_top' => 15,
                     'margin_left' => 5, 
                     'margin_right' => 5,
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
-                    'default_font' => 'bentonsans'
+                    ],*/
+                    //'default_font' => 'bentonsans'
                     
                 ]);
     
@@ -3693,7 +3759,7 @@ EOD;
                 }
                 else
                 {
-                   $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
+                   $dates = date('d M Y',strtotime($start_date)) . " to " . date('d M Y',strtotime($end_date));
                 }
     
              
@@ -3733,9 +3799,10 @@ EOD;
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
-                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:13px;margin-top:10px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
                 
                 </td>
@@ -3751,7 +3818,13 @@ EOD;
             
                 <tr width="100%">
 
-                <td colspan="5" align="right"><h3>Balance Sheet</h3></td>
+                <td colspan="5" align="right">
+                
+                <h3 style="font-size:20px;">Balance Sheet</h3>
+
+                <hr style="height:2px;border:none;color:#333;background-color:#333;margin-top:0">
+                
+                </td>
             
                 </tr>
 
@@ -4081,14 +4154,14 @@ foreach ($data['transactions'] as $trn_credit) {
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
-                    'default_font' => 'bentonsans'
+                    ],*/
+                    //'default_font' => 'bentonsans'
                     
                 ]);
              
@@ -4140,9 +4213,10 @@ foreach ($data['transactions'] as $trn_credit) {
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
-                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:13px;margin-top:10px;" >Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
 
                 </td>
@@ -4157,7 +4231,13 @@ foreach ($data['transactions'] as $trn_credit) {
             
                 <tr width="100%">
 
-                <td colspan="5" align="right"><h3>Bank Reconciliation Statement</h3></td>
+                <td colspan="5" align="right" >
+                
+                <h3 style="font-size:20px;padding-right: 20px;">Bank Reconciliation Statement</h3>
+                
+                <hr style="height:2px;border:none;color:#333;background-color:#333;margin-top:0">
+
+                </td>
             
 
                 </tr>
@@ -4368,19 +4448,20 @@ $pdf_data .= '
                     'format' => 'Letter', // Custom page size in millimeters
                     //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
                     'default_font_size' => 9, 
+                    'margin_top' => 15,
                     'margin_left' => 5, 
                     'margin_right' => 5,
                     'fontDir' => array_merge($fontDirs, [
                         __DIR__ . '/fonts'
                     ]),
-                    'fontdata' => $fontData + [
+                    /*'fontdata' => $fontData + [
                         'bentonsans' => [
                           
                             'R' => 'OpenSans-Regular.ttf',
                             'B' => 'OpenSans-Bold.ttf',
                         ],
-                    ],
-                    'default_font' => 'bentonsans'
+                    ],*/
+                    //'default_font' => 'bentonsans'
                     
                 ]);
              
@@ -4432,9 +4513,10 @@ $pdf_data .= '
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
-                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
+                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
+                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:13px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
 
                 </td>
@@ -4449,7 +4531,13 @@ $pdf_data .= '
             
                 <tr width="100%">
 
-                <td colspan="5" align="right"><h3>Fixed Asset Report</h3></td>
+                <td colspan="5" align="right">
+                
+                <h3 style="font-size:20px;">Fixed Asset Report</h3>
+
+                <hr style="height:2px;border:none;color:#333;background-color:#333;margin-top:0">
+
+                </td>
             
 
                 </tr>

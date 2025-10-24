@@ -33,6 +33,31 @@
     .adjust_width {
     width: 86%;
 }
+
+    .Dashboard-form .form-select {
+    border: 1px solid #434343 !important;
+    margin-bottom: 0px;
+    background: #f5f5f56e;
+    height: 40px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.travelerinfo td {
+    color: black;
+    vertical-align: middle;
+}
+/* Custom styles for the table */
+    .delTable th, .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px; /* Adjust as needed */
+        padding-right: 8px; /* Adjust as needed */
+        vertical-align: top; /* Align content to the top */
+    }
+
+.nested-table td{
+    vertical-align: middle;
+}
 </style>
 
 
@@ -110,11 +135,11 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
                                                                                 
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px;margin-top: 15px;">From</td>
-                                                                                <td><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
+                                                                                <td><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
                                                                                 <td>
-                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width">
+                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control ">
                                                                                 </td>
 
                                                                             </tr>
@@ -276,7 +301,7 @@
                                                     <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
                                                     <th class="" style="white-space: nowrap;width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">SO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor DN Ref</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                     <th class="" style="white-space: nowrap;width:500px">Product</th>
@@ -284,7 +309,7 @@
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Inv Ref</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Quantity</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
@@ -316,7 +341,7 @@
                                                             <td class="text-center" style="white-space: nowrap;width:100px"> <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> <?php echo $pur_order->po_reffer_no; ?></a></td>
 
                                                             <td colspan="9" align="left" class="p-0">
-                                                                <table>
+                                                                <table class="nested-table">
                                                                     <?php
                                                                     $k=0;
                                                                     foreach ($pur_order->product_orders as $orders) { $k++; ?>
@@ -324,11 +349,11 @@
 
 
 
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px"> <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
+                                                                            <td class="text-center" style="white-space: nowrap;width:100px; vertical-align:top;"> <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
 
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->mrn_delivery_note; ?></td>
+                                                                            <td class="text-center" style="white-space: nowrap;width:100px;vertical-align:top;  " ><?php echo $pur_order->mrn_delivery_note; ?></td>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px">
+                                                                            <td class="text-end" style="white-space: nowrap;width:80px; vertical-align:top;">
                                                                                 <?php if($k== 1){ $total_amt = 0;
                                                                                    foreach ($pur_order->product_orders as $ord) {
                                                                                     $total_amt += $ord->rnp_amount; 
@@ -350,7 +375,7 @@
                                                                             <td class="text-end" style="width:80px">
                                                                                 <?php echo format_currency($orders->pop_rate ?? 0); ?></td>
                                                                                 <td class="text-end" style="width:80px">
-                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?></td>
+                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?>%</td>
 
                                                                             <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->rnp_amount ?? 0);
                                                                                                                                         $mrn_total += $orders->rnp_amount ?? 0; 
@@ -400,7 +425,7 @@
                                                             <?php  } ?>
 
 
-                                                            <td class="text-end" style="white-space: nowrap;width:80px;vertical-align:middle">
+                                                            <td class="text-end" style="white-space: nowrap;width:80px;">
                                                                 <?php
                                                                 // Ensure the counts of product_orders and voucher_prod are the same
                                                                 // if (isset($pur_order->product_orders) && is_array($pur_order->product_orders) && isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
