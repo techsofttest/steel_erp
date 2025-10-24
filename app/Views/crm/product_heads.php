@@ -97,10 +97,10 @@
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Code</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 30px !important;">Code</th>
                                                     <th>Product Head</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 50px !important">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -473,7 +473,18 @@
                 { data :'ph_product_head'},
                 { data :'action'},
                 
-               ]
+               ],
+                columnDefs: [
+
+                    { targets: [0,1,3], className: "dt-body-center" },
+				
+                ],
+                headerCallback: function(thead, data, start, end, display) {
+                // use dt-head-center (header-specific) instead of dt-body-center
+                [0,1,3].forEach(function(i) {
+                    $(thead).find('th').eq(i).addClass('dt-head-center');
+                });
+            }
     
             });
         }
