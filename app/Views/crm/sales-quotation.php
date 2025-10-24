@@ -1930,13 +1930,13 @@
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort" >Sl no</th>
-                                                    <th>Reference</th>
-                                                    <th>Date</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 120px !important;">Reference</th>
+                                                    <th style="width: 75px !important;">Date</th>
                                                     <th>Customer</th>
-                                                    <th>Enquiry Number</th>
-                                                    <th>Amount</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 110px !important;">Enquiry Number</th>
+                                                    <th style="width: 100px;">Amount</th>
+                                                    <th style="width: 100px !important">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -2723,8 +2723,15 @@
 
             columnDefs: [
                 
-                { targets: [5], className: "dt-body-center" }
+                { targets: [0,1,2,4,6], className: "dt-body-center" },
+                { targets: [5], className: "dt-body-right" }
             ],
+            headerCallback: function(thead, data, start, end, display) {
+                // use dt-head-center (header-specific) instead of dt-body-center
+                [0,1,2,4,5,6].forEach(function(i) {
+                    $(thead).find('th').eq(i).addClass('dt-head-center');
+                });
+            },
 
                 "initComplete": function () {
 
@@ -2737,8 +2744,6 @@
                 "drawCallback": function() {
                   
                     $('.view_btn[data-id="<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>"]').trigger('click');
-
-               
 
                 }
  

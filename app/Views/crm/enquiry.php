@@ -1076,11 +1076,11 @@
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
-                                                    <th>Date</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 100px !important;">Reference</th>
+                                                    <th style="width: 75px !important;">Date</th>
                                                     <th>Customer</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 70px !important">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -2126,7 +2126,16 @@
                 { data: 'enquiry_customer'},
                 { data: 'action'},
                 
-               ]
+               ],
+                columnDefs: [
+                    { targets: [0,1,2,4], className: "dt-body-center" }
+                ],
+                headerCallback: function(thead, data, start, end, display) {
+               
+                    [0,1,2,4].forEach(function(i) {
+                        $(thead).find('th').eq(i).addClass('dt-head-center');
+                    });
+                }
     
             });
         }
