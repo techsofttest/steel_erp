@@ -436,11 +436,11 @@
                 
             ],
             columnDefs: [
-                { targets: [0,1,3,4], className: "dt-body-center" }
+                { targets: [0,1,4], className: "dt-body-center" }
             ],
             headerCallback: function(thead, data, start, end, display) {
                 // use dt-head-center (header-specific) instead of dt-body-center
-                [0,1,3,4].forEach(function(i) {
+                [0,1,4].forEach(function(i) {
                     $(thead).find('th').eq(i).addClass('dt-head-center');
                 });
             }
