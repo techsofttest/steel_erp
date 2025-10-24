@@ -506,7 +506,7 @@ span.select2.customer_width, span.select2 {
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
-                                                    <th style="width: 90px !important;">Reference</th>
+                                                    <th style="width: 130px !important;">Reference</th>
                                                     <th style="width: 75px !important;">Date</th>
                                                     <th>Customer</th>
                                                     <th style="width: 85px !important;">Sales Order</th>
@@ -1260,6 +1260,7 @@ span.select2.customer_width, span.select2 {
                         <div class="mt-4 content_table">
                             <table class="table table-bordered table-striped delTable " style="margin:0px;">
                                 <thead class="travelerinfo contact_tbody">
+
                                     <tr>
                                         <td class="text-center" style="width: 45px;">SI</td>
                                         <td class="text-center" style="width: 110px;">Delivery Reffer</td>
@@ -1269,8 +1270,6 @@ span.select2.customer_width, span.select2 {
                                         <td class="text-center" style="width: 80px;">Rate</td>
                                         <td class="text-center" style="width: 69px;">Discount</td>
                                         <td class="text-center" style="width: 90px;">Amount</td>
-                                        
-
                                     </tr>
                                                          
                                 </thead>
