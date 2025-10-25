@@ -31,11 +31,11 @@
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th>Vendor Name</th>
-                                                    <th>Post Box</th>
-                                                    <th>Telephone</th>
-                                                    <th>Action</th>
+                                                    <th style="width: 60px !important;">Post Box</th>
+                                                    <th style="width: 100px !important;" >Telephone</th>
+                                                    <th style="width: 70px !important">Action</th>
                                                 </tr>
                                             </thead>
                                             
@@ -670,7 +670,17 @@
                 { data :'cc_telephone'},
                 { data :'action'},
                 
-               ]
+               ],
+                columnDefs: [
+                { targets: [0,2,3,4], className: "dt-body-center" },
+				
+            ],
+            headerCallback: function(thead, data, start, end, display) {
+                // use dt-head-center (header-specific) instead of dt-body-center
+                [0,2,3,4].forEach(function(i) {
+                    $(thead).find('th').eq(i).addClass('dt-head-center');
+                });
+            }
     
             });
         }

@@ -79,7 +79,7 @@ class PurchaseOrder extends BaseController
               'po_mrn_reff'   => $record->mr_reffer_no,
               'ven_name'      => $record->cc_customer_name,
               'po_amount'     => $record->po_amount,
-              'po_date'       => date('d-m-Y',strtotime($record->po_date)),
+              'po_date'       => date('d-M-Y',strtotime($record->po_date)),
               "action"        => $action,
            );
            $i++; 

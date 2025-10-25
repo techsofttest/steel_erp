@@ -814,7 +814,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
      
     });
 
-  /*####*/
+   /*####*/
 
    /*add more contact details*/
 
@@ -825,7 +825,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $("body").on('click', '.add_person', function(){
        
         if(y < max_fieldss){ //max input box allowed
+
             y++;
+            
             i++;
 
             
