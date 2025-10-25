@@ -1208,7 +1208,7 @@
                                                     <th>Vendor</th>
                                                     <th style="width: 150px !important;">Purchase Order</th>
                                                     <th style="width: 100px;">Total</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 70px;">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -1839,6 +1839,16 @@
                 { data: 'action'},
                 
                ],
+               columnDefs: [
+                { targets: [0,1,2,4,6], className: "dt-body-center" },
+				{ targets: [5], className: "dt-body-right" }
+               ],
+                headerCallback: function(thead, data, start, end, display) {
+                    // use dt-head-center (header-specific) instead of dt-body-center
+                    [0,1,2,4,5,6].forEach(function(i) {
+                        $(thead).find('th').eq(i).addClass('dt-head-center');
+                    });
+                },
                "initComplete": function () {
 
                     var dataId = '<?php echo isset($_GET['view_po']) ? $_GET['view_po'] : ''; ?>';
