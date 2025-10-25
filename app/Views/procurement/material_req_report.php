@@ -650,7 +650,7 @@ span.select2.customer_width, span.select2{
 
      /*product droup drown search*/
          $(".sales_order").select2({
-            placeholder: "Select Saled Order",
+            placeholder: "Select Sales Order",
             theme : "default form-control- customer_width",
             dropdownParent: $('#MaterialRequesitionReport'),
             ajax: {

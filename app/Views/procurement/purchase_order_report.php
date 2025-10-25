@@ -113,7 +113,6 @@ span.select2.customer_width, span.select2{
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="card">
@@ -785,7 +784,7 @@ span.select2.customer_width, span.select2{
 
         /*product droup drown search*/
         $(".sales_order").select2({
-            placeholder: "Select Saled Order",
+            placeholder: "Select Sales Order",
             theme: "default form-control- customer_width",
             dropdownParent: $('#PurchaseOrderReport'),
             ajax: {

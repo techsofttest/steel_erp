@@ -56,6 +56,25 @@
     vertical-align: middle;
 }
 
+.select2.select2-container{   
+    padding-top: 5px !important;
+}
+
+.select2-container {
+    width: 100% !important;   /* make sure it fills the cell properly */
+}
+
+.select2-selection__rendered {
+    white-space: nowrap !important;  /* prevent weird line breaks */
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+span.select2.customer_width, span.select2{
+    width:100% !important;
+}
+
+
 </style>
 
 
@@ -74,7 +93,7 @@
 
 
                         <!--sales rout report modal start-->
-                        <div class="modal fade" id="MaterialRequesitionReport" aria-labelledby="exampleModalLabel"
+                        <div class="modal fade" id="MaterialReceivedReport" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
@@ -157,7 +176,7 @@
                                                                             <td style="width: 30%;" class="center_padding">Vendor</>
                                                                                 <td style="width: 70%;"  colspan="4">
                                                                                     <select
-                                                                                        class="form-select customer_clz"
+                                                                                        class="form-select customer_clz vendor_dropdown"
                                                                                         name="vendor">
                                                                                         <option value="" selected
                                                                                             disabled>Select Vendor
@@ -177,7 +196,7 @@
                                                                             <td style="width: 30%;" class="center_padding">Sales Order</td>
                                                                             <td style="width: 70%;"  colspan="4">
                                                                                     <select
-                                                                                        class="form-select value='' customer_clz"
+                                                                                        class="form-select sales_order customer_clz"
                                                                                         name="sales_order">
                                                                                         <option value="" selected
                                                                                             disabled>Select Sales Order
@@ -196,7 +215,7 @@
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Product</td>
                                                                             <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select" value=""
+                                                                                    <select class="form-select product_clz" value=""
                                                                                         name="product">
                                                                                         <option value="" selected
                                                                                             disabled>Select Porduct
@@ -460,11 +479,11 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
 
-
+<script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
@@ -474,7 +493,7 @@
 
             $(window).on('load', function () {
 
-                $('#MaterialRequesitionReport').modal('show');
+                $('#MaterialReceivedReport').modal('show');
             });
 
         <?php endif; ?>
@@ -486,7 +505,7 @@
         $(".droup_sales").select2({
             placeholder: "Select Customer",
             theme: "default form-control- customer_width",
-            dropdownParent: $('#MaterialRequesitionReport'),
+            dropdownParent: $('#MaterialReceivedReport'),
 
             ajax: {
                 url: "<?= base_url(); ?>Procurement/MaterialReqReport/FetchTypes",
@@ -577,7 +596,7 @@
 
         $(".search-btn").on('click', function () {
 
-            $('#MaterialRequesitionReport').modal('show');
+            $('#MaterialReceivedReport').modal('show');
         });
 
 
@@ -678,6 +697,119 @@
 
         }
 
+// ======================
+
+         /*Vendor dropdown search*/
+        $(".vendor_dropdown").select2({
+            placeholder: "Select Vendor",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#MaterialReceivedReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/MaterialRecReport/FetchVendors",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.cc_id,
+                                text: $.trim(item.cc_customer_name)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+
+        /*product droup drown search*/
+        $(".sales_order").select2({
+            placeholder: "Select Sales Order",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#MaterialReceivedReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/MaterialRecReport/FetchSalesOrder",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.so_id,
+                                text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+        /* product dropdown search */
+        $(".product_clz").select2({
+            placeholder: "Select Product",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#MaterialReceivedReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/MaterialRecReport/FetchProducts",
+                type: "POST", // ✅ Make sure this is POST since controller expects POST
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                        salesorder: $('.sales_order').val() // ✅ send inside data function
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return { id: item.product_id, text: item.product_details };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },
+            }
+        });
+
+// =================================
+
     });
 </script>
 
@@ -685,7 +817,7 @@
     // Close modal when form is submitted
     document.getElementById('add_form').addEventListener('submit', function (e) {
         // Close the modal after the form is submitted
-        $('#MaterialRequesitionReport').modal('hide');
+        $('#MaterialReceivedReport').modal('hide');
     });
 </script>
 
