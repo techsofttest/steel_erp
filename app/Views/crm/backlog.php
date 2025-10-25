@@ -19,7 +19,7 @@
     margin: auto;
 }
 .adjust_width {
-    width: 86%;
+    width: 92%;
 }
 .select2.select2-container{
     
@@ -29,6 +29,19 @@
 .Dashboard-form .form-select {
    
    color: #999;
+}
+.not_found{
+
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding: 220px 0px;
+}
+.not_found p{
+
+    font-size: 35px;
+    font-weight: 700;
+    color: black;
 }
 
 </style>
@@ -103,9 +116,9 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
 
-                                                                                <td class="center_padding" style="display: flex;align-items: center;margin-left: 10px;">From</td>
-                                                                                <td style=""><input type="date" style="margin-left: 10px;" name="form_date" id="" onclick="this.showPicker();" value="<?php echo $from_date; ?>" class="form-control adjust_width"></td>
-                                                                                <td style="width: 10% !important;display: flex;align-items: center;margin-right: 10px;">To</td>
+                                                                                <td class="center_padding" style="white-space: nowrap; vertical-align: middle;">From</td>
+                                                                                <td style=""><input type="date"  name="form_date" id="" onclick="this.showPicker();" value="<?php echo $from_date; ?>" class="form-control adjust_width"></td>
+                                                                                <td style="white-space: nowrap; text-align: center; vertical-align: middle;">To</td>
                                                                                 <td style=""><input type="date" name="to_date" id="" onclick="this.showPicker();" value="<?php echo $to_date; ?>" class="form-control adjust_width"></td>
 
                                                                             </tr>
@@ -133,7 +146,7 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Executive</td>
+                                                                                <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding">Sales Executive</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select sales_order_ref sales_order" value="<?php echo $sales_executives; ?>" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Sales</option>
@@ -411,7 +424,20 @@
                             <!--end col-->
                         </div>
 
-                        <?php } ?>
+                        <?php } else{
+                            if(!empty($_GET)){   
+                        ?> 
+                            
+                            <div class="row">
+                                
+                                   
+                                        <div class="col-lg-12 not_found">
+                                            <p>No Data Found !!</p>
+                                        </div>
+                                    
+                               
+                            </div>  
+                        <?php } } ?>
 
                         <!---datatable section end-->
 

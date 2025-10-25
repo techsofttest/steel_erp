@@ -963,10 +963,12 @@ class CommonModel extends Model
             }
             $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
         }
+
         $query->groupBy($group_coloum);
 
         $result = $query->get()->getResult();
 
+        
         return $result;
     }
     

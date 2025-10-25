@@ -157,13 +157,15 @@ class SalesOrderToDn extends BaseController
 
         $sales_refference = $this->common_model->FetchWhereUniqueJoin('crm_sales_orders',$cond,$joins1,'so_reffer_no');
         
-        $data['sales_reff'] = '<option value="" selected disabled>Select Order Ref</option>';
+        $data['sales_reff'] = '<select class="form-select sales_order_ref sales_order" name="sales_order_ref"><option value="" selected disabled>Select Order Ref</option>';
 
         foreach($sales_refference as $sales_reff)
         {
             $data['sales_reff'] .='<option value='.$sales_reff->so_id.'>'.$sales_reff->so_reffer_no.'</option>';
             
         }
+
+         $data['sales_reff'] .='</select>';
 
         //fetch executive
        
@@ -212,6 +214,7 @@ class SalesOrderToDn extends BaseController
                     }
                 }
             } else {
+                
                 $data['quot_prod'] .= '<option value="">No Product Details Available</option>';
             }
         }

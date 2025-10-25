@@ -24,7 +24,7 @@
         margin: auto;
 }
 .adjust_width {
-    width: 86%;
+    width: 92%;
 }
 .select2.select2-container{
     
@@ -34,6 +34,19 @@
    
    color: #999;
 }
+.not_found{
+
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        padding: 220px 0px;
+    }
+    .not_found p{
+
+        font-size: 35px;
+        font-weight: 700;
+        color: black;
+    }
 
 </style>
 
@@ -131,9 +144,9 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
                                                                                 
-                                                                                <td style="display: flex;align-items: center;margin-left: 10px;" class="center_padding">From</td>
-                                                                                <td><input type="date" name="form_date" style="margin-left: 10px;"  value='<?php echo $from_date; ?>' id="from_date_id" onclick="this.showPicker();"  class="form-control adjust_width"></td>
-                                                                                <td style="width: 10% !important;display: flex;justify-content: center;align-items: center;" class="center_padding">To</td>
+                                                                                <td style="white-space: nowrap; vertical-align: middle;" class="center_padding">From</td>
+                                                                                <td><input type="date" name="form_date"   value='<?php echo $from_date; ?>' id="from_date_id" onclick="this.showPicker();"  class="form-control adjust_width"></td>
+                                                                                <td style="white-space: nowrap; text-align: center; vertical-align: middle;" class="center_padding">To</td>
                                                                                 <td><input type="date" name="to_date" value='<?php echo $to_date; ?>' id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
                                                                             
                                                                             </tr>
@@ -159,9 +172,9 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Order Ref</td>
-                                                                                <td style="width: 70%;" colspan="4">
-                                                                                    <select class="form-select sales_order_ref sales_order" value='<?php echo $sales_order;?>' name="sales_order">
+                                                                                <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding">Sales Order Ref</td>
+                                                                                <td style="width: 70%;" colspan="4" class="customer_sales_order_ref">
+                                                                                    <select class="form-select sales_order_ref sales_order " value='<?php echo $sales_order;?>' name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
                                                                                         <?php foreach($sales_orders_data as $sales_ord_data){?> 
                                                                                             <option value="<?php echo $sales_ord_data->so_id;?>"><?php echo $sales_ord_data->so_reffer_no;?></option> 
@@ -173,11 +186,11 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Executive</td>
+                                                                                <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding">Sales Executive</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select executive_clz" value="<?php echo $sales_executive; ?>" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Executive</option>
-                                                                                        <?php foreach($sales_executives as $sales_exe){?> 
+                                                                                        <?php foreach($sales_executives as $sales_exe){ ?> 
                                                                                             <option value="<?php echo $sales_exe->se_id;?>"><?php echo $sales_exe->se_name;?></option>    
                                                                                         <?php } ?>
                                                                                     </select>
@@ -191,7 +204,7 @@
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select product_clz" value='<?php echo $product; ?>' name="product">
                                                                                         <option value="" selected disabled>Select Product</option>
-                                                                                        <?php foreach($products_data as $prod){?>
+                                                                                        <?php foreach($products_data as $prod){ ?>
                                                                                             <option value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>    
                                                                                         <?php } ?>
                                                                                     </select>
@@ -379,7 +392,20 @@
                             <!--end col-->
                         </div>
 
-                        <?php } ?>
+                        <?php } else{
+                            if(!empty($_GET)){   
+                        ?> 
+                            
+                            <div class="row">
+                                
+                                   
+                                        <div class="col-lg-12 not_found">
+                                            <p>No Data Found !!</p>
+                                        </div>
+                                    
+                               
+                            </div>  
+                        <?php } } ?>
 
                         <!---datatable section end-->
 
@@ -468,7 +494,11 @@
                     
                     $('.product_clz').html(data.quot_prod);
 
-                    $('.sales_order_ref').html(data.sales_reff);
+                    //$('.sales_order_ref').html(data.sales_reff);
+
+                    $('.customer_sales_order_ref').html(data.sales_reff);
+
+                    console.log(data.sales_reff);
 
                 }
 
@@ -678,7 +708,7 @@
 
          /*product droup drown search*/
          $(".sales_order").select2({
-            placeholder: "Select Product",
+            placeholder: "Select Sales Order",
             theme : "default form-control- customer_width",
             dropdownParent: $('#SalesOrderReport'),
             ajax: {

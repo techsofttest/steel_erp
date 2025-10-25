@@ -23,12 +23,25 @@
         margin: auto;
     }
     .adjust_width {
-        width: 86%;
+        width: 92%;
     }
     .select2.select2-container{
 
         padding-top: 5px !important;
 
+    }
+     .not_found{
+
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        padding: 220px 0px;
+    }
+    .not_found p{
+
+        font-size: 35px;
+        font-weight: 700;
+        color: black;
     }
 </style>
 
@@ -103,9 +116,9 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
                                                                                 
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px">From</td>
-                                                                                <td ><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
-                                                                                <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
+                                                                                <td class="center_padding" style="white-space: nowrap; vertical-align: middle;">From</td>
+                                                                                <td ><input type="date"  name="form_date" id="from_date_id" value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td style="white-space: nowrap; text-align: center; vertical-align: middle;" class="center_padding">To</td>
                                                                                 <td ><input type="date" name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
 
                                                                             </tr>
@@ -129,8 +142,8 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Order Ref</td>
-                                                                                <td style="width: 70%;" colspan="4"><select class="form-select sales_order_ref sales_order" value="<?php echo $sales_order; ?>" name="sales_order">
+                                                                                <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding">Sales Order Ref</td>
+                                                                                <td style="width: 70%;" colspan="4" class="customer_sales_order_ref"><select class="form-select sales_order_ref sales_order" value="<?php echo $sales_order; ?>" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
                                                                                         <?php foreach($sales_orders_data as $sales_ord){?> 
                                                                                             <option value="<?php echo $sales_ord->so_id;?>"><?php echo $sales_ord->so_reffer_no;?></option>    
@@ -322,7 +335,20 @@
                             <!--end col-->
                         </div>
 
-                        <?php } ?>
+                        <?php } else{
+                            if(!empty($_GET)){   
+                        ?> 
+                            
+                            <div class="row">
+                                
+                                   
+                                        <div class="col-lg-12 not_found">
+                                            <p>No Data Found !!</p>
+                                        </div>
+                                    
+                               
+                            </div>  
+                        <?php } } ?>
 
                         <!---datatable section end-->
 
@@ -407,7 +433,9 @@
 
                     $('.product_clz').html(data.quot_prod);
 
-                    $('.sales_order_ref').html(data.sales_reff);
+                    $('.customer_sales_order_ref').html(data.sales_reff);
+
+                    console.log(data.sales_reff);
 
                 }
 

@@ -130,13 +130,15 @@ class SalesReturnReport extends BaseController
 
         $sales_refference = $this->common_model->FetchWhereUniqueJoin('crm_credit_invoice',$cond,$joins,'cci_sales_order');
         
-        $data['sales_reff'] = '<option value="" selected disabled>Select Order Ref</option>';
+        $data['sales_reff'] = '<select class="form-select sales_order_ref sales_order" name="sales_order"><option value="" selected disabled>Select Order Ref</option>';
 
         foreach($sales_refference as $sales_reff)
         {
             $data['sales_reff'] .='<option value='.$sales_reff->so_id.'>'.$sales_reff->so_reffer_no.'</option>';
             
         }
+
+        $data['sales_reff'] .='</select>';
 
         
 

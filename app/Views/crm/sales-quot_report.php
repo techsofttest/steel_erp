@@ -86,7 +86,7 @@
     }
 
     .adjust_width {
-        width: 87%;
+        width: 91%;
     }
     
     .select2.select2-container{
@@ -97,7 +97,21 @@
    
         color: #999;
     }
+    .not_found{
+
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        padding: 220px 0px;
+    }
+    .not_found p{
+
+        font-size: 35px;
+        font-weight: 700;
+        color: black;
+    }
     
+   
 </style>
 
 <div class="tab-content text-muted">
@@ -165,73 +179,61 @@
                                                                 ?>
 
 
-                                                                <div class="mt-4">
-                                                                    <table class="table table-bordered table-striped delTable">
-                                                                        <tbody class="travelerinfo contact_tbody">
-                                                                            <tr>
-                                                                                
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;">From</td>
-                                                                                <td ><input type="date"  name="form_date" id="from_date_id" value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
-                                                                                <td style="width: 10% !important;text-align: center;" class="center_padding">To</td>
-                                                                                <td ><input type="date"  name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                            <!---->
 
-                                                                            </tr>
-                                                                            
+                                                            <div class="mt-4">
+                                                                <table class="table table-bordered table-striped delTable">
+                                                                    <tbody class="travelerinfo contact_tbody">
+                                                                    <tr>
+                                                                        <td class="center_padding" style="white-space: nowrap; vertical-align: middle;">From</td>
+                                                                        <td><input type="date" name="form_date" id="from_date_id" value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                        <td style="white-space: nowrap; text-align: center; vertical-align: middle;" class="center_padding">To</td>
+                                                                        <td><input type="date" name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                    </tr>
+                                                                    </tbody>
 
+                                                                    <tbody class="travelerinfo">
+                                                                    <tr>
+                                                                        <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding">Customer</td>
+                                                                        <td style="width: 70%;" colspan="4">
+                                                                        <select class="form-select droup_customer customer_clz uniform-input" name="customer">
+                                                                            <option value="" selected disabled>Select Customer</option>
+                                                                            <?php foreach($customer_creation as $cus_data){?>
+                                                                            <option value="<?php echo $cus_data->cc_id;?>"><?php echo $cus_data->cc_customer_name;?></option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                        </td>
+                                                                    </tr>
 
-                                                                        </tbody>
+                                                                    <tr>
+                                                                        <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding">Sales Executive</td>
+                                                                        <td style="width: 70%;" colspan="4">
+                                                                        <select class="form-select executive_clz uniform-input" name="sales_executive">
+                                                                            <option value="" selected disabled>Select Executive</option>
+                                                                            <?php foreach($sales_executives as $sales_exe){?> 
+                                                                            <option value="<?php echo $sales_exe->se_id; ?>"><?php echo $sales_exe->se_name; ?></option>    
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                        </td>
+                                                                    </tr>
 
+                                                                    <tr>
+                                                                        <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding">Product</td>
+                                                                        <td style="width: 70%;" colspan="4">
+                                                                        <select class="form-select product_clz uniform-input" name="product">
+                                                                            <option value="" selected disabled>Select Product</option>
+                                                                            <?php foreach($Products as $prod){?> 
+                                                                            <option value="<?php echo $prod->product_id?>"><?php echo $prod->product_details; ?></option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
 
-                                                                        <tbody class="travelerinfo">
+                                                            </div>
 
-                                                                            <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Customer</td>
-                                                                                <td style="width: 70%;" colspan="4">
-                                                                                    <select class="form-select droup_customer  customer_clz" name="customer">
-                                                                                        <option value="" selected disabled>Select Customer</option>
-                                                                                        <?php foreach($customer_creation as $cus_data){?>
-                                                                                            <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </td>
-                                                                            </tr>
-
-                                                                            
-
-
-                                                                            <tr>
-                                                                                <td style="width: 30%;">Sales Executive</td>
-                                                                                <td style="width: 70%;" colspan="4">
-                                                                                   <select class="form-select executive_clz" name="sales_executive">
-                                                                                        <option value="" selected disabled>Select Executive</option>
-                                                                                        
-                                                                                        <?php foreach($sales_executives as $sales_exe){?> 
-                                                                                            <option value="<?php echo $sales_exe->se_id; ?>"><?php echo $sales_exe->se_name; ?></option>    
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Product</td>
-                                                                                <td style="width: 70%;" colspan="4">
-                                                                                    <select class="form-select value='<?php echo $product; ?>' product_clz" name="product">
-                                                                                        <option value="" selected disabled>Select Product</option>
-                                                                                        <?php foreach($Products as $prod){?> 
-                                                                                        <option value="<?php echo $prod->product_id?>"><?php echo $prod->product_details; ?></option>
-                                                                                        <?php } ?>
-                                                                                        
-                                                                                    </select>
-                                                                                </td>
-                                                                            </tr>
-
-
-                                                                        </tbody>
-
-
-
-                                                                    </table>
-                                                                </div>
+                                                            <!---->
 
                                                               
 
@@ -294,6 +296,7 @@
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
+                                        
                                         <table style="table-layout:fixed !important;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                               
@@ -314,6 +317,7 @@
 
                                             <tbody class="tbody_data">
                                                 <?php
+                                              
                                                 if (!empty($quotation_data)) {
                                                     $i = 1;
                                                     $total = 0;
@@ -396,13 +400,27 @@
                                             </tbody>
 
                                         </table>
+                                        
 
                                     </div>
                                 </div>
                             </div>
                             <!--end col-->
                         </div>
-                        <?php } ?>
+                        <?php } else{
+                            if(!empty($_GET)){   
+                        ?> 
+                            
+                            <div class="row">
+                                
+                                   
+                                        <div class="col-lg-12 not_found">
+                                            <p>No Data Found !!</p>
+                                        </div>
+                                    
+                               
+                            </div>  
+                        <?php } }  ?>
 
                         <!---datatable section end-->
 
