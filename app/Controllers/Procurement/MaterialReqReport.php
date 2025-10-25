@@ -729,16 +729,16 @@ class MaterialReqReport extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        if($salesorder != ''){
-             $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-                array(   'table' => 'crm_products',
-                    'pk'    => 'product_id',
-                    'fk'    => 'spd_product_details',
-                )
-            ));
-        }else{
+        // if($salesorder != ''){
+        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
+        //         array(   'table' => 'crm_products',
+        //             'pk'    => 'product_id',
+        //             'fk'    => 'spd_product_details',
+        //         )
+        //     ));
+        // }else{
              $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
-        }
+        // }
 
         $data['total_count'] = count($data['result']);
 

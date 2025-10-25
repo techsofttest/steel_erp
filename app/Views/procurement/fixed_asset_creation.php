@@ -57,6 +57,19 @@
     .input_length3 {
         width: 12%;
     }
+
+
+       .content_table table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+    table#DataTable td:nth-child(3),table#DataTable td:nth-child(5) {
+    text-align: center;
+    }
+    table#DataTable td:nth-child(6){
+        text-align:end;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -363,16 +376,16 @@
                                         <button type="button" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable" style="width:100%">
 
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Description</th>
-                                                    <th>Account ID</th>
-                                                    <th>Account Head</th>
-                                                    <th>Acquired Date</th>
-                                                    <th>Actions</th>
+                                                    <th class="no-sort text-center" style="width: 15px !important;">Sl no</th>
+                                                    <th class="text-start">Description</th>
+                                                    <th  class="text-center" style="width: 120px !important;">Account ID</th>
+                                                    <th class="text-start" >Account Head</th>
+                                                    <th   class="text-center"style="width: 150px !important;">Acquired Date</th>
+                                                    <th   class="text-end"style="width: 100px !important">Actions</th>
                                                 </tr>
                                             </thead>
 
@@ -495,14 +508,14 @@
 
                     <div class="live-preview">
 
-                        <div class="mt-4">
+                        <div class="mt-4 content_table">
 
                             <table class="table table-bordered table-striped delTable">
 
                                 <thead class="travelerinfo contact_tbody">
 
                                     <tr>
-                                        <td>Serial No.</td>
+                                        <td>Sl No</td>
                                         <td>Date</td>
                                         <td>Invoice Ref</td>
                                         <td>Amount</td>

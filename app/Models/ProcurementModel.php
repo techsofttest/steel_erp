@@ -338,11 +338,11 @@ class ProcurementModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
-            $query->like($data2_col, $data2);
+            $query->where($data2_col, $data2);
         }
 
         if (!empty($data3)) {
