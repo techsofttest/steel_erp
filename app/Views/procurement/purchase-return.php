@@ -439,11 +439,11 @@
                                             
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 85px !important;">Reference</th>
                                                     <th>Vendor Name</th>
-                                                    <th>Date</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th style="width: 70px !important;">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -1548,7 +1548,17 @@
                 { data: 'pr_date'},
                 { data: 'action'},
                 
-               ]
+               ],
+               columnDefs: [
+                { targets: [0,1,3,4], className: "dt-body-center" },
+				
+              ],
+              headerCallback: function(thead, data, start, end, display) {
+                
+                [0,1,3,4].forEach(function(i) {
+                    $(thead).find('th').eq(i).addClass('dt-head-center');
+                });
+              }
     
             });
         }
