@@ -72,7 +72,7 @@ class PurchaseReturn extends BaseController
               "pr_id"          => $i,
               'pr_reffer_id'   => $record->pr_reffer_id,
               'pr_vendor_name' => $record->cc_customer_name,
-              'pr_date'        => date('d-m-Y',strtotime($record->pr_date)),
+              'pr_date'        => date('d-M-Y',strtotime($record->pr_date)),
               "action"         => $action,
             );
            $i++; 

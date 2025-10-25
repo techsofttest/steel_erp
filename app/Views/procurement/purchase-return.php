@@ -1558,6 +1558,7 @@
                 [0,1,3,4].forEach(function(i) {
                     $(thead).find('th').eq(i).addClass('dt-head-center');
                 });
+                
               }
     
             });
