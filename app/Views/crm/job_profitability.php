@@ -344,7 +344,7 @@
 
                                                                    $sales_returns += $sales_rut->sr_total;
 
-                                                                   $single_returns = $sales_rut->sr_total;
+                                                                   $single_returns += $sales_rut->sr_total;
 
                                                                    
                                                                 }
