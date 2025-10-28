@@ -370,15 +370,17 @@
                                                                                 
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
                                                                     
-                                                                    <td   style="width:100px" class="text-end"><?php echo format_currency($pur_vouch->pvp_amount); ?> </td>
+                                                                    <td   style="width:100px" class="text-end"><?php echo format_currency($pur_vouch->pv_total); ?> </td>
 
                                                                     <?php 
 
-                                                                        $expenses1  = $pur_vouch->pvp_amount + $expenses1;
+                                                                        $expenses1  = $pur_vouch->pv_total + $expenses1;
                                                                     
-                                                                        $gross_profit =  $sales_order->so_amount_total - $pur_vouch->pvp_amount; 
+                                                                        $gross_profit =  $sales_order->so_amount_total - $pur_vouch->pv_total; 
                                                                         
                                                                     ?>
+
+                                                                    
 
                                                                     <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
 
@@ -406,17 +408,19 @@
 
                                                                     <tr style="background: unset;border-bottom: hidden !important;">
                                                                     
-                                                                        <td style="width:100px" class="text-end">-<?php echo format_currency($pv_prod->prp_rate); ?> </td>
+                                                                       <td style="width:100px" class="text-end">-<?php echo format_currency($pv_prod->pr_total_amount); ?> </td>
 
                                                                         <?php 
 
-                                                                            $expenses2  = $pv_prod->prp_rate + $expenses2;
+                                                                            $expenses2  = $pv_prod->pr_total_amount + $expenses2;
                                                                     
-                                                                            $gross_profit =  $sales_order->so_amount_total - $pv_prod->prp_rate;
+                                                                            $gross_profit =  $sales_order->so_amount_total - $pv_prod->pr_total_amount;
                                                                             
                                                                             $gross_profit2 =  $gross_profit +  $gross_profit2; 
                                                                             
                                                                         ?>
+
+                                                                         
 
                                                                         <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
 
@@ -538,6 +542,8 @@
                                                                     //$expenses =  $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
 
                                                                     $expenses =  $expenses1 + $expenses3;
+
+                                                                    $expenses = $expenses - $expenses2;
 
                                                                     $total_gross_profit = $gross_profit1 +  $gross_profit2 +  $gross_profit3 + $gross_profit4 +  $gross_profit5;
                                                                     

@@ -552,12 +552,13 @@ class PurchaseReturn extends BaseController
                 $voucher_single = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $product->pvp_reffer_id));    
                                     
             }
-            
+
+           
            
 
-            $new_amount = $voucher_single->pv_total - $voucher_single->pv_paid;
+            //$new_amount = $voucher_single->pv_total - $voucher_single->pv_paid;
 
-
+            $new_amount = $new_amount - $voucher_single->pv_paid;
            
             $data['total_amount'] = format_currency($new_amount);
 

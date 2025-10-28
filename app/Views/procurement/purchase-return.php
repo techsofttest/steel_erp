@@ -1774,6 +1774,8 @@
 
                     $('.org_amount_total').val(data.total_amount);
 
+                    console.log(data.total_amount);
+
                     $('#SelectProduct').modal("hide");
 
                     $('#AddPurchaseReturn').modal("show");
