@@ -122,6 +122,28 @@
 
         padding: 10px 10px !important;
     }
+
+table#DataTable th:nth-child(1),
+table#DataTable th:nth-child(3),
+table#DataTable th:nth-child(5),
+table#DataTable td:nth-child(1),
+table#DataTable td:nth-child(3),
+table#DataTable td:nth-child(5) {
+    text-align: center;
+}
+
+table#DataTable th:nth-child(4),
+table#DataTable th:nth-child(6),
+table#DataTable td:nth-child(4),
+table#DataTable td:nth-child(6) {
+    text-align: end;
+}
+
+table#DataTable th:nth-child(2),
+table#DataTable td:nth-child(2) {
+    text-align: start;
+}
+
 </style>
 
 <div class="tab-content text-muted">
@@ -442,12 +464,12 @@
 
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th>Account head</th>
-                                                    <th>Acquired Date</th>
-                                                    <th>Amount</th>
-                                                    <th>Depreciation</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 100px !important;">Acquired Date</th>
+                                                    <th style="width: 100px;">Amount</th>
+                                                    <th style="width: 85px;">Depreciation</th>
+                                                    <th style="width: 100px;">Actions</th>
                                                 </tr>
                                             </thead>
 

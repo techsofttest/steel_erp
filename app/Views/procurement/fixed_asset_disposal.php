@@ -127,6 +127,30 @@
         text-align: end;
     }
     
+    table#DataTable th:nth-child(1),
+    table#DataTable td:nth-child(1),
+    table#DataTable th:nth-child(4),    
+    table#DataTable td:nth-child(4)
+    {
+        text-align: center;
+    }
+
+    table#DataTable th:nth-child(5),
+    table#DataTable td:nth-child(5),
+    table#DataTable th:nth-child(7),    
+    table#DataTable td:nth-child(7),
+    table#DataTable th:nth-child(6),
+    table#DataTable td:nth-child(6) {
+        text-align: end;
+    }
+
+    table#DataTable th:nth-child(2),
+    table#DataTable td:nth-child(2),
+    table#DataTable th:nth-child(3),
+    table#DataTable td:nth-child(3) {
+        text-align: start;
+    }
+        
 </style>
 
 
