@@ -14,22 +14,27 @@
   width: 100%;
   display: block overflow-x: scroll;
 }
+
 .modal-dialog{
     width: 500px;
     margin: auto;
 }
+
 .adjust_width {
     width: 92%;
 }
+
 .select2.select2-container{
     
     padding-top: 5px !important;
     
 }
+
 .Dashboard-form .form-select {
    
    color: #999;
 }
+
 .not_found{
 
     text-align: center;
@@ -37,6 +42,7 @@
     justify-content: center;
     padding: 220px 0px;
 }
+
 .not_found p{
 
     font-size: 35px;
@@ -114,6 +120,7 @@
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
+                                                                            
                                                                             <tr>
 
                                                                                 <td class="center_padding" style="white-space: nowrap; vertical-align: middle;">From</td>

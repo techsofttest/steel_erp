@@ -66,7 +66,7 @@
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select droup_customer  customer_clz" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
-                                                                                        <?php foreach($customer_creation as $cust_creation){?> 
+                                                                                        <?php foreach($customer_creation as $cust_creation){ ?> 
                                                                                             <option value="<?php echo $cust_creation->cc_id;?>"><?php echo $cust_creation->cc_customer_name;?></option>
                                                                                         <?php } ?>
                                                                                     </select>
@@ -80,7 +80,7 @@
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select sales_order_ref sales_order" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
-                                                                                        <?php foreach($sales_orders_data as $sales_data){?> 
+                                                                                        <?php foreach($sales_orders_data as $sales_data){ ?> 
                                                                                             <option value="<?php echo $sales_data->so_id; ?>"><?php echo $sales_data->so_reffer_no;?></option>    
                                                                                         <?php } ?>
                                                                                     </select>
@@ -94,7 +94,7 @@
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select executive_clz" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Executive</option>
-                                                                                        <?php foreach($sales_executive as $sals_exec){?> 
+                                                                                        <?php foreach($sales_executive as $sals_exec){ ?> 
                                                                                             <option value="<?php echo $sals_exec->se_id;?>"><?php echo $sals_exec->se_name; ?></option>    
                                                                                         <?php } ?>
                                                                                     </select>
@@ -202,6 +202,12 @@
                                                 {   
                                                     $revenue =0 ;
 
+                                                    $cash_invoices = 0;
+                                                    $credit_invoices = 0;
+                                                    $sales_returns = 0;
+
+                                                    
+
                                                     $expenses1 = 0;
                                                     $expenses2 = 0;
                                                     $expenses3 = 0;
@@ -304,9 +310,55 @@
 
                                                         <td><?php echo $sales_order->se_name;?></td>
 
-                                                        <td class="text-end"><?php echo $sales_order->so_amount_total;?></td>
+                                                        <?php
+                                                            $single_cash = 0;
+                                                            $single_credit = 0;
+                                                            $single_returns = 0;
+                                                           if(!empty($sales_order->cash_invoice)){
+                                                            
+                                                                foreach($sales_order->cash_invoice as $cash_inv){
 
-                                                        <?php $revenue = $sales_order->so_amount_total + $revenue; ?>
+                                                                    
+                                                                    $cash_invoices  += $cash_inv->ci_total_amount;
+
+                                                                    $single_cash += $cash_inv->ci_total_amount;
+                                                                }
+                                                            }
+
+
+                                                            if(!empty($sales_order->credit_invoice)){
+
+                                                                foreach($sales_order->credit_invoice as $credit_inv){
+
+                                                                    $credit_invoices += $credit_inv->cci_total_amount;
+
+                                                                    $single_credit += $credit_inv->cci_total_amount;
+                                                                }
+
+                                                            }
+
+
+                                                            if(!empty($sales_order->sales_return)){
+
+                                                                foreach($sales_order->sales_return as $sales_rut){
+
+                                                                   $sales_returns += $sales_rut->sr_total;
+
+                                                                   $single_returns = $sales_rut->sr_total;
+
+                                                                   
+                                                                }
+                                                            }
+
+                                                            $revenue = $cash_invoices + $credit_invoices;
+
+                                                            $revenue = $revenue - $sales_returns;
+                                                        
+                                                        ?>
+
+                                                        <td class="text-end"><?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?></br><?php if(!empty($single_returns)){ echo "-". format_currency($single_returns); } ?></td>
+
+                                                        
 
                                                         <td colspan="3" align="left" class="p-0">
                                                             <table>
@@ -320,8 +372,6 @@
                                                                     
                                                                     <td   style="width:100px" class="text-end"><?php echo format_currency($pur_vouch->pvp_amount); ?> </td>
 
-
-
                                                                     <?php 
 
                                                                         $expenses1  = $pur_vouch->pvp_amount + $expenses1;
@@ -333,6 +383,7 @@
                                                                     <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
 
                                                                     <?php 
+
                                                                         $gross_profit1 =  $gross_profit +   $gross_profit1; 
 
                                                                         $percentage = $gross_profit * 100;
@@ -355,7 +406,7 @@
 
                                                                     <tr style="background: unset;border-bottom: hidden !important;">
                                                                     
-                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($pv_prod->prp_rate); ?> </td>
+                                                                        <td style="width:100px" class="text-end">-<?php echo format_currency($pv_prod->prp_rate); ?> </td>
 
                                                                         <?php 
 
@@ -363,7 +414,7 @@
                                                                     
                                                                             $gross_profit =  $sales_order->so_amount_total - $pv_prod->prp_rate;
                                                                             
-                                                                            $gross_profit2 =  $gross_profit +   $gross_profit2; 
+                                                                            $gross_profit2 =  $gross_profit +  $gross_profit2; 
                                                                             
                                                                         ?>
 
@@ -436,11 +487,11 @@
                                                                         
                                                                         <?php if(!empty($jour_vouch->ji_debit)){
 
-                                                                          $expenses4  = $jour_vouch->ji_debit + $expenses4;
+                                                                          $expenses4     = $jour_vouch->ji_debit + $expenses4;
                                                                           
-                                                                          $gross_profit =  $sales_order->so_amount_total - $jour_vouch->ji_debit;
+                                                                          $gross_profit  = $sales_order->so_amount_total - $jour_vouch->ji_debit;
                                                                           
-                                                                          $gross_profit4 =  $gross_profit +   $gross_profit4;
+                                                                          $gross_profit4 = $gross_profit + $gross_profit4;
 
                                                                         ?> 
                                                                              
@@ -454,13 +505,13 @@
                                                                                 
                                                                             ?>
 
-                                                                              <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
+                                                                            <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
                                                                             
                                                                         <?php } elseif(!empty($jour_vouch->ji_credit)){
                                                                             
-                                                                            $expenses5  = $jour_vouch->ji_credit + $expenses5;
+                                                                            $expenses5     = $jour_vouch->ji_credit + $expenses5;
 
-                                                                            $gross_profit =  $sales_order->so_amount_total - $jour_vouch->ji_credit;
+                                                                            $gross_profit  =  $sales_order->so_amount_total - $jour_vouch->ji_credit;
 
                                                                             $gross_profit5 =  $gross_profit +   $gross_profit5;
 
@@ -484,7 +535,9 @@
                                                                     
                                                                     <?php } }
 
-                                                                    $expenses =  $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
+                                                                    //$expenses =  $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
+
+                                                                    $expenses =  $expenses1 + $expenses3;
 
                                                                     $total_gross_profit = $gross_profit1 +  $gross_profit2 +  $gross_profit3 + $gross_profit4 +  $gross_profit5;
                                                                     
@@ -495,13 +548,6 @@
                                                         </td>
 
                                                         
-
-                                                       
-                                                        
-                                                        
-
-                                                        
-     
                                                         
                                                     </tr>
                                                         
@@ -515,7 +561,7 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td class="text-end"><b><?php echo format_currency($revenue); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
                                                         <td class="text-end"><b><?php echo format_currency($expenses); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($total_gross_profit); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($total_percentage); ?></b></td>

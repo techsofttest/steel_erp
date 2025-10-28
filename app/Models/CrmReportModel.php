@@ -919,6 +919,12 @@ class CrmReportModel extends Model
             $result[$i]->petty_cash             = $this->FetchPettyCash('accounts_petty_cash_debits',array('pci_sales_order' => $res->so_id));
 
             $result[$i]->journal_voucher        = $this->FetchJournalVoucher('accounts_journal_invoices',array('ji_sales_order_id' => $res->so_id));
+
+            $result[$i]->cash_invoice           = $this->FetchWhere('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
+
+            $result[$i]->credit_invoice         = $this->FetchWhere('crm_credit_invoice',array('cci_sales_order' => $res->so_id));
+
+            $result[$i]->sales_return          = $this->FetchWhere('crm_sales_return',array('sr_sales_order' => $res->so_id));
            
             $i++;
         }

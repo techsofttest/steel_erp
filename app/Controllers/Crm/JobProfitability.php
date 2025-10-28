@@ -239,7 +239,7 @@ class JobProfitability extends BaseController
         $data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive');  
 
         
-        
+       // print_r($data['sales_orders']); exit();
 
         if(!empty($from_date))
         {
@@ -270,7 +270,7 @@ class JobProfitability extends BaseController
 
         $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $data['sales_executive']   = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
         $data['content'] = view('crm/job_profitability',$data);
  
