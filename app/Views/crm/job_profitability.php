@@ -4,7 +4,7 @@
     margin: auto;
 }
 .adjust_width {
-    width: 86%;
+    width: 92%;
 }
 .not_found{
 
@@ -63,7 +63,7 @@
                                                                             <tr>
                                                                                 
                                                                                 <td class="center_padding" style="white-space: nowrap; vertical-align: middle;">From</td>
-                                                                                <td style=""><input style="margin-left: 10px;" type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control adjust_width"></td>
+                                                                                <td style=""><input style="" type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control adjust_width"></td>
                                                                                 <td style="white-space: nowrap; text-align: center; vertical-align: middle;">To</td>
                                                                                 <td style=""><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control adjust_width"></td>
                                                                             
