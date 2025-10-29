@@ -342,7 +342,7 @@ class InvoiceReport extends BaseController
     {
         if (!empty($sales_orders)) {
     
-            $title = "SQR";
+            $title = "INV";
             $i = 1;
             $sales_total = 0;
             $invoice_total = 0;
@@ -504,8 +504,14 @@ class InvoiceReport extends BaseController
     
             $mpdf->SetAutoPageBreak(true, 10);
             $mpdf->WriteHTML($html);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');*/
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::DOWNLOAD);*/
+
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
         }
     }
     

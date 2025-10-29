@@ -286,7 +286,7 @@ class JobProfitability extends BaseController
         
         if(!empty($sales_orders)){
 
-            $title = "SQR";
+            $title = "JobProfitability";
 
             
 
@@ -700,8 +700,15 @@ class JobProfitability extends BaseController
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');*/
+
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::DOWNLOAD);*/
+
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
         
         }
 

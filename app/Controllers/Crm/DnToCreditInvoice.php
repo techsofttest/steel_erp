@@ -333,7 +333,7 @@ class DnToCreditInvoice extends BaseController
         
         if(!empty($delivery_data)){
 
-            $title = "SQR";
+            //$title = "SQR";
 
             $delivery_total = 0;
             $delivery_prod_total = 0;
@@ -442,7 +442,7 @@ class DnToCreditInvoice extends BaseController
             }
 
 
-            
+           $title = "DNTOCI";
            // $mpdf = new \Mpdf\Mpdf();
            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
            $fontDirs = $defaultConfig['fontDir'];
@@ -668,8 +668,15 @@ class DnToCreditInvoice extends BaseController
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+           // $this->response->setHeader('Content-Type', 'application/pdf');
+            //$mpdf->Output($title . '.pdf', 'I');
+            
+            //$this->response->setHeader('Content-Type', 'application/pdf');
+            //$this->response->setHeader('Content-Disposition', 'inline; filename="' . $title . '.pdf"');
+            //$mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
         
         }
 

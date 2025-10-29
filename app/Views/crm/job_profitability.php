@@ -6,6 +6,20 @@
 .adjust_width {
     width: 86%;
 }
+.not_found{
+
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding: 220px 0px;
+}
+
+.not_found p{
+
+    font-size: 35px;
+    font-weight: 700;
+    color: black;
+}
 </style>
 <div class="tab-content text-muted">
 								
@@ -48,9 +62,9 @@
                                                                             
                                                                             <tr>
                                                                                 
-                                                                                <td class="center_padding" style="display: flex;align-items: center;margin-left: 10px;">From</td>
+                                                                                <td class="center_padding" style="white-space: nowrap; vertical-align: middle;">From</td>
                                                                                 <td style=""><input style="margin-left: 10px;" type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control adjust_width"></td>
-                                                                                <td style="width: 10% !important;display: flex;align-items: center;margin-right: 10px;">To</td>
+                                                                                <td style="white-space: nowrap; text-align: center; vertical-align: middle;">To</td>
                                                                                 <td style=""><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control adjust_width"></td>
                                                                             
                                                                             </tr>
@@ -76,7 +90,7 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Order Ref</td>
+                                                                                <td style="width: 30%; width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding" class="center_padding">Sales Order Ref</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select sales_order_ref sales_order" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
@@ -90,7 +104,7 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Executive</td>
+                                                                                <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding" class="center_padding">Sales Executive</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select executive_clz" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Executive</option>
@@ -585,7 +599,20 @@
                             <!--end col-->
                         </div>
 
-                        <?php } ?>
+                        <?php } else{
+                            if(!empty($_GET)){   
+                        ?> 
+                            
+                            <div class="row">
+                                
+                                   
+                                        <div class="col-lg-12 not_found">
+                                            <p>No Data Found !!</p>
+                                        </div>
+                                    
+                               
+                            </div>  
+                        <?php } } ?>
 
                         <!---datatable section end-->
 

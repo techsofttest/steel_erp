@@ -197,7 +197,7 @@ class SalesSummery extends BaseController
         
         if(!empty($sales_data)){
 
-            $title = "SQR";
+            $title = "SSR";
 
             $total_amount = 0 ;
             $pdf_data ="";
@@ -391,8 +391,11 @@ class SalesSummery extends BaseController
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+            //$this->response->setHeader('Content-Type', 'application/pdf');
+            //$mpdf->Output($title . '.pdf', 'I');
+            
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
         
         }
 

@@ -276,7 +276,7 @@ class SalesReturnReport extends BaseController
         
         if(!empty($invoice_reports)){
 
-            $title = "SQR";
+            $title = "SRP";
 
             $sales_prod_amount = 0; 
             $sales_return_rate = 0;  
@@ -471,8 +471,10 @@ class SalesReturnReport extends BaseController
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+            //$this->response->setHeader('Content-Type', 'application/pdf');
+            //$mpdf->Output($title . '.pdf', 'I');
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
         
         }
 
