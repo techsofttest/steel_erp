@@ -264,7 +264,7 @@
                                                             <!-- ### --> 
 
                                                             <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
+                                                            <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
@@ -273,8 +273,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <!--<input type="text" name="pr_contact_person" class="form-control  add_contact_person input_length" value="" required>-->
-
+                                                                       
                                                                         <select class="form-select add_contact_person input_length" name="pr_contact_person" id="" required></select>
                                                                     
                                                                     
@@ -282,7 +281,7 @@
 
                                                                 </div> 
 
-                                                            </div>    
+                                                            </div>-->   
                                                             <!-- ### --> 
 
                                                             
@@ -1079,7 +1078,7 @@
 
 
                                     <!-- Single Row Start -->
-                                    <div class="col-lg-12">
+                                    <!--<div class="col-lg-12">
 
                                         <div class="row align-items-center mb-2 margin_zero">
 
@@ -1089,14 +1088,14 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <!--<input type="text" name="" class="form-control edit_contact_person input_length" readonly>--->
+                                                
                                                 <select class="form-select edit_contact_person input_length" name="" required="" aria-required="true"></select>
                                                 
                                             </div>
 
                                         </div> 
 
-                                    </div>    
+                                    </div>-->   
 
                                     <!-- ### -->
 

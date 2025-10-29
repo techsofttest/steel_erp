@@ -156,7 +156,7 @@ class PurchaseReturn extends BaseController
 
                 'pr_lpo'             => $this->request->getPost('pr_lpo'),
 
-                'pr_contact_person'  => $this->request->getPost('pr_contact_person'),
+                //'pr_contact_person'  => $this->request->getPost('pr_contact_person'),
 
                 'pr_payment_term'    => $this->request->getPost('pr_payment_term'),
 
@@ -191,7 +191,7 @@ class PurchaseReturn extends BaseController
 
                 'pr_lpo'             => $this->request->getPost('pr_lpo'),
 
-                'pr_contact_person'  => $this->request->getPost('pr_contact_person'),
+                //'pr_contact_person'  => $this->request->getPost('pr_contact_person'),
 
                 'pr_payment_term'    => $this->request->getPost('pr_payment_term'),
 
@@ -785,7 +785,7 @@ class PurchaseReturn extends BaseController
 
         $data['lpo']            = $purchase_return->pr_lpo;
 
-        $data['contact_person'] = $purchase_return->contact_person;
+        //$data['contact_person'] = $purchase_return->contact_person;
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
 
