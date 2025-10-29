@@ -788,7 +788,7 @@
 
 
                                     <!-- Single Row Start -->
-                                    <div class="col-lg-12">
+                                    <!--<div class="col-lg-12">
 
                                         <div class="row align-items-center mb-2 margin_zero">
 
@@ -804,7 +804,7 @@
 
                                         </div> 
 
-                                    </div>    
+                                    </div>--->    
 
                                     <!-- ### -->
 
