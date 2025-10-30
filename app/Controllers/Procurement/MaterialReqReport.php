@@ -724,7 +724,7 @@ class MaterialReqReport extends BaseController
          $salesorder = $this->request->getPost('salesorder');
        
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $term = !empty($_POST['term']) ? $_POST['term'] : "";
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;

@@ -67,15 +67,12 @@
     padding-top: 5px !important;
 }
 
-.select2-container {
-    width: 100% !important;   /* make sure it fills the cell properly */
-}
-
 .select2-selection__rendered {
-    white-space: nowrap !important;  /* prevent weird line breaks */
+    white-space: wrap !important;  /* prevent weird line breaks */
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
 
 span.select2.customer_width, span.select2{
     width:100% !important;
@@ -191,7 +188,7 @@ span.select2.customer_width, span.select2{
                                                                                     class="center_padding">Vendor</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select
-                                                                                        class="form-select value='' customer_clz vendor_dropdown"
+                                                                                        class="form-select customer_clz vendor_dropdown"
                                                                                         name="vendor">
                                                                                         <option value="" selected
                                                                                             disabled>Select Vendor
@@ -525,7 +522,7 @@ span.select2.customer_width, span.select2{
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
 
@@ -750,7 +747,7 @@ span.select2.customer_width, span.select2{
             theme: "default form-control- customer_width",
             dropdownParent: $('#PurchaseOrderReport'),
             ajax: {
-                url: "<?= base_url(); ?>Procurement/PurchaseOrder/FetchVendors",
+                url: "<?= base_url(); ?>Procurement/PurchaseOrderReport/FetchVendors",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -788,7 +785,7 @@ span.select2.customer_width, span.select2{
             theme: "default form-control- customer_width",
             dropdownParent: $('#PurchaseOrderReport'),
             ajax: {
-                url: "<?= base_url(); ?>Procurement/PurchaseOrder/FetchSalesOrder",
+                url: "<?= base_url(); ?>Procurement/PurchaseOrderReport/FetchSalesOrder",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -825,7 +822,7 @@ span.select2.customer_width, span.select2{
             theme: "default form-control- customer_width",
             dropdownParent: $('#PurchaseOrderReport'),
             ajax: {
-                url: "<?= base_url(); ?>Procurement/MaterialReqReport/FetchProducts",
+                url: "<?= base_url(); ?>Procurement/PurchaseOrderReport/FetchProducts",
                 type: "POST", // ✅ Make sure this is POST since controller expects POST
                 dataType: 'json',
                 delay: 250,

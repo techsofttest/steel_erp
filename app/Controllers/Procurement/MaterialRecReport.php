@@ -854,7 +854,7 @@ class MaterialRecReport extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_id','desc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
 
         $data['total_count'] = count($data['result']);
 
@@ -883,7 +883,7 @@ class MaterialRecReport extends BaseController
         $salesorder = $this->request->getPost('salesorder');
        
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $term = !empty($_POST['term']) ? $_POST['term'] : "";
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
