@@ -20,6 +20,10 @@
     font-weight: 700;
     color: black;
 }
+.table-bordered tr {
+        border-bottom: unset !important;
+    
+}
 </style>
 <div class="tab-content text-muted">
 								
