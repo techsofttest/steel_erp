@@ -392,6 +392,11 @@
       $row_percentage = 0;
       $row_expenses_return = 0;
 
+      $grand_expenses = 0;
+    $grand_expenses_return = 0;
+    $grand_gross_profit = 0;
+    $grand_percentage = 0;
+
       // --- PURCHASE VOUCHER LOOP ---
       if (!empty($sales_order->purchase_vouchers)) {
         foreach ($sales_order->purchase_vouchers as $pur_vouch) {
@@ -401,8 +406,12 @@
 
           // accumulate per-row totals
           $row_expenses += $expense_val;
+
+          $grand_expenses += $row_expenses;
           $row_gross_profit += $gross_val;
+          $grand_gross_profit += $row_gross_profit;
           $row_percentage += $percent_val;
+          $grand_percentage += $row_percentage;
     ?>
          
     <?php
@@ -420,11 +429,17 @@
           $row_gross_profit += $gross_val;
           $row_percentage += $percent_val;*/
 
+           
+
 
         
           $row_expenses_return -= $expense_val;
+
+        
           $row_gross_profit += $gross_val;
+          $grand_gross_profit += $row_gross_profit;
           $row_percentage += $percent_val;
+          $grand_percentage += $row_percentage;
 
 
 
@@ -443,8 +458,11 @@
           $percent_val = $gross_val * 100 / $sales_order->so_amount_total;
 
           $row_expenses += $expense_val;
+          $grand_expenses += $row_expenses;
           $row_gross_profit += $gross_val;
+          $grand_gross_profit += $row_gross_profit;
           $row_percentage += $percent_val;
+          $grand_percentage += $row_percentage;
     ?>
          
     <?php
@@ -458,10 +476,15 @@
           $expense_val = $amount;
           $gross_val   = $sales_order->so_amount_total - $amount;
           $percent_val = $gross_val * 100 / $sales_order->so_amount_total;
-
+          
+         
+         
           $row_expenses += $expense_val;
+           $grand_expenses += $row_expenses;
           $row_gross_profit += $gross_val;
+          $grand_gross_profit += $row_gross_profit;
           $row_percentage += $percent_val;
+          $grand_percentage += $row_percentage;
     ?>
           <tr>
             <td style="width:100px" class="text-end"><?= format_currency($expense_val) ?></td>
@@ -492,7 +515,7 @@
                                                         
                                                     <?php  $i++; } ?> 
                                                     
-                                                    <!--<tr>
+                                                    <tr>
                                                         <td>Total</td>
                                                         <td></td>
                                                         <td></td>
@@ -500,12 +523,12 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td class="text-end"><b><?php //echo format_currency($revenue); ?></b><br> </td>
-                                                        <td class="text-end"><b><?php //echo format_currency($expenses); ?></b></td>
-                                                        <td class="text-end"><b><?php //echo format_currency($total_gross_profit); ?></b></td>
-                                                        <td class="text-end"><b><?php //echo format_currency($total_percentage); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
+                                                        <td class="text-end"><b><?php echo format_currency($grand_expenses); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($grand_gross_profit); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($grand_percentage); ?></b></td>
                                                       
-                                                    </tr>-->
+                                                    </tr>
                                                     
                                                 <?php   } ?>
                                             </tbody>
