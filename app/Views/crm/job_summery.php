@@ -395,11 +395,6 @@
                                                                     ?>
 
 
-                                                                    <td   style="width:100px" class="text-end"><?php echo format_currency($expenses1); ?> </td>
-
-                                                                    
-
-                                                                    <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
 
                                                                     <?php 
 
@@ -412,7 +407,7 @@
                                                                         
                                                                     ?>
 
-                                                                    <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
+                                                                    
 
                                                                     
                                                                 </tr>
