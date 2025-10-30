@@ -425,7 +425,7 @@
 
                                                                     <tr style="background: unset;border-bottom: hidden !important;">
                                                                     
-                                                                       <td style="width:100px" class="text-end">-<?php echo format_currency($pv_prod->pr_total_amount); ?> </td>
+                                                                       
 
                                                                         <?php 
 
@@ -437,7 +437,7 @@
                                                                             
                                                                         ?>
 
-                                                                         
+                                                                         <td style="width:100px" class="text-end">-<?php echo format_currency($expenses2); ?> </td>
 
                                                                         <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
 
@@ -464,7 +464,7 @@
 
                                                                     <tr style="background: unset;border-bottom: hidden !important;">
                                                                     
-                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($p_cash->pci_amount); ?> </td>
+                                                                        
 
                                                                         <?php 
 
@@ -475,6 +475,8 @@
                                                                             $gross_profit3 =  $gross_profit +   $gross_profit3;
                                                                             
                                                                         ?>
+
+                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($expenses3); ?> </td>
 
                                                                         <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
 
