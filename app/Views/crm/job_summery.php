@@ -390,6 +390,7 @@
       $row_expenses = 0;
       $row_gross_profit = 0;
       $row_percentage = 0;
+      $row_expenses_return = 0;
 
       // --- PURCHASE VOUCHER LOOP ---
       if (!empty($sales_order->purchase_vouchers)) {
@@ -415,9 +416,18 @@
           $gross_val   = $sales_order->so_amount_total - $pv_prod->pr_total_amount;
           $percent_val = $gross_val * 100 / $sales_order->so_amount_total;
 
-          $row_expenses += $expense_val;
+          /*$row_expenses += $expense_val;
+          $row_gross_profit += $gross_val;
+          $row_percentage += $percent_val;*/
+
+
+          $row_expenses_return = $row_expenses - $expense_val;
           $row_gross_profit += $gross_val;
           $row_percentage += $percent_val;
+
+
+
+
     ?>
          
     <?php
