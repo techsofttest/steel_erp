@@ -42,15 +42,12 @@
     padding-top: 5px !important;
 }
 
-.select2-container {
-    width: 100% !important;   /* make sure it fills the cell properly */
-}
-
 .select2-selection__rendered {
-    white-space: nowrap !important;  /* prevent weird line breaks */
+    white-space: wrap !important;  /* prevent weird line breaks */
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
 span.select2.customer_width, span.select2{
     width:100% !important;
 }
