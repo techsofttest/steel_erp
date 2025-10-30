@@ -571,11 +571,11 @@
                                                                 
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
                                                                     <td style="width:100px" class="text-end">dfsdfsd</td>
-                                                                    <td style="width:100px" class="text-end"></td>
-                                                                    <td style="width:100px" class="text-end"></td>
+                                                                    <td style="width:100px" class="text-end">dfsdfsd</td>
+                                                                    <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                 </tr> 
                                                                 
-                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                                <!--<tr style="background: unset;border-bottom: hidden !important;">
                                                                     <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                     <td style="width:100px" class="text-end"></td>
                                                                     <td style="width:100px" class="text-end"></td>
@@ -585,7 +585,7 @@
                                                                     <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                     <td style="width:100px" class="text-end"></td>
                                                                     <td style="width:100px" class="text-end"></td>
-                                                                </tr> 
+                                                                </tr> -->
                                                                 
 
                                                                 
