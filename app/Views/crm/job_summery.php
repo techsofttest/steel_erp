@@ -393,6 +393,8 @@
                                                                     <?php 
 
                                                                         $expenses1  = $pur_vouch->pv_total + $expenses1;
+
+                                                                        $single_expence += $expenses1;
                                                                     
                                                                         $gross_profit =  $sales_order->so_amount_total - $pur_vouch->pv_total; 
                                                                         
@@ -429,6 +431,8 @@
                                                                         <?php 
 
                                                                             $expenses2  = $pv_prod->pr_total_amount + $expenses2;
+
+                                                                            $single_expence += $expenses2;
                                                                     
                                                                             $gross_profit =  $sales_order->so_amount_total - $pv_prod->pr_total_amount;
                                                                             
@@ -570,7 +574,7 @@
                                                                 
                                                                 
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                                                    <td style="width:100px" class="text-end">dfsdfsd</td>
+                                                                    <td style="width:100px" class="text-end"><?php echo $single_expence; ?></td>
                                                                     <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                     <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                 </tr> 
