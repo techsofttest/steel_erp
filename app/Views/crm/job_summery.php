@@ -244,6 +244,12 @@
                                                     $percentage4 = 0;
                                                     $percentage5 = 0;
 
+
+                                                    $grand_expenses = 0;
+                                                    $grand_expenses_return = 0;
+                                                    $grand_gross_profit = 0;
+                                                    $grand_percentage = 0;
+
                                                     $i=1;
                                                     foreach($sales_orders as $sales_order){
                                                          
@@ -392,10 +398,7 @@
       $row_percentage = 0;
       $row_expenses_return = 0;
 
-      $grand_expenses = 0;
-    $grand_expenses_return = 0;
-    $grand_gross_profit = 0;
-    $grand_percentage = 0;
+      
 
       // --- PURCHASE VOUCHER LOOP ---
       if (!empty($sales_order->purchase_vouchers)) {
