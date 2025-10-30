@@ -537,7 +537,7 @@
 
                                                                         ?>
                                                                             
-                                                                            <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td> 
+                                                                             
 
                                                                             <?php 
                                                                                 
@@ -568,7 +568,8 @@
                                                                     $total_percentage =  $percentage1 + $percentage2 + $percentage3 + $percentage4 + $percentage5;
                                                                 ?> 
                                                                 
-                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                                <table>
+                                                                   <tr style="background: unset;border-bottom: hidden !important;">
                                                                     <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                 </tr> 
                                                                 
@@ -579,6 +580,9 @@
                                                                  <tr style="background: unset;border-bottom: hidden !important;">
                                                                     <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                 </tr> 
+                                                                
+
+                                                                </table>
                                                                 
                                                                                             
                                                             </table>
