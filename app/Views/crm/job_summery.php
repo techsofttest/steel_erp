@@ -459,7 +459,7 @@
     ?>
 
     <!-- ✅ PER-SALES-ORDER TOTAL ROW -->
-    <tr style="background: #f6f6f6; font-weight: bold;">
+    <tr style="">
       <td style="width:100px" class="text-end"><?= format_currency($row_expenses) ?></td>
       <td style="width:100px" class="text-end"><?= format_currency($row_gross_profit) ?></td>
       <td style="width:100px" class="text-end"><?= number_format($row_percentage,2) ?>%</td>
