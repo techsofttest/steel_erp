@@ -144,7 +144,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success submit_btn" data-bs-dismiss="modal" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn"  data-bs-dismiss="modal" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -693,16 +693,16 @@
         })*/
         /**/
 
-         /*print button section start*/
-         $('body').on('click','.print_button',function(e){
+        /*print button section start*/
+        $('body').on('click','.print_button',function(e){
               
-              // Open the PDF generation script in a new window
-              var pdfWindow = window.open('<?= base_url()."Crm/JobProfitability/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+            // Open the PDF generation script in a new window
+            var pdfWindow = window.open('<?= base_url()."Crm/JobProfitability/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
   
-              // Automatically print when the PDF is loaded
-              pdfWindow.onload = function() {
-                  pdfWindow.print();
-              };
+            // Automatically print when the PDF is loaded
+            pdfWindow.onload = function() {
+                pdfWindow.print();
+            };
   
         });
 
@@ -735,6 +735,7 @@
 
 
             });
+
         });
         
         /*####*/

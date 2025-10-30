@@ -262,386 +262,216 @@ class SalesQuotAnalysisReport extends BaseController
         
     }
 
+    
 
-    public function Pdf($quotation_data,$from_date,$to_date)
-    {   
-       
-        if(!empty($quotation_data))
-        {   
+    public function Pdf($quotation_data, $from_date, $to_date)
+    {
+
+        if (!empty($quotation_data)) {
+
+            if (ob_get_length()) ob_end_clean();
+
             $pdf_data = "";
-            
-
             $quot_prod_total = 0;
             $sales_prod_total = 0;
             $diff_total = 0;
             $quot_diff_total = 0;
-            foreach($quotation_data as $quot_data){
 
-                $new_date = date('d-M-Y', strtotime($quot_data->qd_date));
-            
-                $pdf_data .= "  <tr>
-                                    <td style='border-top: 2px solid'  class='text-center' width='50px'>{$new_date}</td>
-                                    <td style='border-top: 2px solid'  class='text-center' width='50px'>{$quot_data->qd_reffer_no}</td>
-                                    <td style='border-top: 2px solid' width='50px'>{$quot_data->cc_customer_name}</td>
-                                    <td style='border-top: 2px solid' width='50px'>{$quot_data->se_name}</td>
+            foreach ($quotation_data as $quot_data) {
+                $new_date = !empty($quot_data->qd_date) ? date('d-M-Y', strtotime($quot_data->qd_date)) : '';
 
-                
-                                    <td colspan='8'  class='p-0' style='border-top: 2px solid'>
-                                        <table>";
-                                               foreach ($quot_data->quotation_product as $quot_prod) {
-                                                    
-                                                    $quot_rate = format_currency($quot_prod->qpd_rate);
+                $pdf_data .= "
+                    <tr>
+                        <td class='text-center' width='7%'>$new_date</td>
+                        <td class='text-center' width='8%'>{$quot_data->qd_reffer_no}</td>
+                        <td width='15%'>{$quot_data->cc_customer_name}</td>
+                        <td width='10%'>{$quot_data->se_name}</td>
+                        <td colspan='8' class='p-0'>
+                            <table width='100%'>
+                ";
 
-                                                    $quot_disc = format_currency($quot_prod->qpd_discount);
+                if (!empty($quot_data->quotation_product)) {
+                    foreach ($quot_data->quotation_product as $quot_prod) {
+                        $quot_rate = format_currency($quot_prod->qpd_rate);
+                        $quot_disc = format_currency($quot_prod->qpd_discount);
+                        $quot_amount = format_currency($quot_prod->qpd_amount);
 
-                                                    $quot_amount = format_currency($quot_prod->qpd_amount);
+                        $pdf_data .= "
+                            <tr style='background: unset; border-bottom: hidden !important;'>
+                                <td width='30%'>{$quot_prod->product_details}</td>
+                                <td align='center' width='8%'>{$quot_prod->qpd_quantity}</td>
+                                <td align='right' width='10%'>{$quot_rate}</td>
+                                <td align='center' width='10%'>{$quot_disc}</td>
+                                <td align='right' width='12%'>{$quot_amount}</td>
+                                <td colspan='3' class='p-0'>
+                                    <table width='100%'>
+                        ";
 
-                                                    $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
-                                                                    <td class='rotate' width='200px'>{$quot_prod->product_details}</td>
-                                                                    <td class='rotate' width='40px' align='center'>{$quot_prod->qpd_quantity}</td>
-                                                                    <td class='rotate'  width='80px' align='right'>{$quot_rate}</td>
-                                                                    <td class='rotate '  width='80px' align='center'>{$quot_disc}</td>
-                                                                    <td class='rotate' width='100px' align='right'>{$quot_amount}</td>";
+                        $quot_prod_total += $quot_prod->qpd_amount;
 
-                                                                    $quot_prod_total = $quot_prod->qpd_amount + $quot_prod_total;
+                        if (!empty($quot_prod->sales_orders)) {
 
-                                                                    $pdf_data .="<td colspan='3'  class='p-0'>
-                                                                    
-                                                                                <table>";
+                            foreach ($quot_prod->sales_orders as $sal_ord) {
+                                $sales_amount = format_currency($sal_ord->spd_amount);
+                                $diff = $quot_prod->qpd_amount - $sal_ord->spd_amount;
+                                $sales_prod_total += $sal_ord->spd_amount;
+                                $diff_total += $diff;
+                                $diff_formatted = format_currency($diff);
 
-                                                                                if(!empty($quot_prod->sales_orders)){ 
-                                                                                    
-                                                                                    foreach ($quot_prod->sales_orders as $sal_ord) { 
-                                                                                        
-                                                                                        $sales_amount = format_currency($sal_ord->spd_amount);
+                                $pdf_data .= "
+                                    <tr style='background: unset; border-bottom: hidden !important;'>
+                                        <td align='center' width='33%'>{$sal_ord->so_reffer_no}</td>
+                                        <td align='right'  width='33%'>{$sales_amount}</td>
+                                        <td align='right'  width='34%'>{$diff_formatted}</td>
+                                    </tr>
+                                ";
+                            }
 
-                                                                                        $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
-                                                                                                            
-                                                                                                        <td class='rotate' width='100px' align='center'>{$sal_ord->so_reffer_no}</td>
-                                                                                                        <td class='rotate' width='90px' align='right'>{$sales_amount}</td>";
+                        } else {
+                            
+                            $pdf_data .= "
+                                <tr style='background: unset; border-bottom: hidden !important;'>
+                                    <td></td><td></td><td align='right'>{$quot_prod->qpd_amount}</td>
+                                </tr>
+                            ";
+                            $quot_diff_total += $quot_prod->qpd_amount;
+                        }
 
-                                                                                                        $diff = $quot_prod->qpd_amount - $sal_ord->spd_amount; 
+                        $final_diff_total = $diff_total + $quot_diff_total;
 
-                                                                                                        $sales_prod_total = $sal_ord->spd_amount + $sales_prod_total;
+                        $pdf_data .= "
+                                    </table>
+                                </td>
+                            </tr>
+                        ";
+                    }
+                }
 
-                                                                                                        $diff_total = $diff + $diff_total;
-
-                                                                                                        $diff = format_currency($diff);
-
-                                                                                                        $pdf_data .="<td class='rotate' width='80px' align='right'>{$diff}</td>";
-                                                                                                        
-                                                                                        
-                                                                                        $pdf_data .= "</tr>";
-
-                                                                                    } 
-                                                                                    
-                                                                                }else{
-
-                                                                                        $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
-
-                                                                                                          <td class='rotate' width='100px'></td>
-                                                                                                          <td class='rotate' width='90px'></td>
-                                                                                                          <td class='rotate' width='80px' align='right'>{$quot_prod->qpd_amount}</td>
-                                                                                        
-                                                                                        </tr>";
-
-                                                                                        $quot_diff_total  = $quot_prod->qpd_amount + $quot_diff_total; 
-
-
-                                                                                }
-
-                                                                                $final_diff_total = $diff_total + $quot_diff_total;
-
-
-                                                                    $pdf_data .="</table>
-
-                                                                                </td>
-                                                                                ";
-
-
-
-                                                    $pdf_data .=" </tr>"; 
-                                               }
-                                        $pdf_data .= "</table>
-                                        
-                                    
-                                    </td>";
-
-            
-                                $pdf_data .= "</tr>";
+                $pdf_data .= "</table></td></tr>";
             }
 
-
-
-
-            
-            if(empty($from_date) && empty($to_dat))
-            {
-             
-               $dates = "";
-            }
-            else
-            {
-               $dates = $from_date . " to " . $to_date;
-            }
-
+            $dates = (empty($from_date) && empty($to_date)) ? "" : $from_date . " to " . $to_date;
             $title = "SQR";
 
-           // $mpdf = new \Mpdf\Mpdf();
+            $mpdf = new \Mpdf\Mpdf([
+                'format' => 'A4-L',
+                'default_font_size' => 9,
+                'margin_left' => 5,
+                'margin_right' => 5,
+                'margin_top' => 10,
+                'margin_bottom' => 10,
+                'default_font' => 'dejavusans'
+            ]);
 
-           
-           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-           $fontDirs = $defaultConfig['fontDir'];
+            // No AddPage() needed here
+            $mpdf->SetHTMLHeader('');
+            $mpdf->SetHTMLFooter('');
 
-           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-           $fontData = $defaultFontConfig['fontdata'];
-
-
-           $mpdf = new \Mpdf\Mpdf([
-            'format' => 'Letter-L', // Custom page size in millimeters
-            //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
-            'default_font_size' => 9, 
-            'margin_left' => 5, 
-            'margin_right' => 5,
-            'autoPageBreak' => true,  // Enable automatic page breaks
-            'fontDir' => array_merge($fontDirs, [
-                __DIR__ . '/fonts'
-            ]),
-            'fontdata' => $fontData + [
-                'bentonsans' => [
-                  
-                    'R' => 'OpenSans-Regular.ttf',
-                    'B' => 'OpenSans-Bold.ttf',
-                ],
-            ],
-            'default_font' => 'bentonsans'
-            
-        ]);
-                
-        
-        
-       
-        
-
-            
-
-            $mpdf->SetTitle('Sales Quotation Analysis Report'); // Set the title
-
-            //$sales_amount = format_currency($sales_amount);
-            
-            //$sales_diff_amount = format_currency($sales_diff_amount);
-
-
-           // $total_quot_amount = format_currency($total_quot_amount);
-
-            $html ='
-        
+            $html = '
             <style>
-            th, td {
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-            }
-              
-            p{
-                
-                font-size: 12px;
-
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
-
-            
-            
-            
+                body { font-family: sans-serif; font-size: 10pt; margin: 0; padding: 0; }
+                th, td { padding: 4px; font-size: 10px; border: none; vertical-align: top; }
+                table { border-collapse: collapse; width: 100%; border-spacing: 0; }
+                h3, p { margin: 0; padding: 0; }
             </style>
-        
-            <table>
-            
-            <tr>
-            
-            
-        
-            <td>
-        
-            <h3>Al Fuzail Engineering Services WLL</h3>
-            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
-            
-            
-            </td>
-            
-            </tr>
-        
-            </table>
-        
-        
-        
-            <table width="100%" style="margin-top:10px;">
-            
-        
-            <tr width="100%">
-            <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Sales Quotation Analysis Report</h3></td>
-        
-            </tr>
-        
+
+            <div style="margin-top:0;">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <h3>Al Fuzail Engineering Services WLL</h3>
+                        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                    </td>
+                </tr>
             </table>
 
-           
-        
-            <table style="font-size: 20px;"  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
-            
-        
-            <tr>
-            
-            <th align="center" width="50px" style="border-top: 2px solid">Date</th>
-        
-            <th align="center" width="50px" style="border-top: 2px solid">Quotation Ref.</th>
-        
-            <th align="center" width="50px" style="border-top: 2px solid">Customer</th>
-        
-            <th align="center" width="50px" style="border-top: 2px solid">Sales Executive</th>
+            <table width="100%" style="margin-top:5px;">
+                <tr>
+                    <td>Period : ' . $dates . '</td>
+                    <td align="right"><h3>Sales Quotation Analysis Report</h3></td>
+                </tr>
+            </table>
 
-            <th colspan="8"  class="p-0" style="border-top: 2px solid">
+            <table width="100%" style="font-size: 10px; margin-top:5px; border-top:2px solid #000;">
+                <tr>
+                    <th align="center" width="7%" style="border-top: 2px solid;">Date</th>
+                    <th align="center" width="8%" style="border-top: 2px solid;">Quotation Ref.</th>
+                    <th align="center" width="15%" style="border-top: 2px solid;">Customer</th>
+                    <th align="center" width="10%" style="border-top: 2px solid;">Sales Executive</th>
+                    <th colspan="8" width="60%" style="border-top: 2px solid;">
+                        <table width="100%">
+                            <tr>
+                                <th align="center" width="30%">Product</th>
+                                <th align="center" width="8%">Qty</th>
+                                <th align="center" width="10%">Rate</th>
+                                <th align="center" width="10%">Discount</th>
+                                <th align="center" width="12%">Amount</th>
+                                <th colspan="3" width="30%">
+                                    <table width="100%">
+                                        <tr>
+                                            <th align="center" width="33%">Sales Order</th>
+                                            <th align="center" width="33%">Amount</th>
+                                            <th align="center" width="34%">Difference</th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        </table>
+                    </th>
+                </tr>
+                ' . $pdf_data . '
+                <tr>
 
-                <table>
-                    
-                    <tr>
+                    <td style="border-top: 2px solid;" width="50px">Total</td>
+                    <td style="border-top: 2px solid;" width="50px"></td>
+                    <td style="border-top: 2px solid;" width="50px"></td>
+                    <td style="border-top: 2px solid;" width="50px"></td>
+                    <td colspan="8"  class="p-0" style="border-top: 2px solid">
+                        <table>
+                            <tr style="background: unset;border-bottom: hidden !important;">
 
-                        <th align="center"  width="200px">Product</th>
-
-                        <th align="center" width="40px">Qty</th>
-
-                        <th align="center" width="80px">Rate</th>
-
-                        <th align="center" width="80px">Discount</th>
-
-                        <th align="center" width="100px">Amount</th>
-
-                        <th colspan="3"  class="p-0">
+                                <td  width="200"></td>
+                                <td  width="40px"></td>
+                                <td  width="80px"></td>
+                                <td  width="80px" ></td>
                             
-                            <table>
+                                <td  width="100px" align="right"><b>'.format_currency($quot_prod_total).'</b></td>
 
-                                <tr>
+                                <td colspan="3"  class="p-0">
 
-                                   <th align="center" width="100px">Sales Order</th>
+                                    <table>
 
-                                <th align="center" width="90px">Amount</th>
+                                        <tr style="background: unset;border-bottom: hidden !important;">
 
-                                <th align="center" width="80px">Difference</th>
-            
-                                
-                                </tr>
-                            
-                            </table>
-
-                        </th>
-                    
-                    </tr>
-                
-                </table>
-            
-            </th>
-        
-            
-
-            
-
-         
-            </tr>
-
-             
-            '.$pdf_data.'
-
-            <tr>
-
-                <td style="border-top: 2px solid;" width="50px">Total</td>
-                <td style="border-top: 2px solid;" width="50px"></td>
-                <td style="border-top: 2px solid;" width="50px"></td>
-                <td style="border-top: 2px solid;" width="50px"></td>
-                <td colspan="8"  class="p-0" style="border-top: 2px solid">
-                    <table>
-                       <tr style="background: unset;border-bottom: hidden !important;">
-
-                            <td  width="200"></td>
-                            <td  width="40px"></td>
-                            <td  width="80px"></td>
-                            <td  width="80px" ></td>
-                            <td  width="100px" align="right"><b>' . format_currency($quot_prod_total) . '</b></td>
-
-                            <td colspan="3"  class="p-0">
-                                <table>
-                                    <tr style="background: unset;border-bottom: hidden !important;">
-
-                                        <td  width="100px" ></td>
-                                        <td  width="90px" align="right"><b>'.format_currency($sales_prod_total).'</b></td>
-                                        <td  width="80px" align="right"><b>'.format_currency($final_diff_total).'</b></td>
+                                            <td  width="100px"></td>
+                                            <td  width="90px" align="right"><b>'.format_currency($sales_prod_total).'</b></td>
+                                            <td  width="80px" align="right"><b>'.format_currency($final_diff_total).'</b></td>
+                                        
+                                        </tr>
                                     
-                                    </tr>
+                                    </table>
                                 
-                                </table>
-                            
-                            </td>
-                       
-                       </tr>
-                    
-                    </table>
-                </td>
-            
-            </tr>
-            
+                                </td>
+                        
+                            </tr>
+                        
+                        </table>
+                    </td>
+                
+                </tr>
             </table>
-
-
-        
+            </div>
             ';
-            //echo $html; exit();
 
-            $mpdf->SetAutoPageBreak(true, 10); // If 10mm space is left, move to the next page
-        
             $mpdf->WriteHTML($html);
-
-            // Generate the PDF content
-           // Generate the PDF content but do not output it immediately (use 'S' to return it as a string)
-           
-           /*$pdf_content = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-
-            // Set headers for inline display with the correct filename
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $this->response->setHeader('Content-Disposition', 'inline; filename="Sales_Quotation_Report.pdf"');
-            $this->response->setHeader('Content-Length', strlen($pdf_content)); // Optional but helps ensure the browser knows the size
-
-            // Send the response with the PDF content
-            $this->response->setBody($pdf_content);
-            $this->response->send();*/
-            
-            ob_clean();
-
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
-
-            exit();
-
-
-    }
-            
-
-           
-
-       
+            $mpdf->Output('SQR.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
+        }
+    
     }
 
-    
-    
+
 
 
 
