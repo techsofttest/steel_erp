@@ -421,7 +421,8 @@
           $row_percentage += $percent_val;*/
 
 
-          $row_expenses_return = $row_expenses - $expense_val;
+        
+          $row_expenses_return -= $expense_val;
           $row_gross_profit += $gross_val;
           $row_percentage += $percent_val;
 
