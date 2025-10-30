@@ -568,8 +568,8 @@
                                                                     $total_percentage =  $percentage1 + $percentage2 + $percentage3 + $percentage4 + $percentage5;
                                                                 ?> 
                                                                 
-                                                                <table>
-                                                                   <tr style="background: unset;border-bottom: hidden !important;">
+                                                                
+                                                                <tr style="background: unset;border-bottom: hidden !important;">
                                                                     <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                 </tr> 
                                                                 
@@ -582,7 +582,7 @@
                                                                 </tr> 
                                                                 
 
-                                                                </table>
+                                                                
                                                                 
                                                                                             
                                                             </table>
