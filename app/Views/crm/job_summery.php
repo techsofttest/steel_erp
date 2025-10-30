@@ -328,6 +328,10 @@
                                                             $single_cash = 0;
                                                             $single_credit = 0;
                                                             $single_returns = 0;
+
+                                                            $single_expence = 0;
+                                                            $single_gross = 0;
+                                                            $single_percentage = 0;
                                                            if(!empty($sales_order->cash_invoice)){
                                                             
                                                                 foreach($sales_order->cash_invoice as $cash_inv){
@@ -551,6 +555,8 @@
                                                                     
                                                                     <?php } }
 
+
+                                                                    
                                                                     //$expenses =  $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
 
                                                                     $expenses =  $expenses1 + $expenses3;
@@ -560,7 +566,9 @@
                                                                     $total_gross_profit = $gross_profit1 +  $gross_profit2 +  $gross_profit3 + $gross_profit4 +  $gross_profit5;
                                                                     
                                                                     $total_percentage =  $percentage1 + $percentage2 + $percentage3 + $percentage4 + $percentage5;
-                                                                ?>                        
+                                                                ?> 
+                                                                
+                                                                <td style="width:100px" class="text-end">dfsdfsd</td>
                                                                                             
                                                             </table>
                                                         </td>
