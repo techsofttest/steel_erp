@@ -415,11 +415,7 @@
           $row_gross_profit += $gross_val;
           $row_percentage += $percent_val;
     ?>
-          <tr>
-            <td style="width:100px" class="text-end"><?= format_currency($expense_val) ?></td>
-            <td style="width:100px" class="text-end"><?= format_currency($gross_val) ?></td>
-            <td style="width:100px" class="text-end"><?= number_format($percent_val,2) ?>%</td>
-          </tr>
+         
     <?php
         }
       }
@@ -435,11 +431,7 @@
           $row_gross_profit += $gross_val;
           $row_percentage += $percent_val;
     ?>
-          <tr>
-            <td style="width:100px" class="text-end"><?= format_currency($expense_val) ?></td>
-            <td style="width:100px" class="text-end"><?= format_currency($gross_val) ?></td>
-            <td style="width:100px" class="text-end"><?= number_format($percent_val,2) ?>%</td>
-          </tr>
+         
     <?php
         }
       }
