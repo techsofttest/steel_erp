@@ -386,7 +386,7 @@
                                                                 
                                                                 foreach ($sales_order->purchase_vouchers as $pur_vouch) { ?> 
                                                                                 
-                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                               
                                                                     
                                                                    
 
@@ -414,7 +414,7 @@
                                                                     
 
                                                                     
-                                                                </tr>
+                                                                
 
                                                             <?php } } 
                                                                 
@@ -422,7 +422,7 @@
 
                                                                     foreach($sales_order->purchase_return_prod as $pv_prod){ ?> 
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    
                                                                     
                                                                        
 
@@ -452,7 +452,7 @@
                                                                         
 
                                                                     
-                                                                    </tr>
+                                                                    
 
 
                                                                 <?php  }  }
@@ -461,7 +461,7 @@
 
                                                                     foreach($sales_order->petty_cash as $p_cash){ ?>
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                  
                                                                     
                                                                         
 
@@ -488,7 +488,7 @@
                                                                         
                                                                 
                                                                 
-                                                                    </tr>  
+                                                                   
 
                                                                 <?php  } }
 
@@ -496,14 +496,14 @@
 
                                                                     foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
                                                                       
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                   
                                                                     
-                                                                        <td  style="width:100px" class="text-end">
+                                                                        
                                                                             
                                                                             <?php if(!empty($jour_vouch->ji_debit)){ echo  format_currency($jour_vouch->ji_debit); } 
                                                                             elseif($jour_vouch->ji_credit){ echo format_currency($jour_vouch->ji_credit); }?> 
                                                                             
-                                                                        </td>
+                                                                     
                                                                         
                                                                         <?php if(!empty($jour_vouch->ji_debit)){
 
@@ -515,7 +515,7 @@
 
                                                                         ?> 
                                                                              
-                                                                             <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td> 
+                                                                            
 
                                                                              <?php 
                                                                              
@@ -525,7 +525,7 @@
                                                                                 
                                                                             ?>
 
-                                                                            <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
+                                                                            
                                                                             
                                                                         <?php } elseif(!empty($jour_vouch->ji_credit)){
                                                                             
@@ -547,11 +547,11 @@
                                                                                 
                                                                             ?>
 
-                                                                            <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
+                                                                           
                                                                             
                                                                         <?php } ?>
                                                                 
-                                                                    </tr>  
+                                                                    
                                                                     
                                                                     <?php } }
 
@@ -568,7 +568,10 @@
                                                                     $total_percentage =  $percentage1 + $percentage2 + $percentage3 + $percentage4 + $percentage5;
                                                                 ?> 
                                                                 
-                                                                <td style="width:100px" class="text-end">dfsdfsd</td>
+                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    <td style="width:100px" class="text-end">dfsdfsd</td>
+                                                                </tr>    
+                                                                
                                                                                             
                                                             </table>
                                                         </td>
