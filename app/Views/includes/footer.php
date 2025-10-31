@@ -929,9 +929,52 @@
         */
 
 
-
+ 
         
 
         
    
     </script>
+
+
+<script>
+(function() {
+  // Function to randomize name & autocomplete to block autofill
+  function blockAutofill(input) {
+    if (!input || input.type === 'hidden') return;
+    if (input.dataset.processed) return; // skip already processed
+
+    // Generate random attributes so browser can't match stored data
+    const rand = Math.random().toString(36).substring(2, 10);
+    input.setAttribute('autocomplete', 'off_' + rand);
+    input.setAttribute('name', (input.getAttribute('name') || 'input') + '_' + rand);
+    input.setAttribute('autocorrect', 'off');
+    input.setAttribute('autocapitalize', 'off');
+    input.setAttribute('spellcheck', 'false');
+
+    input.dataset.processed = '1';
+  }
+
+  // Apply to all inputs after DOM ready
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('form').forEach(f => f.setAttribute('autocomplete', 'off'));
+    document.querySelectorAll('input').forEach(blockAutofill);
+  });
+
+  // Watch for dynamically added inputs
+  const obs = new MutationObserver(muts => {
+    muts.forEach(m => {
+      m.addedNodes.forEach(n => {
+        if (n.nodeType === 1) {
+          if (n.matches('input')) blockAutofill(n);
+          else n.querySelectorAll && n.querySelectorAll('input').forEach(blockAutofill);
+        }
+      });
+    });
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+
+
