@@ -508,7 +508,7 @@
 
     <?php 
     
-        $grand_expenses = $grand_expenses+ $row_expenses;
+        $row_expenses += $row_expenses;
         
         $row_gross_profit +=  $row_gross_profit;
 
