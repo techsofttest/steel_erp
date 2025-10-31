@@ -506,7 +506,15 @@
       <td style="width:100px" class="text-end"><?= number_format($row_percentage,2) ?>%</td>
     </tr>
 
-    <?php $grand_expenses = $grand_expenses+ $row_expenses;?>
+    <?php 
+    
+        $grand_expenses = $grand_expenses+ $row_expenses;
+        
+        $row_gross_profit +=  $row_gross_profit;
+
+        $row_percentage +=  $row_percentage; 
+    
+    ?>
 
     </table>
   </td>
