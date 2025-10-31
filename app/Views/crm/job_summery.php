@@ -507,7 +507,7 @@
   <?php } ?>
 </td>
       <td style="width:100px" class="text-end"><?= format_currency($row_gross_profit) ?></td>
-      <td style="width:100px" class="text-end"><?= number_format($row_percentage,2) ?>%</td>
+      <td style="width:100px" class="text-end"><?= number_format($row_percentage,2) ?></td>
     </tr>
 
     <?php 
