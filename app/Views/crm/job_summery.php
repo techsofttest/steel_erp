@@ -508,11 +508,11 @@
 
     <?php 
     
-        $row_expenses += $row_expenses;
+        $grand_expenses = $grand_expenses+ $row_expenses;
         
-        $row_gross_profit +=  $row_gross_profit;
+        $grand_gross_profit = $grand_gross_profit + $row_gross_profit;
 
-        $row_percentage +=  $row_percentage; 
+        $grand_percentage = $grand_percentage + $row_percentage; 
     
     ?>
 
