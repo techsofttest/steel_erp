@@ -410,7 +410,7 @@
           // accumulate per-row totals
           $row_expenses += $expense_val;
 
-          $grand_expenses += $row_expenses;
+          //$grand_expenses += $row_expenses;
           $row_gross_profit += $gross_val;
           $grand_gross_profit += $row_gross_profit;
           $row_percentage += $percent_val;
@@ -461,7 +461,7 @@
           $percent_val = $gross_val * 100 / $sales_order->so_amount_total;
 
           $row_expenses += $expense_val;
-          $grand_expenses += $row_expenses;
+          //$grand_expenses += $row_expenses;
           $row_gross_profit += $gross_val;
           $grand_gross_profit += $row_gross_profit;
           $row_percentage += $percent_val;
@@ -483,7 +483,7 @@
          
          
           $row_expenses += $expense_val;
-           $grand_expenses += $row_expenses;
+          // $grand_expenses += $row_expenses;
           $row_gross_profit += $gross_val;
           $grand_gross_profit += $row_gross_profit;
           $row_percentage += $percent_val;
@@ -505,6 +505,8 @@
       <td style="width:100px" class="text-end"><?= format_currency($row_gross_profit) ?></td>
       <td style="width:100px" class="text-end"><?= number_format($row_percentage,2) ?>%</td>
     </tr>
+
+    <?php $grand_expenses = $grand_expenses+ $row_expenses;?>
 
     </table>
   </td>
