@@ -224,7 +224,6 @@
                                                     $credit_invoices = 0;
                                                     $sales_returns = 0;
 
-                                                    
 
                                                     $expenses1 = 0;
                                                     $expenses2 = 0;
@@ -384,7 +383,7 @@
                                                         
                                                         ?>
 
-                                                        <td class="text-end"><?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?></br><?php if(!empty($single_returns)){ echo "-". format_currency($single_returns); } ?></td>
+                                                        <td class="text-end"><?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?></br><?php if(!empty($single_returns) && $single_returns!=0.00){ echo "-". format_currency($single_returns); } ?></td>
 
                                                         
 
@@ -501,7 +500,12 @@
 
     <!-- ✅ PER-SALES-ORDER TOTAL ROW -->
     <tr style="">
-      <td style="width:100px" class="text-end"><?= format_currency($row_expenses) ?> </br>- <?= format_currency($row_expenses_return); ?></td>
+      <td style="width:100px" class="text-end">
+  <?= format_currency($row_expenses) ?>
+  <?php if (!empty($row_expenses_return)) { ?>
+    </br>- <?= format_currency($row_expenses_return) ?>
+  <?php } ?>
+</td>
       <td style="width:100px" class="text-end"><?= format_currency($row_gross_profit) ?></td>
       <td style="width:100px" class="text-end"><?= number_format($row_percentage,2) ?>%</td>
     </tr>
