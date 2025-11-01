@@ -183,7 +183,7 @@
                                                     if (!$hasData) {
                                                         // Skip this iteration if all purchase_sales_order are empty
                                                         continue;
-                                                    }
+                                                    } 
                                                 ?>
                                                 <tr>
                                                     <td class="text-center" style="white-space: nowrap;width:20px"><?php echo $i; ?></td>
@@ -226,13 +226,13 @@
                                                 </tr>
                                             <?php }  else{ ?> 
 
-                                                 <tbody>
+                                                
                                                    
                                                     <tr>
                                                         <td colspan="6" class="not_found">No Data Found !!</td>
                                                     </tr>
 
-                                                </tbody>
+                                                
                                                 
 
                                             <?php }  ?>
