@@ -180,12 +180,7 @@
                                                         }
                                                     }
 
-                                                    if (!$hasData) { ?>
-                                                        <tr>
-                                                            <td colspan="6" class="not_found">No Data Found !!</td>
-                                                        </tr>
-                                                        
-                                                    <?php // Skip this iteration if all purchase_sales_order are empty
+                                                    if (!$hasData) {  // Skip this iteration if all purchase_sales_order are empty
                                                         continue;} 
                                                 ?>
                                                 <tr>
@@ -216,6 +211,15 @@
                                                 <?php 
                                                     $i++; 
                                                 } ?>
+
+                                                <?php if (!$hasData) {
+    ?>
+    <tr>
+        <td colspan="6" class="not_found">No Data Found !!</td>
+    </tr>
+    <?php
+}
+?>
                                                 <tr>
                                                     <td align="center">Total</td>
                                                     <td></td>
