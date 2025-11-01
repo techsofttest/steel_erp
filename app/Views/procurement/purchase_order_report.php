@@ -520,12 +520,6 @@ span.select2.customer_width, span.select2{
 </div>
 
 
-
-
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
-
 <script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 <script>
@@ -668,10 +662,6 @@ span.select2.customer_width, span.select2{
         }
 
 
-
-
-
-
         function tableToExcel(table, sheetName, fileName) {
 
 
@@ -793,6 +783,7 @@ span.select2.customer_width, span.select2{
                 allowClear: true,
                 data: function (params) {
                     return {
+                        vendor_id: $('.customer_clz').val(),
                         term: params.term,
                         page: params.page || 1,
                     };
