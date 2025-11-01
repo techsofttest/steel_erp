@@ -2593,4 +2593,37 @@ class ProcurementModel extends Model
         }
 
 
+        public function FetchLikeJoinBy($table,$cond,$order_key,$term,$joins,$group=null)
+        {
+            $query = $this->db->table($table);
+    
+    
+            if(!empty($joins))
+    
+            foreach($joins as $join)
+            {
+                $table2 = $table;
+                if(!empty($join['table2']))
+                {
+                $table2 = $join['table2'];
+                }
+                $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
+            }
+    
+
+            $query->where($cond)
+                ->like($order_key,$term);
+            
+           
+            if($group != null )
+                $query->groupBy($group);
+
+            $result = $query->get()->getResult();
+            //echo $this->db->getLastQuery(); exit();
+    
+            return $result;
+    
+        }
+
+
 }
