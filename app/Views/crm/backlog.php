@@ -30,10 +30,10 @@
     
 }
 
-.Dashboard-form .form-select {
+/*.Dashboard-form .form-select {
    
    color: #999;
-}
+}*/
 
 .not_found{
 
@@ -45,7 +45,17 @@
         
        
 }
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    
+        color: var(--vz-body-color);
+        font-weight: 400;
+    }
 
+    .select2-results__option[aria-selected] {
+
+        cursor: pointer;
+        color: var(--vz-body-color);
+    }
 </style>
 
 

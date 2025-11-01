@@ -11,10 +11,10 @@
     
     padding-top: 5px !important;
 }
-.Dashboard-form .form-select {
+/*.Dashboard-form .form-select {
    
    color: #999;
-}
+}*/
 .not_found{
 
 	text-align: center;
@@ -22,9 +22,19 @@
 	font-size: 30px;
 	font-weight: 700;
 	color: black;
-        
-       
+   
 }
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    
+        color: var(--vz-body-color);
+        font-weight: 400;
+    }
+
+    .select2-results__option[aria-selected] {
+
+        cursor: pointer;
+        color: var(--vz-body-color);
+    }
 
 </style>
 
@@ -118,7 +128,7 @@
 
                                                                             <tr>
                                                                                 <td style="width: 30%;" class="center_padding">Customer</td>
-                                                                                <td style="width: 70%;" colspan="4"><select class="form-select droup_customer value='<?php echo $customer; ?>' customer_clz" name="customer">
+                                                                                <td style="width: 70%;" colspan="4"><select class="form-select droup_customer customer_clz" value='<?php echo $customer; ?>'  name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
                                                                                         <?php foreach($customer_creation as $cus_data){?>
                                                                                             <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>

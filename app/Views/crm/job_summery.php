@@ -17,8 +17,26 @@
        
 }
 .table-bordered tr {
+
         border-bottom: unset !important;
     
+}
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    
+        color: var(--vz-body-color);
+        font-weight: 400;
+    }
+
+    .select2-results__option[aria-selected] {
+
+        cursor: pointer;
+        color: var(--vz-body-color);
+    }
+
+   
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+    
+    padding-top: 5px;
 }
 </style>
 <div class="tab-content text-muted">
@@ -620,7 +638,7 @@
 
 
         /* customer droup drown */
-         /*$(".droup_customer").select2({
+         $(".droup_customer").select2({
             placeholder: "Select Customer",
             theme : "default form-control- customer_width",
             dropdownParent: $('#JobProfitability'),
@@ -649,7 +667,7 @@
                     };
                 },              
             }
-        })*/
+        })
         /**/
 
         /*print button section start*/
