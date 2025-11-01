@@ -866,9 +866,6 @@ class PurchaseOrderReport extends BaseController
 
         }
 
-
-
-
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);

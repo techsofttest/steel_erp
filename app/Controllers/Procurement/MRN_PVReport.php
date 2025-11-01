@@ -1001,6 +1001,62 @@ class MRN_PVReport extends BaseController
     }
 
 
+        public function FetchLpoRef(){
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $vendor_id = !empty($_GET['vendor_id']) ? $_GET['vendor_id'] : "";
+        if ($vendor_id == "") {
+            $resultCount = 10;
+            $end = ($page - 1) * $resultCount;
+            $start = $end + $resultCount;
+            $data['result'] = $this->common_model->FetchAllLimit('pro_purchase_order', 'po_reffer_no', 'asc', $term, $start, $end);
+        } else {
+            $cond = array('po_vendor_name' => $vendor_id);
+            $joins1 = array(
+                /*array(
+                    'table' => 'crm_customer_creation',
+                    'pk'    => 'cc_id',
+                    'fk'    => 'so_customer',
+                ),*/
+            );
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond,'po_reffer_no',$term, $joins1, 'po_reffer_no');
+        }
+        $data['total_count'] = count($data['result']);
+        return json_encode($data);
+
+    }
+
+    public function FetchSalesOrder(){
+
+         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
+        if ($lpo_ref == "") {
+            $resultCount = 10;
+            $end = ($page - 1) * $resultCount;
+            $start = $end + $resultCount;
+            $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+        } else {
+            $cond = array('pop_purchase_order' => $lpo_ref);
+            $joins1 = array(
+                 array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'pop_sales_order',
+            ),
+            );
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond,'so_reffer_no',$term, $joins1, 'pop_sales_order');
+
+        
+        }
+        $data['total_count'] = count($data['result']);
+        return json_encode($data);
+
+    }
+
+    
+
     public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');

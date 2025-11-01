@@ -203,7 +203,7 @@ span.select2.customer_width, span.select2{
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Lpo Ref</td>
                                                                                 <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select" id="lpo_ref" name="lpo_ref" disabled>
+                                                                                    <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref" >
                                                                                         <option value="" selected disabled>Select Lpo ref</option>
                                                                                     </select>
                                                                                 </td>
@@ -212,7 +212,7 @@ span.select2.customer_width, span.select2{
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Sales Order</td>
                                                                                 <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select" id="sales_order" name="sales_order" disabled>
+                                                                                    <select class="form-select sales_order" id="sales_order" name="sales_order" >
                                                                                         <option value="" selected disabled>Select Sales Order</option>
                                                                                     </select>
                                                                                 </td>
@@ -356,6 +356,7 @@ span.select2.customer_width, span.select2{
 
                     <td class="text-center" style="white-space: nowrap;">
                         <a href="<?php echo base_url('Procurement/PurchaseOrder?view_so=' . ($pur_vouc->po_id ?? '')); ?>" target="_blank">
+                            <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a>
                     </td>
 
                     <td colspan="7" class="p-0">
@@ -463,6 +464,7 @@ span.select2.customer_width, span.select2{
 
 <script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
+<?php /*
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
         $(document).ready(function() {
@@ -512,7 +514,7 @@ span.select2.customer_width, span.select2{
         });
     });
 </script>
-
+*/?>
 
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
@@ -733,6 +735,87 @@ span.select2.customer_width, span.select2{
             }
 
         })
+
+
+              $(".lpo_ref").select2({
+            placeholder: "Select LPO Ref",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseVoucherReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseVoucherReport/FetchLpoRef",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        vendor_id: $('.vendor_dropdown').val(),
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.po_id,
+                                text: $.trim(item.po_reffer_no)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+
+
+
+        /*product droup drown search*/
+        $(".sales_order").select2({
+            placeholder: "Select Sales Order",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseVoucherReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseVoucherReport/FetchSalesOrder",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        lpo_ref: $('.lpo_ref').val(),
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.so_id,
+                                text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+
 
         /* product dropdown search */
         $(".product_clz").select2({

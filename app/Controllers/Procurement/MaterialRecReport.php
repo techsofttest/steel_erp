@@ -862,20 +862,29 @@ class MaterialRecReport extends BaseController
 
     }
 
-    public function FetchSalesOrder(){
-
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+    public function FetchSalesOrder()
+    {
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
-        $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
-        $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders','so_reffer_no','asc',$term,$start,$end);
-
+        $vendor_id = !empty($_GET['vendor_id']) ? $_GET['vendor_id'] : "";
+        if ($vendor_id == "") {
+            $resultCount = 10;
+            $end = ($page - 1) * $resultCount;
+            $start = $end + $resultCount;
+            $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+        } else {
+            $cond = array('so_customer' => $vendor_id);
+            $joins1 = array(
+                /*array(
+                    'table' => 'crm_customer_creation',
+                    'pk'    => 'cc_id',
+                    'fk'    => 'so_customer',
+                ),*/
+            );
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('crm_sales_orders', $cond,'so_reffer_no',$term, $joins1, 'so_reffer_no');
+        }
         $data['total_count'] = count($data['result']);
-
         return json_encode($data);
-
     }
 
     public function FetchProducts()
