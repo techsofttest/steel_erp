@@ -28,6 +28,16 @@
 
         border-bottom: unset !important;
     }
+    .not_found{
+
+	text-align: center;
+	width: 100%;
+	font-size: 30px;
+	font-weight: 700;
+	color: black;
+        
+       
+}
 
    
 </style>
@@ -212,14 +222,11 @@
                                                     $i++; 
                                                 } ?>
 
-                                                <?php if (!$hasData) {
-    ?>
-    <tr>
-        <td colspan="6" class="not_found">No Data Found !!</td>
-    </tr>
-    <?php
-}
-?>
+                                                <?php if (!$hasData) {?>
+                                                    <tr>
+                                                        <td colspan="6" class="not_found">No Data Found !!</td>
+                                                    </tr>
+                                                <?php } ?>
                                                 <tr>
                                                     <td align="center">Total</td>
                                                     <td></td>
