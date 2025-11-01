@@ -166,7 +166,9 @@
                                             <tbody class="tbody_data">
                                                 <?php if (!empty($work_progress)) {  
                                                     $i = 1;
-                                                    $total_amount = 0; 
+                                                    $total_amount = 0; ?>
+                                                   
+                                                    <?php
                                                     foreach ($work_progress as $work_prog) { 
                                                        // print_r($work_prog); exit();
                                                     // Check if all purchase_sales_order arrays are empty
@@ -195,7 +197,7 @@
                                                     <td class="text-center" style="white-space: nowrap;width:300px"><?php echo $work_prog->	pv_vendor_inv; ?></td>
                                                     <td colspan="2" align="left" class="p-0">
                                                         <table>
-                                                            <?php if(!empty($work_prog->purchase_voucher_prod)){ foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) { ?>
+                                                            <?php  foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) { ?>
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
                                                                     <?php if (!empty($pur_vou_prod->purchase_sales_order)) {
                                                                         foreach ($pur_vou_prod->purchase_sales_order as $pur_sales_ord) { ?>
@@ -204,17 +206,6 @@
                                                                         <td class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($pur_vou_prod->pvp_amount); ?></td>
                                                                     <?php     $total_amount = $pur_vou_prod->pvp_amount+ $total_amount; } ?>
                                                                 </tr>
-                                                            <?php } }else{ ?> 
-
-                                                                <tbody>
-                                                   
-                                                                    <tr>
-                                                                        <td colspan="6" class="not_found">No Data Found !!</td>
-                                                                    </tr>
-
-                                                                </tbody>
-                                                                
-                                                                
                                                             <?php } ?>
                                                         </table>
                                                     </td>
@@ -233,10 +224,9 @@
                                                     
                                                     <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                 </tr>
-                                            <?php } else{ ?> 
+                                            <?php }  else{ ?> 
 
-
-                                                <tbody>
+                                                 <tbody>
                                                    
                                                     <tr>
                                                         <td colspan="6" class="not_found">No Data Found !!</td>
@@ -244,9 +234,11 @@
 
                                                 </tbody>
                                                 
+
+                                            <?php }  ?>
                                                 
                                                 
-                                            <?php  } ?>
+                                              
 
 
                        
