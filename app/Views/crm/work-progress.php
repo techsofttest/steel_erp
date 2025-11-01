@@ -118,7 +118,7 @@
 
 
                         <!--datatable section start-->
-                        <?php if (!empty($work_progress)){?> 
+                        <?php if(!empty($_GET)){ ?> 
                         <div class="row">
                             <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
@@ -162,7 +162,7 @@
 
                                                 </tr>
                                             </thead>
-
+                                            <?php if (!empty($work_progress)){?> 
                                             <tbody class="tbody_data">
                                                 <?php if (!empty($work_progress)) {  
                                                     $i = 1;
@@ -229,6 +229,20 @@
 
                                             </tbody>
 
+                                            <?php }  else{ ?> 
+
+
+                                                <tbody>
+                                                   
+                                                    <tr>
+                                                        <td colspan="6" class="not_found">No Data Found !!</td>
+                                                    </tr>
+
+                                                </tbody>
+                                                
+                                                
+                                            <?php }  ?> 
+
                                         </table>
 
                                     </div>
@@ -236,21 +250,11 @@
                             </div>
                             <!--end col-->
                         </div>
-
-                        <?php } else{
-                            if(!empty($_GET)){   
-                        ?> 
+                        <?php } ?>
+                        
                             
-                            <div class="row">
-                                
-                                   
-                                        <div class="col-lg-12 not_found">
-                                            <p>No Data Found !!</p>
-                                        </div>
-                                    
-                               
-                            </div>  
-                        <?php } } ?>
+                            
+                        
 
                         <!---datatable section end-->
 

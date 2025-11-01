@@ -33,17 +33,14 @@
 }
 .not_found{
 
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        padding: 220px 0px;
-    }
-    .not_found p{
-
-        font-size: 35px;
-        font-weight: 700;
-        color: black;
-    }
+	text-align: center;
+	width: 100%;
+	font-size: 30px;
+	font-weight: 700;
+	color: black;
+        
+       
+}
 
 </style>
 
@@ -176,7 +173,7 @@
 
 
                         <!--datatable section start-->
-                        <?php  if(!empty($sales_data)){?> 
+                        <?php if(!empty($_GET)){?>
                         <div class="row">
                             <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
@@ -221,7 +218,7 @@
 
                                                 </tr>
                                             </thead>
-                                            
+                                            <?php  if(!empty($sales_data)){?> 
                                             <tbody class="tbody_data">
                                                
                                             <?php 
@@ -313,6 +310,19 @@
                                                 </tr>
 
                                             </tbody>
+                                            <?php } else{ ?>
+
+
+                                                <tbody>
+                                                   
+                                                    <tr>
+                                                        <td colspan="7" class="not_found">No Data Found !!</td>
+                                                    </tr>
+
+                                                </tbody>
+                                                
+                                                
+                                            <?php } ?> 
 
                                         </table>
                 
@@ -322,20 +332,10 @@
                             <!--end col-->
                         </div>
 
-                        <?php } else{
-                            if(!empty($_GET)){   
-                        ?> 
+                        <?php } ?>
                             
-                            <div class="row">
-                                
-                                   
-                                        <div class="col-lg-12 not_found">
-                                            <p>No Data Found !!</p>
-                                        </div>
-                                    
-                               
-                            </div>  
-                        <?php } } ?>
+                            
+                        
 
                         <!---datatable section end-->
 
