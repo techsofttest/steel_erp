@@ -206,21 +206,21 @@
                                         
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#JobProfitability" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
+                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Date</th>
-                                                    <th>Sales Order Ref</th>
-                                                    <th>Customer Name</th>
-                                                    <th>Invoice Ref</th>
-                                                    <th>LPO Ref</th>
-                                                    <th>Sales Executive</th>
-                                                    <th class="text-end">Revenue</th>
-                                                    <th style="width:100px" class="text-end">Expenses</th>
-                                                    <th style="width:100px" class="text-end">Gross Profit</th>
-                                                    <th style="width:100px" class="text-end">%</th>
+                                                    <th class="no-sort"  class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Customer Name</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:100px">Revenue</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:100px" >Expenses</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:100px" >Gross Profit</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:100px" >%</th>
                                                  
                                                 </tr>
                                             </thead>
@@ -270,9 +270,9 @@
                                                    
                                                     <tr>
 
-                                                        <td><?php echo $i;?></td>
-                                                        <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
                                                        
                                                         <td><?php echo $sales_order->cc_customer_name;?></td>
 
@@ -284,7 +284,7 @@
                                                                 
                                                                 foreach ($sales_order->purchase_vouchers as $pur_vouch) { ?> 
                                                                                 
-                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
                                                                     
                                                                     <td  style="width:100px" ><?php echo $pur_vouch->pv_reffer_id; ?> </td>
 
@@ -299,7 +299,7 @@
 
                                                                     foreach($sales_order->purchase_return_prod as $pv_prod){ ?> 
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
                                                                     
                                                                         <td  style="width:100px" ><?php echo $pv_prod->pr_reffer_id; ?> </td>
                                                                     
@@ -313,7 +313,7 @@
                                                                 
                                                                     foreach($sales_order->petty_cash as $p_cash){ ?>
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
                                                                     
                                                                         <td  style="width:100px" ><?php echo $p_cash->pcv_voucher_no; ?> </td>
                                                                 
@@ -326,7 +326,7 @@
                                                                     
                                                                     foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
                                                                       
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
                                                                     
                                                                         <td  style="width:100px" ><?php echo $jour_vouch->jv_voucher_no; ?> </td>
                                                                 
@@ -343,9 +343,9 @@
                                                         </td>
 
 
-                                                        <td><?php echo $sales_order->so_lpo;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->so_lpo;?></td>
 
-                                                        <td><?php echo $sales_order->se_name;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name;?></td>
 
                                                         <?php
                                                             $single_cash = 0;
@@ -397,7 +397,7 @@
                                                         
                                                         ?>
 
-                                                        <td class="text-end"><?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?></br><?php if(!empty($single_returns) && $single_returns!=0.00){ echo "-". format_currency($single_returns); } ?></td>
+                                                        <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?></br><?php if(!empty($single_returns) && $single_returns!=0.00){ echo "-". format_currency($single_returns); } ?></td>
 
                                                         
 

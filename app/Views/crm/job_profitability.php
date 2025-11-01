@@ -199,14 +199,14 @@
                                         
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#JobProfitability" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
+                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort"  class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:500px">Customer Name</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Customer Name</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
@@ -262,7 +262,7 @@
                                                         <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
                                                        
-                                                        <td style="width: 500px; word-wrap: break-word; white-space: normal;"><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <td style="width: 300px; word-wrap: break-word; white-space: normal;"><?php echo $sales_order->cc_customer_name;?></td>
 
                                                         <td colspan="1" align="left" class="p-0">
                                                             <table>
