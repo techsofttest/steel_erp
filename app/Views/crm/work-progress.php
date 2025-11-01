@@ -222,7 +222,20 @@
                                                     
                                                     <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                 </tr>
-                                            <?php } ?>
+                                            <?php } else{ ?> 
+
+
+                                                <tbody>
+                                                   
+                                                    <tr>
+                                                        <td colspan="6" class="not_found">No Data Found !!</td>
+                                                    </tr>
+
+                                                </tbody>
+                                                
+                                                
+                                                
+                                            <?php  } ?>
 
 
                        
