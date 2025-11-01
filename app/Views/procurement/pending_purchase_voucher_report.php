@@ -231,12 +231,10 @@ span.select2.customer_width, span.select2{
 
                                                                 <!--<div style="float: right;">
                                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                        <tr>
-                                                                           
+                                                                        <tr>                                                                           
                                                                             <td><button type="submit">View</button></td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            
+                                                                        <tr>                                                                            
                                                                         </tr>
                                                                     </table>
                                                                 </div>--->

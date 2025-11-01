@@ -768,4 +768,122 @@ class PurchaseReturnReport extends BaseController
         // Save the Excel file to output
         $writer->save('php://output');
     }
+
+
+        public function fetch_lpo_ref()
+    {
+        $vendor_id = $this->request->getPost('vendor_id');
+
+        // Get Lpo Ref data from the database based on vendor_id
+        $p_returns = $this->common_model->FetchWhere('pro_purchase_order', ['po_vendor_name' => $vendor_id]);
+
+        echo json_encode($p_returns); // Return data as JSON response
+    }
+
+        // Fetch Sales Orders based on Lpo Ref
+    public function fetch_sales_order()
+    {
+        $lpo_ref = $this->request->getPost('lpo_ref');
+
+
+        $joins1 = array(
+
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'pop_sales_order',
+            ),
+
+
+        );
+
+        // Get Sales Order data from the database based on lpo_ref
+        $sales_orders = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', ['pop_purchase_order' => $lpo_ref], $joins1,'pop_sales_order');
+
+        echo json_encode($sales_orders); // Return data as JSON response
+    }
+
+
+     public function FetchVendors(){
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+       public function FetchSalesOrder(){
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders','so_reffer_no','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+        public function FetchProducts()
+    {
+
+         $salesorder = $this->request->getPost('salesorder');
+       
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_POST['term']) ? $_POST['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        // if($salesorder != ''){
+        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
+        //         array(   'table' => 'crm_products',
+        //             'pk'    => 'product_id',
+        //             'fk'    => 'spd_product_details',
+        //         )
+        //     ));
+        // }else{
+             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+        // }
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+ 
+
+        public function FetchGLAccounts(){
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
+
+
 }
