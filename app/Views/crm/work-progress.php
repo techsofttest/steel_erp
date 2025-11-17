@@ -28,6 +28,16 @@
 
         border-bottom: unset !important;
     }
+    .not_found{
+
+	text-align: center;
+	width: 100%;
+	font-size: 30px;
+	font-weight: 700;
+	color: black;
+        
+       
+}
 
    
 </style>
@@ -118,7 +128,7 @@
 
 
                         <!--datatable section start-->
-                        <?php if (!empty($work_progress)){?> 
+                        <?php if(!empty($_GET)){ ?> 
                         <div class="row">
                             <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
@@ -162,11 +172,13 @@
 
                                                 </tr>
                                             </thead>
-
+                                            <?php if (!empty($work_progress)){?> 
                                             <tbody class="tbody_data">
                                                 <?php if (!empty($work_progress)) {  
                                                     $i = 1;
-                                                    $total_amount = 0; 
+                                                    $total_amount = 0; ?>
+                                                   
+                                                    <?php
                                                     foreach ($work_progress as $work_prog) { 
                                                        // print_r($work_prog); exit();
                                                     // Check if all purchase_sales_order arrays are empty
@@ -178,10 +190,8 @@
                                                         }
                                                     }
 
-                                                    if (!$hasData) {
-                                                        // Skip this iteration if all purchase_sales_order are empty
-                                                        continue;
-                                                    }
+                                                    if (!$hasData) {  // Skip this iteration if all purchase_sales_order are empty
+                                                        continue;} 
                                                 ?>
                                                 <tr>
                                                     <td class="text-center" style="white-space: nowrap;width:20px"><?php echo $i; ?></td>
@@ -195,7 +205,7 @@
                                                     <td class="text-center" style="white-space: nowrap;width:300px"><?php echo $work_prog->	pv_vendor_inv; ?></td>
                                                     <td colspan="2" align="left" class="p-0">
                                                         <table>
-                                                            <?php foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) { ?>
+                                                            <?php  foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) { ?>
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
                                                                     <?php if (!empty($pur_vou_prod->purchase_sales_order)) {
                                                                         foreach ($pur_vou_prod->purchase_sales_order as $pur_sales_ord) { ?>
@@ -211,6 +221,12 @@
                                                 <?php 
                                                     $i++; 
                                                 } ?>
+
+                                                <?php if (!$hasData) {?>
+                                                    <tr>
+                                                        <td colspan="6" class="not_found">No Data Found !!</td>
+                                                    </tr>
+                                                <?php } ?>
                                                 <tr>
                                                     <td align="center">Total</td>
                                                     <td></td>
@@ -222,12 +238,32 @@
                                                     
                                                     <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                 </tr>
-                                            <?php } ?>
+                                            <?php }  else{ ?> 
 
+                                                   
+                                                <tr>
+                                                    <td colspan="6" class="not_found">No Data Found !!</td>
+                                                </tr>
 
-                       
+                                            <?php }  ?>
+                                                
+                                              
 
                                             </tbody>
+
+                                            <?php }  else{ ?> 
+
+
+                                                <tbody>
+                                                   
+                                                    <tr>
+                                                        <td colspan="6" class="not_found">No Data Found !!</td>
+                                                    </tr>
+
+                                                </tbody>
+                                                
+                                                
+                                            <?php }  ?> 
 
                                         </table>
 
@@ -236,8 +272,11 @@
                             </div>
                             <!--end col-->
                         </div>
-
                         <?php } ?>
+                        
+                            
+                            
+                        
 
                         <!---datatable section end-->
 

@@ -134,13 +134,18 @@ class DnToCreditInvoice extends BaseController
         
        
         
-        $data['sales_reff'] = '<option value="" selected disabled>Select Order Ref</option>';
+        $data['sales_reff'] = '<select class="form-select sales_order_ref sales_order"  name="sales_order"><option value="" selected disabled>Select Order Ref</option>';
 
         foreach($sales_refference as $sales_reff)
         {
             $data['sales_reff'] .='<option value='.$sales_reff->so_id.'>'.$sales_reff->so_reffer_no.'</option>';
             
         }
+        
+        $data['sales_reff'] .='</select>';
+
+        
+
 
         //fetch delivery note ref
 
@@ -328,7 +333,7 @@ class DnToCreditInvoice extends BaseController
         
         if(!empty($delivery_data)){
 
-            $title = "SQR";
+            //$title = "SQR";
 
             $delivery_total = 0;
             $delivery_prod_total = 0;
@@ -437,7 +442,7 @@ class DnToCreditInvoice extends BaseController
             }
 
 
-            
+           $title = "DNTOCI";
            // $mpdf = new \Mpdf\Mpdf();
            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
            $fontDirs = $defaultConfig['fontDir'];
@@ -663,8 +668,15 @@ class DnToCreditInvoice extends BaseController
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+           // $this->response->setHeader('Content-Type', 'application/pdf');
+            //$mpdf->Output($title . '.pdf', 'I');
+            
+            //$this->response->setHeader('Content-Type', 'application/pdf');
+            //$this->response->setHeader('Content-Disposition', 'inline; filename="' . $title . '.pdf"');
+            //$mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
         
         }
 

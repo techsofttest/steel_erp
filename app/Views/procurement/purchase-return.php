@@ -264,7 +264,7 @@
                                                             <!-- ### --> 
 
                                                             <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
+                                                            <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
@@ -273,8 +273,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <!--<input type="text" name="pr_contact_person" class="form-control  add_contact_person input_length" value="" required>-->
-
+                                                                       
                                                                         <select class="form-select add_contact_person input_length" name="pr_contact_person" id="" required></select>
                                                                     
                                                                     
@@ -282,7 +281,7 @@
 
                                                                 </div> 
 
-                                                            </div>    
+                                                            </div>-->   
                                                             <!-- ### --> 
 
                                                             
@@ -439,11 +438,11 @@
                                             
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Reference</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th style="width: 85px !important;">Reference</th>
                                                     <th>Vendor Name</th>
-                                                    <th>Date</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th style="width: 70px !important;">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -789,7 +788,7 @@
 
 
                                     <!-- Single Row Start -->
-                                    <div class="col-lg-12">
+                                    <!--<div class="col-lg-12">
 
                                         <div class="row align-items-center mb-2 margin_zero">
 
@@ -805,7 +804,7 @@
 
                                         </div> 
 
-                                    </div>    
+                                    </div>--->    
 
                                     <!-- ### -->
 
@@ -1079,7 +1078,7 @@
 
 
                                     <!-- Single Row Start -->
-                                    <div class="col-lg-12">
+                                    <!--<div class="col-lg-12">
 
                                         <div class="row align-items-center mb-2 margin_zero">
 
@@ -1089,14 +1088,14 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <!--<input type="text" name="" class="form-control edit_contact_person input_length" readonly>--->
+                                                
                                                 <select class="form-select edit_contact_person input_length" name="" required="" aria-required="true"></select>
                                                 
                                             </div>
 
                                         </div> 
 
-                                    </div>    
+                                    </div>-->   
 
                                     <!-- ### -->
 
@@ -1548,7 +1547,18 @@
                 { data: 'pr_date'},
                 { data: 'action'},
                 
-               ]
+               ],
+               columnDefs: [
+                { targets: [0,1,3,4], className: "dt-body-center" },
+				
+              ],
+              headerCallback: function(thead, data, start, end, display) {
+                
+                [0,1,3,4].forEach(function(i) {
+                    $(thead).find('th').eq(i).addClass('dt-head-center');
+                });
+                
+              }
     
             });
         }
@@ -1762,6 +1772,8 @@
                     $('.amount_total').val(data.total_amount);
 
                     $('.org_amount_total').val(data.total_amount);
+
+                    console.log(data.total_amount);
 
                     $('#SelectProduct').modal("hide");
 

@@ -724,21 +724,21 @@ class MaterialReqReport extends BaseController
          $salesorder = $this->request->getPost('salesorder');
        
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $term = !empty($_POST['term']) ? $_POST['term'] : "";
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        if($salesorder != ''){
-             $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-                array(   'table' => 'crm_products',
-                    'pk'    => 'product_id',
-                    'fk'    => 'spd_product_details',
-                )
-            ));
-        }else{
+        // if($salesorder != ''){
+        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
+        //         array(   'table' => 'crm_products',
+        //             'pk'    => 'product_id',
+        //             'fk'    => 'spd_product_details',
+        //         )
+        //     ));
+        // }else{
              $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
-        }
+        // }
 
         $data['total_count'] = count($data['result']);
 

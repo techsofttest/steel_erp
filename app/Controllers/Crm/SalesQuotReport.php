@@ -248,6 +248,8 @@ class SalesQuotReport extends BaseController
 
         $data['quotation_data'] = $this->crm_modal->CheckData($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no',$joins1,'qpd_quotation_details','crm_quotation_product_details');  
         
+        
+
         if(!empty($from_date))
         {
             $data['from_dates'] = date('d-M-Y',strtotime($from_date));

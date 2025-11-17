@@ -72,7 +72,7 @@ class PurchaseReturn extends BaseController
               "pr_id"          => $i,
               'pr_reffer_id'   => $record->pr_reffer_id,
               'pr_vendor_name' => $record->cc_customer_name,
-              'pr_date'        => date('d-m-Y',strtotime($record->pr_date)),
+              'pr_date'        => date('d-M-Y',strtotime($record->pr_date)),
               "action"         => $action,
             );
            $i++; 
@@ -156,7 +156,7 @@ class PurchaseReturn extends BaseController
 
                 'pr_lpo'             => $this->request->getPost('pr_lpo'),
 
-                'pr_contact_person'  => $this->request->getPost('pr_contact_person'),
+                //'pr_contact_person'  => $this->request->getPost('pr_contact_person'),
 
                 'pr_payment_term'    => $this->request->getPost('pr_payment_term'),
 
@@ -191,7 +191,7 @@ class PurchaseReturn extends BaseController
 
                 'pr_lpo'             => $this->request->getPost('pr_lpo'),
 
-                'pr_contact_person'  => $this->request->getPost('pr_contact_person'),
+                //'pr_contact_person'  => $this->request->getPost('pr_contact_person'),
 
                 'pr_payment_term'    => $this->request->getPost('pr_payment_term'),
 
@@ -552,12 +552,13 @@ class PurchaseReturn extends BaseController
                 $voucher_single = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $product->pvp_reffer_id));    
                                     
             }
-            
+
+           
            
 
-            $new_amount = $voucher_single->pv_total - $voucher_single->pv_paid;
+            //$new_amount = $voucher_single->pv_total - $voucher_single->pv_paid;
 
-
+            $new_amount = $new_amount - $voucher_single->pv_paid;
            
             $data['total_amount'] = format_currency($new_amount);
 
@@ -784,7 +785,7 @@ class PurchaseReturn extends BaseController
 
         $data['lpo']            = $purchase_return->pr_lpo;
 
-        $data['contact_person'] = $purchase_return->contact_person;
+        //$data['contact_person'] = $purchase_return->contact_person;
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
 

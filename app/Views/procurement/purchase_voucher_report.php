@@ -78,6 +78,22 @@
     vertical-align: middle;
 }
 
+.select2.select2-container{   
+    padding-top: 5px !important;
+}
+
+
+.select2-selection__rendered {
+    white-space: wrap !important;  /* prevent weird line breaks */
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+span.select2.customer_width, span.select2{
+    width:100% !important;
+}
+
+
 </style>
 <div class="tab-content text-muted">
 
@@ -94,7 +110,7 @@
 
 
                         <!--sales rout report modal start-->
-                        <div class="modal fade" id="MaterialRequesitionReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="PurchaseVoucherReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
                                 <form method="GET" action="<?php echo base_url(); ?>Procurement/PurchaseVoucherReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
@@ -175,7 +191,7 @@
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Vendor</td>
                                                                                 <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select" id="vendor" name="vendor">
+                                                                                    <select class="form-select vendor_dropdown" id="vendor" name="vendor">
                                                                                         <option value="" selected disabled>Select Vendor</option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
                                                                                             <option value="<?php echo $vendor->cc_id; ?>"><?php echo $vendor->cc_customer_name; ?></option>
@@ -187,7 +203,7 @@
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Lpo Ref</td>
                                                                                 <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select" id="lpo_ref" name="lpo_ref" disabled>
+                                                                                    <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref" >
                                                                                         <option value="" selected disabled>Select Lpo ref</option>
                                                                                     </select>
                                                                                 </td>
@@ -196,7 +212,7 @@
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Sales Order</td>
                                                                                 <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select" id="sales_order" name="sales_order" disabled>
+                                                                                    <select class="form-select sales_order" id="sales_order" name="sales_order" >
                                                                                         <option value="" selected disabled>Select Sales Order</option>
                                                                                     </select>
                                                                                 </td>
@@ -205,19 +221,19 @@
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">GL Account</td>
                                                                                 <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select " name="gl_account">
+                                                                                    <select class="form-select gl_acc_clz " name="gl_account">
                                                                                         <option value="" selected disabled>Select GL</option>
                                                                                         <?php foreach ($chart_acc as $charts) { ?>
                                                                                             <option value="<?php echo $charts->ca_customer ?>"><?php echo $charts->ca_name; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                                                                                          </tr>
+                                                                            </tr>
 
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Product</td>
                                                                                 <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select" value="" name="product">
+                                                                                    <select class="form-select product_clz" value="" name="product">
                                                                                         <option value="" selected disabled>Select product</option>
                                                                                         <?php foreach ($products as $product) { ?>
                                                                                             <option value="<?php echo $product->product_details; ?>"><?php echo $product->product_details; ?></option>
@@ -340,6 +356,7 @@
 
                     <td class="text-center" style="white-space: nowrap;">
                         <a href="<?php echo base_url('Procurement/PurchaseOrder?view_so=' . ($pur_vouc->po_id ?? '')); ?>" target="_blank">
+                            <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a>
                     </td>
 
                     <td colspan="7" class="p-0">
@@ -441,11 +458,13 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
 
+<script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
+<?php /*
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
         $(document).ready(function() {
@@ -495,7 +514,7 @@
         });
     });
 </script>
-
+*/?>
 
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
@@ -505,7 +524,7 @@
 
             $(window).on('load', function() {
 
-                $('#MaterialRequesitionReport').modal('show');
+                $('#PurchaseVoucherReport').modal('show');
             });
 
         <?php endif; ?>
@@ -517,7 +536,7 @@
         $(".droup_sales").select2({
             placeholder: "Select Customer",
             theme: "default form-control- customer_width",
-            dropdownParent: $('#MaterialRequesitionReport'),
+            dropdownParent: $('#PurchaseVoucherReport'),
 
             ajax: {
                 url: "<?= base_url(); ?>Procurement/MaterialReqReport/FetchTypes",
@@ -551,39 +570,7 @@
         })
         /**/
 
-        /*fetch  sales executive by  customer*/
 
-        $("body").on('change', '.customer_clz', function() {
-
-
-            var id = $(this).val();
-
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Procurement/MaterialReqReport/FetchData",
-
-                method: "POST",
-
-                data: {
-                    ID: id
-                },
-
-                success: function(data) {
-                    var data = JSON.parse(data);
-
-                    //console.log(data.prod_details);
-                    $('.executive_clz').html(data.quot_det);
-
-                    $('.product_clz').html(data.quot_prod);
-
-                }
-
-
-            });
-        });
-
-        /*####*/
 
         /*form submit start*/
 
@@ -609,7 +596,7 @@
 
         $(".search-btn").on('click', function() {
 
-            $('#MaterialRequesitionReport').modal('show');
+            $('#PurchaseVoucherReport').modal('show');
         });
 
 
@@ -708,6 +695,206 @@
 
         }
 
+
+                 
+// ======================
+
+         /*Vendor dropdown search*/
+        $(".vendor_dropdown").select2({
+            placeholder: "Select Vendor",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseVoucherReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseVoucherReport/FetchVendors",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.cc_id,
+                                text: $.trim(item.cc_customer_name)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+
+              $(".lpo_ref").select2({
+            placeholder: "Select LPO Ref",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseVoucherReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseVoucherReport/FetchLpoRef",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        vendor_id: $('.vendor_dropdown').val(),
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.po_id,
+                                text: $.trim(item.po_reffer_no)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+
+
+
+        /*product droup drown search*/
+        $(".sales_order").select2({
+            placeholder: "Select Sales Order",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseVoucherReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseVoucherReport/FetchSalesOrder",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        lpo_ref: $('.lpo_ref').val(),
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.so_id,
+                                text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+
+
+        /* product dropdown search */
+        $(".product_clz").select2({
+            placeholder: "Select Product",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseVoucherReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseVoucherReport/FetchProducts",
+                type: "POST", // ✅ Make sure this is POST since controller expects POST
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                        salesorder: $('.sales_order').val() // ✅ send inside data function
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return { id: item.product_id, text: item.product_details };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },
+            }
+        });
+
+
+             /*customer droup drown search*/
+        $(".gl_acc_clz").select2({
+            placeholder: "Select GL Account",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#PurchaseVoucherReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseVoucherReport/FetchGLAccounts",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+// =================================
+
+
+
+
+
     });
 </script>
 
@@ -715,7 +902,7 @@
     // Close modal when form is submitted
     document.getElementById('add_form').addEventListener('submit', function(e) {
         // Close the modal after the form is submitted
-        $('#MaterialRequesitionReport').modal('hide');
+        $('#PurchaseVoucherReport').modal('hide');
     });
 </script>
 

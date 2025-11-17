@@ -338,11 +338,11 @@ class ProcurementModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
-            $query->like($data2_col, $data2);
+            $query->where($data2_col, $data2);
         }
 
         if (!empty($data3)) {
@@ -2581,6 +2581,39 @@ class ProcurementModel extends Model
     
 
             $query->where($cond);
+           
+            if($group != null )
+                $query->groupBy($group);
+
+            $result = $query->get()->getResult();
+            //echo $this->db->getLastQuery(); exit();
+    
+            return $result;
+    
+        }
+
+
+        public function FetchLikeJoinBy($table,$cond,$order_key,$term,$joins,$group=null)
+        {
+            $query = $this->db->table($table);
+    
+    
+            if(!empty($joins))
+    
+            foreach($joins as $join)
+            {
+                $table2 = $table;
+                if(!empty($join['table2']))
+                {
+                $table2 = $join['table2'];
+                }
+                $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
+            }
+    
+
+            $query->where($cond)
+                ->like($order_key,$term);
+            
            
             if($group != null )
                 $query->groupBy($group);

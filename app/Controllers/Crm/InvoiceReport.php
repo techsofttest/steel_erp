@@ -158,13 +158,15 @@ class InvoiceReport extends BaseController
 
         $sales_refference = $this->common_model->FetchWhereUniqueJoin('crm_sales_orders',$cond,$joins1,'so_reffer_no');
         
-        $data['sales_reff'] = '<option value="" selected disabled>Select Order Ref</option>';
+        $data['sales_reff'] = '<select class="form-select sales_order_ref sales_order" name="sales_order"><option value="" selected disabled>Select Order Ref</option>';
 
         foreach($sales_refference as $sales_reff)
         {
             $data['sales_reff'] .='<option value='.$sales_reff->so_id.'>'.$sales_reff->so_reffer_no.'</option>';
             
         }
+
+         $data['sales_reff'] .='</select>';
 
         //fetch executive
        
@@ -340,7 +342,7 @@ class InvoiceReport extends BaseController
     {
         if (!empty($sales_orders)) {
     
-            $title = "SQR";
+            $title = "INV";
             $i = 1;
             $sales_total = 0;
             $invoice_total = 0;
@@ -502,8 +504,14 @@ class InvoiceReport extends BaseController
     
             $mpdf->SetAutoPageBreak(true, 10);
             $mpdf->WriteHTML($html);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');*/
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::DOWNLOAD);*/
+
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
         }
     }
     

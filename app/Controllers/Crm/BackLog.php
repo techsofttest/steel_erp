@@ -344,7 +344,7 @@ class BackLog extends BaseController
                $dates = $from_date . " to " . $to_date;
             }
 
-            $title = "SQR";
+            $title = "BACKLOG";
 
            // $mpdf = new \Mpdf\Mpdf();
 
@@ -509,8 +509,11 @@ class BackLog extends BaseController
           
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');*/
+
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
         
         }
 

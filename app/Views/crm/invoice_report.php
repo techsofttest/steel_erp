@@ -27,7 +27,7 @@
         margin: auto;
     }
     .adjust_width {
-        width: 86%;
+        width: 92%;
     }
     .select2.select2-container{
 
@@ -49,7 +49,27 @@
         border-top: 1px solid black !important;
 
     }
-  
+    .not_found{
+
+	text-align: center;
+	width: 100%;
+	font-size: 30px;
+	font-weight: 700;
+	color: black;
+        
+       
+}
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    
+        color: var(--vz-body-color);
+        font-weight: 400;
+    }
+
+    .select2-results__option[aria-selected] {
+
+        cursor: pointer;
+        color: var(--vz-body-color);
+    } 
 </style>
 
 <div class="tab-content text-muted">
@@ -92,9 +112,9 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
                                                                                 
-                                                                                <td class="center_padding" style="display: flex;align-items: center;margin-left:10px;">From</td>
-                                                                                <td ><input type="date" style="margin-left: 10px;" name="form_date" id="" onclick="this.showPicker();" class="form-control adjust_width"></td>
-                                                                                <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
+                                                                                <td class="center_padding" style="white-space: nowrap; vertical-align: middle;">From</td>
+                                                                                <td ><input type="date"  name="form_date" id="" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td style="white-space: nowrap; text-align: center; vertical-align: middle;" class="center_padding">To</td>
                                                                                 <td ><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control adjust_width"></td>
 
                                                                             </tr>
@@ -119,8 +139,8 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Order Ref</td>
-                                                                                <td style="width: 70%;" colspan="4">
+                                                                                <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding">Sales Order Ref</td>
+                                                                                <td style="width: 70%;" colspan="4" class="customer_sales_order_ref">
                                                                                     <select class="form-select sales_order_ref sales_order" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
                                                                                         <?php foreach($sales_orders_data as $sales_data){?>
@@ -188,7 +208,7 @@
 
 
                         <!--datatable section start-->
-                        <?php if (!empty($sales_orders)) {?> 
+                        <?php if(!empty($_GET)){?>
                         <div class="row">
                             <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
@@ -237,7 +257,7 @@
 
                                                 </tr>
                                             </thead>
-
+                                            <?php if (!empty($sales_orders)) {?> 
                                             <tbody class="tbody_data">
 
                                                 <?php
@@ -397,6 +417,19 @@
 
                                             </tbody>
 
+                                            <?php } else{?> 
+
+                                                <tbody>
+                                                   
+                                                    <tr>
+                                                        <td colspan="8" class="not_found">No Data Found !!</td>
+                                                    </tr>
+
+                                            </tbody>
+                                                
+                                                
+                                            <?php } ?> 
+
                                         </table>
 
                                     </div>
@@ -405,7 +438,10 @@
                             <!--end col-->
                         </div>
 
-                        <?php } ?>
+                        
+                        <?php } ?>    
+                            
+                        
 
                         <!---datatable section end-->
 
@@ -490,7 +526,7 @@
 
                     $('.product_clz').html(data.quot_prod);
 
-                    $('.sales_order_ref').html(data.sales_reff);
+                    $('.customer_sales_order_ref').html(data.sales_reff);
 
                 }
 

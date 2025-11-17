@@ -17,6 +17,8 @@ class JobSummery extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
         $data['content'] = view('crm/job_summery',$data);
@@ -168,65 +170,552 @@ class JobSummery extends BaseController
 
     //fetch data
     public function GetData()
-    {
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
-
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
-
-        $customer        = trim($this->request->getPost('customer'));
-
-        $sales_executive = trim($this->request->getPost('sales_executive'));
-
-        $sales_order     = trim($this->request->getPost('sales_order'));
-
-        $joins = array(
-            /*array(
-                'table' => 'crm_sales_product_details',
-                'pk'    => 'spd_sales_order',
-                'fk'    => 'so_id',
-            ),*/
-           
-
-        );
-
-        $sales_order = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'so_customer',$sales_executive,'so_sales_executive','','',$sales_order,'so_reffer_no','crm_sales_orders',$joins,'so_reffer_no');
-        
-       
-
-        $data['product_data'] =""; 
-
-       if(!empty($sales_order)){
-
-            $data['status'] ="true";
-
-            
-            
-            $i=1;
-            foreach($sales_order as $sales)
-            {   
-                
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$sales->so_reffer_no.'</td>
-                <td>'.$sales->so_date.'</td>
-                <td>
-                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
-                    
-                </td>
-                </tr>';
-                $i++; 
-            }
+    {    
+        if(!empty($_GET["form_date"]))
+        {
+            $from_date = $_GET["form_date"];
         }
         else
         {
-            $data['status'] ="False";
+            $from_date = "";
         }
 
-        echo json_encode($data);
+        if(!empty($_GET["to_date"]))
+        {
+            $to_date = $_GET["to_date"];
+        }
+        else
+        {
+            $to_date = "";
+        }
+
+        if(!empty($_GET["customer"]))
+        {
+            $data1 = $_GET["customer"];
+        }
+        else
+        {
+            $data1 = "";
+        }
+
+        if(!empty($_GET["sales_order"]))
+        {
+            $data2 = $_GET["sales_order"];
+        }
+        else
+        {
+            $data2 = "";
+        }
+
+
+        if(!empty($_GET["sales_executive"]))
+        {
+            $data3 = $_GET["sales_executive"];
+        }
+        else
+        {
+            $data3 = "";
+        }
+
+
+        $joins = array(
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'so_sales_executive',
+            ),
+        );
+
+      
        
+        //$data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive','','','crm_sales_orders',$joins,'so_reffer_no');  
+        
+        
+        $data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive');  
+
+        
+       // print_r($data['sales_orders']); exit();
+
+        if(!empty($from_date))
+        {
+            $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+        }
+        else
+        {
+            $data['from_dates'] ="";
+        } 
+        
+
+        if(!empty($to_date))
+        {
+            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
+        }
+        else
+        {
+            $data['to_dates'] = "";
+        }
+
+        if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
+        {
+           $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
+        }
+        
+
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['sales_executive']   = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        
+        $data['content'] = view('crm/job_summery',$data);
+ 
+        return view('crm/report-module-search',$data);
       
     }
+
+
+
+    
+    public function Pdf($sales_orders,$from_date,$to_date)
+    {   
+        
+        if(!empty($sales_orders)){
+
+            $title = "JobProfitability";
+
+            
+
+            $expenses1 = 0;
+            $expenses2 = 0;
+            $expenses3 = 0;
+            $expenses4 = 0;
+            $expenses5 = 0;
+
+            $gross_profit1 = 0;
+            $gross_profit2 = 0;
+            $gross_profit3 = 0;
+            $gross_profit4 = 0;
+            $gross_profit5 = 0;
+
+            $percentage1 = 0;
+            $percentage2 = 0;
+            $percentage3 = 0;
+            $percentage4 = 0;
+            $percentage5 = 0;
+
+            $revenue =0 ;
+            
+            
+            $pdf_data ="";
+            foreach($sales_orders as $sale_data){
+                $new_date = date('d-M-Y',strtotime($sale_data->so_date));
+               
+                $pdf_data .="<tr>
+                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
+                                <td style='border-top: 2px solid' width='100px'>{$sale_data->so_reffer_no}</td>\
+                                <td style='border-top: 2px solid' width='100px'>{$sale_data->cc_customer_name}</td>
+                                <td colspan='1' align='left' class='p-0' style='border-top: 2px solid'>
+                                    <table>";
+                                    
+                                    if(!empty($sale_data->purchase_vouchers)){
+                                                                
+                                        foreach ($sale_data->purchase_vouchers as $pur_vouch) {
+                                            $pdf_data .="<tr><td  width='100px'>{$pur_vouch->pv_reffer_id}</td></tr>";
+                                        }
+                                    
+                                    }
+
+                                    if(!empty($sale_data->purchase_return_prod)){
+
+                                        foreach($sale_data->purchase_return_prod as $pv_prod){
+                                            
+                                            $pdf_data .="<tr><td  width='100px'>{$pv_prod->pr_reffer_id}</td></tr>";
+                                        }
+                                    }
+
+                                    $pdf_data .="</table>
+
+                                
+                                </td>
+
+                                <td style='border-top: 2px solid' width='100px'>{$sale_data->so_lpo}</td>
+
+                                <td style='border-top: 2px solid' width='100px'>{$sale_data->se_name}</td>
+
+                                <td style='border-top: 2px solid' width='100px' align='right'> " . (is_numeric($sale_data->so_amount_total) ? format_currency($sale_data->so_amount_total) : 'N/A') . "</td>";
+                               
+
+                                $revenue = $sale_data->so_amount_total + $revenue;
+
+                                $pdf_data .="<td colspan='3' align='left' class='p-0' style='border-top: 2px solid'>
+                                     
+                                    <table>";
+                                    
+                                    if(!empty($sale_data->purchase_vouchers)){
+                                                                
+                                        foreach ($sale_data->purchase_vouchers as $pur_vouch) { 
+
+                                            $expenses1  = $pur_vouch->pvp_amount + $expenses1;
+                                                                    
+                                            $gross_profit =  $sale_data->so_amount_total - $pur_vouch->pvp_amount; 
+                                             
+                                            $pdf_data .= "<tr>
+                                                            
+                                                            <td width='100px' align='right'>" . (is_numeric($pur_vouch->pvp_amount) ? format_currency($pur_vouch->pvp_amount) : 'N/A') . "</td>
+                                                            <td width='100px' align='right'>" . (is_numeric($gross_profit) ? format_currency($gross_profit) : 'N/A') . "</td>";
+                                                            
+                                                            $gross_profit1 =  $gross_profit +   $gross_profit1; 
+
+                                                            $percentage = $gross_profit * 100;
+
+                                                            $percentage1 =  $percentage +  $percentage1;
+
+                                                            $pdf_data .= "<td width='100px' align='right'>" . (is_numeric($percentage) ? format_currency($percentage) : 'N/A') . "</td>";
+
+                                            
+                                            $pdf_data .= "</tr>";
+                                        }
+                                    }
+
+
+
+                                    if(!empty($sale_data->purchase_return_prod)){
+                                                                
+                                        foreach ($sale_data->purchase_return_prod as $pv_prod) { 
+
+                                            $expenses2  = $pv_prod->prp_rate + $expenses2;
+                                                                    
+                                            $gross_profit =  $sale_data->so_amount_total - $pv_prod->prp_rate;
+                                                                            
+                                            $gross_profit2 =  $gross_profit +   $gross_profit2; 
+                                                                            
+                                             
+                                            $pdf_data .= "<tr>
+                                                            
+                                                            <td width='100px' align='right'>" . (is_numeric($pv_prod->prp_rate) ? format_currency($pv_prod->prp_rate) : 'N/A') . "</td>
+                                                            <td width='100px' align='right'>" . (is_numeric($gross_profit) ? format_currency($gross_profit) : 'N/A') . "</td>";
+                                                            
+                                                            $percentage = $gross_profit * 100;
+                                                                          
+                                                            $percentage2 =  $percentage +  $percentage2;
+
+
+                                                            $pdf_data .= "<td width='100px' align='right'>" . (is_numeric($percentage) ? format_currency($percentage) : 'N/A') . "</td>";
+
+                                            
+                                            $pdf_data .= "</tr>";
+                                        }
+                                    }
+
+
+
+                                    if(!empty($sale_data->petty_cash)){
+                                                                
+                                        foreach ($sale_data->petty_cash as $p_cash) { 
+
+                                            $expenses3  = $p_cash->pci_amount + $expenses3;
+
+                                            $gross_profit =  $sale_data->so_amount_total - $p_cash->pci_amount; 
+
+                                            $gross_profit3 =  $gross_profit +   $gross_profit3;
+                                                                            
+                                             
+                                            $pdf_data .= "<tr>
+                                                            
+                                                            <td width='100px' align='right'>" . (is_numeric($p_cash->pci_amount) ? format_currency($p_cash->pci_amount) : 'N/A') . "</td>
+                                                            <td width='100px' align='right'>" . (is_numeric($gross_profit) ? format_currency($gross_profit) : 'N/A') . "</td>";
+                                                            
+                                                            $percentage = $gross_profit * 100;
+
+                                                            $percentage3 =  $percentage + $percentage3;
+
+
+                                                            $pdf_data .= "<td width='100px' align='right'>" . (is_numeric($percentage) ? format_currency($percentage) : 'N/A') . "</td>";
+
+                                            
+                                            $pdf_data .= "</tr>";
+                                        }
+                                    }
+
+
+                                    if(!empty($sale_data->journal_voucher)){
+                                                                
+                                        foreach ($sale_data->journal_voucher as $jour_vouch) { 
+
+                                          
+                                            $pdf_data .= "<tr>";
+                                                           
+                                                            
+
+                                                            if(!empty($jour_vouch->ji_debit)){
+
+                                                                $pdf_data .="<td width='100px' align='right'>" . (is_numeric($jour_vouch->ji_debit) ? format_currency($jour_vouch->ji_debit) : 'N/A') . "</td>";
+
+                                                                $expenses4  = $jour_vouch->ji_debit + $expenses4;
+                                                                          
+                                                                $gross_profit =  $sale_data->so_amount_total - $jour_vouch->ji_debit;
+                                                                
+                                                                $gross_profit4 =  $gross_profit +   $gross_profit4;
+
+                                                                $pdf_data .="<td width='100px' align='right'>" . (is_numeric($gross_profit) ? format_currency($gross_profit) : 'N/A') . "</td>";
+
+                                                                $percentage = $gross_profit * 100;
+
+                                                                $percentage4 =  $percentage +  $percentage4;
+
+                                                                $pdf_data .="<td width='100px' align='right'>" . (is_numeric($percentage) ? format_currency($percentage) : 'N/A') . "</td>";
+
+                                                            }
+
+                                                            elseif($jour_vouch->ji_credit){
+
+                                                                $pdf_data .="<td width='100px' align='right'>" . (is_numeric($jour_vouch->ji_credit) ? format_currency($jour_vouch->ji_credit) : 'N/A') . "</td>";
+                                                                
+                                                                $expenses5  = $jour_vouch->ji_credit + $expenses5;
+
+                                                                $gross_profit =  $sale_data->so_amount_total - $jour_vouch->ji_credit;
+
+                                                                $gross_profit5 =  $gross_profit +   $gross_profit5;
+
+                                                                $pdf_data .="<td width='100px' align='right'>" . (is_numeric($gross_profit) ? format_currency($gross_profit) : 'N/A') . "</td>";
+                                                                
+                                                                $percentage5 = $gross_profit * 100; 
+
+                                                                $percentage5 =  $percentage +  $percentage5;
+
+                                                                $pdf_data .="<td width='100px' align='right'>" . (is_numeric($percentage) ? format_currency($percentage) : 'N/A') . "</td>";
+
+                                                            }
+
+                                                           
+
+                                            
+                                            $pdf_data .= "</tr>";
+                                        }
+                                    }
+
+                                    $expenses =  $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
+
+                                    $total_gross_profit = $gross_profit1 +  $gross_profit2 +  $gross_profit3 + $gross_profit4 +  $gross_profit5;
+                                    
+                                    $total_percentage =  $percentage1 + $percentage2 + $percentage3 + $percentage4 + $percentage5;
+
+                                    
+                                    $pdf_data .="</table>
+                                
+                                </td>
+
+                                ";
+
+                               
+                               
+                              
+                          
+
+
+                $pdf_data .="</tr>";
+
+            }
+            
+            
+            if(empty($from_date) && empty($to_date))
+            {
+             
+               $dates = "";
+            }
+            else
+            {
+               $dates = $from_date . " to " . $to_date;
+            }
+
+
+            
+           // $mpdf = new \Mpdf\Mpdf();
+           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+           $fontDirs = $defaultConfig['fontDir'];
+
+           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+           $fontData = $defaultFontConfig['fontdata'];
+
+
+           $mpdf = new \Mpdf\Mpdf([
+            'format' => 'Letter', // Custom page size in millimeters
+            'default_font_size' => 9, 
+            'margin_left' => 5, 
+            'margin_right' => 5,
+            'fontDir' => array_merge($fontDirs, [
+                __DIR__ . '/fonts'
+            ]),
+            'fontdata' => $fontData + [
+                'bentonsans' => [
+                  
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf',
+                ],
+            ],
+            'default_font' => 'bentonsans'
+            
+        ]);
+
+
+            $mpdf->SetTitle('Job Profitability'); // Set the title
+
+          
+
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+            
+        
+            <td>
+        
+            <h3>Al Fuzail Engineering Services WLL</h3>
+            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td>Period : '.$dates.'</td>
+            <td align="right"><h3>Job Profitability</h3></td>
+        
+            </tr>
+        
+            </table>
+
+           
+        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            
+        
+            <tr>
+            
+                <th align="center" width="40px">Date</th>
+            
+                <th align="center" width="100px">Sales Order Ref</th>
+            
+                <th align="center" width="100px">Customer Name</th>
+            
+                <th align="center" width="100px">Invoice Ref.</th>
+            
+                <th align="center" width="120px">LPO Ref</th>
+
+                <th align="center" width="80px">Sales Executive</th>
+
+                <th align="right" width="80px">Revenue</th>
+
+                <th align="right" width="100px">Expenses</th>
+
+                <th align="right" width="80px">Gross Profit</th>
+
+                <th align="right" width="80px">%</th>
+
+            
+            </tr>
+
+             
+            '.$pdf_data.'
+
+
+            <tr>
+
+                <td style="border-top: 2px solid;" width="40px">Total</td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="120px"></td>
+
+                <td style="border-top: 2px solid;" width="80px"></td>
+                
+                <td style="border-top: 2px solid;" width="80px" align="right"><b>'.format_currency($revenue).'</b></td>
+
+                <td style="border-top: 2px solid;" width="80px" align="right"><b>'.format_currency($expenses).'</b></td>
+
+                <td style="border-top: 2px solid;" width="80px" align="right"><b>'.format_currency($total_gross_profit).'</b></td>
+
+                <td style="border-top: 2px solid;" width="80px" align="right"><b>'.format_currency($total_percentage).'</b></td>
+
+            
+            </tr>
+
+
+
+           
+            
+            </table>
+
+
+        
+            ';
+        
+            //$footer = '';
+             
+            //echo $html; exit();
+            
+            $mpdf->WriteHTML($html);
+           // $mpdf->SetFooter($footer);
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');*/
+
+            /*$this->response->setHeader('Content-Type', 'application/pdf');
+            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::DOWNLOAD);*/
+
+            $mpdf->Output($title . '.pdf', \Mpdf\Output\Destination::INLINE);
+            exit;
+        
+        }
+
+       
+    }
+   
+
 
 
 

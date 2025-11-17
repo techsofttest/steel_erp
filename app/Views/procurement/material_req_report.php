@@ -41,6 +41,18 @@
     
     padding-top: 5px !important;
 }
+
+.select2-selection__rendered {
+    white-space: wrap !important;  /* prevent weird line breaks */
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+span.select2.customer_width, span.select2{
+    width:100% !important;
+}
+
+
     .Dashboard-form .form-select {
         border: 1px solid #434343 !important;
         margin-bottom: 0px;
@@ -70,6 +82,12 @@
     .nested-table td{
     vertical-align: middle;
 }
+
+
+
+
+
+
 </style>
 
 <div class="tab-content text-muted">
@@ -182,7 +200,7 @@
                                                                                 </td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select
-                                                                                        class="form-select value='' sales_order"
+                                                                                        class="form-select sales_order"
                                                                                         name="sales_order">
                                                                                         <option value="" selected
                                                                                             disabled>Select Sales Order
@@ -301,7 +319,7 @@
                                             class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body" style="overflow-x:scroll">
-                                        <table style="table-layout:fixed;" id="DataTable"
+                                        <table style="width:100%;    table-layout: initial;" id="DataTable"
                                             class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
@@ -628,75 +646,75 @@
 
 
      /*product droup drown search*/
-        //  $(".sales_order").select2({
-        //     placeholder: "Select Saled Order",
-        //     theme : "default form-control- customer_width",
-        //     dropdownParent: $('#MaterialRequesitionReport'),
-        //     ajax: {
-        //         url: "<?= base_url(); ?>Procurement/MaterialReqReport/FetchSalesOrder",
-        //         dataType: 'json',
-        //         delay: 250,
-        //         cache: false,
-        //         minimumInputLength: 1,
-        //         allowClear: true,
-        //         data: function (params) {
-        //             return {
-        //                 term: params.term,
-        //                 page: params.page || 1,
-        //             };
-        //         },
-        //         processResults: function(data, params) {
-        //             //console.log(data);
-        //             //NO NEED TO PARSE DATA `processResults` automatically parse it
-        //             //var c = JSON.parse(data);
-        //             //console.log(data);
-        //             var page = params.page || 1;
-        //             return {
-        //                 results: $.map(data.result, function (item) { return {id: item.so_id, text: item.so_reffer_no}}),
-        //                 pagination: {
-        //                 // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-        //                     more: (page * 10) <= data.total_count
-        //                 }
-        //             };
-        //         },              
-        //     }
+         $(".sales_order").select2({
+            placeholder: "Select Sales Order",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#MaterialRequesitionReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/MaterialReqReport/FetchSalesOrder",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+              processResults: function(data, params) {
+                var page = params.page || 1;
+                return {
+                    results: $.map(data.result, function(item) {
+                        return {
+                            id: item.so_id,
+                            text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
+                        };
+                    }),
+                    pagination: {
+                        more: (page * 10) <= data.total_count
+                    }
+                };
+            }
+            
+            }
          
-        // })
+        })
 
-         /*product droup drown search*/
 /* product dropdown search */
-// $(".product_clz").select2({
-//     placeholder: "Select Product",
-//     theme: "default form-control- customer_width",
-//     dropdownParent: $('#MaterialRequesitionReport'),
-//     ajax: {
-//         url: "<?= base_url(); ?>Procurement/MaterialReqReport/FetchProducts",
-//         type: "POST", // ✅ Make sure this is POST since controller expects POST
-//         dataType: 'json',
-//         delay: 250,
-//         cache: false,
-//         minimumInputLength: 1,
-//         allowClear: true,
-//         data: function (params) {
-//             return {
-//                 term: params.term,
-//                 page: params.page || 1,
-//                 salesorder: $('.sales_order').val() // ✅ send inside data function
-//             };
-//         },
-//         processResults: function (data, params) {
-//             var page = params.page || 1;
-//             return {
-//                 results: $.map(data.result, function (item) {
-//                     return { id: item.product_id, text: item.product_details };
-//                 }),
-//                 pagination: {
-//                     more: (page * 10) <= data.total_count
-//                 }
-//             };
-//         },
-//     }
-// });
+$(".product_clz").select2({
+    placeholder: "Select Product",
+    theme: "default form-control- customer_width",
+    dropdownParent: $('#MaterialRequesitionReport'),
+    ajax: {
+        url: "<?= base_url(); ?>Procurement/MaterialReqReport/FetchProducts",
+        type: "POST", // ✅ Make sure this is POST since controller expects POST
+        dataType: 'json',
+        delay: 250,
+        cache: false,
+        minimumInputLength: 1,
+        allowClear: true,
+        data: function (params) {
+            return {
+                term: params.term,
+                page: params.page || 1,
+                salesorder: $('.sales_order').val() // ✅ send inside data function
+            };
+        },
+        processResults: function (data, params) {
+            var page = params.page || 1;
+            return {
+                results: $.map(data.result, function (item) {
+                    return { id: item.product_id, text: item.product_details };
+                }),
+                pagination: {
+                    more: (page * 10) <= data.total_count
+                }
+            };
+        },
+    }
+});
 
 
         /*###*/

@@ -1453,7 +1453,7 @@ span.select2.customer_width, span.select2 {
                                                     <th>Customer</th>
                                                     <th style="width: 100px !important;">Sales Order No</th>
                                                     <th style="width: 100px;">Amount</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 100px !important">Actions</th>
                                                 </tr>
                                             </thead>
                                             

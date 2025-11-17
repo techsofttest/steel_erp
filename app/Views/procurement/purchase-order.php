@@ -1169,12 +1169,12 @@
                                             
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort" style="width: 35px !important;">Sl no</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th style="width: 85px !important;">Reference</th>
                                                     <th style="width: 75px !important;">Date</th>
                                                     <th>Vendor</th>
                                                     <th style="width: 100px;">Amount</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 100px !important">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -1773,9 +1773,15 @@
                 
                ],
                columnDefs: [
-                
-                { targets: [4], className: "dt-body-center" }
+                 { targets: [0,1,2,5], className: "dt-body-center" },
+                { targets: [4], className: "dt-body-right" }
             ],
+            headerCallback: function(thead, data, start, end, display) {
+                // use dt-head-center (header-specific) instead of dt-body-center
+                [0,1,2,4,5].forEach(function(i) {
+                    $(thead).find('th').eq(i).addClass('dt-head-center');
+                });
+            },
     
              "initComplete": function () {
 

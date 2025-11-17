@@ -800,10 +800,10 @@
                                             
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
+                                                    <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th>Reference</th>
-                                                    <th>Date</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th style="width: 70px !important">Actions</th>
                                                 </tr>
                                             </thead>
                                             
@@ -1229,6 +1229,17 @@
                 { data: 'action'},
                 
                ],
+                columnDefs: [
+                    
+                    { targets: [0,1,2,3], className: "dt-body-center" }
+				
+               ],
+                headerCallback: function(thead, data, start, end, display) {
+                    // use dt-head-center (header-specific) instead of dt-body-center
+                    [0,1,2,3].forEach(function(i) {
+                        $(thead).find('th').eq(i).addClass('dt-head-center');
+                    });
+                },
                "initComplete": function () {
                     var dataId = '<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>';
                     $('#DataTable').dataTable().fnFilter(dataId);

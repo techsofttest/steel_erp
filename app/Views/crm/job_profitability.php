@@ -4,7 +4,32 @@
     margin: auto;
 }
 .adjust_width {
-    width: 86%;
+    width: 92%;
+}
+.not_found{
+
+	text-align: center;
+	width: 100%;
+	font-size: 30px;
+	font-weight: 700;
+	color: black;
+        
+       
+}
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    
+        color: var(--vz-body-color);
+        font-weight: 400;
+    }
+
+    .select2-results__option[aria-selected] {
+
+        cursor: pointer;
+        color: var(--vz-body-color);
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+    
+    padding-top: 5px;
 }
 </style>
 <div class="tab-content text-muted">
@@ -48,9 +73,9 @@
                                                                             
                                                                             <tr>
                                                                                 
-                                                                                <td class="center_padding" style="display: flex;align-items: center;margin-left: 10px;">From</td>
-                                                                                <td style=""><input style="margin-left: 10px;" type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control adjust_width"></td>
-                                                                                <td style="width: 10% !important;display: flex;align-items: center;margin-right: 10px;">To</td>
+                                                                                <td class="center_padding" style="white-space: nowrap; vertical-align: middle;">From</td>
+                                                                                <td style=""><input style="" type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control adjust_width"></td>
+                                                                                <td style="white-space: nowrap; text-align: center; vertical-align: middle;">To</td>
                                                                                 <td style=""><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control adjust_width"></td>
                                                                             
                                                                             </tr>
@@ -66,7 +91,7 @@
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select droup_customer  customer_clz" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
-                                                                                        <?php foreach($customer_creation as $cust_creation){?> 
+                                                                                        <?php foreach($customer_creation as $cust_creation){ ?> 
                                                                                             <option value="<?php echo $cust_creation->cc_id;?>"><?php echo $cust_creation->cc_customer_name;?></option>
                                                                                         <?php } ?>
                                                                                     </select>
@@ -76,11 +101,11 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Order Ref</td>
+                                                                                <td style="width: 30%; width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding" class="center_padding">Sales Order Ref</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select sales_order_ref sales_order" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
-                                                                                        <?php foreach($sales_orders_data as $sales_data){?> 
+                                                                                        <?php foreach($sales_orders_data as $sales_data){ ?> 
                                                                                             <option value="<?php echo $sales_data->so_id; ?>"><?php echo $sales_data->so_reffer_no;?></option>    
                                                                                         <?php } ?>
                                                                                     </select>
@@ -90,11 +115,11 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;" class="center_padding">Sales Executive</td>
+                                                                                <td style="width: 30%; white-space: nowrap; vertical-align: middle;" class="center_padding" class="center_padding">Sales Executive</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select executive_clz" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Executive</option>
-                                                                                        <?php foreach($sales_executive as $sals_exec){?> 
+                                                                                        <?php foreach($sales_executive as $sals_exec){ ?> 
                                                                                             <option value="<?php echo $sals_exec->se_id;?>"><?php echo $sals_exec->se_name; ?></option>    
                                                                                         <?php } ?>
                                                                                     </select>
@@ -130,7 +155,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success submit_btn" data-bs-dismiss="modal" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn"  data-bs-dismiss="modal" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -146,7 +171,7 @@
 
 
                         <!--datatable section start-->
-                        <?php  if(!empty($sales_orders)){?> 
+                        <?php if(!empty($_GET)){?> 
                         <div class="row">
                             <div class="col-lg-12" style="padding:0px;">
                                 <div class="card">
@@ -174,25 +199,25 @@
                                         
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#JobProfitability" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
+                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Date</th>
-                                                    <th>Sales Order Ref</th>
-                                                    <th>Customer Name</th>
-                                                    <th>Invoice Ref</th>
-                                                    <th>LPO Ref</th>
-                                                    <th>Sales Executive</th>
-                                                    <th class="text-end">Revenue</th>
-                                                    <th style="width:100px" class="text-end">Expenses</th>
-                                                    <th style="width:100px" class="text-end">Gross Profit</th>
-                                                    <th style="width:100px" class="text-end">%</th>
+                                                    <th class="no-sort"  class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Customer Name</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:100px">Revenue</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:100px" >Expenses</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:100px" >Gross Profit</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:100px" >%</th>
                                                  
                                                 </tr>
                                             </thead>
-                                            
+                                             <?php  if(!empty($sales_orders)){?> 
                                             <tbody class="tbody_data">
                                             <?php
                                                
@@ -201,6 +226,12 @@
                                                 if(!empty($sales_orders))
                                                 {   
                                                     $revenue =0 ;
+
+                                                    $cash_invoices = 0;
+                                                    $credit_invoices = 0;
+                                                    $sales_returns = 0;
+
+                                                    
 
                                                     $expenses1 = 0;
                                                     $expenses2 = 0;
@@ -227,11 +258,11 @@
                                                    
                                                     <tr>
 
-                                                        <td><?php echo $i;?></td>
-                                                        <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
                                                        
-                                                        <td><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <td style="width: 300px; word-wrap: break-word; white-space: normal;"><?php echo $sales_order->cc_customer_name;?></td>
 
                                                         <td colspan="1" align="left" class="p-0">
                                                             <table>
@@ -241,13 +272,10 @@
                                                                 
                                                                 foreach ($sales_order->purchase_vouchers as $pur_vouch) { ?> 
                                                                                 
-                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
                                                                     
                                                                     <td  style="width:100px" ><?php echo $pur_vouch->pv_reffer_id; ?> </td>
 
-                                                                   
-                                                                    
-                                                                    
                                                                 </tr>
 
                                                             <?php } } 
@@ -256,7 +284,7 @@
 
                                                                     foreach($sales_order->purchase_return_prod as $pv_prod){ ?> 
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
                                                                     
                                                                         <td  style="width:100px" ><?php echo $pv_prod->pr_reffer_id; ?> </td>
                                                                     
@@ -270,7 +298,7 @@
                                                                 
                                                                     foreach($sales_order->petty_cash as $p_cash){ ?>
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
                                                                     
                                                                         <td  style="width:100px" ><?php echo $p_cash->pcv_voucher_no; ?> </td>
                                                                 
@@ -283,7 +311,7 @@
                                                                     
                                                                     foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
                                                                       
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
                                                                     
                                                                         <td  style="width:100px" ><?php echo $jour_vouch->jv_voucher_no; ?> </td>
                                                                 
@@ -300,13 +328,59 @@
                                                         </td>
 
 
-                                                        <td><?php echo $sales_order->so_lpo;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->so_lpo;?></td>
 
-                                                        <td><?php echo $sales_order->se_name;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name;?></td>
 
-                                                        <td class="text-end"><?php echo $sales_order->so_amount_total;?></td>
+                                                        <?php
+                                                            $single_cash = 0;
+                                                            $single_credit = 0;
+                                                            $single_returns = 0;
+                                                           if(!empty($sales_order->cash_invoice)){
+                                                            
+                                                                foreach($sales_order->cash_invoice as $cash_inv){
 
-                                                        <?php $revenue = $sales_order->so_amount_total + $revenue; ?>
+                                                                    
+                                                                    $cash_invoices  += $cash_inv->ci_total_amount;
+
+                                                                    $single_cash += $cash_inv->ci_total_amount;
+                                                                }
+                                                            }
+
+
+                                                            if(!empty($sales_order->credit_invoice)){
+
+                                                                foreach($sales_order->credit_invoice as $credit_inv){
+
+                                                                    $credit_invoices += $credit_inv->cci_total_amount;
+
+                                                                    $single_credit += $credit_inv->cci_total_amount;
+                                                                }
+
+                                                            }
+
+
+                                                            if(!empty($sales_order->sales_return)){
+
+                                                                foreach($sales_order->sales_return as $sales_rut){
+
+                                                                   $sales_returns += $sales_rut->sr_total;
+
+                                                                   $single_returns += $sales_rut->sr_total;
+
+                                                                   
+                                                                }
+                                                            }
+
+                                                            $revenue = $cash_invoices + $credit_invoices;
+
+                                                            $revenue = $revenue - $sales_returns;
+                                                        
+                                                        ?>
+
+                                                        <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?></br><?php if(!empty($single_returns)){ echo "-". format_currency($single_returns); } ?></td>
+
+                                                        
 
                                                         <td colspan="3" align="left" class="p-0">
                                                             <table>
@@ -318,21 +392,22 @@
                                                                                 
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
                                                                     
-                                                                    <td   style="width:100px" class="text-end"><?php echo format_currency($pur_vouch->pvp_amount); ?> </td>
-
-
+                                                                    <td   style="width:100px" class="text-end"><?php echo format_currency($pur_vouch->pv_total); ?> </td>
 
                                                                     <?php 
 
-                                                                        $expenses1  = $pur_vouch->pvp_amount + $expenses1;
+                                                                        $expenses1  = $pur_vouch->pv_total + $expenses1;
                                                                     
-                                                                        $gross_profit =  $sales_order->so_amount_total - $pur_vouch->pvp_amount; 
+                                                                        $gross_profit =  $sales_order->so_amount_total - $pur_vouch->pv_total; 
                                                                         
                                                                     ?>
+
+                                                                    
 
                                                                     <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
 
                                                                     <?php 
+
                                                                         $gross_profit1 =  $gross_profit +   $gross_profit1; 
 
                                                                         $percentage = $gross_profit * 100;
@@ -355,17 +430,19 @@
 
                                                                     <tr style="background: unset;border-bottom: hidden !important;">
                                                                     
-                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($pv_prod->prp_rate); ?> </td>
+                                                                       <td style="width:100px" class="text-end">-<?php echo format_currency($pv_prod->pr_total_amount); ?> </td>
 
                                                                         <?php 
 
-                                                                            $expenses2  = $pv_prod->prp_rate + $expenses2;
+                                                                            $expenses2  = $pv_prod->pr_total_amount + $expenses2;
                                                                     
-                                                                            $gross_profit =  $sales_order->so_amount_total - $pv_prod->prp_rate;
+                                                                            $gross_profit =  $sales_order->so_amount_total - $pv_prod->pr_total_amount;
                                                                             
-                                                                            $gross_profit2 =  $gross_profit +   $gross_profit2; 
+                                                                            $gross_profit2 =  $gross_profit +  $gross_profit2; 
                                                                             
                                                                         ?>
+
+                                                                         
 
                                                                         <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
 
@@ -436,11 +513,11 @@
                                                                         
                                                                         <?php if(!empty($jour_vouch->ji_debit)){
 
-                                                                          $expenses4  = $jour_vouch->ji_debit + $expenses4;
+                                                                          $expenses4     = $jour_vouch->ji_debit + $expenses4;
                                                                           
-                                                                          $gross_profit =  $sales_order->so_amount_total - $jour_vouch->ji_debit;
+                                                                          $gross_profit  = $sales_order->so_amount_total - $jour_vouch->ji_debit;
                                                                           
-                                                                          $gross_profit4 =  $gross_profit +   $gross_profit4;
+                                                                          $gross_profit4 = $gross_profit + $gross_profit4;
 
                                                                         ?> 
                                                                              
@@ -454,13 +531,13 @@
                                                                                 
                                                                             ?>
 
-                                                                              <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
+                                                                            <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
                                                                             
                                                                         <?php } elseif(!empty($jour_vouch->ji_credit)){
                                                                             
-                                                                            $expenses5  = $jour_vouch->ji_credit + $expenses5;
+                                                                            $expenses5     = $jour_vouch->ji_credit + $expenses5;
 
-                                                                            $gross_profit =  $sales_order->so_amount_total - $jour_vouch->ji_credit;
+                                                                            $gross_profit  =  $sales_order->so_amount_total - $jour_vouch->ji_credit;
 
                                                                             $gross_profit5 =  $gross_profit +   $gross_profit5;
 
@@ -484,7 +561,11 @@
                                                                     
                                                                     <?php } }
 
-                                                                    $expenses =  $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
+                                                                    //$expenses =  $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
+
+                                                                    $expenses =  $expenses1 + $expenses3;
+
+                                                                    $expenses = $expenses - $expenses2;
 
                                                                     $total_gross_profit = $gross_profit1 +  $gross_profit2 +  $gross_profit3 + $gross_profit4 +  $gross_profit5;
                                                                     
@@ -495,13 +576,6 @@
                                                         </td>
 
                                                         
-
-                                                       
-                                                        
-                                                        
-
-                                                        
-     
                                                         
                                                     </tr>
                                                         
@@ -515,7 +589,7 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td class="text-end"><b><?php echo format_currency($revenue); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
                                                         <td class="text-end"><b><?php echo format_currency($expenses); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($total_gross_profit); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($total_percentage); ?></b></td>
@@ -525,6 +599,18 @@
                                                 <?php   } ?>
                                             </tbody>
 
+                                            <?php }  else{ ?>
+                                              
+                                                <tbody>
+                                                   
+                                                    <tr>
+                                                        <td colspan="10" class="not_found">No Data Found !!</td>
+                                                    </tr>
+
+                                                </tbody>
+                                                
+                                            <?php }  ?> 
+
                                         </table>
                 
                                     </div>
@@ -533,8 +619,10 @@
                             <!--end col-->
                         </div>
 
-                        <?php } ?>
-
+                        
+                        <?php } ?>  
+                            
+                        
                         <!---datatable section end-->
 
                     </div>
@@ -582,7 +670,7 @@
 
 
         /* customer droup drown */
-         /*$(".droup_customer").select2({
+         $(".droup_customer").select2({
             placeholder: "Select Customer",
             theme : "default form-control- customer_width",
             dropdownParent: $('#JobProfitability'),
@@ -611,19 +699,19 @@
                     };
                 },              
             }
-        })*/
+        })
         /**/
 
-         /*print button section start*/
-         $('body').on('click','.print_button',function(e){
+        /*print button section start*/
+        $('body').on('click','.print_button',function(e){
               
-              // Open the PDF generation script in a new window
-              var pdfWindow = window.open('<?= base_url()."Crm/JobProfitability/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+            // Open the PDF generation script in a new window
+            var pdfWindow = window.open('<?= base_url()."Crm/JobProfitability/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
   
-              // Automatically print when the PDF is loaded
-              pdfWindow.onload = function() {
-                  pdfWindow.print();
-              };
+            // Automatically print when the PDF is loaded
+            pdfWindow.onload = function() {
+                pdfWindow.print();
+            };
   
         });
 
@@ -656,6 +744,7 @@
 
 
             });
+
         });
         
         /*####*/

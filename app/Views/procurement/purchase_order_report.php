@@ -18,43 +18,65 @@
     .rotate {
         /* transform: rotateX(180deg); */
     }
+
     #DataTable td {
         line-height: 1.5;
     }
-    .modal-dialog{
+
+    .modal-dialog {
         width: 500px;
         margin: auto;
     }
+
     .adjust_width {
-    width: 86%;
-}
-
-    .Dashboard-form .form-select {
-    border: 1px solid #434343 !important;
-    margin-bottom: 0px;
-    background: #f5f5f56e;
-    height: 40px;
-    width: 100%;
-    border-radius: 4px;
-}
-
-.travelerinfo td {
-    color: black;
-    vertical-align: middle;
-}
-
-/* Custom styles for the table */
-    .delTable th, .delTable td {
-        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
-        padding-left: 8px; /* Adjust as needed */
-        padding-right: 8px; /* Adjust as needed */
-        vertical-align: top; /* Align content to the top */
+        width: 86%;
     }
 
-.nested-table td{
-    vertical-align: middle;
+    .Dashboard-form .form-select {
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        background: #f5f5f56e;
+        height: 40px;
+        width: 100%;
+        border-radius: 4px;
+    }
+
+    .travelerinfo td {
+        color: black;
+        vertical-align: middle;
+    }
+
+    /* Custom styles for the table */
+    .delTable th,
+    .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px;
+        /* Adjust as needed */
+        padding-right: 8px;
+        /* Adjust as needed */
+        vertical-align: top;
+        /* Align content to the top */
+    }
+
+    .nested-table td {
+        vertical-align: middle;
+    }
+
+    .select2.select2-container{
+    
+    padding-top: 5px !important;
 }
 
+.select2-selection__rendered {
+    white-space: wrap !important;  /* prevent weird line breaks */
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+span.select2.customer_width, span.select2{
+    width:100% !important;
+}
 
 </style>
 
@@ -74,17 +96,20 @@
 
 
                         <!--sales rout report modal start-->
-                        <div class="modal fade" id="MaterialRequesitionReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="PurchaseOrderReport" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
-                                <form method="GET" action="<?php echo base_url(); ?>Procurement/PurchaseOrderReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
+                                <form method="GET"
+                                    action="<?php echo base_url(); ?>Procurement/PurchaseOrderReport/GetData"
+                                    target="_blank" class="Dashboard-form class" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Purchase Order Report</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="card">
@@ -119,7 +144,7 @@
                                                                 //         $sales_executive ="";
                                                                 //    }
                                                                 if (!empty($_GET['product'])) {
-                                                                    $product =  $_GET['product'];
+                                                                    $product = $_GET['product'];
                                                                 } else {
                                                                     $product = "";
                                                                 }
@@ -128,15 +153,26 @@
 
 
                                                                 <div class="mt-4">
-                                                                    <table class="table table-bordered table-striped delTable">
+                                                                    <table
+                                                                        class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
-                                                                        <tr>
-                                                                                
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
-                                                                                <td ><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
-                                                                                <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
+                                                                            <tr>
+
+                                                                                <td class="text-center center_padding"
+                                                                                    style="display: flex;align-items: center;margin-top: 15px;">
+                                                                                    From</td>
+                                                                                <td><input type="date" style=""
+                                                                                        name="form_date"
+                                                                                        id="from_date_id"
+                                                                                        onclick="this.showPicker();"
+                                                                                        class="form-control "></td>
+                                                                                <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;"
+                                                                                    class="center_padding">To</td>
                                                                                 <td>
-                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control ">
+                                                                                    <input type="date" name="to_date"
+                                                                                        id="to_date_id"
+                                                                                        onclick="this.showPicker();"
+                                                                                        class="form-control ">
                                                                                 </td>
 
                                                                             </tr>
@@ -148,50 +184,80 @@
                                                                         <tbody class="travelerinfo">
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Vendor</td>
-                                                                            <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select value='' customer_clz" name="vendor">
-                                                                                        <option value="" selected disabled>Select Vendor</option>
+                                                                                <td style="width: 30%;"
+                                                                                    class="center_padding">Vendor</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select
+                                                                                        class="form-select customer_clz vendor_dropdown"
+                                                                                        name="vendor">
+                                                                                        <option value="" selected
+                                                                                            disabled>Select Vendor
+                                                                                        </option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
-                                                                                            <option value="<?php echo $vendor->cc_id ?>"><?php echo $vendor->cc_customer_name; ?></option>
+                                                                                            <option
+                                                                                                value="<?php echo $vendor->cc_id ?>">
+                                                                                                <?php echo $vendor->cc_customer_name; ?>
+                                                                                            </option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Sales Order</td>
-                                                                            <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select customer_clz" name="sales_order">
-                                                                                        <option value="" selected disabled>Select Sales Order</option>
+                                                                                <td style="width: 30%;"
+                                                                                    class="center_padding">Sales Order
+                                                                                </td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select
+                                                                                        class="form-select customer_clz sales_order"
+                                                                                        name="sales_order">
+                                                                                        <option value="" selected
+                                                                                            disabled>Select Sales Order
+                                                                                        </option>
                                                                                         <?php foreach ($sales_orders as $sales_order) { ?>
-                                                                                            <option value="<?php echo $sales_order->so_id ?>"><?php echo $sales_order->so_reffer_no; ?></option>
+                                                                                            <option
+                                                                                                value="<?php echo $sales_order->so_id ?>">
+                                                                                                <?php echo $sales_order->so_reffer_no; ?>
+                                                                                            </option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                             
+
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Product</td>
-                                                                            <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select" value="" name="product">
-                                                                                        <option value="" selected disabled>Select Porduct</option>
+                                                                                <td style="width: 30%;"
+                                                                                    class="center_padding">Product</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select class="form-select product_clz" value=""
+                                                                                        name="product">
+                                                                                        <option value="" selected
+                                                                                            disabled>Select Porduct
+                                                                                        </option>
                                                                                         <?php foreach ($products as $product) { ?>
-                                                                                            <option value="<?php echo $product->product_id; ?>"><?php echo $product->product_details; ?></option>
+                                                                                            <option
+                                                                                                value="<?php echo $product->product_id; ?>">
+                                                                                                <?php echo $product->product_details; ?>
+                                                                                            </option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                          
+
                                                                             </tr>
 
-                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Pending</td>                                                                           
-                                                                                <td> <input class="" type="checkbox" value="pending" name="pending"></td>                                                                            
+                                                                            <tr>
+                                                                                <td style="width: 30%;"
+                                                                                    class="center_padding">Pending</td>
+                                                                                <td> <input class="" type="checkbox"
+                                                                                        value="pending" name="pending">
+                                                                                </td>
                                                                             </tr>
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Linked</td>
-                                                                                <td> <input class="" type="checkbox" value="linked" name="linked"></td>                                                                                   
+                                                                                <td style="width: 30%;"
+                                                                                    class="center_padding">Linked</td>
+                                                                                <td> <input class="" type="checkbox"
+                                                                                        value="linked" name="linked">
+                                                                                </td>
                                                                             </tr>
 
 
@@ -252,7 +318,9 @@
                             <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-15%"> Purchase Order Reports</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1"
+                                            style="text-align: center;font-weight: 600;color: black; margin-right:-15%">
+                                            Purchase Order Reports</h4>
 
                                         <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
@@ -270,134 +338,157 @@
 
                                         <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
-                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <button class="email_button report_button" type="submit"
+                                            id="email_button">Email</button>
                                         <!-- </form> -->
 
-                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
+                                        <button type="button" data-bs-toggle="modal" id="clear_data"
+                                            data-bs-target="#SalesQuotReport"
+                                            class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style=" overflow-x:scroll;">
 
-<table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-    <colgroup>
-        <col style="width:60px"> <!-- Sl no -->
-        <col style="width:80px"> <!-- Date -->
-        <col style="width:120px"> <!-- Purchase Order Ref -->
-        <col style="width:250px"> <!-- Vendor -->
-        <col style="width:120px"> <!-- Sales Order Ref -->
-        <col style="width:100px"> <!-- PO Amount -->
-        <col style="min-width:300px"> <!-- Product -->
-        <col style="width:80px"> <!-- Qty -->
-        <col style="width:100px"> <!-- Rate -->
-        <col style="width:100px"> <!-- Discount -->
-        <col style="width:120px"> <!-- Line Amount -->
-    </colgroup>
-    <thead>
-        <tr>
-            <th class="no-sort text-center" style="white-space: nowrap;">Sl no</th>
-            <th class="text-center" style="white-space: nowrap;">Date</th>
-            <th class="text-center" style="white-space: nowrap;">PO Ref</th>
-            <th class="" style="white-space: nowrap;">Vendor</th>
-            <th class="text-center" style="white-space: nowrap;">SO Ref</th>
-            <th class="text-end" style="white-space: nowrap;">PO Amount</th>
-            <th style="white-space: nowrap;">Product</th>
-            <th class="text-center" style="white-space: nowrap;">Qty</th>
-            <th class="text-end" style="white-space: nowrap;">Rate</th>
-            <th class="text-end" style="white-space: nowrap;">Discount</th>
-            <th class="text-end" style="white-space: nowrap;">Line Amount</th>
-        </tr>
-    </thead>
+                                        <table style="table-layout:fixed;" id="DataTable"
+                                            class="table table-bordered table-striped delTable display dataTable">
+                                            <colgroup>
+                                                <col style="width:60px"> <!-- Sl no -->
+                                                <col style="width:80px"> <!-- Date -->
+                                                <col style="width:120px"> <!-- Purchase Order Ref -->
+                                                <col style="width:250px"> <!-- Vendor -->
+                                                <col style="width:120px"> <!-- Sales Order Ref -->
+                                                <col style="width:100px"> <!-- PO Amount -->
+                                                <col style="min-width:300px"> <!-- Product -->
+                                                <col style="width:80px"> <!-- Qty -->
+                                                <col style="width:100px"> <!-- Rate -->
+                                                <col style="width:100px"> <!-- Discount -->
+                                                <col style="width:120px"> <!-- Line Amount -->
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;">Sl no
+                                                    </th>
+                                                    <th class="text-center" style="white-space: nowrap;">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;">PO Ref</th>
+                                                    <th class="" style="white-space: nowrap;">Vendor</th>
+                                                    <th class="text-center" style="white-space: nowrap;">SO Ref</th>
+                                                    <th class="text-end" style="white-space: nowrap;">PO Amount</th>
+                                                    <th style="white-space: nowrap;">Product</th>
+                                                    <th class="text-center" style="white-space: nowrap;">Qty</th>
+                                                    <th class="text-end" style="white-space: nowrap;">Rate</th>
+                                                    <th class="text-end" style="white-space: nowrap;">Discount</th>
+                                                    <th class="text-end" style="white-space: nowrap;">Line Amount</th>
+                                                </tr>
+                                            </thead>
 
-    <tbody class="tbody_data">
-        <?php if (!empty($purchase_order)):
-            $i = 1;
-            $total = $po_total_all = 0; // Renamed $po_total to avoid confusion with nested table's $po_total
-            foreach ($purchase_order as $pur_order): ?>
+                                            <tbody class="tbody_data">
+                                                <?php if (!empty($purchase_order)):
+                                                    $i = 1;
+                                                    $total = $po_total_all = 0; // Renamed $po_total to avoid confusion with nested table's $po_total
+                                                    foreach ($purchase_order as $pur_order): ?>
 
-                <tr>
-                    <td class="text-center" style="white-space: nowrap;"><?php echo $i; ?></td>
-                    <td class="text-center" style="white-space: nowrap;"><?php echo date('d-M-Y', strtotime($pur_order->po_date)); ?></td>
-                    <td class="text-center" style="white-space: nowrap;"><a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"><?php echo $pur_order->po_reffer_no; ?></a></td>
-                    <td class="" style="white-space: wrap;">
-                        <?php
-                            foreach ($vendors as $vendor) {
-                                if ($pur_order->po_vendor_name == $vendor->cc_id) {
-                                    echo $vendor->cc_customer_name;
-                                    break;
-                                }
-                            }
-                        ?>
-                    </td>
-                    <!-- This td now spans across the remaining 7 header columns -->
-                    <td colspan="7" align="left" class="p-0">
-                        <table class="nested-table" style="table-layout:fixed; width:100%; border: none;">
-                            <colgroup>
-                                <!-- Sales Order Ref (matches parent col 5 width: 120px) -->
-                                <col style="width:120px">
-                                <!-- PO Amount (matches parent col 6 width: 100px) -->
-                                <col style="width:100px">
-                                <!-- Product (matches parent col 7 width: min-width:300px) -->
-                                <col style="min-width:300px">
-                                <!-- Qty (matches parent col 8 width: 80px) -->
-                                <col style="width:80px">
-                                <!-- Rate (matches parent col 9 width: 100px) -->
-                                <col style="width:100px">
-                                <!-- Discount (matches parent col 10 width: 100px) -->
-                                <col style="width:100px">
-                                <!-- Line Amount (matches parent col 11 width: 120px) -->
-                                <col style="width:120px">
-                            </colgroup>
-                            <?php $current_po_amount = 0; $current_line_total = 0; $k=0;
-                            foreach ($pur_order->product_orders as $orders) { $k++; ?>
-                                <tr style="background: unset; border-bottom: hidden !important;">
-                                    <td class="text-center" style="white-space: nowrap; vertical-align: top;">
-                                        <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a>
-                                    </td>
-                                    <td class="text-end" style="white-space: nowrap; vertical-align: top;">
-                                        <?php if($k==1){ // Display PO amount only once per PO
-                                            $current_po_amount = $pur_order->po_amount;
-                                            echo format_currency($current_po_amount);
-                                            $total += $current_po_amount; // Accumulate total for the main PO Amount column
-                                        } else {
-                                            echo "&nbsp;"; // Empty cell for subsequent rows in the nested table
-                                        } ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $orders->product_details; ?>
-                                    </td>
-                                    <td class="text-center" style="white-space: nowrap;">
-                                        <?php echo $orders->pop_qty; ?>
-                                    </td>
-                                    <td class="text-end" style="white-space: nowrap;">
-                                        <?php echo format_currency($orders->pop_rate); ?>
-                                    </td>
-                                    <td class="text-end" style="white-space: nowrap;">
-                                        <?php echo format_currency($orders->pop_discount); ?>%
-                                    </td>
-                                    <td class="text-end" style="white-space: nowrap;">
-                                        <?php echo format_currency($orders->pop_amount);
-                                        $po_total_all += $orders->pop_amount; // Accumulate total for the main Line Amount column
-                                        $current_line_total += $orders->pop_amount; // Accumulate for the current PO's line total if needed
-                                        ?>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </table>
-                    </td>
-                </tr>
-                <?php $i++;
-            endforeach; ?>
+                                                        <tr>
+                                                            <td class="text-center" style="white-space: nowrap;">
+                                                                <?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;">
+                                                                <?php echo date('d-M-Y', strtotime($pur_order->po_date)); ?>
+                                                            </td>
+                                                            <td class="text-center" style="white-space: nowrap;"><a
+                                                                    href="<?php echo base_url() . 'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>"
+                                                                    target="_blank"><?php echo $pur_order->po_reffer_no; ?></a>
+                                                            </td>
+                                                            <td class="" style="white-space: wrap;">
+                                                                <?php
+                                                                foreach ($vendors as $vendor) {
+                                                                    if ($pur_order->po_vendor_name == $vendor->cc_id) {
+                                                                        echo $vendor->cc_customer_name;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </td>
+                                                            <!-- This td now spans across the remaining 7 header columns -->
+                                                            <td colspan="7" align="left" class="p-0">
+                                                                <table class="nested-table"
+                                                                    style="table-layout:fixed; width:100%; border: none;">
+                                                                    <colgroup>
+                                                                        <!-- Sales Order Ref (matches parent col 5 width: 120px) -->
+                                                                        <col style="width:120px">
+                                                                        <!-- PO Amount (matches parent col 6 width: 100px) -->
+                                                                        <col style="width:100px">
+                                                                        <!-- Product (matches parent col 7 width: min-width:300px) -->
+                                                                        <col style="min-width:300px">
+                                                                        <!-- Qty (matches parent col 8 width: 80px) -->
+                                                                        <col style="width:80px">
+                                                                        <!-- Rate (matches parent col 9 width: 100px) -->
+                                                                        <col style="width:100px">
+                                                                        <!-- Discount (matches parent col 10 width: 100px) -->
+                                                                        <col style="width:100px">
+                                                                        <!-- Line Amount (matches parent col 11 width: 120px) -->
+                                                                        <col style="width:120px">
+                                                                    </colgroup>
+                                                                    <?php $current_po_amount = 0;
+                                                                    $current_line_total = 0;
+                                                                    $k = 0;
+                                                                    foreach ($pur_order->product_orders as $orders) {
+                                                                        $k++; ?>
+                                                                        <tr
+                                                                            style="background: unset; border-bottom: hidden !important;">
+                                                                            <td class="text-center"
+                                                                                style="white-space: nowrap; vertical-align: top;">
+                                                                                <a href="<?php echo base_url() . 'Crm/SalesOrder?view_so=' . $orders->so_id; ?>"
+                                                                                    target="_blank"><?php echo $orders->so_reffer_no; ?></a>
+                                                                            </td>
+                                                                            <td class="text-end"
+                                                                                style="white-space: nowrap; vertical-align: top;">
+                                                                                <?php if ($k == 1) { // Display PO amount only once per PO
+                                                                                                    $current_po_amount = $pur_order->po_amount;
+                                                                                                    echo format_currency($current_po_amount);
+                                                                                                    $total += $current_po_amount; // Accumulate total for the main PO Amount column
+                                                                                                } else {
+                                                                                                    echo "&nbsp;"; // Empty cell for subsequent rows in the nested table
+                                                                                                } ?>
+                                                                            </td>
+                                                                            <td>
+                                                                                <?php echo $orders->product_details; ?>
+                                                                            </td>
+                                                                            <td class="text-center" style="white-space: nowrap;">
+                                                                                <?php echo $orders->pop_qty; ?>
+                                                                            </td>
+                                                                            <td class="text-end" style="white-space: nowrap;">
+                                                                                <?php echo format_currency($orders->pop_rate); ?>
+                                                                            </td>
+                                                                            <td class="text-end" style="white-space: nowrap;">
+                                                                                <?php echo format_currency($orders->pop_discount); ?>%
+                                                                            </td>
+                                                                            <td class="text-end" style="white-space: nowrap;">
+                                                                                <?php echo format_currency($orders->pop_amount);
+                                                                                $po_total_all += $orders->pop_amount; // Accumulate total for the main Line Amount column
+                                                                                $current_line_total += $orders->pop_amount; // Accumulate for the current PO's line total if needed
+                                                                                ?>
+                                                                            </td>
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <?php $i++;
+                                                    endforeach; ?>
 
-        <!-- TOTAL ROW -->
-        <tr class="fw-bold">
-            <th colspan="5" class="text-start" style="white-space: nowrap;">Total</th>
-            <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
-            <th colspan="4" style="white-space: nowrap;"></th> <!-- These colspan 4 columns now align with Product, Qty, Rate, Discount -->
-            <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($po_total_all); ?></th>
-        </tr>
+                                                    <!-- TOTAL ROW -->
+                                                    <tr class="fw-bold">
+                                                        <th colspan="5" class="text-start" style="white-space: nowrap;">
+                                                            Total</th>
+                                                        <th class="text-end" style="white-space: nowrap;">
+                                                            <?php echo format_currency($total); ?></th>
+                                                        <th colspan="4" style="white-space: nowrap;"></th>
+                                                        <!-- These colspan 4 columns now align with Product, Qty, Rate, Discount -->
+                                                        <th class="text-end" style="white-space: nowrap;">
+                                                            <?php echo format_currency($po_total_all); ?></th>
+                                                    </tr>
 
-        <?php endif; ?>
-    </tbody>
-</table>
+                                                <?php endif; ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -429,23 +520,17 @@
 </div>
 
 
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
+<script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
+    document.addEventListener("DOMContentLoaded", function (event) {
 
         /*modal open start*/
         <?php if (empty($_GET)): ?>
 
-            $(window).on('load', function() {
+            $(window).on('load', function () {
 
-                $('#MaterialRequesitionReport').modal('show');
+                $('#PurchaseOrderReport').modal('show');
             });
 
         <?php endif; ?>
@@ -457,7 +542,7 @@
         $(".droup_sales").select2({
             placeholder: "Select Customer",
             theme: "default form-control- customer_width",
-            dropdownParent: $('#MaterialRequesitionReport'),
+            dropdownParent: $('#PurchaseOrderReport'),
 
             ajax: {
                 url: "<?= base_url(); ?>Procurement/MaterialReqReport/FetchTypes",
@@ -466,16 +551,16 @@
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function(params) {
+                data: function (params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function(data, params) {
+                processResults: function (data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function(item) {
+                        results: $.map(data.result, function (item) {
                             return {
                                 id: item.so_id,
                                 text: item.so_reffer_no
@@ -493,7 +578,7 @@
 
         /*fetch  sales executive by  customer*/
 
-        $("body").on('change', '.customer_clz', function() {
+        $("body").on('change', '.customer_clz', function () {
 
 
             var id = $(this).val();
@@ -509,7 +594,7 @@
                     ID: id
                 },
 
-                success: function(data) {
+                success: function (data) {
                     var data = JSON.parse(data);
 
                     //console.log(data.prod_details);
@@ -527,7 +612,7 @@
 
         /*form submit start*/
 
-        $(".submit_btn").on('click', function() {
+        $(".submit_btn").on('click', function () {
 
             /* $('#SalesQuotReport').modal("hide");
 
@@ -549,14 +634,14 @@
 
 
 
-        $(".search-btn").on('click', function() {
+        $(".search-btn").on('click', function () {
 
-            $('#MaterialRequesitionReport').modal('show');
+            $('#PurchaseOrderReport').modal('show');
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $(".excel_button").click(
-                function() {
+                function () {
                     tableToExcel('DataTable', 'Purchase Order Report', 'Purchase Order Report');
                 }
             );
@@ -577,10 +662,6 @@
         }
 
 
-
-
-
-
         function tableToExcel(table, sheetName, fileName) {
 
 
@@ -593,11 +674,11 @@
 
             var uri = 'data:application/vnd.ms-excel;base64,',
                 templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
-                base64Conversion = function(s) {
+                base64Conversion = function (s) {
                     return window.btoa(unescape(encodeURIComponent(s)))
                 },
-                formatExcelData = function(s, c) {
-                    return s.replace(/{(\w+)}/g, function(m, p) {
+                formatExcelData = function (s, c) {
+                    return s.replace(/{(\w+)}/g, function (m, p) {
                         return c[p];
                     })
                 }
@@ -649,19 +730,135 @@
 
         }
 
+
+    /*Vendor dropdown search*/
+        $(".vendor_dropdown").select2({
+            placeholder: "Select Vendor",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseOrderReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseOrderReport/FetchVendors",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.cc_id,
+                                text: $.trim(item.cc_customer_name)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+
+        /*product droup drown search*/
+        $(".sales_order").select2({
+            placeholder: "Select Sales Order",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseOrderReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseOrderReport/FetchSalesOrder",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        vendor_id: $('.customer_clz').val(),
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return {
+                                id: item.so_id,
+                                text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+        /* product dropdown search */
+        $(".product_clz").select2({
+            placeholder: "Select Product",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#PurchaseOrderReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/PurchaseOrderReport/FetchProducts",
+                type: "POST", // ✅ Make sure this is POST since controller expects POST
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                        salesorder: $('.sales_order').val() // ✅ send inside data function
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return { id: item.product_id, text: item.product_details };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },
+            }
+        });
+
+
+        /*###*/
+
+
+
     });
 </script>
 
 <script>
     // Close modal when form is submitted
-    document.getElementById('add_form').addEventListener('submit', function(e) {
+    document.getElementById('add_form').addEventListener('submit', function (e) {
         // Close the modal after the form is submitted
-        $('#MaterialRequesitionReport').modal('hide');
+        $('#PurchaseOrderReport').modal('hide');
     });
 </script>
 
 <script>
-    document.getElementById("email_button").addEventListener("click", function() {
+    document.getElementById("email_button").addEventListener("click", function () {
         // Select the table element
         var range = document.createRange();
         range.selectNode(document.getElementById("DataTable"));
