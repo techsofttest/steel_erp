@@ -441,7 +441,7 @@
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th style="width: 85px !important;">Reference</th>
                                                     <th>Vendor Name</th>
-                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th style="width: 80px !important;">Date</th>
                                                     <th style="width: 70px !important;">Actions</th>
                                                 </tr>
                                             </thead>
