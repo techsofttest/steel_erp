@@ -748,6 +748,7 @@ span.select2.customer_width, span.select2{
                 allowClear: true,
                 data: function (params) {
                     return {
+                         vendor_id: $('.customer_clz').val(),
                         term: params.term,
                         page: params.page || 1,
                     };
