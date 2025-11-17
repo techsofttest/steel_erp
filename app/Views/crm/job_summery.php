@@ -210,6 +210,7 @@
                                         <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
+                                                    
                                                     <th class="no-sort"  class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
@@ -359,7 +360,6 @@
                                                             
                                                                 foreach($sales_order->cash_invoice as $cash_inv){
 
-                                                                    
                                                                     $cash_invoices  += $cash_inv->ci_total_amount;
 
                                                                     $single_cash += $cash_inv->ci_total_amount;
@@ -387,7 +387,6 @@
 
                                                                    $single_returns += $sales_rut->sr_total;
 
-                                                                   
                                                                 }
                                                             }
 
