@@ -336,7 +336,7 @@
                                                                 <td style="width:300px">Credit A/C</td>
                                                                 <td style="width:49px">Qty</td>
                                                                 <td style="width:49px">Unit</td>
-                                                                <td style="width:70px">Rate</td>
+                                                                <td style="width:80px">Rate</td>
                                                                 <td style="width:70px">Discount</td>
                                                                 <td style="width:90px">Amount</td>
                                                             </tr>
