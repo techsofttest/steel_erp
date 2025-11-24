@@ -407,8 +407,8 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td></td>
-                                                    <td class="text-end"><b><?php echo format_currency($invoice_total); ?></b></td>
+                                                    <td colspan=2 class="text-end"><b><?php echo format_currency($invoice_total); ?></b></td>
+                                                    <!--<td class="text-end"><b><?php //echo format_currency($invoice_total); ?></b></td>-->
 
 
 

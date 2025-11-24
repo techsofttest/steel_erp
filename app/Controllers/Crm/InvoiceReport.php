@@ -497,7 +497,7 @@ class InvoiceReport extends BaseController
                     <td style="border-top: 2px solid;" width="80px"></td>
                     <td style="border-top: 2px solid;" width="80px"></td>
                     <td style="border-top: 2px solid;" width="80px"></td>
-                    <td style="border-top: 2px solid;" width="90px"><b>' . format_currency($invoice_total) . '</b></td>
+                    <td style="border-top: 2px solid;" width="80px"><b>' . format_currency($invoice_total) . '</b></td>
                 </tr>
             </table>
             ';
