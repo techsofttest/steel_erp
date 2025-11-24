@@ -284,7 +284,7 @@
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $inv_rep->so_id; ?>" target="_blank"><?php echo $inv_rep->so_reffer_no; ?></a></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_lpo_reff; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->se_name; ?></td>
-                                                    <td class="text-end" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_total; ?></td>
+                                                    <td class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($inv_rep->sr_total); ?></td>
                                                     <?php 
                                                         
                                                         $sales_prod_amount = $inv_rep->sr_total + $sales_prod_amount;
