@@ -1429,7 +1429,7 @@
                                                 <tr>
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th style="width: 85px !important;">Reference</th>
-                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th style="width: 80px !important;">Date</th>
                                                     <th>Customer</th>
 													<th style="width: 100px;">Amount</th>
                                                     <th style="width: 100px !important">Actions</th>

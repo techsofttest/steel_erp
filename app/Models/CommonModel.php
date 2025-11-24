@@ -662,9 +662,13 @@ class CommonModel extends Model
     
         // Format serial number (e.g., 0001, 0010, etc.)
         $formattedSerial = str_pad($newSerial, 4, '0', STR_PAD_LEFT);
+
+        //echo $this->db->getLastQuery(); 
     
         // Construct new reference
         return "{$prefix}{$formattedSerial}";
+
+
 
         //return $uid;
 

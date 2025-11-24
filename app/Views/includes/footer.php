@@ -947,7 +947,7 @@
     // Generate random attributes so browser can't match stored data
     const rand = Math.random().toString(36).substring(2, 10);
     input.setAttribute('autocomplete', 'off_' + rand);
-    input.setAttribute('name', (input.getAttribute('name') || 'input') + '_' + rand);
+    //input.setAttribute('name', (input.getAttribute('name') || 'input') + '_' + rand);
     input.setAttribute('autocorrect', 'off');
     input.setAttribute('autocapitalize', 'off');
     input.setAttribute('spellcheck', 'false');

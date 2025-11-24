@@ -542,21 +542,21 @@
                                                                 
                                                                 
                                                                 <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
-                                                                <td align="right" class="total_label">Total</td>
+                                                                <td align="right" class="total_label" style="width: 200px;">Total</td>
                                                                 <td><input type="text" name="qd_sales_amount" class="amount_total form-control text-end" readonly></td>
                                                                 
                                                             </tr>
                                                             <tr>
                                                                 
                                                                 
-                                                                <td style="padding: 10px 10px;" align="right" class="total_label">Cost</td>
+                                                                <td style="padding: 10px 10px;width: 200px;" align="right" class="total_label">Cost</td>
                                                                 <td><input type="text" class="form-control total_cost_cal text-end" readonly></td>
                                                                 
                                                             </tr>
                                                             <tr>
                                                                 
                                                             
-                                                                <td style="padding: 10px 10px;" align="right" class="total_label">Percentage</td>
+                                                                <td style="padding: 10px 10px;width: 200px;" align="right" class="total_label">Percentage</td>
                                                                 <td><input type="text" class="form-control total_percent text-end" readonly></td>
                                                                
                                                             </tr>
@@ -645,9 +645,11 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+
                                                             <tr class="cost_cal_row cost_cal_row2">
+
                                                                 <td class="cost_ci_no text-center" style="padding: 10px 10px;">1</td>
-                                                                <td >
+                                                                <td>
                                                                     <select class="form-select cost_service_clz cost_product_det" name="qc_material[0]" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
@@ -658,11 +660,12 @@
                                                                 <td><input type="text" name="qc_unit[0]"  class="form-control cost_unit_clz text-center" required></td>
                                                                 <td><input type="number" name="qc_qty[0]" class="form-control cost_qty_clz text-center" required></td>
                                                                 <td style="text-align: center;padding: 10px 10px;"><a href="javascript:void(0)" onclick="costVendor.call(this)">Click</a></td>
-                                                                <td><input type="text" name="qc_rate[0]"  class="form-control cost_rate_clz text-end" required></td>
+                                                                <td><input type="text" name="qc_rate[0]"  class="form-control cost_rate_clz ktext-end" required autocomplete="new-password"></td>
                                                                 
                                                                 <td><input type="text" name="qc_amount[0]" class="form-control cost_amount_clz text-end" readonly></td>
                                                                 <td><div class="tecs" style="text-align: center;"><span class="add_icon add_product3"><i class="ri-add-circle-line"></i> </span></div></td>
                                                                 <input type="hidden" name="qc_quotation_id" class="quotation_hidden_id">
+                                                                
                                                             </tr>
                                                            
                                                         </tbody>
@@ -1932,7 +1935,7 @@
                                                 <tr>
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th style="width: 120px !important;">Reference</th>
-                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th style="width: 80px !important;">Date</th>
                                                     <th>Customer</th>
                                                     <th style="width: 110px !important;">Enquiry Number</th>
                                                     <th style="width: 100px;">Amount</th>

@@ -196,6 +196,8 @@ class Enquiry extends BaseController
         else{
 
             $uid = $this->FetchReference("r");
+
+            
         }
 
         $insert_data = [
@@ -221,6 +223,8 @@ class Enquiry extends BaseController
             'enquiry_added_date'     => date("Y-m-d"),
 
         ];
+
+        
 
         $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
     
@@ -759,7 +763,7 @@ class Enquiry extends BaseController
 
     public function FetchReference($type="e",$year="")
     {   
-
+        
         if($year=="")
         {
             $year = $this->data['accounting_year'];
@@ -771,12 +775,15 @@ class Enquiry extends BaseController
 
         $uid = $this->common_model->FetchNextId('crm_enquiry','enquiry_reff',"ENQ-{$year}-",$year);
 
+       
         if($type=="e")
             echo $uid;
         else
         {
             return $uid;
         }
+
+
 
     }
 

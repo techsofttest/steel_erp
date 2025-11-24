@@ -336,7 +336,7 @@
                                                                 <td style="width:300px">Credit A/C</td>
                                                                 <td style="width:49px">Qty</td>
                                                                 <td style="width:49px">Unit</td>
-                                                                <td style="width:70px">Rate</td>
+                                                                <td style="width:80px">Rate</td>
                                                                 <td style="width:70px">Discount</td>
                                                                 <td style="width:90px">Amount</td>
                                                             </tr>
@@ -441,7 +441,7 @@
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th style="width: 85px !important;">Reference</th>
                                                     <th>Vendor Name</th>
-                                                    <th style="width: 75px !important;">Date</th>
+                                                    <th style="width: 80px !important;">Date</th>
                                                     <th style="width: 70px !important;">Actions</th>
                                                 </tr>
                                             </thead>
