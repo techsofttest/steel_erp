@@ -57,19 +57,24 @@
     .input_length3 {
         width: 12%;
     }
-
-
        .content_table table {
-        width: 100%;
-        border-collapse: collapse;
-        border: 1px solid black;
-    }
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
     table#DataTable td:nth-child(3),table#DataTable td:nth-child(5) {
     text-align: center;
     }
     table#DataTable td:nth-child(6){
         text-align:end;
     }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 36px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+       height: 35px;
+    }
+
 </style>
 
 <div class="tab-content text-muted">
@@ -1140,6 +1145,12 @@
                         success: function(data) {
 
                             $('#AddFixedAssetCreation').modal('hide');
+
+                                // Reset all normal inputs
+                                form[0].reset();
+
+                                // Reset all select2 dropdowns
+                                form.find('select').val(null).trigger('change');
 
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 

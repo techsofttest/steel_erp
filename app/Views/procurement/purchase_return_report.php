@@ -801,7 +801,6 @@ span.select2.customer_width, span.select2{
         })
 
 
-
              /*customer droup drown search*/
         $(".gl_acc_clz").select2({
             placeholder: "Select GL Account",
@@ -834,21 +833,15 @@ span.select2.customer_width, span.select2{
                         }
                     };
                 },              
-            }
-         
+            }         
         })
         /*###*/
 
-        // =================================
-
-
-
-
+       
     });
 </script>
 
 <script>
-    // Close modal when form is submitted
     document.getElementById('add_form').addEventListener('submit', function(e) {
         // Close the modal after the form is submitted
         $('#PurchaseReturnReport').modal('hide');
