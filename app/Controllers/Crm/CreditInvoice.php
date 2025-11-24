@@ -1560,7 +1560,7 @@ class CreditInvoice extends BaseController
                         <table><tr><td></td></tr></table>
                         <table><tr><td></td></tr></table>
                         <table><tr><td></td></tr></table>
-                        <table><tr><td></td></tr></table>
+                        <table><tr><td></td></tr></table>   
                         
                         <table width="100%">
                             <tr width="100%">

@@ -2172,26 +2172,26 @@ class SalesQuotation extends BaseController
         if ($first_line) {
             // Full row with all details
             $pdf_data .= '<tr>
-                <td align="center" width="8%" style="padding:2px; vertical-align:top;">' . $k . '</td>
-                <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
-                <td align="center" style="padding:2px; vertical-align:top;">' . $prod_det->qpd_quantity . '</td>
-                <td align="center" style="padding:2px; vertical-align:top;">' . $prod_det->qpd_unit . '</td>
-                <td align="right" style="padding:2px; vertical-align:top;">' . $rate . '</td>
-                <td align="center" style="padding:2px; color:red; vertical-align:top;"><i>' . $disc . '</i></td>
-                <td align="right" style="padding:2px; vertical-align:top;">' . $amount . '</td>
+                <td align="center" width="8%" style="padding:1px; vertical-align:top;">' . $k . '</td>
+                <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                <td align="center" style="padding:1px; vertical-align:top;">' . $prod_det->qpd_quantity . '</td>
+                <td align="center" style="padding:1px; vertical-align:top;">' . $prod_det->qpd_unit . '</td>
+                <td align="right" style="padding:1px; vertical-align:top;">' . $rate . '</td>
+                <td align="center" style="padding:1px; color:red; vertical-align:top;"><i>' . $disc . '</i></td>
+                <td align="right" style="padding:1px; vertical-align:top;">' . $amount . '</td>
             </tr>';
             $first_line = false;
             $k++;
         } else {
             // Extra line → only description column
             $pdf_data .= '<tr>
-                <td align="center" width="8%" style="padding:2px;">&nbsp;</td>
-                <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
-                <td align="center" style="padding:2px;">&nbsp;</td>
-                <td align="center" style="padding:2px;">&nbsp;</td>
-                <td align="right" style="padding:2px;">&nbsp;</td>
-                <td align="center" style="padding:2px;">&nbsp;</td>
-                <td align="right" style="padding:2px;">&nbsp;</td>
+                <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
+                <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                <td align="center" style="padding:1px;">&nbsp;</td>
+                <td align="center" style="padding:1px;">&nbsp;</td>
+                <td align="right" style="padding:1px;">&nbsp;</td>
+                <td align="center" style="padding:1px;">&nbsp;</td>
+                <td align="right" style="padding:1px;">&nbsp;</td>
             </tr>';
         }
     }
@@ -2214,7 +2214,7 @@ class SalesQuotation extends BaseController
         $date = date('d-M-Y', strtotime($quotation_details->qd_date));
         $title = 'SQ- ' . $quotation_details->qd_reffer_no;
 
-        $mpdf = new \Mpdf\Mpdf([
+        $mpdf = new \Mpdf\Mpdf([    
             'margin_top' => 68,
             //'margin_bottom' => 50,
             'margin_header' => 10,
@@ -2223,10 +2223,27 @@ class SalesQuotation extends BaseController
             'margin_right' => 5,
             'defaultfooterline' => 0,
             'setAutoTopMargin'   => 'stretch',
-            'setAutoBottomMargin'   => 40,
+            'setAutoBottomMargin'   => 'stretch',
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 20);
+
+        /* Trail For Calculation */
+         $mpdf_trial = new \Mpdf\Mpdf([    
+            'margin_top' => 68,
+            //'margin_bottom' => 50,
+            'margin_header' => 10,
+            //'margin_footer' => 10,
+            'margin_left' => 5,
+            'margin_right' => 5,
+            'defaultfooterline' => 0,
+            'setAutoTopMargin'   => 'stretch',
+            'setAutoBottomMargin'   => 'stretch',
+        ]);
+        /* Trial For Calculation */
+
+
+
+        //$mpdf->SetAutoPageBreak(true, 40);
 
         $mpdf->SetTitle($title);
 
@@ -2399,6 +2416,32 @@ class SalesQuotation extends BaseController
             
             ';
 
+        /* Trial It */
+
+        $mpdf_trial->SetHTMLHeader($header_html);
+
+        $mpdf_trial->SetHTMLFooter($footer_common); 
+
+        //$mpdf->WriteHTML($main_table,\Mpdf\HTMLParserMode::HTML_PARSE_NO_WRITE);
+ 
+        $mpdf_trial->WriteHTML($main_table);
+
+        $pageCount = $mpdf_trial->page;
+
+        /* Yes, Done */
+
+
+        // Check if we're still on page 1 (meaning content fits on one page)
+        if ($pageCount == 1) {
+            // Single page scenario - need to adjust margin for larger footer
+            $mpdf->SetAutoPageBreak(true, 40);  // Increase bottom margin
+            // Force a check to see if content now overflows
+            // $mpdf->WriteHTML('<div style="margin:0;padding:0;"></div>'); // Trigger reflow
+            
+        }
+
+
+
         $mpdf->SetHTMLHeader($header_html);
 
         $mpdf->SetHTMLFooter($footer_common); 
@@ -2408,14 +2451,8 @@ class SalesQuotation extends BaseController
         $mpdf->WriteHTML($main_table);
 
 
-        // Check if we're still on page 1 (meaning content fits on one page)
-        if ($mpdf->page == 1) {
-            // Single page scenario - need to adjust margin for larger footer
-            $mpdf->SetAutoPageBreak(true, 40);  // Increase bottom margin
-            // Force a check to see if content now overflows
-            $mpdf->WriteHTML('<div style="margin:0;padding:0;"></div>'); // Trigger reflow
-            
-        }
+        
+       
 
         // Now set the last page footer
         
@@ -2433,6 +2470,230 @@ class SalesQuotation extends BaseController
 
     }
 }
+
+
+
+
+    public function Pdf1($id)
+    {
+
+    if (!empty($id)) {
+    $joins1 = [
+        ['table' => 'crm_products', 'pk' => 'product_id', 'fk' => 'qpd_product_description'],
+    ];
+
+    $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details', ['qpd_quotation_details' => $id], $joins1);
+
+    $pdf_data = '';
+    $k = 1;
+
+    $max_chars_per_line = 55;
+
+    foreach ($product_details as $prod_det) {
+        $rate = format_currency($prod_det->qpd_rate);
+        $amount = format_currency($prod_det->qpd_amount);
+        $disc = number_format($prod_det->qpd_discount, 2);
+
+        // Wrap text by words, not in middle of a word
+        $wrapped = wordwrap(trim(strip_tags($prod_det->product_details)), $max_chars_per_line, "\n", true);
+        $lines = explode("\n", $wrapped);
+
+        $first_line = true;
+
+        foreach ($lines as $line) {
+            if ($first_line) {
+                // Full row with all details
+                $pdf_data .= '<tr>
+                    <td align="center" width="8%" style="padding:1px; vertical-align:top;">' . $k . '</td>
+                    <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                    <td align="center" style="padding:1px; vertical-align:top;">' . $prod_det->qpd_quantity . '</td>
+                    <td align="center" style="padding:1px; vertical-align:top;">' . $prod_det->qpd_unit . '</td>
+                    <td align="right" style="padding:1px; vertical-align:top;">' . $rate . '</td>
+                    <td align="center" style="padding:1px; color:red; vertical-align:top;"><i>' . $disc . '</i></td>
+                    <td align="right" style="padding:1px; vertical-align:top;">' . $amount . '</td>
+                </tr>';
+                $first_line = false;
+                $k++;
+            } else {
+                // Extra line → only description column
+                $pdf_data .= '<tr>
+                    <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
+                    <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;">&nbsp;</td>
+                </tr>';
+            }
+        }
+    }
+
+    $join = [
+        ['table' => 'crm_customer_creation', 'pk' => 'cc_id', 'fk' => 'qd_customer'],
+        ['table' => 'crm_contact_details', 'pk' => 'contact_id', 'fk' => 'qd_contact_person'],
+        ['table' => 'master_delivery_term', 'pk' => 'dt_id', 'fk' => 'qd_delivery_term'],
+        ['table' => 'crm_enquiry', 'pk' => 'enquiry_id', 'fk' => 'qd_enq_ref'],
+    ];
+
+    $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details', ['qd_id' => $id], $join);
+    $customers = $this->common_model->SingleRowJoin('crm_customer_creation', ['cc_id' => $quotation_details->cc_id], []);
+
+    $amount_in_words = currency_to_words($quotation_details->qd_sales_amount);
+    $date = date('d-M-Y', strtotime($quotation_details->qd_date));
+    $title = 'SQ- ' . $quotation_details->qd_reffer_no;
+
+    // Define header HTML
+    $header_html = '
+    <table>
+        <tr>
+            <td style="padding: 0; margin: 0; vertical-align: top; width:100px;">
+                <img src="' . base_url() . 'public/assets/images/logo-sm.png" style="margin-top: -5px;margin-left:5px;" alt="">
+            </td>
+            <td style="margin-top: -5px;">
+                <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
+                <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" style="">
+        <tr>
+            <td width="9%"></td>
+            <td width="20%">Date : ' . $date . '</td>
+            <td align="center">' . $quotation_details->qd_reffer_no . '</td>
+            <td align="right"><h2>Sales Quotation</h2></td>
+        </tr>
+    </table>
+
+    <table width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td width="13%"></td>
+            <td>' . $quotation_details->cc_customer_name. '</td>
+        </tr>
+        <tr>
+            <td>Customer</td>
+            <td>Tel : ' . $quotation_details->cc_telephone. ', Fax : ' . $quotation_details->cc_fax . ', Email : ' . $quotation_details->cc_email . '</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Post Box: ' .$quotation_details->cc_post_box. ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
+        </tr>
+        <tr>
+            <td>Attention</td>
+            <td>' . $quotation_details->contact_person. ' - ' . $quotation_details->contact_designation . ', Mobile:-' . $quotation_details->contact_mobile . ', Email: - ' . $quotation_details->contact_email . '</td>
+        </tr>
+    </table>
+    ';
+
+    // Define main table
+    $main_table = '<style>
+        th, td {padding: 4px; font-size: 12px; }
+        p { font-size: 12px; margin-bottom: 13px; } 
+    </style>
+    <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
+        <thead>
+            <tr>
+                <th align="center" width="8%" style="border-bottom:1px solid;">Item No</th>
+                <th align="center" width="45%" style="border-bottom:1px solid;">Description</th>
+                <th align="center" style="border-bottom:1px solid;">Qty</th>
+                <th align="center" style="border-bottom:1px solid;">Unit</th>
+                <th align="center" style="border-bottom:1px solid;">Rate</th>
+                <th align="center" style="border-bottom:1px solid;">Disc%</th>
+                <th align="center" style="border-bottom:1px solid;">Amount</th>
+            </tr>
+        </thead>
+        <tbody>' . $pdf_data . '</tbody>
+    </table>';
+
+    // First pass: Create PDF with smaller footer to check page count
+    $mpdf_test = new \Mpdf\Mpdf([    
+        'margin_top' => 68,
+        'margin_header' => 10,
+        'margin_left' => 5,
+        'margin_right' => 5,
+        'defaultfooterline' => 0,
+        'setAutoTopMargin' => 'stretch',
+        'setAutoBottomMargin' => 40,
+    ]);
+
+    $mpdf_test->SetAutoPageBreak(true, 40);
+    $mpdf_test->SetHTMLHeader($header_html);
+    $mpdf_test->WriteHTML($main_table);
+    
+    // Check the page count
+    $page_count = $mpdf_test->page;
+    unset($mpdf_test);
+
+    // Second pass: Create the actual PDF with appropriate margins
+    $bottom_margin = ($page_count == 1) ? 90 : 40;
+    
+    $mpdf = new \Mpdf\Mpdf([    
+        'margin_top' => 68,
+        'margin_header' => 10,
+        'margin_left' => 5,
+        'margin_right' => 5,
+        'defaultfooterline' => 0,
+        'setAutoTopMargin' => 'stretch',
+        'setAutoBottomMargin' => $bottom_margin,
+    ]);
+
+    $mpdf->SetAutoPageBreak(true, $bottom_margin);
+    $mpdf->SetTitle($title);
+
+    $last_page_footer = '
+    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+        <tr>
+            <td>Quote Validity</td>
+            <td width="62%">' . $quotation_details->qd_validity . '</td>
+            <td style="font-weight: bold;width: 15%;">Net Quote Value</td>
+            <td style="font-weight: bold;">' . format_currency($quotation_details->qd_sales_amount) . '</td>
+        </tr>
+        <tr><td>Currency</td><td>Qatar Riyals</td></tr>
+        <tr><td>Amount in words</td><td>' . $amount_in_words . '</td></tr>
+    </table>
+
+    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+        <tr>
+            <td style="width:14%;" rowspan="2">Quote Terms</td>
+            <td style="width:15%">Payment:</td>
+            <td style="">' . $quotation_details->qd_payment_term . '</td>
+        </tr>
+        <tr style="margin-bottom:0px">
+            <td style="width:15%" rowspan="2">Delivery Period:</td>
+            <td style="">' . $quotation_details->dt_name . '</td>
+        </tr>
+    </table>
+
+    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+        <tr>
+            <td>Antony Raphel - Production In-charge</td>
+            <td style="text-align:right;">Justin Jose - Operations Manager</td>
+        </tr>
+        <tr>
+            <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
+            <td style="text-align:right;">Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+        </tr>
+    </table>
+    ';
+
+    $mpdf->SetHTMLHeader($header_html);
+    $mpdf->SetHTMLFooter($last_page_footer);
+    
+    $mpdf->WriteHTML($main_table);
+
+    $this->response->setHeader('Content-Type', 'application/pdf');
+    $mpdf->Output($title . '.pdf', 'I');
+}
+
+    }
+
 
 
 

@@ -1624,19 +1624,19 @@ class SalesOrder extends BaseController
                 if ($first_line) {
                     // Full row with all details
 
-                $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
+                $pdf_data .= '<tr><td align="center" style="padding: 1px; vertical-align: top;">'.$k.'</td>';
 
-                $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
+                $pdf_data .= '<td align="left" style="padding: 1px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
 
-                $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->spd_quantity.'</td>';
+                $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">'.$prod_det->spd_quantity.'</td>';
 
-                $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->spd_unit.'</td>';
+                $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">'.$prod_det->spd_unit.'</td>';
 
-                $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$rate.'</td>';
+                $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">'.$rate.'</td>';
 
-                $pdf_data .= '<td align="center" style="color: red;padding: 2px; vertical-align: top;";><i>'.$disc.'</i></td>';
+                $pdf_data .= '<td align="center" style="color: red;padding: 1px; vertical-align: top;";><i>'.$disc.'</i></td>';
 
-                $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$amount.'</td></tr>';
+                $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">'.$amount.'</td></tr>';
 
                 $k++;
 
@@ -1649,12 +1649,12 @@ class SalesOrder extends BaseController
                      // Extra line → only description column
                 $pdf_data .= '<tr>
                 <td align="center" width="8%" >&nbsp;</td>
-                <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
-                <td align="center" style="padding:2px;">&nbsp;</td>
-                <td align="center" style="padding:2px;">&nbsp;</td>
-                <td align="right" style="padding:2px;">&nbsp;</td>
-                <td align="center" style="padding:2px;">&nbsp;</td>
-                <td align="right" style="padding:2px;">&nbsp;</td>
+                <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                <td align="center" style="padding:1px;">&nbsp;</td>
+                <td align="center" style="padding:1px;">&nbsp;</td>
+                <td align="right" style="padding:1px;">&nbsp;</td>
+                <td align="center" style="padding:1px;">&nbsp;</td>
+                <td align="right" style="padding:1px;">&nbsp;</td>
                 </tr>';
 
                 }
@@ -1731,7 +1731,7 @@ class SalesOrder extends BaseController
                 'setAutoBottomMargin'   => 'stretch',
             ]);
 
-           $mpdf->SetAutoPageBreak(true, 20); //Fix Footer
+           $mpdf->SetAutoPageBreak(true, 50); //Fix Footer
 
         $mpdf->SetTitle($title);
 
@@ -1979,7 +1979,7 @@ class SalesOrder extends BaseController
                // Check if we're still on page 1 (meaning content fits on one page)
                 if ($mpdf->page == 1) {
                     // Single page scenario - need to adjust margin for larger footer
-                    $mpdf->SetAutoPageBreak(true, 40);  // Increase bottom margin
+                    $mpdf->SetAutoPageBreak(true, 50);  // Increase bottom margin
                     // Force a check to see if content now overflows
                     $mpdf->WriteHTML('<div style="margin:0;padding:0;"></div>'); // Trigger reflow
                     

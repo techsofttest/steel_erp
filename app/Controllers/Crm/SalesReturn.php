@@ -2216,7 +2216,8 @@ class SalesReturn extends BaseController
                 $max_chars_per_line = 55;
 
                 foreach($product_details as $prod_det)
-                {   
+                {  
+                    
                     $rate = format_currency($prod_det->srp_rate);
     
                     $amount = format_currency($prod_det->srp_amount);
@@ -2270,6 +2271,8 @@ class SalesReturn extends BaseController
 
 
                 }
+
+               
     
                 $join =  array(
                     
