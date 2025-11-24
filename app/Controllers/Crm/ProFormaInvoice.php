@@ -1795,7 +1795,7 @@ class ProFormaInvoice extends BaseController
                     <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
                 
                         <tr>
-                            <td style="width:12%" rowspan="2">Invoice Terms</td>
+                            <td style="width:15%" rowspan="2">Invoice Terms</td>
             
                             <td style="width:20%">LPO Ref:</td>
             

@@ -1719,7 +1719,7 @@ class SalesOrder extends BaseController
 
             //$mpdf = new \Mpdf\Mpdf();
 
-            $mpdf = new \Mpdf\Mpdf([
+            $mpdf = new \Mpdf\Mpdf([   
                 'margin_top' => 68,
                 //'margin_bottom' => 20,
                 'margin_header' => 10, //Fix Footer
@@ -1818,6 +1818,7 @@ class SalesOrder extends BaseController
 
 
             $footer_common = '
+            
 
                 <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
 
@@ -1846,7 +1847,7 @@ class SalesOrder extends BaseController
 
             //Fix Footer
             $last_page_footer = '
-
+              
              <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-bottom:2px;">
             
                     <tr>
