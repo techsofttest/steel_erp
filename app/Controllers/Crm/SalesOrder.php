@@ -1731,7 +1731,7 @@ class SalesOrder extends BaseController
                 'setAutoBottomMargin'   => 'stretch',
             ]);
 
-           $mpdf->SetAutoPageBreak(true, 50); //Fix Footer
+           $mpdf->SetAutoPageBreak(true, 20); //Fix Footer
 
         $mpdf->SetTitle($title);
 
@@ -1932,7 +1932,7 @@ class SalesOrder extends BaseController
 
 
             $main_table = '<style>
-                    th, td { padding: 4px; font-size: 12px; }
+                    th, td { font-size: 12px; }
                     p { font-size: 12px; margin-bottom: 13px; }
                 </style>
 
@@ -1979,7 +1979,7 @@ class SalesOrder extends BaseController
                // Check if we're still on page 1 (meaning content fits on one page)
                 if ($mpdf->page == 1) {
                     // Single page scenario - need to adjust margin for larger footer
-                    $mpdf->SetAutoPageBreak(true, 50);  // Increase bottom margin
+                    $mpdf->SetAutoPageBreak(true, 40);  // Increase bottom margin
                     // Force a check to see if content now overflows
                     $mpdf->WriteHTML('<div style="margin:0;padding:0;"></div>'); // Trigger reflow
                     

@@ -430,7 +430,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Material Received Note</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Purchase Return</h4>
                                         <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -440,8 +440,9 @@
                                                 <tr>
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
                                                     <th style="width: 85px !important;">Reference</th>
-                                                    <th>Vendor Name</th>
                                                     <th style="width: 80px !important;">Date</th>
+                                                    <th>Vendor Name</th>
+                                                    
                                                     <th style="width: 70px !important;">Actions</th>
                                                 </tr>
                                             </thead>
@@ -1543,18 +1544,19 @@
             'columns': [
                 { data: 'pr_id'},
                 { data: 'pr_reffer_id'},
-                { data: 'pr_vendor_name'},
                 { data: 'pr_date'},
+                { data: 'pr_vendor_name'},
+               
                 { data: 'action'},
                 
                ],
                columnDefs: [
-                { targets: [0,1,3,4], className: "dt-body-center" },
+                { targets: [0,1,2,4], className: "dt-body-center" },
 				
               ],
               headerCallback: function(thead, data, start, end, display) {
                 
-                [0,1,3,4].forEach(function(i) {
+                [0,1,2,4].forEach(function(i) {
                     $(thead).find('th').eq(i).addClass('dt-head-center');
                 });
                 
