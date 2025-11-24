@@ -1478,19 +1478,19 @@ class ProFormaInvoice extends BaseController
                     foreach ($lines as $line) {
                     if ($first_line) {
 
-                    $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
+                    $pdf_data .= '<tr><td align="center" style="padding: 1px; vertical-align: top;">'.$k.'</td>';
 
-                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
+                    $pdf_data .= '<td align="left" style="padding: 1px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
 
-                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->pp_quantity.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">'.$prod_det->pp_quantity.'</td>';
 
-                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->pp_unit.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">'.$prod_det->pp_unit.'</td>';
 
-                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$rate.'</td>';
+                    $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">'.$rate.'</td>';
 
-                    $pdf_data .= '<td align="center" style="color: red;padding: 2px; vertical-align: top;"><i>'.$disc.'</i></td>';
+                    $pdf_data .= '<td align="center" style="color: red;padding: 1px; vertical-align: top;"><i>'.$disc.'</i></td>';
 
-                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$amount.'</td>';
+                    $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">'.$amount.'</td>';
                     
                     $k++;
 
@@ -1501,12 +1501,12 @@ class ProFormaInvoice extends BaseController
 
                     $pdf_data .= '<tr>
                     <td align="center" width="8%" >&nbsp;</td>
-                    <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="right" style="padding:2px;">&nbsp;</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="right" style="padding:2px;">&nbsp;</td>
+                    <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;">&nbsp;</td>
                     </tr>';
 
                     }
