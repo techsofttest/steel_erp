@@ -426,7 +426,7 @@
                                                                 <?php } ?>
                                                         </td>
 
-                                                        <?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?>
+                                                        <?php $cash_credit = $single_cash + $single_credit; //echo format_currency($cash_credit); ?>
 
                                                         <td colspan="1" align="left" class="p-0">
     <table>
