@@ -505,11 +505,11 @@
         ?>
 
         <!-- TOTAL EXPENSES -->
-        <tr style="background: #f2f2f2; font-weight:bold;">
+        <!--<tr style="background: #f2f2f2; font-weight:bold;">
             <td style="width:100px" class="text-end">
                 <?php echo format_currency($expenses); ?>
             </td>
-        </tr>
+        </tr>-->
 
     </table>
 </td>
