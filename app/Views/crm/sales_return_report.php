@@ -284,11 +284,13 @@
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $inv_rep->so_id; ?>" target="_blank"><?php echo $inv_rep->so_reffer_no; ?></a></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_lpo_reff; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->se_name; ?></td>
-                                                    <td class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($inv_rep->sr_total); ?></td>
+                                                    <td class="text-end"    style="white-space: nowrap;width:100px"><?php echo format_currency($inv_rep->sr_total); ?></td>
+                                                    
                                                     <?php 
                                                         
                                                         $sales_prod_amount = $inv_rep->sr_total + $sales_prod_amount;
                                                     ?>
+
                                                     <!------------>
                                                     <!--<td colspan="5" align="left" class="p-0">
                                                         <table>
@@ -296,11 +298,11 @@
                                                                             
                                                             <tr style="background: unset;border-bottom: hidden !important;">
                                                                 
-                                                                <td  style="width:500px" style="line-height: 1.5;"><?php //echo $ret_prod->product_details; ?> </td>
+                                                                <td style="width:500px" style="line-height: 1.5;"><?php //echo $ret_prod->product_details; ?> </td>
                                                                 <td class="text-center" style="width:100px; "><?php //echo $ret_prod->srp_quantity; ?> </td>
-                                                                <td style="width:100px;" class="text-end  "><?php //echo format_currency($ret_prod->srp_rate); ?> </td>
-                                                                <td style="width:100px;" class="text-end  "><?php //echo format_currency($ret_prod->srp_discount); ?>% </td>
-                                                                <td style="width:100px;" class="text-end  "><?php //echo format_currency($ret_prod->srp_amount); ?> </td>
+                                                                <td style="width:100px;" class="text-end "><?php //echo format_currency($ret_prod->srp_rate); ?> </td>
+                                                                <td style="width:100px;" class="text-end"><?php //echo format_currency($ret_prod->srp_discount); ?>% </td>
+                                                                <td style="width:100px;" class="text-end"><?php //echo format_currency($ret_prod->srp_amount); ?> </td>
                                                                 
                                                             </tr>
 

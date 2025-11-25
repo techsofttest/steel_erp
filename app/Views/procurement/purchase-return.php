@@ -434,6 +434,7 @@
                                         <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
+
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             
                                             <thead>
@@ -442,7 +443,7 @@
                                                     <th style="width: 85px !important;">Reference</th>
                                                     <th style="width: 80px !important;">Date</th>
                                                     <th>Vendor Name</th>
-                                                    
+                                                    <th style="width: 85px !important;">Vendor Ref</th>
                                                     <th style="width: 70px !important;">Actions</th>
                                                 </tr>
                                             </thead>
@@ -1546,6 +1547,7 @@
                 { data: 'pr_reffer_id'},
                 { data: 'pr_date'},
                 { data: 'pr_vendor_name'},
+                { data: 'pv_vendor_inv'},
                
                 { data: 'action'},
                 

@@ -266,6 +266,35 @@
 
                                                         <td colspan="1" align="left" class="p-0">
                                                             <table>
+
+                                                               <?php if(!empty($sales_order->cash_invoice)){
+
+                                                                    foreach($sales_order->cash_invoice as $cash_val){ ?>
+
+                                                                    
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
+                                                                    
+                                                                    <td  style="width:100px" ><?php echo $cash_val->ci_reffer_no; ?> </td>
+
+                                                                </tr>
+
+                                                                        
+
+                                                                <?php } }
+                                                                
+                                                                if(!empty($sales_order->credit_invoice)){
+
+                                                                    foreach($sales_order->credit_invoice as $credit_val){ ?>
+
+                                                                        <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
+                                                                    
+                                                                            <td  style="width:100px" ><?php echo $credit_val->cci_reffer_no; ?> </td>
+
+                                                                        </tr>
+                                                                  
+                                                                <?php  } } ?>
+
+
                                                             <?php 
 
                                                                 if(!empty($sales_order->purchase_vouchers)){
@@ -292,7 +321,7 @@
                                                                     </tr>
 
 
-                                                                <?php    }  }
+                                                                <?php  }  }
 
                                                                 if(!empty($sales_order->petty_cash)){
                                                                 
@@ -320,8 +349,6 @@
                                                                     <?php } }
                                                                 
                                                                 
-
-                                                                
                                                                 ?>                        
                                                                                             
                                                             </table>
@@ -333,14 +360,15 @@
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name;?></td>
 
                                                         <?php
+
                                                             $single_cash = 0;
                                                             $single_credit = 0;
                                                             $single_returns = 0;
+                                                            
                                                            if(!empty($sales_order->cash_invoice)){
                                                             
                                                                 foreach($sales_order->cash_invoice as $cash_inv){
 
-                                                                    
                                                                     $cash_invoices  += $cash_inv->ci_total_amount;
 
                                                                     $single_cash += $cash_inv->ci_total_amount;
@@ -367,8 +395,7 @@
                                                                    $sales_returns += $sales_rut->sr_total;
 
                                                                    $single_returns += $sales_rut->sr_total;
-
-                                                                   
+ 
                                                                 }
                                                             }
 

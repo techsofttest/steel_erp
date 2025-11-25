@@ -49,6 +49,12 @@ class PurchaseReturn extends BaseController
                 'pk'    => 'cc_id',
                 'fk'    => 'pr_vendor_name',
             ),
+
+            array(
+                'table' => 'pro_purchase_voucher',
+                'pk'    => 'pv_id',
+                'fk'    => 'pr_vendor_inv',
+            ),
            
         );
 
@@ -73,7 +79,7 @@ class PurchaseReturn extends BaseController
               'pr_reffer_id'   => $record->pr_reffer_id,
               'pr_date'        => date('d-M-Y',strtotime($record->pr_date)),
               'pr_vendor_name' => $record->cc_customer_name,
-              
+              'pv_vendor_inv'  => $record->pv_vendor_inv,
               "action"         => $action,
             );
            $i++; 
