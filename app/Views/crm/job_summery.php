@@ -375,7 +375,7 @@
         ?>
 
         <!-- TOTAL EXPENSES ROW -->
-        <tr style="background: #f2f2f2; font-weight:bold;">
+        <tr style="">
             <td style="width:100px" class="text-end">
                 <?= format_currency($expenses); ?>
             </td>
