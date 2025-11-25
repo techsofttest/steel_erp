@@ -340,67 +340,33 @@
 
             /* PURCHASE VOUCHERS */
             if(!empty($sales_order->purchase_vouchers)){
-                foreach ($sales_order->purchase_vouchers as $pur_vouch) { ?> 
-                    
-                    <tr style="background: unset;border-bottom: hidden !important;">
-                        <td style="width:100px" class="text-end">
-                            <?php echo format_currency($pur_vouch->pv_total); ?>
-                        </td>
-                    </tr>
-
-                <?php 
+                foreach ($sales_order->purchase_vouchers as $pur_vouch) {  
                     $expenses1 += $pur_vouch->pv_total;
                 }
             }
 
-            /* PURCHASE RETURN */
+            /* PURCHASE RETURN (should subtract) */
             if(!empty($sales_order->purchase_return_prod)){
-                foreach($sales_order->purchase_return_prod as $pv_prod){ ?> 
-
-                    <tr style="background: unset;border-bottom: hidden !important;">
-                        <td style="width:100px" class="text-end">
-                            -<?php echo format_currency($pv_prod->pr_total_amount); ?>
-                        </td>
-                    </tr>
-
-                <?php 
+                foreach($sales_order->purchase_return_prod as $pv_prod){  
                     $expenses2 += $pv_prod->pr_total_amount;
                 }
             }
 
             /* PETTY CASH */
             if(!empty($sales_order->petty_cash)){
-                foreach($sales_order->petty_cash as $p_cash){ ?>
-
-                    <tr style="background: unset;border-bottom: hidden !important;">
-                        <td style="width:100px" class="text-end">
-                            <?php echo format_currency($p_cash->pci_amount); ?>
-                        </td>
-                    </tr>
-
-                <?php 
+                foreach($sales_order->petty_cash as $p_cash){ 
                     $expenses3 += $p_cash->pci_amount;
                 }
             }
 
             /* JOURNAL VOUCHER */
             if(!empty($sales_order->journal_voucher)){
-                foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
-                    
-                    <tr style="background: unset;border-bottom: hidden !important;">
-                        <td style="width:100px" class="text-end">
-                            <?php 
-                                if(!empty($jour_vouch->ji_debit))  
-                                    echo format_currency($jour_vouch->ji_debit);
-                                elseif(!empty($jour_vouch->ji_credit)) 
-                                    echo format_currency($jour_vouch->ji_credit);
-                            ?>
-                        </td>
-                    </tr>
+                foreach($sales_order->journal_voucher as $jour_vouch){  
+                    if(!empty($jour_vouch->ji_debit))  
+                        $expenses4 += $jour_vouch->ji_debit;
 
-                <?php 
-                    if(!empty($jour_vouch->ji_debit))  $expenses4 += $jour_vouch->ji_debit;
-                    if(!empty($jour_vouch->ji_credit)) $expenses5 += $jour_vouch->ji_credit;
+                    if(!empty($jour_vouch->ji_credit)) 
+                        $expenses5 += $jour_vouch->ji_credit;
                 }
             }
 
@@ -408,12 +374,12 @@
             $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
         ?>
 
-        <!-- TOTAL EXPENSES -->
-        <!--<tr style="background: #f2f2f2; font-weight:bold;">
+        <!-- TOTAL EXPENSES ROW -->
+        <tr style="background: #f2f2f2; font-weight:bold;">
             <td style="width:100px" class="text-end">
-                <?php echo format_currency($expenses); ?>
+                <?= format_currency($expenses); ?>
             </td>
-        </tr>-->
+        </tr>
 
     </table>
 </td>
