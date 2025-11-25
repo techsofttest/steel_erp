@@ -231,7 +231,7 @@
                                                     $credit_invoices = 0;
                                                     $sales_returns = 0;
 
-                                                    
+                                                    $expenses_total =0;
 
                                                     $expenses1 = 0;
                                                     $expenses2 = 0;
@@ -407,7 +407,7 @@
 
                                                         <td class="text-end" style="white-space: nowrap;width:100px">
                                                             
-                                                             <?php if(!empty($sales_order->cash_invoice)){ ?>
+                                                                <?php if(!empty($sales_order->cash_invoice)){ ?>
                                                                     <?php foreach($sales_order->cash_invoice as $cash_inv){ ?>
                                                                        <?php echo format_currency($cash_inv->ci_total_amount); ?><br>
                                                                     <?php } ?>
@@ -522,6 +522,8 @@
     ?>
 </td>
 
+
+
 <!-- NOW OUTSIDE EXPENSE TABLE: PERCENTAGE COLUMN -->
 <td class="text-end">
     <?php 
@@ -532,6 +534,8 @@
         echo number_format($total_percentage, 2) . '%';
     ?>
 </td>
+
+<?php $expenses_total  +=  $expenses; ?>
 
 
 
@@ -553,7 +557,7 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
-                                                        <td class="text-end"><b><?php echo format_currency($expenses); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($expenses_total); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($total_gross_profit); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($total_percentage); ?></b></td>
                                                       
