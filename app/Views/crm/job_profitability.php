@@ -407,7 +407,7 @@
 
                                                         <td class="text-end" style="white-space: nowrap;width:100px">
                                                             
-                                                             <?php if(!empty($sales_order->cash_invoice)){ ?>
+                                                                <?php if(!empty($sales_order->cash_invoice)){ ?>
                                                                     <?php foreach($sales_order->cash_invoice as $cash_inv){ ?>
                                                                        <?php echo format_currency($cash_inv->ci_total_amount); ?><br>
                                                                     <?php } ?>
@@ -421,10 +421,13 @@
 
                                                                 <?php if(!empty($sales_order->sales_return)){ ?>
                                                                     <?php foreach($sales_order->sales_return as $sales_rut){ ?>
-                                                                        <?php echo format_currency($sales_rut->sr_total); ?><br>
+                                                                        -<?php echo format_currency($sales_rut->sr_total); ?><br>
                                                                     <?php } ?>
                                                                 <?php } ?>
                                                         </td>
+
+
+                                                        <?php $cash_credit = $single_cash + $single_credit;  ?></br>
 
                                                         
 
