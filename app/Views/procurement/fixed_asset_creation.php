@@ -58,17 +58,27 @@
         width: 12%;
     }
 
-
-       .content_table table {
+    .content_table table {
         width: 100%;
         border-collapse: collapse;
         border: 1px solid black;
     }
-    table#DataTable td:nth-child(3),table#DataTable td:nth-child(5) {
-    text-align: center;
+
+    table#DataTable td:nth-child(3),
+    table#DataTable td:nth-child(5) {
+        text-align: center;
     }
-    table#DataTable td:nth-child(6){
-        text-align:end;
+
+    table#DataTable td:nth-child(6) {
+        text-align: end;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 36px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 35px;
     }
 </style>
 
@@ -86,13 +96,15 @@
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
 
                         <!--add enquiry modal start-->
-                        <div class="modal fade" id="AddFixedAssetCreation" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="AddFixedAssetCreation" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <form class="Dashboard-form class" id="AddAssetCreation" data_fill="false">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Create Fixed Asset</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
 
                                         <div class="modal-body">
@@ -110,11 +122,13 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Description</label>
+                                                                        <label for="basiInput"
+                                                                            class="form-label">Description</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cfs_description" id="" class="form-control " value="" required>
+                                                                        <input type="text" name="cfs_description" id=""
+                                                                            class="form-control " value="" required>
                                                                     </div>
 
                                                                 </div>
@@ -131,11 +145,14 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Account Head</label>
+                                                                        <label for="basicInput"
+                                                                            class="form-label">Account Head</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select account_head_select account_head_clz" name="cfs_account_head" required></select>
+                                                                        <select
+                                                                            class="form-select account_head_select account_head_clz"
+                                                                            name="cfs_account_head" required></select>
 
                                                                     </div>
 
@@ -154,11 +171,14 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Account ID</label>
+                                                                        <label for="basiInput"
+                                                                            class="form-label">Account ID</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cfs_account_id" class="form-control account_id" readonly required>
+                                                                        <input type="text" name="cfs_account_id"
+                                                                            class="form-control account_id" readonly
+                                                                            required>
                                                                     </div>
 
                                                                 </div>
@@ -178,12 +198,15 @@
 
                                                                     <div class="col-col-md-3 col-lg-3">
 
-                                                                        <label for="basicInput" class="form-label">Acquired Date</label>
+                                                                        <label for="basicInput"
+                                                                            class="form-label">Acquired Date</label>
 
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cfs_acquired_date" class="form-control mr_date datepicker" required>
+                                                                        <input type="text" name="cfs_acquired_date"
+                                                                            class="form-control mr_date datepicker"
+                                                                            required>
                                                                     </div>
 
 
@@ -199,11 +222,15 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Last Year Depreciation</label>
+                                                                        <label for="basicInput" class="form-label">Last
+                                                                            Year Depreciation</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cfs_last_yr_depreciation" class="form-control add_payment_term" value="" required>
+                                                                        <input type="text"
+                                                                            name="cfs_last_yr_depreciation"
+                                                                            class="form-control add_payment_term add_last_yr_depreciation"
+                                                                            value="" required>
                                                                     </div>
 
                                                                 </div>
@@ -232,17 +259,24 @@
 
                                                                     <div class="col-col-md-3 col-lg-3">
 
-                                                                        <label for="basicInput" class="form-label">Debit Account</label>
+                                                                        <label for="basicInput" class="form-label">Debit
+                                                                            Account</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select add_assigned_to debit_account_select" name="cfs_debit_account" required>
-                                                                            <option value="" selected disabled>Debit Account</option>
+                                                                        <select
+                                                                            class="form-select add_assigned_to debit_account_select"
+                                                                            name="cfs_debit_account" required>
+                                                                            <option value="" selected disabled>Debit
+                                                                                Account</option>
                                                                             <?php
                                                                             foreach ($charts_of_account as $chart_account) {
-                                                                            ?>
-                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
-                                                                            <?php
+                                                                                ?>
+                                                                                <option
+                                                                                    value="<?php echo $chart_account->ca_id; ?>">
+                                                                                    <?php echo $chart_account->ca_name; ?>
+                                                                                </option>
+                                                                                <?php
                                                                             }
                                                                             ?>
 
@@ -261,17 +295,24 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Credit Account</label>
+                                                                        <label for="basicInput"
+                                                                            class="form-label">Credit Account</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select add_assigned_to debit_account_select" name="cfs_credit_account" required>
-                                                                            <option value="" selected disabled>Credit Account</option>
+                                                                        <select
+                                                                            class="form-select add_assigned_to debit_account_select"
+                                                                            name="cfs_credit_account" required>
+                                                                            <option value="" selected disabled>Credit
+                                                                                Account</option>
                                                                             <?php
                                                                             foreach ($charts_of_account as $chart_account) {
-                                                                            ?>
-                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
-                                                                            <?php
+                                                                                ?>
+                                                                                <option
+                                                                                    value="<?php echo $chart_account->ca_id; ?>">
+                                                                                    <?php echo $chart_account->ca_name; ?>
+                                                                                </option>
+                                                                                <?php
                                                                             }
                                                                             ?>
 
@@ -292,11 +333,14 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Depreciation</label>
+                                                                        <label for="basicInput"
+                                                                            class="form-label">Depreciation</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cfs_depreciation" class="form-control add_payment_term" value="" required>
+                                                                        <input type="text" name="cfs_depreciation"
+                                                                            class="form-control add_payment_term"
+                                                                            value="" required>
                                                                     </div>
 
                                                                 </div>
@@ -312,11 +356,13 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Attact</label>
+                                                                        <label for="basicInput"
+                                                                            class="form-label">Attact</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="file" name="cfs_attact" class="form-control" value="">
+                                                                        <input type="file" name="cfs_attact"
+                                                                            class="form-control" value="">
                                                                     </div>
 
                                                                 </div>
@@ -376,16 +422,21 @@
                                         <button type="button" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable" style="width:100%">
+                                        <table id="DataTable"
+                                            class="table table-bordered table-striped delTable display dataTable"
+                                            style="width:100%">
 
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="width: 15px !important;">Sl no</th>
+                                                    <th class="no-sort text-center" style="width: 15px !important;">Sl
+                                                        no</th>
                                                     <th class="text-start">Description</th>
-                                                    <th  class="text-center" style="width: 120px !important;">Account ID</th>
-                                                    <th class="text-start" >Account Head</th>
-                                                    <th   class="text-center"style="width: 150px !important;">Acquired Date</th>
-                                                    <th   class="text-end"style="width: 100px !important">Actions</th>
+                                                    <th class="text-center" style="width: 120px !important;">Account ID
+                                                    </th>
+                                                    <th class="text-start">Account Head</th>
+                                                    <th class="text-center" style="width: 150px !important;">Acquired
+                                                        Date</th>
+                                                    <th class="text-end" style="width: 100px !important">Actions</th>
                                                 </tr>
                                             </thead>
 
@@ -534,7 +585,8 @@
                                         <td><input type="text" name="" value="" class="form-control" readonly></td>
                                         <td><input type="number" name="" value="" class="form-control" readonly></td>
                                         <td><input type="number" name="" value="" class="form-control" readonly></td>
-                                        <td><input type="checkbox" name="" onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                        <td><input type="checkbox" name="" onclick="handleCheckboxChange(this)"
+                                                class="prod_checkmark"></td>
 
                                     </tr>
                                 </tbody>
@@ -617,7 +669,8 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="" id="" class="form-control view_description" readonly>
+                                                <input type="text" name="" id="" class="form-control view_description"
+                                                    readonly>
                                             </div>
 
                                         </div>
@@ -685,7 +738,8 @@
 
                                             <div class="col-col-md-9 col-lg-9">
 
-                                                <input type="text" name="" class="form-control view_acquired_date" readonly>
+                                                <input type="text" name="" class="form-control view_acquired_date"
+                                                    readonly>
 
                                             </div>
 
@@ -702,11 +756,13 @@
                                         <div class="row align-items-center mb-2">
 
                                             <div class="col-col-md-3 col-lg-3">
-                                                <label for="basicInput" class="form-label">Last Year Depreciation</label>
+                                                <label for="basicInput" class="form-label">Last Year
+                                                    Depreciation</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cfs_last_yr_depreciation" class="form-control view_last_yr_depreciation" value="" required>
+                                                <input type="text" name="cfs_last_yr_depreciation"
+                                                    class="form-control view_last_yr_depreciation" value="" required>
                                             </div>
 
                                         </div>
@@ -764,7 +820,8 @@
 
                                             <div class="col-col-md-9 col-lg-9">
 
-                                                <input type="text" name="" class="form-control view_credit_acc" readonly>
+                                                <input type="text" name="" class="form-control view_credit_acc"
+                                                    readonly>
 
                                             </div>
 
@@ -787,7 +844,8 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="" class="form-control view_depreciation" readonly>
+                                                <input type="text" name="" class="form-control view_depreciation"
+                                                    readonly>
                                             </div>
 
                                         </div>
@@ -808,7 +866,8 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <a href="" class="view_attach_link" download> <img src="" name="" class="view_attach" alt="" style="height:100px;"></a>
+                                                <a href="" class="view_attach_link" download> <img src="" name=""
+                                                        class="view_attach" alt="" style="height:100px;"></a>
                                             </div>
 
                                         </div>
@@ -879,7 +938,8 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cfs_description" id="" class="form-control edit_description">
+                                                <input type="text" name="cfs_description" id=""
+                                                    class="form-control edit_description">
                                             </div>
 
                                         </div>
@@ -899,7 +959,8 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <select name="cfs_account_head" class="form-control account_head_clz edit_acc_head">
+                                                <select name="cfs_account_head"
+                                                    class="form-control account_head_clz edit_acc_head">
                                                 </select>
                                             </div>
 
@@ -922,7 +983,8 @@
 
                                             <div class="col-col-md-9 col-lg-9">
 
-                                                <input type="text" name="cfs_account_id" class="form-control edit_acc_id account_id">
+                                                <input type="text" name="cfs_account_id"
+                                                    class="form-control edit_acc_id account_id">
 
                                                 </select>
                                             </div>
@@ -948,7 +1010,8 @@
 
                                             <div class="col-col-md-9 col-lg-9">
 
-                                                <input type="text" name="cfs_acquired_date" class="form-control edit_acquired_date datepicker">
+                                                <input type="text" name="cfs_acquired_date"
+                                                    class="form-control edit_acquired_date datepicker">
 
                                             </div>
 
@@ -964,11 +1027,13 @@
                                         <div class="row align-items-center mb-2">
 
                                             <div class="col-col-md-3 col-lg-3">
-                                                <label for="basicInput" class="form-label">Last Year Depreciation</label>
+                                                <label for="basicInput" class="form-label">Last Year
+                                                    Depreciation</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cfs_last_yr_depreciation" class="form-control edit_last_yr_depreciation" value="" required>
+                                                <input type="text" name="cfs_last_yr_depreciation"
+                                                    class="form-control edit_last_yr_depreciation" value="" required>
                                             </div>
 
                                         </div>
@@ -1050,7 +1115,8 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cfs_depreciation" class="form-control edit_depreciation">
+                                                <input type="text" name="cfs_depreciation"
+                                                    class="form-control edit_depreciation">
                                             </div>
 
                                         </div>
@@ -1070,7 +1136,8 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <a href="" class="edit_attach_link" download> <img src="" name="" class="edit_attach" alt="" style="height:100px;"></a>
+                                                <a href="" class="edit_attach_link" download> <img src="" name=""
+                                                        class="edit_attach" alt="" style="height:100px;"></a>
                                                 <input type="file" class="form-control" name="cfs_attact">
                                             </div>
 
@@ -1109,12 +1176,12 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
+    document.addEventListener("DOMContentLoaded", function (event) {
 
         /*add section start*/
 
         /*add form*/
-        $(function() {
+        $(function () {
             var form = $('#AddAssetCreation');
 
             form.validate({
@@ -1124,8 +1191,8 @@
                 messages: {
                     required: 'This field is required',
                 },
-                errorPlacement: function(error, element) {}, // To Hide Validation Messages
-                submitHandler: function(currentForm) {
+                errorPlacement: function (error, element) { }, // To Hide Validation Messages
+                submitHandler: function (currentForm) {
 
                     var formData = new FormData(currentForm);
 
@@ -1137,9 +1204,15 @@
                         processData: false, // Don't process the data
                         contentType: false, // Don't set content type
                         //data: $(currentForm).serialize(),
-                        success: function(data) {
+                        success: function (data) {
 
                             $('#AddFixedAssetCreation').modal('hide');
+
+                            // Reset all normal inputs
+                            form[0].reset();
+
+                            // Reset all select2 dropdowns
+                            form.find('select').val(null).trigger('change');
 
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
@@ -1172,17 +1245,17 @@
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function(params) {
+                data: function (params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function(data, params) {
+                processResults: function (data, params) {
 
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function(item) {
+                        results: $.map(data.result, function (item) {
                             return {
                                 id: item.ah_id,
                                 text: item.ah_account_name
@@ -1209,17 +1282,17 @@
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function(params) {
+                data: function (params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function(data, params) {
+                processResults: function (data, params) {
 
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function(item) {
+                        results: $.map(data.result, function (item) {
                             return {
                                 id: item.ca_id,
                                 text: item.ca_name
@@ -1253,17 +1326,17 @@
                     cache: false,
                     minimumInputLength: 1,
                     allowClear: true,
-                    data: function(params) {
+                    data: function (params) {
                         return {
                             term: params.term,
                             page: params.page || 1,
                         };
                     },
-                    processResults: function(data, params) {
+                    processResults: function (data, params) {
 
                         var page = params.page || 1;
                         return {
-                            results: $.map(data.result, function(item) {
+                            results: $.map(data.result, function (item) {
                                 return {
                                     id: item.product_id,
                                     text: item.product_details
@@ -1288,7 +1361,7 @@
         /*Time Frame section start*/
 
 
-        $("body").on('change', '.mr_date', function() {
+        $("body").on('change', '.mr_date', function () {
 
             var date = $(this).val();
 
@@ -1304,7 +1377,7 @@
                     Date: date
                 },
 
-                success: function(data) {
+                success: function (data) {
                     var data = JSON.parse(data);
 
                     $('.time_frame_date').val(data.increment_date_date)
@@ -1328,756 +1401,774 @@
 
 
         /*$("body").on('change', '.material_received_note', function(){ 
-	        
+            
             var date = $(this).val();
  
  
             $.ajax({
  
-                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchPurchase",
- 
-                method : "POST",
- 
-                data: {Date: date},
- 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                 
-                    $('.time_frame_date').val(data.increment_date_date)
-                 
-                     
-                }
- 
- 
-            });
+                url : "<?php echo base_url(); ?>Procurement / PurchaseVoucher / FetchPurchase",
+
+        method: "POST",
+
+            data: { Date: date },
+
+        success: function(data) {
+            var data = JSON.parse(data);
+
+            $('.time_frame_date').val(data.increment_date_date)
+
+
+        }
+
+
+    });
  
  
         });*/
 
 
-        /*material receivec not section end*/
+    /*material receivec not section end*/
 
 
-        /*reset reff no*/
+    /*reset reff no*/
 
-        $('.add_mr_form').click(function() {
+    $('.add_mr_form').click(function () {
 
-            $('#add_enquiry_form')[0].reset();
-            $('.ser_product_det').val('').trigger('change');
-            $('.add_assigned_to').val('').trigger('change');
-            $('.add_sales_order').val('').trigger('change');
-            $('.mr_remove').remove();
+        $('#add_enquiry_form')[0].reset();
+        $('.ser_product_det').val('').trigger('change');
+        $('.add_assigned_to').val('').trigger('change');
+        $('.add_sales_order').val('').trigger('change');
+        $('.mr_remove').remove();
 
-            $.ajax({
+        $.ajax({
 
-                url: "<?php echo base_url(); ?>Procurement/MaterialRequisition/FetchReference",
+            url: "<?php echo base_url(); ?>Procurement/MaterialRequisition/FetchReference",
 
-                method: "GET",
+            method: "GET",
 
-                success: function(data) {
-                    $('#mr_id').val(data);
+            success: function (data) {
+                $('#mr_id').val(data);
 
-                }
-
-            });
+            }
 
         });
 
-        /*####*/
+    });
+
+    /*####*/
 
 
-        /*serial no correction section start*/
+    /*serial no correction section start*/
 
-        function slno() {
+    function slno() {
 
-            var pp = 1;
+        var pp = 1;
 
-            $('body .prod_row').each(function() {
+        $('body .prod_row').each(function () {
 
-                $(this).find('.si_no').html(pp);
-
-
-
-                pp++;
-
-            });
-        }
-
-        /*###*/
-
-
-        /*add section end*/
+            $(this).find('.si_no').html(pp);
 
 
 
+            pp++;
 
-        /*data table start*/
+        });
+    }
 
-        function initializeDataTable() {
+    /*###*/
 
-            datatable = $('#DataTable').DataTable({
-                'stateSave': true,
-                'processing': true,
-                'serverSide': true,
-                'serverMethod': 'post',
-                'ajax': {
-                    'url': "<?php echo base_url(); ?>Procurement/FixedAssetCreation/FetchData",
-                    'data': function(data) {
-                        // CSRF Hash
-                        var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
-                        var csrfHash = $('.txt_csrfname').val(); // CSRF hash
 
+    /*add section end*/
+
+
+
+
+    /*data table start*/
+
+    function initializeDataTable() {
+
+        datatable = $('#DataTable').DataTable({
+            'stateSave': true,
+            'processing': true,
+            'serverSide': true,
+            'serverMethod': 'post',
+            'ajax': {
+                'url': "<?php echo base_url(); ?>Procurement/FixedAssetCreation/FetchData",
+                'data': function (data) {
+                    // CSRF Hash
+                    var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
+                    var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+
+                    return {
+                        data: data,
+                        [csrfName]: csrfHash, // CSRF Token
+                    };
+                },
+                dataSrc: function (data) {
+                    // Update token hash
+                    $('.txt_csrfname').val(data.token);
+                    // Datatable data
+                    return data.aaData;
+                }
+            },
+            'columns': [{
+                data: 'cfs_id'
+            },
+            {
+                data: 'cfs_description'
+            },
+            {
+                data: 'cfs_account_id'
+            },
+            {
+                data: 'cfs_account_head'
+            },
+
+            {
+                data: 'cfs_acquired_date'
+            },
+            {
+                data: 'action'
+            },
+
+            ]
+
+        });
+    }
+
+    $(document).ready(function () {
+        initializeDataTable();
+    });
+
+
+    /*###*/
+
+
+    /*reset reffer no*/
+    $('.add_model_btn').click(function () {
+
+        //$('#purchase_form')[0].reset();
+        $('.add_vendor').val('').trigger('change');
+        $('#AddPurchaseOrder').modal('hide');
+        $('.add_prod_remove').remove();
+        $('.hidden_recived_id').val("");
+
+        $.ajax({
+
+            url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/AddAccess",
+
+            method: "POST",
+
+            success: function (data) {
+
+                var data = JSON.parse(data);
+
+                if (data.status === 0) {
+
+                    alertify.error(data.msg).delay(3).dismissOthers();
+
+                }
+                else {
+
+                    $('#AddFixedAssetCreation').modal('show');
+
+                }
+
+
+            }
+
+        });
+
+        $.ajax({
+
+            url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchReference",
+
+            method: "GET",
+
+            success: function (data) {
+
+                $('#pr_id').val(data);
+
+            }
+        });
+
+    });
+
+    /*####*/
+
+
+    /*customer droup drown search*/
+    $(".select_vendor").select2({
+        placeholder: "Select Vendor Name",
+        theme: "default form-control- customer_width input_length3",
+        dropdownParent: $('#AddPurchaseReturn'),
+        ajax: {
+            url: "<?= base_url(); ?>Procurement/PurchaseReturn/FetchTypes",
+            dataType: 'json',
+            delay: 250,
+            cache: false,
+            minimumInputLength: 1,
+            allowClear: true,
+            data: function (params) {
+                return {
+                    term: params.term,
+                    page: params.page || 1,
+                };
+            },
+            processResults: function (data, params) {
+
+                var page = params.page || 1;
+                return {
+                    results: $.map(data.result, function (item) {
                         return {
-                            data: data,
-                            [csrfName]: csrfHash, // CSRF Token
-                        };
-                    },
-                    dataSrc: function(data) {
-                        // Update token hash
-                        $('.txt_csrfname').val(data.token);
-                        // Datatable data
-                        return data.aaData;
+                            id: item.ven_id,
+                            text: item.ven_name
+                        }
+                    }),
+                    pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                        more: (page * 10) <= data.total_count
                     }
-                },
-                'columns': [{
-                        data: 'cfs_id'
-                    },
-                    {
-                        data: 'cfs_description'
-                    },
-                    {
-                        data: 'cfs_account_id'
-                    },
-                    {
-                        data: 'cfs_account_head'
-                    },
-
-                    {
-                        data: 'cfs_acquired_date'
-                    },
-                    {
-                        data: 'action'
-                    },
-
-                ]
-
-            });
+                };
+            },
         }
 
-        $(document).ready(function() {
-            initializeDataTable();
+    })
+    /*###*/
+
+
+
+
+
+
+
+
+    /*prod modal submit start*/
+
+    $("body").on('click', '.prod_modal_submit', function () {
+
+        var selectId = $('#select_prod_id').val();
+
+        $.ajax({
+
+            url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/SelectedProduct",
+
+            method: "POST",
+
+            data: {
+                ID: selectId
+            },
+
+            success: function (data) {
+
+                var data = JSON.parse(data);
+
+                $('.product-more2').html(data.product_detail);
+
+                $('#SelectProduct').modal("hide");
+
+                $('#AddPurchaseReturn').modal("show");
+
+                $('.selected_table').show();
+
+                checkedIds.length = 0;
+
+                $('#purchase_form').attr('data_fill', 'true');
+
+            }
+
         });
+    });
 
 
-        /*###*/
+    /*prod modal submit end*/
+
+    /*calculation section start*/
+
+    $("body").on('keyup', '.add_discount', function () {
+
+        var $discountSelect = $(this);
+
+        var discount = parseInt($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
+
+        var $discountSelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_rate');
+
+        var rate = $discountSelectElement.val();
+
+        var $quantitySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
+
+        var quantity = parseInt($quantitySelectElement.val()) || 0;
+
+        var parsedRate = parseFloat(rate);
+
+        var parsedQuantity = quantity;
+
+        var multipliedTotal = parsedRate * parsedQuantity;
+
+        var per_amount = (discount / 100) * multipliedTotal;
+
+        var orginalPrice = multipliedTotal - per_amount;
+
+        var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+        var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
+
+        $amountElement.val(orginalPrice);
+
+    });
+
+    /*####*/
 
 
-        /*reset reffer no*/
-        $('.add_model_btn').click(function() {
 
-            //$('#purchase_form')[0].reset();
-            $('.add_vendor').val('').trigger('change');
+    /*add current delivery start*/
+
+    $("body").on('keyup', '.add_current_qty', function () {
+
+
+        var dataSelect = $(this);
+
+        var deliverySelectElement = dataSelect.closest('.add_prod_row').find('.add_delivery_qty');
+
+        var delivery = parseFloat(deliverySelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+
+        var currentSelectElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
+
+        var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+
+        var total = delivery + current;
+
+        var orderSelectElement = dataSelect.closest('.add_prod_row').find('.add_order_qty');
+
+        var order = orderSelectElement.val();
+
+        //var order = parseFloat(orderSelectElement.val()) || 0;
+
+
+
+
+        if (total > order) {
+
+            /*var currencyNull = currentSelectElement.val("");
+
+            console.log(currencyNull);
+
+            var $currencyNullElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
+
+            $currencyNullElement.val(currencyNull);*/
+
+            /**/
+
+            currentSelectElement.val(""); // Set the value to an empty string
+            var currencyNull = currentSelectElement.val(); // Get the current (now empty) value
+
+            var $currencyNullElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
+            $currencyNullElement.val(currencyNull); // Set the value of $currencyNullElement to the empty string
+
+
+            /**/
+
+
+            alertify.error('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
+
+        }
+
+    });
+
+
+    /*add current delivery end*/
+
+
+    /*vendor new modal start*/
+
+    $("body").on('click', '.vendor_new_modal', function () {
+
+        $('#AddPurchaseOrder').modal('hide');
+
+        $('#AddVendor').modal('show');
+
+
+    });
+
+    /*vendor new modal end*/
+
+
+    //trigger when form is submitted
+
+    $("#add_office_form").submit(function (e) {
+
+        $('#AddPurchaseOrder').modal('show');
+
+        return false;
+
+    });
+
+    /*#####*/
+
+
+    /*contact new modal start*/
+
+    $("body").on('click', '.contact_new_modal', function () {
+
+        var vendor = $('.add_vendor').val();
+
+        if (vendor === null) {
+            alertify.error('Please Select Vendor Name').delay(2).dismissOthers();
+        } else {
+            $('#AddNewContact').modal('show');
+
             $('#AddPurchaseOrder').modal('hide');
-            $('.add_prod_remove').remove();
-            $('.hidden_recived_id').val("");
 
+            $('.new_pro_con_vendor').val(vendor);
+        }
+
+
+    });
+
+
+    /*contact new modal end*/
+
+
+
+    /*###*/
+
+
+    $('.account_head_select').on('change', function () {
+        var accountHeadId = $(this).val();  // Get the selected account head ID
+
+        if (accountHeadId) { // Check if an account head is actually selected
             $.ajax({
-
-                url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/AddAccess",
-
-                method : "POST",
-
-                success:function(data)
-                {
-
-                    var data = JSON.parse(data);
-
-                    if(data.status === 0){
-                    
-                        alertify.error(data.msg).delay(3).dismissOthers();
-
-                    }
-                    else{
-
-                        $('#AddFixedAssetCreation').modal('show');
-
-                    }
-                    
-
-                }
-
-            });
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchReference",
-
-                method: "GET",
-
-                success: function(data) {
-
-                    $('#pr_id').val(data);
-
-                }
-            });
-
-        });
-
-        /*####*/
-
-
-        /*customer droup drown search*/
-        $(".select_vendor").select2({
-            placeholder: "Select Vendor Name",
-            theme: "default form-control- customer_width input_length3",
-            dropdownParent: $('#AddPurchaseReturn'),
-            ajax: {
-                url: "<?= base_url(); ?>Procurement/PurchaseReturn/FetchTypes",
+                url: '<?php echo base_url('Procurement/FixedAssetCreation/Code'); ?>', // Replace 'your_controller' with the actual controller name
+                type: 'POST',
                 dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function(params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function(item) {
-                            return {
-                                id: item.ven_id,
-                                text: item.ven_name
-                            }
-                        }),
-                        pagination: {
-                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },
-            }
-
-        })
-        /*###*/
-
-
-
-
-
-
-
-
-        /*prod modal submit start*/
-
-        $("body").on('click', '.prod_modal_submit', function() {
-
-            var selectId = $('#select_prod_id').val();
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/SelectedProduct",
-
-                method: "POST",
-
-                data: {
-                    ID: selectId
-                },
-
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    $('.product-more2').html(data.product_detail);
-
-                    $('#SelectProduct').modal("hide");
-
-                    $('#AddPurchaseReturn').modal("show");
-
-                    $('.selected_table').show();
-
-                    checkedIds.length = 0;
-
-                    $('#purchase_form').attr('data_fill', 'true');
-
-                }
-
-            });
-        });
-
-
-        /*prod modal submit end*/
-
-        /*calculation section start*/
-
-        $("body").on('keyup', '.add_discount', function() {
-
-            var $discountSelect = $(this);
-
-            var discount = parseInt($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
-
-            var $discountSelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_rate');
-
-            var rate = $discountSelectElement.val();
-
-            var $quantitySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
-
-            var quantity = parseInt($quantitySelectElement.val()) || 0;
-
-            var parsedRate = parseFloat(rate);
-
-            var parsedQuantity = quantity;
-
-            var multipliedTotal = parsedRate * parsedQuantity;
-
-            var per_amount = (discount / 100) * multipliedTotal;
-
-            var orginalPrice = multipliedTotal - per_amount;
-
-            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
-
-            var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
-
-            $amountElement.val(orginalPrice);
-
-        });
-
-        /*####*/
-
-
-
-        /*add current delivery start*/
-
-        $("body").on('keyup', '.add_current_qty', function() {
-
-
-            var dataSelect = $(this);
-
-            var deliverySelectElement = dataSelect.closest('.add_prod_row').find('.add_delivery_qty');
-
-            var delivery = parseFloat(deliverySelectElement.val()) || 0; // Convert to number, default to 0 if NaN
-
-            var currentSelectElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
-
-            var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
-
-            var total = delivery + current;
-
-            var orderSelectElement = dataSelect.closest('.add_prod_row').find('.add_order_qty');
-
-            var order = orderSelectElement.val();
-
-            //var order = parseFloat(orderSelectElement.val()) || 0;
-
-
-
-
-            if (total > order) {
-
-                /*var currencyNull = currentSelectElement.val("");
-
-                console.log(currencyNull);
-
-                var $currencyNullElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
-
-                $currencyNullElement.val(currencyNull);*/
-
-                /**/
-
-                currentSelectElement.val(""); // Set the value to an empty string
-                var currencyNull = currentSelectElement.val(); // Get the current (now empty) value
-
-                var $currencyNullElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
-                $currencyNullElement.val(currencyNull); // Set the value of $currencyNullElement to the empty string
-
-
-                /**/
-
-
-                alertify.error('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
-
-            }
-
-        });
-
-
-        /*add current delivery end*/
-
-
-        /*vendor new modal start*/
-
-        $("body").on('click', '.vendor_new_modal', function() {
-
-            $('#AddPurchaseOrder').modal('hide');
-
-            $('#AddVendor').modal('show');
-
-
-        });
-
-        /*vendor new modal end*/
-
-
-        //trigger when form is submitted
-
-        $("#add_office_form").submit(function(e) {
-
-            $('#AddPurchaseOrder').modal('show');
-
-            return false;
-
-        });
-
-        /*#####*/
-
-
-        /*contact new modal start*/
-
-        $("body").on('click', '.contact_new_modal', function() {
-
-            var vendor = $('.add_vendor').val();
-
-            if (vendor === null) {
-                alertify.error('Please Select Vendor Name').delay(2).dismissOthers();
-            } else {
-                $('#AddNewContact').modal('show');
-
-                $('#AddPurchaseOrder').modal('hide');
-
-                $('.new_pro_con_vendor').val(vendor);
-            }
-
-
-        });
-
-
-        /*contact new modal end*/
-
-
-  
-        /*###*/
-
-
-        $('.account_head_select').on('change', function() {
-            var accountHeadId = $(this).val();  // Get the selected account head ID
-
-            if (accountHeadId) { // Check if an account head is actually selected
-                $.ajax({
-                    url: '<?php echo base_url('Procurement/FixedAssetCreation/Code'); ?>', // Replace 'your_controller' with the actual controller name
-                    type: 'POST',
-                    dataType: 'json',
-                    data: { ID: accountHeadId },  // Send the account head ID
-
-                    success: function(response) {
-                        if (response && response.account_id) {
-                            $('.account_id').val(response.account_id); // Display the account ID in the input field
-                        } else {
-                            $('.account_id').val(''); // Clear the field if no account ID is returned
-                            console.error("No account ID returned from the server.");
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX request failed:", status, error);
-                        $('.account_id').val(''); // Clear the field on error
+                data: { ID: accountHeadId },  // Send the account head ID
+
+                success: function (response) {
+                    if (response && response.account_id) {
+                        $('.account_id').val(response.account_id); // Display the account ID in the input field
+                    } else {
+                        $('.account_id').val(''); // Clear the field if no account ID is returned
+                        console.error("No account ID returned from the server.");
                     }
-                });
-            } else {
-                $('.account_id').val(''); // Clear the field if no account head is selected
-            }
-        });
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX request failed:", status, error);
+                    $('.account_id').val(''); // Clear the field on error
+                }
+            });
+        } else {
+            $('.account_id').val(''); // Clear the field if no account head is selected
+        }
+    });
 
-        /*add product start*/
+    /*add product start*/
 
-        $("body").on('click', '.add_more_icon', function() {
+    $("body").on('click', '.add_more_icon', function () {
+        if (!$("#purchase_form").valid()) {
+            alertify.error('Fill required fields!').delay(3).dismissOthers();
+            return false;
+        }
+
+        if ($('#purchase_form').attr('data-submit') == 'false') {
+
+            $('#purchase_form').submit();
+
             if (!$("#purchase_form").valid()) {
                 alertify.error('Fill required fields!').delay(3).dismissOthers();
                 return false;
             }
 
-            if ($('#purchase_form').attr('data-submit') == 'false') {
+        }
 
-                $('#purchase_form').submit();
+        var formData = new FormData($('#purchase_form')[0]);
+        var image = $('.image_file').prop('files')[0]; // Get the file from input field
+        formData.append('image', image); // Append the file to FormData object
 
-                if (!$("#purchase_form").valid()) {
-                    alertify.error('Fill required fields!').delay(3).dismissOthers();
-                    return false;
-                }
+        $.ajax({
+            url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/Add",
+            method: "POST",
+            data: formData,
+            processData: false, // Don't process the data
+            contentType: false, // Don't set content type
+            success: function (data) {
+
+                var data = JSON.parse(data);
+
+                var purchase_return_id = data.purchase_return_id;
+
+                $('.hidden_purchase_return_id').val(purchase_return_id);
+
+                var vendor_inv_ref = data.vendor_inv_ref;
+
+                $('#AddPurchaseReturn').modal('hide');
+
+                $('#SelectProduct').modal('show');
+
+
+                $.ajax({
+
+                    url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchProduct",
+
+                    method: "POST",
+
+                    data: {
+                        ID: vendor_inv_ref
+                    },
+
+                    success: function (data) {
+                        var data = JSON.parse(data);
+
+                        $(".select_prod_add").html(data.product_detail);
+
+                    }
+
+                });
+
 
             }
 
-            var formData = new FormData($('#purchase_form')[0]);
-            var image = $('.image_file').prop('files')[0]; // Get the file from input field
-            formData.append('image', image); // Append the file to FormData object
+        });
 
-            $.ajax({
-                url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/Add",
-                method: "POST",
-                data: formData,
-                processData: false, // Don't process the data
-                contentType: false, // Don't set content type
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    var purchase_return_id = data.purchase_return_id;
-
-                    $('.hidden_purchase_return_id').val(purchase_return_id);
-
-                    var vendor_inv_ref = data.vendor_inv_ref;
-
-                    $('#AddPurchaseReturn').modal('hide');
-
-                    $('#SelectProduct').modal('show');
+    });
 
 
-                    $.ajax({
-
-                        url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchProduct",
-
-                        method: "POST",
-
-                        data: {
-                            ID: vendor_inv_ref
-                        },
-
-                        success: function(data) {
-                            var data = JSON.parse(data);
-
-                            $(".select_prod_add").html(data.product_detail);
-
-                        }
-
-                    });
+    /*#####*/
 
 
+
+    /*view section start*/
+
+    $("body").on('click', '.view_btn', function () {
+
+        var id = $(this).data('id');
+
+        $.ajax({
+
+            url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/View",
+
+            method: "POST",
+
+            data: {
+                ID: id
+            },
+
+            success: function (data) {
+
+                var data = JSON.parse(data);
+
+                $('.view_description').val(data.description);
+
+                $('.view_acc_head').val(data.account_head);
+
+                $('.view_acc_id').val(data.account_id);
+
+                $('.view_acquired_date').val(data.date);
+
+                $('.view_debit_acc').val(data.debit_account);
+
+                $('.view_credit_acc').val(data.credit_account);
+
+                $('.view_depreciation').val(data.depreciation);
+
+                $('.view_last_yr_depreciation').val(formatNumberWithCommas(data.last_yr_depreciation));
+
+                if (data.attach !== '') {
+                    $('.view_attach').attr('src', data.attach).show(); // Set the image source and display it
+                    $('.view_attach_link').attr('href', data.attach);
+                } else {
+                    $('.view_attach').hide(); // Hide the image element if no data is available
                 }
 
-            });
+
+                $('#ViewModal').modal("show");
+
+            }
 
         });
 
-
-        /*#####*/
-
+    });
 
 
-        /*view section start*/
+    /*view section end*/
 
-        $("body").on('click', '.view_btn', function() {
 
-            var id = $(this).data('id');
+    /*edit section start*/
 
-            $.ajax({
 
-                url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/View",
+    $("body").on('click', '.edit_btn', function () {
 
-                method: "POST",
+        var id = $(this).data('id');
 
-                data: {
-                    ID: id
-                },
+        $.ajax({
 
-                success: function(data) {
+            url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/Edit",
 
-                    var data = JSON.parse(data);
+            method: "POST",
 
-                    $('.view_description').val(data.description);
+            data: {
+                ID: id
+            },
 
-                    $('.view_acc_head').val(data.account_head);
+            success: function (data) {
 
-                    $('.view_acc_id').val(data.account_id);
+                var data = JSON.parse(data);
 
-                    $('.view_acquired_date').val(data.date);
+                if (data.status === 0) {
 
-                    $('.view_debit_acc').val(data.debit_account);
+                    alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('.view_credit_acc').val(data.credit_account);
+                } else {
 
-                    $('.view_depreciation').val(data.depreciation);
+                    $('.edit_id').val(data.cfsid);
 
-                    $('.view_last_yr_depreciation').val(data.last_yr_depreciation);
+                    $('.edit_description').val(data.description);
+
+                    $('.edit_acc_head').html(data.account_head);
+
+                    $('.edit_acc_id').val(data.account_id);
+
+                    $('.edit_acquired_date').val(data.date);
+
+                    $('.edit_last_yr_depreciation').val(formatNumberWithCommas(data.last_yr_depreciation));
+
+                    $('.edit_debit_acc').html(data.debit_account);
+
+                    $('.edit_credit_acc').html(data.credit_account);
+
+                    $('.edit_depreciation').val(data.depreciation);
 
                     if (data.attach !== '') {
-                        $('.view_attach').attr('src', data.attach).show(); // Set the image source and display it
-                        $('.view_attach_link').attr('href', data.attach);
+                        $('.edit_attach').attr('src', data.attach).show(); // Set the image source and display it
+                        $('.edit_attach_link').attr('href', data.attach);
                     } else {
-                        $('.view_attach').hide(); // Hide the image element if no data is available
+                        $('.edit_attach').hide(); // Hide the image element if no data is available
                     }
 
-
-                    $('#ViewModal').modal("show");
+                    $('#EditModal').modal("show");
 
                 }
 
-            });
+
+
+            }
 
         });
 
+    });
 
-        /*view section end*/
 
+    function formatNumberWithCommas(value) {
+        let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+        return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
 
-        /*edit section start*/
+    $("body").on("blur", ".edit_last_yr_depreciation, .add_last_yr_depreciation", function () {
+        let $this = $(this);
+        let rawValue = $this.val().replace(/,/g, "").trim(); // remove commas + trim spaces
 
+        // Allow only numbers & decimals
+        rawValue = rawValue.replace(/[^0-9.]/g, "");
 
-        $("body").on('click', '.edit_btn', function() {
+        if (rawValue !== "") {
+            let formattedValue = formatNumberWithCommas(rawValue);
+            $this.val(formattedValue);
+            console.log("Formatted Output:", formattedValue);
+        }
+    });
 
-            var id = $(this).data('id');
 
-            $.ajax({
+    /*delete section start*/
 
-                url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/Edit",
+    $("body").on('click', '.delete_btn', function () {
 
-                method: "POST",
+        var id = $(this).data('id');
 
-                data: {
-                    ID: id
-                },
+        var rowToDelete = $(this).closest('tr');
 
-                success: function(data) {
+        $.ajax({
 
-                    var data = JSON.parse(data);
+            url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/Delete",
 
-                    if(data.status === 0){
+            method: "POST",
 
-                        alertify.error(data.msg).delay(3).dismissOthers();
+            data: {
+                ID: id
+            },
 
-                    }else{
+            success: function (data) {
 
-                        $('.edit_id').val(data.cfsid);
+                var data = JSON.parse(data);
 
-                        $('.edit_description').val(data.description);
+                if (data.status === 1) {
 
-                        $('.edit_acc_head').html(data.account_head);
+                    rowToDelete.fadeOut(500, function () {
 
-                        $('.edit_acc_id').val(data.account_id);
+                        $(this).remove();
 
-                        $('.edit_acquired_date').val(data.date);
+                        alertify.success(data.msg).delay(3).dismissOthers();
 
-                        $('.edit_last_yr_depreciation').val(data.last_yr_depreciation);
+                        datatable.ajax.reload(null, false);
 
-                        $('.edit_debit_acc').html(data.debit_account);
-
-                        $('.edit_credit_acc').html(data.credit_account);
-
-                        $('.edit_depreciation').val(data.depreciation);
-
-                        if (data.attach !== '') {
-                            $('.edit_attach').attr('src', data.attach).show(); // Set the image source and display it
-                            $('.edit_attach_link').attr('href', data.attach);
-                        } else {
-                            $('.edit_attach').hide(); // Hide the image element if no data is available
-                        }
-
-                        $('#EditModal').modal("show");
-
-                    }
-
-                    
-
-                }
-
-            });
-
-        });
-
-
-        /*delete section start*/
-
-        $("body").on('click', '.delete_btn', function() {
-
-            var id = $(this).data('id');
-
-            var rowToDelete = $(this).closest('tr');
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/Delete",
-
-                method: "POST",
-
-                data: {
-                    ID: id
-                },
-
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    if(data.status === 1){
-                        
-                        rowToDelete.fadeOut(500, function() {
-
-                            $(this).remove();
-
-                            alertify.success(data.msg).delay(3).dismissOthers();
-
-                            datatable.ajax.reload(null, false);
-
-                        });
-
-                    }else{
-
-                        alertify.error(data.msg).delay(2).dismissOthers();
-                    }
-                    
-                    
-
-                }
-
-            });
-
-        });
-
-        /*delete section end*/
-
-
-
-
-
-        $(function() {
-
-            var form = $('#edit_modal_form');
-
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {}, // To Hide Validation Messages
-                submitHandler: function(currentForm) {
-
-                    var formData = new FormData(currentForm);
-
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/Update",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
-
-                            $('#EditModal').modal('hide');
-
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-
-                            datatable.ajax.reload(null, false);
-
-                        }
                     });
 
+                } else {
 
+                    alertify.error(data.msg).delay(2).dismissOthers();
                 }
-            });
+
+
+
+            }
+
         });
+
+    });
+
+    /*delete section end*/
+
+
+
+
+
+    $(function () {
+
+        var form = $('#edit_modal_form');
+
+        form.validate({
+            rules: {
+                required: 'required',
+            },
+            messages: {
+                required: 'This field is required',
+            },
+            errorPlacement: function (error, element) { }, // To Hide Validation Messages
+            submitHandler: function (currentForm) {
+
+                var formData = new FormData(currentForm);
+
+                // Submit the form for the current tab
+                $.ajax({
+                    url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/Update",
+                    method: "POST",
+                    data: formData,
+                    processData: false, // Don't process the data
+                    contentType: false, // Don't set content type
+                    success: function (data) {
+
+                        $('#EditModal').modal('hide');
+
+                        alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                        datatable.ajax.reload(null, false);
+
+                    }
+                });
+
+
+            }
+        });
+    });
 
 
     });
