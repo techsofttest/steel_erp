@@ -405,7 +405,20 @@
                                                         
                                                         ?>
 
-                                                        <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?></br><?php if(!empty($single_returns)){ echo "-". format_currency($single_returns); } ?></td>
+                                                        <td class="text-end" style="white-space: nowrap;width:100px">
+                                                            
+                                                            <?php if(!empty($single_cash)){ ?>
+    Cash: <?php echo format_currency($single_cash); ?><br>
+<?php } ?>
+
+<?php if(!empty($single_credit)){ ?>
+    Credit: <?php echo format_currency($single_credit); ?><br>
+<?php } ?>
+
+<?php if(!empty($single_returns)){ ?>
+    Returns: -<?php echo format_currency($single_returns); ?>
+<?php } ?>
+                                                        </td>
 
                                                         
 
