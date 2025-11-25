@@ -426,7 +426,7 @@
                                                                 <?php } ?>
                                                         </td>
 
-                                                        
+                                                        <?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?>
 
                                                         <td colspan="1" align="left" class="p-0">
     <table>
@@ -517,7 +517,7 @@
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
 <td class="text-end">
     <?php 
-        $total_gross_profit = $sales_order->so_amount_total - $expenses;
+        $total_gross_profit = $cash_credit - $expenses;
         echo format_currency($total_gross_profit);
     ?>
 </td>
