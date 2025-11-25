@@ -407,17 +407,23 @@
 
                                                         <td class="text-end" style="white-space: nowrap;width:100px">
                                                             
-                                                            <?php if(!empty($single_cash)){ ?>
-    Cash: <?php echo format_currency($single_cash); ?><br>
-<?php } ?>
+                                                             <?php if(!empty($sales_order->cash_invoice)){ ?>
+                                                                    <?php foreach($sales_order->cash_invoice as $cash_inv){ ?>
+                                                                        Cash: <?php echo format_currency($cash_inv->ci_total_amount); ?><br>
+                                                                    <?php } ?>
+                                                                <?php } ?>
 
-<?php if(!empty($single_credit)){ ?>
-    Credit: <?php echo format_currency($single_credit); ?><br>
-<?php } ?>
+                                                                <?php if(!empty($sales_order->credit_invoice)){ ?>
+                                                                    <?php foreach($sales_order->credit_invoice as $credit_inv){ ?>
+                                                                        Credit: <?php echo format_currency($credit_inv->cci_total_amount); ?><br>
+                                                                    <?php } ?>
+                                                                <?php } ?>
 
-<?php if(!empty($single_returns)){ ?>
-    Returns: -<?php echo format_currency($single_returns); ?>
-<?php } ?>
+                                                                <?php if(!empty($sales_order->sales_return)){ ?>
+                                                                    <?php foreach($sales_order->sales_return as $sales_rut){ ?>
+                                                                        Returns: -<?php echo format_currency($sales_rut->sr_total); ?><br>
+                                                                    <?php } ?>
+                                                                <?php } ?>
                                                         </td>
 
                                                         
