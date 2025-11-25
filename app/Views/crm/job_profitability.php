@@ -233,6 +233,10 @@
 
                                                     $expenses_total =0;
 
+                                                    $final_gross = 0;
+
+                                                    $final_percentage = 0;
+
                                                     $expenses1 = 0;
                                                     $expenses2 = 0;
                                                     $expenses3 = 0;
@@ -535,7 +539,16 @@
     ?>
 </td>
 
-<?php $expenses_total  +=  $expenses; ?>
+<?php 
+
+    $expenses_total  +=  $expenses; 
+    
+    $final_gross  +=  $total_gross_profit;
+
+    $final_percentage += $total_percentage;
+
+     
+?>
 
 
 
@@ -558,8 +571,8 @@
                                                         <td></td>
                                                         <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
                                                         <td class="text-end"><b><?php echo format_currency($expenses_total); ?></b></td>
-                                                        <td class="text-end"><b><?php echo format_currency($total_gross_profit); ?></b></td>
-                                                        <td class="text-end"><b><?php echo format_currency($total_percentage); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($final_gross); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($final_percentage); ?></b></td>
                                                       
                                                     </tr>
                                                     
