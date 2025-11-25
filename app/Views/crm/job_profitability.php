@@ -428,198 +428,115 @@
 
                                                         
 
-                                                        <td colspan="3" align="left" class="p-0">
-                                                            <table>
-                                                            <?php 
+                                                        <td colspan="1" align="left" class="p-0">
+    <table>
+        <?php 
+            // initialize
+            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-                                                                if(!empty($sales_order->purchase_vouchers)){
-                                                                
-                                                                foreach ($sales_order->purchase_vouchers as $pur_vouch) { ?> 
-                                                                                
-                                                                <tr style="background: unset;border-bottom: hidden !important;">
-                                                                    
-                                                                    <td   style="width:100px" class="text-end"><?php echo format_currency($pur_vouch->pv_total); ?> </td>
+            /* PURCHASE VOUCHERS */
+            if(!empty($sales_order->purchase_vouchers)){
+                foreach ($sales_order->purchase_vouchers as $pur_vouch) { ?> 
+                    
+                    <tr style="background: unset;border-bottom: hidden !important;">
+                        <td style="width:100px" class="text-end">
+                            <?php echo format_currency($pur_vouch->pv_total); ?>
+                        </td>
+                    </tr>
 
-                                                                    <?php 
+                <?php 
+                    $expenses1 += $pur_vouch->pv_total;
+                }
+            }
 
-                                                                        $expenses1  = $pur_vouch->pv_total + $expenses1;
-                                                                    
-                                                                        $gross_profit =  $sales_order->so_amount_total - $pur_vouch->pv_total; 
-                                                                        
-                                                                    ?>
+            /* PURCHASE RETURN */
+            if(!empty($sales_order->purchase_return_prod)){
+                foreach($sales_order->purchase_return_prod as $pv_prod){ ?> 
 
-                                                                    
+                    <tr style="background: unset;border-bottom: hidden !important;">
+                        <td style="width:100px" class="text-end">
+                            -<?php echo format_currency($pv_prod->pr_total_amount); ?>
+                        </td>
+                    </tr>
 
-                                                                    <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
+                <?php 
+                    $expenses2 += $pv_prod->pr_total_amount;
+                }
+            }
 
-                                                                    <?php 
+            /* PETTY CASH */
+            if(!empty($sales_order->petty_cash)){
+                foreach($sales_order->petty_cash as $p_cash){ ?>
 
-                                                                        $gross_profit1 =  $gross_profit +   $gross_profit1; 
+                    <tr style="background: unset;border-bottom: hidden !important;">
+                        <td style="width:100px" class="text-end">
+                            <?php echo format_currency($p_cash->pci_amount); ?>
+                        </td>
+                    </tr>
 
-                                                                        $percentage = $gross_profit * 100;
+                <?php 
+                    $expenses3 += $p_cash->pci_amount;
+                }
+            }
 
-                                                                        $percentage1 =  $percentage +  $percentage1;
+            /* JOURNAL VOUCHER */
+            if(!empty($sales_order->journal_voucher)){
+                foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
+                    
+                    <tr style="background: unset;border-bottom: hidden !important;">
+                        <td style="width:100px" class="text-end">
+                            <?php 
+                                if(!empty($jour_vouch->ji_debit))  
+                                    echo format_currency($jour_vouch->ji_debit);
+                                elseif(!empty($jour_vouch->ji_credit)) 
+                                    echo format_currency($jour_vouch->ji_credit);
+                            ?>
+                        </td>
+                    </tr>
 
-                                                                        
-                                                                    ?>
+                <?php 
+                    if(!empty($jour_vouch->ji_debit))  $expenses4 += $jour_vouch->ji_debit;
+                    if(!empty($jour_vouch->ji_credit)) $expenses5 += $jour_vouch->ji_credit;
+                }
+            }
 
-                                                                    <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
+            /* FINAL TOTAL EXPENSES */
+            $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
+        ?>
 
-                                                                    
-                                                                </tr>
+        <!-- TOTAL EXPENSES -->
+        <tr style="background: #f2f2f2; font-weight:bold;">
+            <td style="width:100px" class="text-end">
+                <?php echo format_currency($expenses); ?>
+            </td>
+        </tr>
 
-                                                            <?php } } 
-                                                                
-                                                                if(!empty($sales_order->purchase_return_prod)){
+    </table>
+</td>
 
-                                                                    foreach($sales_order->purchase_return_prod as $pv_prod){ ?> 
+<!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
+<td class="text-end">
+    <?php 
+        $total_gross_profit = $sales_order->so_amount_total - $expenses;
+        echo format_currency($total_gross_profit);
+    ?>
+</td>
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
-                                                                    
-                                                                       <td style="width:100px" class="text-end">-<?php echo format_currency($pv_prod->pr_total_amount); ?> </td>
-
-                                                                        <?php 
-
-                                                                            $expenses2  = $pv_prod->pr_total_amount + $expenses2;
-                                                                    
-                                                                            $gross_profit =  $sales_order->so_amount_total - $pv_prod->pr_total_amount;
-                                                                            
-                                                                            $gross_profit2 =  $gross_profit +  $gross_profit2; 
-                                                                            
-                                                                        ?>
-
-                                                                         
-
-                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
-
-                                                                        <?php 
-                                                                        
-                                                                            $percentage = $gross_profit * 100;
-                                                                            
-                                                                            
-                                                                            $percentage2 =  $percentage +  $percentage2;
-                                                                        
-                                                                        ?>
-
-                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
-
-                                                                    
-                                                                    </tr>
+<!-- NOW OUTSIDE EXPENSE TABLE: PERCENTAGE COLUMN -->
+<td class="text-end">
+    <?php 
+        $total_percentage = 0;
+        if($sales_order->so_amount_total != 0){
+            $total_percentage = ($total_gross_profit / $sales_order->so_amount_total) * 100;
+        }
+        echo number_format($total_percentage, 2) . '%';
+    ?>
+</td>
 
 
-                                                                <?php  }  }
 
-                                                                if(!empty($sales_order->petty_cash)){
 
-                                                                    foreach($sales_order->petty_cash as $p_cash){ ?>
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
-                                                                    
-                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($p_cash->pci_amount); ?> </td>
-
-                                                                        <?php 
-
-                                                                            $expenses3  = $p_cash->pci_amount + $expenses3;
-
-                                                                            $gross_profit =  $sales_order->so_amount_total - $p_cash->pci_amount; 
-
-                                                                            $gross_profit3 =  $gross_profit +   $gross_profit3;
-                                                                            
-                                                                        ?>
-
-                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td>
-
-                                                                        <?php 
-                                                                        
-                                                                            $percentage = $gross_profit * 100;
-
-                                                                            $percentage3 =  $percentage + $percentage3;
-                                                                            
-                                                                        ?>
-
-                                                                        <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
-                                                                
-                                                                
-                                                                    </tr>  
-
-                                                                <?php  } }
-
-                                                                if(!empty($sales_order->journal_voucher)){
-
-                                                                    foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
-                                                                      
-                                                                    <tr style="background: unset;border-bottom: hidden !important;">
-                                                                    
-                                                                        <td  style="width:100px" class="text-end">
-                                                                            
-                                                                            <?php if(!empty($jour_vouch->ji_debit)){ echo  format_currency($jour_vouch->ji_debit); } 
-                                                                            elseif($jour_vouch->ji_credit){ echo format_currency($jour_vouch->ji_credit); }?> 
-                                                                            
-                                                                        </td>
-                                                                        
-                                                                        <?php if(!empty($jour_vouch->ji_debit)){
-
-                                                                          $expenses4     = $jour_vouch->ji_debit + $expenses4;
-                                                                          
-                                                                          $gross_profit  = $sales_order->so_amount_total - $jour_vouch->ji_debit;
-                                                                          
-                                                                          $gross_profit4 = $gross_profit + $gross_profit4;
-
-                                                                        ?> 
-                                                                             
-                                                                             <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td> 
-
-                                                                             <?php 
-                                                                             
-                                                                                $percentage = $gross_profit * 100;
-
-                                                                                $percentage4 =  $percentage +  $percentage4;
-                                                                                
-                                                                            ?>
-
-                                                                            <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
-                                                                            
-                                                                        <?php } elseif(!empty($jour_vouch->ji_credit)){
-                                                                            
-                                                                            $expenses5     = $jour_vouch->ji_credit + $expenses5;
-
-                                                                            $gross_profit  =  $sales_order->so_amount_total - $jour_vouch->ji_credit;
-
-                                                                            $gross_profit5 =  $gross_profit +   $gross_profit5;
-
-                                                                        ?>
-                                                                            
-                                                                            <td style="width:100px" class="text-end"><?php echo format_currency($gross_profit); ?></td> 
-
-                                                                            <?php 
-                                                                                
-                                                                                $percentage5 = $gross_profit * 100; 
-
-                                                                                $percentage5 =  $percentage +  $percentage5;
-                                                                                
-                                                                            ?>
-
-                                                                            <td style="width:100px" class="text-end"><?php echo format_currency($percentage); ?></td>
-                                                                            
-                                                                        <?php } ?>
-                                                                
-                                                                    </tr>  
-                                                                    
-                                                                    <?php } }
-
-                                                                    //$expenses =  $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
-
-                                                                    $expenses =  $expenses1 + $expenses3;
-
-                                                                    $expenses = $expenses - $expenses2;
-
-                                                                    $total_gross_profit = $gross_profit1 +  $gross_profit2 +  $gross_profit3 + $gross_profit4 +  $gross_profit5;
-                                                                    
-                                                                    $total_percentage =  $percentage1 + $percentage2 + $percentage3 + $percentage4 + $percentage5;
-                                                                ?>                        
-                                                                                            
-                                                            </table>
-                                                        </td>
 
                                                         
                                                         
