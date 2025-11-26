@@ -924,7 +924,7 @@ class ProcurementModel extends Model
     
         // echo '<pre>';
         // print_r($transactions);
-        // echo '------------';
+        // echo '------------'; 
         
         // Initialize beginning balance
         $begining_balance = 0;
