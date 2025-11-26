@@ -151,8 +151,7 @@ class MaterialRecReport extends BaseController
             $data1 = "";
         }
         
-        
-        
+                
         if(!empty($_GET['product']))
         {
             $data2 = $_GET['product'];
@@ -161,6 +160,14 @@ class MaterialRecReport extends BaseController
         {
             $data2 = "";
         }
+
+
+                if (!empty($_GET['vendor'])) {
+            $data3 = $_GET['vendor'];
+        } else {
+            $data3 = "";
+        }
+
         
             if (!empty($_GET['pending'])) {
             $data6 = $_GET['pending'];
@@ -231,7 +238,7 @@ class MaterialRecReport extends BaseController
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
         
-        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date,'mrn_date',$to_date,'',$data1,'mrn_sales_order',$data2,'mrn_product_desc','','','','','steel_pro_material_received_note_prod',$joins,'rnp_material_received_note',$joins1);  
+        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date,'mrn_date',$to_date,'',$data1,'rnp_sales_order',$data2,'mrn_product_desc',$data3,'mrn_vendor_name','','','steel_pro_material_received_note_prod',$joins,'rnp_material_received_note',$joins1);  
         
 
 

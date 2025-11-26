@@ -187,7 +187,7 @@
 
                                                                             <tr>
                                                                                 <td style="width: 30%;"
-                                                                                    class="center_padding">Vendor</>
+                                                                                    class="center_padding">Vendor</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select
                                                                                         class="form-select customer_clz vendor_dropdown"
@@ -219,7 +219,7 @@
                                                                                         </option>
                                                                                         <?php foreach ($sales_orders as $sales_order) { ?>
                                                                                             <option
-                                                                                                value="<?php echo $sales_order->so_id ?>">
+                                                                                                value="<?php echo $sales_order->so_reffer_no ?>">
                                                                                                 <?php echo $sales_order->so_reffer_no; ?>
                                                                                             </option>
                                                                                         <?php } ?>
@@ -790,7 +790,7 @@
                     return {
                         results: $.map(data.result, function (item) {
                             return {
-                                id: item.so_id,
+                                id: item.so_reffer_no,
                                 text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
                             };
                         }),
