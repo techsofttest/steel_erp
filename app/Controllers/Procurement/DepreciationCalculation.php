@@ -227,11 +227,12 @@ class DepreciationCalculation extends BaseController
 
         $credit_balance = $this->pro_model->CreditBalance($data['fixedasset']->cfs_credit_account);
 
+        // print_r($credit_balance);
+
         $acchead_balance = $credit_balance->ending_balance;
 
 
         $data['acchead_balance'] = format_currency($acchead_balance);
-
 
         $cond = ['cfs_account_head' => $acchead];
         // Fetching fixed assets with the same condition
@@ -248,6 +249,8 @@ class DepreciationCalculation extends BaseController
         foreach ($assets as $asset) {
 
             $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id) ?? 0;
+
+            // echo ' | '.$fixed_amount.'  |  ';
 
             $fixed_amount = (float)$fixed_amount;
             $cfs_last_yr_depreciation = (float)$asset->cfs_last_yr_depreciation;
@@ -273,7 +276,6 @@ class DepreciationCalculation extends BaseController
 
             // Output the difference in days
             $entitlement = $diff_in_days + 1;
-
 
             $acchead_balance = isset($fixed_amount) ? $fixed_amount : 0;
 

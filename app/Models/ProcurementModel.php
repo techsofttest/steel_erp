@@ -922,6 +922,10 @@ class ProcurementModel extends Model
             $range_to = ""
         );
     
+        // echo '<pre>';
+        // print_r($transactions);
+        // echo '------------';
+        
         // Initialize beginning balance
         $begining_balance = 0;
     

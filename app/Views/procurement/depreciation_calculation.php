@@ -78,6 +78,10 @@
         border-collapse: collapse;
         border: 1px solid black;
     }
+    .content_table {
+        padding: 20px 10px;
+        padding-top: 25px;
+    }
     .add_table{
 
         margin-bottom: 0px;
@@ -143,7 +147,9 @@ table#DataTable th:nth-child(2),
 table#DataTable td:nth-child(2) {
     text-align: start;
 }
-
+.selection{
+    width:100%
+}
 </style>
 
 <div class="tab-content text-muted">
@@ -383,7 +389,7 @@ table#DataTable td:nth-child(2) {
                                                         </table>
                                                     </div> -->
 
-                                                    <div class="mt-4 content_table" style="padding-top: 0px;">
+                                                    <div class="mt-4 content_table" >
                                                     
                                                     <!-- <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Cost Calculation</h5> -->
                                                     <table class="table table-bordered table-striped delTable add_table selected_table"  style="display: none;">
