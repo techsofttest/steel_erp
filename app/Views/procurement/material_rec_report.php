@@ -22,56 +22,62 @@
     #DataTable td {
         line-height: 1.5;
     }
-    .modal-dialog{
+
+    .modal-dialog {
         width: 500px;
         margin: auto;
     }
+
     .adjust_width {
-    width: 86%;
-}
-
-    .Dashboard-form .form-select {
-    border: 1px solid #434343 !important;
-    margin-bottom: 0px;
-    background: #f5f5f56e;
-    height: 40px;
-    width: 100%;
-    border-radius: 4px;
-}
-
-.travelerinfo td {
-    color: black;
-    vertical-align: middle;
-}
-
-/* Custom styles for the table */
-    .delTable th, .delTable td {
-        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
-        padding-left: 8px; /* Adjust as needed */
-        padding-right: 8px; /* Adjust as needed */
-        vertical-align: top; /* Align content to the top */
+        width: 86%;
     }
 
-    .nested-table td{
-    vertical-align: middle;
-}
+    .Dashboard-form .form-select {
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        background: #f5f5f56e;
+        height: 40px;
+        width: 100%;
+        border-radius: 4px;
+    }
 
-.select2.select2-container{   
-    padding-top: 5px !important;
-}
+    .travelerinfo td {
+        color: black;
+        vertical-align: middle;
+    }
 
-.select2-selection__rendered {
-    white-space: wrap !important;  /* prevent weird line breaks */
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
+    /* Custom styles for the table */
+    .delTable th,
+    .delTable td {
+        /* Ensure padding doesn't affect fixed width calculation unexpectedly */
+        padding-left: 8px;
+        /* Adjust as needed */
+        padding-right: 8px;
+        /* Adjust as needed */
+        vertical-align: top;
+        /* Align content to the top */
+    }
+
+    .nested-table td {
+        vertical-align: middle;
+    }
+
+    .select2.select2-container {
+        padding-top: 5px !important;
+    }
+
+    .select2-selection__rendered {
+        white-space: wrap !important;
+        /* prevent weird line breaks */
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 
 
-span.select2.customer_width, span.select2{
-    width:100% !important;
-}
-
-
+    span.select2.customer_width,
+    span.select2 {
+        width: 100% !important;
+    }
 </style>
 
 
@@ -152,14 +158,24 @@ span.select2.customer_width, span.select2{
                                                                     <table
                                                                         class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
-                                            
+
                                                                             <tr>
-                                                                                
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
-                                                                                <td ><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
-                                                                                <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
+
+                                                                                <td class="text-center center_padding"
+                                                                                    style="display: flex;align-items: center;margin-top: 15px;">
+                                                                                    From</td>
+                                                                                <td><input type="date" style=""
+                                                                                        name="form_date"
+                                                                                        id="from_date_id"
+                                                                                        onclick="this.showPicker();"
+                                                                                        class="form-control "></td>
+                                                                                <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;"
+                                                                                    class="center_padding">To</td>
                                                                                 <td>
-                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control ">
+                                                                                    <input type="date" name="to_date"
+                                                                                        id="to_date_id"
+                                                                                        onclick="this.showPicker();"
+                                                                                        class="form-control ">
                                                                                 </td>
 
                                                                             </tr>
@@ -170,8 +186,9 @@ span.select2.customer_width, span.select2{
                                                                         <tbody class="travelerinfo">
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Vendor</>
-                                                                                <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;"
+                                                                                    class="center_padding">Vendor</>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select
                                                                                         class="form-select customer_clz vendor_dropdown"
                                                                                         name="vendor">
@@ -190,8 +207,10 @@ span.select2.customer_width, span.select2{
 
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Sales Order</td>
-                                                                            <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;"
+                                                                                    class="center_padding">Sales Order
+                                                                                </td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select
                                                                                         class="form-select sales_order customer_clz"
                                                                                         name="sales_order">
@@ -206,14 +225,16 @@ span.select2.customer_width, span.select2{
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                            
+
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Product</td>
-                                                                            <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select product_clz" value=""
-                                                                                        name="product">
+                                                                                <td style="width: 30%;"
+                                                                                    class="center_padding">Product</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select
+                                                                                        class="form-select product_clz"
+                                                                                        value="" name="product">
                                                                                         <option value="" selected
                                                                                             disabled>Select Porduct
                                                                                         </option>
@@ -225,17 +246,20 @@ span.select2.customer_width, span.select2{
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                               
+
                                                                             </tr>
 
-                                                                               <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Pending</td>                                                                           
-                                                                                <td> <input class="" type="checkbox" value="pending" name="pending"></td>                                                                            
-                                                                            </tr>
-                                                                            <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Linked</td>
-                                                                                <td> <input class="" type="checkbox" value="linked" name="linked"></td>                                                                                   
-                                                                            </tr>
+                                                                            <?php /*
+                                                                          <tr>
+                                                                       <td style="width: 30%;" class="center_padding">Pending</td>                                                                           
+                                                                           <td> <input class="" type="checkbox" value="pending" name="pending"></td>                                                                            
+                                                                       </tr>
+                                                                       <tr>
+                                                                       <td style="width: 30%;" class="center_padding">Linked</td>
+                                                                           <td> <input class="" type="checkbox" value="linked" name="linked"></td>                                                                                   
+                                                                       </tr>
+
+                                                                       */ ?>
 
 
                                                                         </tbody>
@@ -243,12 +267,6 @@ span.select2.customer_width, span.select2{
 
                                                                     </table>
                                                                 </div>
-
-                                                             
-
-
-
-
 
                                                             </div>
 
@@ -331,7 +349,8 @@ span.select2.customer_width, span.select2{
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount
                                                     </th>
                                                     <th style="white-space: nowrap;width:500px">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Quantity
+                                                    <th class="text-center" style="white-space: nowrap;width:80px">
+                                                        Quantity
                                                     </th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate
                                                     </th>
@@ -346,17 +365,21 @@ span.select2.customer_width, span.select2{
                                                 <?php
                                                 if (!empty($material_requesition)) {
                                                     $i = 1;
-                                                    $total = $mr_total = 0; 
+                                                    $total = $mr_total = 0;
                                                     foreach ($material_requesition as $material_req) { ?>
 
                                                         <tr>
 
                                                             <td class="text-center" style="white-space: nowrap;width:60px">
-                                                                <?php echo $i; ?></td>
+                                                                <?php echo $i; ?>
+                                                            </td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px">
-                                                                <?php echo date('d-M-Y', strtotime($material_req->mrn_date)); ?></td>
+                                                                <?php echo date('d-M-Y', strtotime($material_req->mrn_date)); ?>
+                                                            </td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
-                                                               <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $material_req->mrn_id; ?>" target="_blank"><?php echo $material_req->mrn_reffer; ?></a></td>
+                                                                <a href="<?php echo base_url() . 'Procurement/MaterialReceivedNote?view_so=' . $material_req->mrn_id; ?>"
+                                                                    target="_blank"><?php echo $material_req->mrn_reffer; ?></a>
+                                                            </td>
 
                                                             <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
                                                                 echo $material_req->mrn_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
@@ -364,26 +387,33 @@ span.select2.customer_width, span.select2{
                                                             </td>
 
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
-                                                               <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $material_req->po_id; ?>" target="_blank"> <?php echo $material_req->po_reffer_no; ?></td>
+                                                                <a href="<?php echo base_url() . 'Procurement/PurchaseOrder?view_so=' . $material_req->po_id; ?>"
+                                                                    target="_blank"> <?php echo $material_req->po_reffer_no; ?>
+                                                            </td>
 
                                                             <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                <?php echo $material_req->mrn_delivery_note; ?></td>
+                                                                <?php echo $material_req->mrn_delivery_note; ?>
+                                                            </td>
 
                                                             <td colspan="6" align="left" class="p-0">
                                                                 <table class="nested-table">
-                                                                    <?php $tot_amt = 0;$k=0; 
-                                                                    foreach ($material_req->product_orders as $orders) { $k++;  ?>
+                                                                    <?php $tot_amt = 0;
+                                                                    $k = 0;
+                                                                    foreach ($material_req->product_orders as $orders) {
+                                                                        $k++; ?>
 
                                                                         <tr
                                                                             style="background: unset;border-bottom: hidden !important;">
                                                                             <td class="text-end rotate"
                                                                                 style="white-space: nowrap;width:80px; vertical-align: top;">
-                                                                                <?php if($k==1){ $tot_amt = 0;
-                                                                                foreach ($material_req->product_orders as $ord) { ?>
-                                                                                    <?php $tot_amt += $ord->rnp_amount; ?>
-                                                                                <?php }
-                                                                                echo format_currency($tot_amt);
-                                                                                $total += $tot_amt; } ?>
+                                                                                <?php if ($k == 1) {
+                                                                                    $tot_amt = 0;
+                                                                                    foreach ($material_req->product_orders as $ord) { ?>
+                                                                                        <?php $tot_amt += $ord->rnp_amount; ?>
+                                                                                    <?php }
+                                                                                    echo format_currency($tot_amt);
+                                                                                    $total += $tot_amt;
+                                                                                } ?>
                                                                             </td>
 
                                                                             <td class="rotate" style="width:500px">
@@ -427,13 +457,15 @@ span.select2.customer_width, span.select2{
                                                         <th style="white-space: nowrap;width:100px"></th>
                                                         <th style="white-space: nowrap;width:100px"></th>
                                                         <th class="text-end" style="white-space: nowrap;width:100px">
-                                                            <?php echo format_currency($total); ?></th>
+                                                            <?php echo format_currency($total); ?>
+                                                        </th>
                                                         <th style="white-space: nowrap;width:400px"></th>
                                                         <th style="white-space: nowrap;width:70px"></th>
                                                         <th style="white-space: nowrap;width:70px"></th>
                                                         <th style="white-space: nowrap;width:70px"></th>
                                                         <th class="text-end" style="white-space: nowrap;width:100px">
-                                                            <?php echo format_currency($mr_total); ?></th>
+                                                            <?php echo format_currency($mr_total); ?>
+                                                        </th>
                                                     </tr>
 
                                                     <?php
@@ -694,9 +726,9 @@ span.select2.customer_width, span.select2{
 
         }
 
-// ======================
+        // ======================
 
-         /*Vendor dropdown search*/
+        /*Vendor dropdown search*/
         $(".vendor_dropdown").select2({
             placeholder: "Select Vendor",
             theme: "default form-control- customer_width",
@@ -748,7 +780,7 @@ span.select2.customer_width, span.select2{
                 allowClear: true,
                 data: function (params) {
                     return {
-                         vendor_id: $('.customer_clz').val(),
+                        vendor_id: $('.customer_clz').val(),
                         term: params.term,
                         page: params.page || 1,
                     };
@@ -806,7 +838,7 @@ span.select2.customer_width, span.select2{
             }
         });
 
-// =================================
+        // =================================
 
     });
 </script>
