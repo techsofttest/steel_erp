@@ -342,8 +342,14 @@ span.select2.customer_width, span.select2{
                                                                                     echo format_currency($booked_note);
                                                                                     $pv_booked += $booked_note; ?></td>
 
-                                                            <td class="rotate text-end" style="width:80px"><?php echo format_currency($pur_vouc->pv_paid ?? 0);
-                                                                                    $pv_paid += $pur_vouc->pv_paid ?? 0; ?></td>
+                                                            <td class="rotate text-end" style="width:80px"><?php $paid_voucher = 0;
+                                                             foreach ($pur_vouc->vouchers_booked as $voc) {
+                                                                                        $paid_voucher += $voc->pv_paid;
+                                                                                        //   print_r($notes);
+                                                                                    }
+                                                            
+                                                            echo format_currency($paid_voucher ?? 0);
+                                                                                    $pv_paid += $paid_voucher ?? 0; ?></td>
 
                                                             <td class="rotate text-end" style="width:80px"><?php echo format_currency($pur_vouc->po_amount - $booked_note);
                                                                                     $balance += $pur_vouc->po_amount - $booked_note; ?></td>

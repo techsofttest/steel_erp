@@ -245,6 +245,7 @@ span.select2.customer_width, span.select2{
 
                                                                             </tr>
 
+                                                                            <?php /*
                                                                             <tr>
                                                                                 <td style="width: 30%;"
                                                                                     class="center_padding">Pending</td>
@@ -260,6 +261,7 @@ span.select2.customer_width, span.select2{
                                                                                 </td>
                                                                             </tr>
 
+                                                                                            */ ?>
 
                                                                         </tbody>
 

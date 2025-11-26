@@ -217,6 +217,23 @@ class PendingPurchaseVoucherReport extends BaseController
                 $merged_order->received_products = [];
             }
         
+
+            // Fetch the associated MRN products
+            $pvs = $this->common_model->FetchWhere('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_id]);
+        
+            // Create a copy of the $orders object
+            $merged_order = $orders;
+        
+            // Check if $nrps contains any products
+            if (!empty($nrps)) {
+                // Append the fetched products as a sub-array called 'received_products'
+                $merged_order->vouchers_booked = $pvs;
+            } else {
+                // If no products are found, set 'received_products' as an empty array to avoid errors
+                $merged_order->vouchers_booked = [];
+            }
+
+
             // Append the merged order data to the $new_order array
             $new_order[] = $merged_order;
         }
@@ -326,13 +343,22 @@ class PendingPurchaseVoucherReport extends BaseController
 
                 $total_amount = $total_amount + $order_data->po_amount;
 
-                $total_recieved += $order_data->pv_paid;
+              
 
                 $booked_note = 0; foreach ($order_data->received_products as $notes) {
                     $booked_note += $notes->rnp_amount ;
                  //   print_r($notes);
                  } 
                 $total_booked += $booked_note;
+
+
+                 $paid_voucher = 0;  
+                 foreach ($order_data->vouchers_booked as $voc) {
+                      $paid_voucher += $voc->pv_paid;                                                                                       
+                 }
+                $total_recieved += $paid_voucher ?? 0; 
+
+                // $total_recieved += $order_data->pv_paid;
 
                 $total_balance += $order_data->po_amount - $order_data->pv_paid;
 
@@ -352,10 +378,10 @@ class PendingPurchaseVoucherReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($booked_note)."</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_paid ?? 0)."</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($paid_voucher ?? 0)."</td>";
                 
 
-                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>" . (format_currency($order_data->po_amount - $order_data->pv_paid)) . "</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>" . (format_currency($order_data->po_amount - $paid_voucher)) . "</td>";
 
 
                 if ($q != 1) {
