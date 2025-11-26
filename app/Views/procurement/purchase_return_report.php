@@ -174,14 +174,14 @@ span.select2.customer_width, span.select2{
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
-                                                                            <tr>
+                                                                            <!-- <tr>
                                                                             <td style="width: 30%;" class="center_padding">Lpo Ref</td>
                                                                             <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref" >
                                                                                         <option value="" selected disabled>Select Lpo ref</option>
                                                                                     </select>
                                                                                 </td>
-                                                                            </tr>
+                                                                            </tr> -->
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Sales Order</td>
                                                                             <td style="width: 70%;"  colspan="4">
@@ -790,7 +790,7 @@ span.select2.customer_width, span.select2{
                     return {
                         results: $.map(data.result, function (item) {
                             return {
-                                id: item.so_id,
+                                id: item.so_reffer_no,
                                 text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
                             };
                         }),
