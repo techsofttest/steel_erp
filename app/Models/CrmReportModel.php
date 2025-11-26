@@ -1667,7 +1667,7 @@ class CrmReportModel extends Model
 
     public function purchase_sales_order($table,$cond){
 
-       $subQuery = $this->db->table('crm_delivery_note')
+        $subQuery = $this->db->table('crm_delivery_note')
 
         ->select('dn_sales_order_num');
 
@@ -1685,7 +1685,7 @@ class CrmReportModel extends Model
 
         $results = $query->get()->getResult();
 
-       // echo $this->db->getLastQuery(); exit();
+        //echo $this->db->getLastQuery(); exit();
 
         return $results;
 

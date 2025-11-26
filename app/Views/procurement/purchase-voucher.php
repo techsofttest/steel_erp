@@ -433,7 +433,7 @@
                                                             <!-- ### --> 
 
                                                             <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
+                                                            <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
@@ -442,8 +442,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <!--<input type="text" name="purchase_delivery_note" class="form-control input_length delivery_note_clz" value="">-->
-
+                                                                       
                                                                         <select class="form-select delivery_note_clz input_length" name="purchase_delivery_note" id="">
                                                                             
                                                                             <option value="" selected="" disabled="">Select Delivery Order</option>
@@ -453,7 +452,7 @@
 
                                                                 </div> 
 
-                                                            </div>    
+                                                            </div>--->   
                                                             <!-- ### --> 
 
                                                             
@@ -761,7 +760,7 @@
 
 
                                                             <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
+                                                            <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
@@ -777,7 +776,7 @@
 
                                                                 </div>
 
-                                                            </div>
+                                                            </div>-->
 
                                                             <!-- ### -->
 
@@ -1057,7 +1056,7 @@
 
 
                                                             <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
+                                                            <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
@@ -1067,7 +1066,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <!--<input type="text" name="pv_delivery_note" class="form-control edit_delivery_note input_length">-->
+                                                                       
                                                                         <select class="form-select edit_delivery_note input_length" name="pv_delivery_note" id="" required></select>
                                                                     
 
@@ -1076,7 +1075,7 @@
 
                                                                 </div>
 
-                                                            </div>
+                                                            </div>--->
 
                                                             <!-- ### -->
 
@@ -1267,6 +1266,7 @@
                                         <td style="width:4%">SI</td>
                                         <td>Product Description</td>
                                         <td style="width:13%">MRN Ref </td>
+                                        <td style="width:13%">Delivery Note</td>
                                         <td style="width:4%">Tick</td>
                                     </tr>
                                                             

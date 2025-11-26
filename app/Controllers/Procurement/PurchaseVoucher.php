@@ -233,7 +233,7 @@ class PurchaseVoucher extends BaseController
 
                 'pv_vendor_inv'      => $this->request->getPost('purchase_vendor'),
 
-                'pv_delivery_note'   => $delivery_note,
+               // 'pv_delivery_note'   => $delivery_note,
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
@@ -1202,6 +1202,7 @@ class PurchaseVoucher extends BaseController
                                             <td class="si_no text-center" >'.$i.'</td>
                                             <td style="padding: 2px 7px;">'.$prod->rnp_product_desc.'</td>
                                             <td><input type="text" name="dpd_unit[]" value="'.$prod->mrn_reffer.'" class="form-control text-center" readonly></td>
+                                            <td><input type="text" name="delivery_note[]" value="'.$prod->mrn_delivery_note.'" class="form-control text-center" readonly></td>
                                             <td class="text-center" ><input type="checkbox" name="product_select[]" id="'.$prod->rnp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                           
                                         </tr>';
