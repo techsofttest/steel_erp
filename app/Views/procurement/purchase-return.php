@@ -306,6 +306,26 @@
 
                                                             <!-- ### --> 
 
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2 margin_zero">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Vendor Reff</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="pr_vendor_reff" class="form-control  input_length" value="" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
                                                             
 
                                                             
@@ -834,6 +854,26 @@
                                     <!-- ### --> 
 
 
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2 margin_zero">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Vendor Reff</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="pr_vendor_reff" class="form-control  input_length" id="pr_vendor_reff" value="" required>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
 
 
                                 </div>
@@ -1116,6 +1156,27 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 <input type="text" name="edit_payment_term" class="form-control edit_payment_term input_length" >
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+                                     
+                                    
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2 margin_zero">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Vendor Reff</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="pr_vendor_reff" class="form-control  input_length" id="pr_vendor_reff_edit"  value="" required>
                                             </div>
 
                                         </div> 
@@ -2328,7 +2389,12 @@ $("body").on('keyup', '.add_prod_qty', function() {
 
                     $('.view_total_prod').val(data.total_amount);
 
+                    $('#pr_vendor_reff').val(data.vendor_reff);
+
+
                     $('.view_prod_data').html(data.purchase_return);
+
+                    
 
                     $('#ViewModal').modal("show");
                     
@@ -2387,6 +2453,8 @@ $("body").on('keyup', '.add_prod_qty', function() {
                         $('.edit_total_prod').val(data.total_amount);
 
                         $('.edit_prod_data').html(data.purchase_return);
+
+                        $('#pr_vendor_reff_edit').val(data.pr_vendor_reff);
 
                         $('#EditModal').modal("show");
                     

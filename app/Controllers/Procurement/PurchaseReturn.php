@@ -168,6 +168,8 @@ class PurchaseReturn extends BaseController
 
                 'pr_payment_term'    => $this->request->getPost('pr_payment_term'),
 
+                'pr_vendor_reff'    => $this->request->getPost('pr_vendor_reff'),
+
                 'pr_added_by'        => 0,
 
                 'pr_added_date'      => date('Y-m-d'),
@@ -797,6 +799,8 @@ class PurchaseReturn extends BaseController
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
 
+        $data['vendor_reff']   = $purchase_return->pr_vendor_reff;
+
         $data['total_amount']   = format_currency($purchase_return->pr_total_amount);
 
         /*$join =  array(
@@ -907,6 +911,9 @@ class PurchaseReturn extends BaseController
         //$data['contact_person'] = $purchase_return->pr_contact_person;
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
+
+        $data['pr_vendor_reff'] = $purchase_return->pr_vendor_reff;
+
 
         $data['total_amount']   = format_currency($purchase_return->pr_total_amount);
 
