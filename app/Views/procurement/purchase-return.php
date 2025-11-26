@@ -444,6 +444,7 @@
                                                     <th style="width: 80px !important;">Date</th>
                                                     <th>Vendor Name</th>
                                                     <th style="width: 85px !important;">Vendor Ref</th>
+                                                    <th style="width: 85px !important;">Amount</th>
                                                     <th style="width: 70px !important;">Actions</th>
                                                 </tr>
                                             </thead>
@@ -1548,17 +1549,18 @@
                 { data: 'pr_date'},
                 { data: 'pr_vendor_name'},
                 { data: 'pv_vendor_inv'},
-               
+                { data: 'pr_total_amount'},
                 { data: 'action'},
                 
                ],
                columnDefs: [
                 { targets: [0,1,2,4], className: "dt-body-center" },
+                { targets: [5], className: "dt-body-right" }
 				
               ],
               headerCallback: function(thead, data, start, end, display) {
                 
-                [0,1,2,4].forEach(function(i) {
+                [0,1,2,4,5].forEach(function(i) {
                     $(thead).find('th').eq(i).addClass('dt-head-center');
                 });
                 

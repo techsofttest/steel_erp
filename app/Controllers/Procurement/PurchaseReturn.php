@@ -75,12 +75,13 @@ class PurchaseReturn extends BaseController
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
            
             $data[] = array( 
-              "pr_id"          => $i,
-              'pr_reffer_id'   => $record->pr_reffer_id,
-              'pr_date'        => date('d-M-Y',strtotime($record->pr_date)),
-              'pr_vendor_name' => $record->cc_customer_name,
-              'pv_vendor_inv'  => $record->pv_vendor_inv,
-              "action"         => $action,
+              "pr_id"            => $i,
+              'pr_reffer_id'     => $record->pr_reffer_id,
+              'pr_date'          => date('d-M-Y',strtotime($record->pr_date)),
+              'pr_vendor_name'   => $record->cc_customer_name,
+              'pv_vendor_inv'    => $record->pv_vendor_inv,
+              'pr_total_amount'  => $record->pr_total_amount,
+              "action"           => $action,
             );
            $i++; 
            
