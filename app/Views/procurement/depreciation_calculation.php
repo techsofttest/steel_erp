@@ -1350,7 +1350,8 @@ table#DataTable td:nth-child(2) {
                     var formData = new FormData(currentForm);
                     var creditAccount = $('#credit_account_select').val();
                     var debitAccount = $('#debit_account_select').val();
-                    var depreciation = $('#total_amount').text();
+                    var depreciation = $('.edit_total_prod ').val();
+                    var current_balance = $('.currentbalance ').val();
 
                     $.ajax({
                         url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Add",
@@ -1381,6 +1382,7 @@ table#DataTable td:nth-child(2) {
                                         cfs_credit_account: creditAccount,
                                         cfs_debit_account: debitAccount,
                                         depreciation: depreciation,
+                                        current_balance: current_balance,
                                         ID: insertedId,
                                     },
                                     success: function(response) {
