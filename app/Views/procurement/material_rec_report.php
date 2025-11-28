@@ -417,7 +417,7 @@
                                                                             </td>
 
                                                                             <td class="rotate" style="width:500px">
-                                                                                <?php echo $orders->product_details; ?><br>
+                                                                                <?php echo $orders->rnp_product_desc; ?><br>
                                                                             </td>
                                                                             <td class="text-center rotate"
                                                                                 style="white-space: nowrap;width:80px">
