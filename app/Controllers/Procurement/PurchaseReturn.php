@@ -80,7 +80,7 @@ class PurchaseReturn extends BaseController
               'pr_date'          => date('d-M-Y',strtotime($record->pr_date)),
               'pr_vendor_name'   => $record->cc_customer_name,
               'pv_vendor_inv'    => $record->pv_vendor_inv,
-              'pr_total_amount'  => $record->pr_total_amount,
+              'pr_total_amount'  => format_currency($record->pr_total_amount),
               "action"           => $action,
             );
            $i++; 
