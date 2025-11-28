@@ -491,7 +491,7 @@ class MRN_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->product_details ?? '') . "</td>";
+                    $pdf_data .= "'>" . ($prod_del->rnp_product_desc ?? '') . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
