@@ -1504,7 +1504,7 @@ class PurchaseOrder extends BaseController
                                 
                                     <td style="width: 50%;">'.currency_to_words($purchase_order->po_amount).'</td>
 
-                                    <td style="font-weight: bold;width: 25%;" align="right">Qr - </td>
+                                    <td style="font-weight: bold;width: 25%;" align="right">Total Order Value Qr - </td>
                         
                                     <td style="font-weight: bold;" align="right">'.format_currency($purchase_order->po_amount).'</td>
 

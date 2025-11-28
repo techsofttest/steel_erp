@@ -148,7 +148,10 @@
                         <!--add purchase order modal start-->
                         <div class="modal fade" id="AddPurchaseOrder" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_po_form" data_fill="false">
+		                        <form  class="Dashboard-form class" id="add_po_form" data_fill="false" autocomplete="off">
+                                    <input type="text" style="display:none" autocomplete="off">
+                                    <input type="password" style="display:none" autocomplete="new-password">
+
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Purchase Order</h5>
@@ -361,7 +364,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="po_vendor_ref" class="form-control input_length " value="" required>
+                                                                        <input type="text" name="po_vendor_ref" class="form-control input_length " value=""  autocomplete="po-vendor-ref-avoid-autofill-xyz123" autocorrect="off" autocapitalize="off" required>
                                                                     </div>
 
                                                                 </div> 
@@ -372,6 +375,8 @@
 
                                                             <input type="hidden" class="hidden_purchase_id" name="po_id">
 
+
+                                                           
 
 
                                                         </div>
