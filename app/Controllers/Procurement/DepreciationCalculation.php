@@ -170,9 +170,10 @@ class DepreciationCalculation extends BaseController
             'dpc_account_head' => $this->request->getPost('dpc_account_head'),
             'dpc_debit_account' => $this->request->getPost('dpc_debit_account'),
             'dpc_credit_account' => $this->request->getPost('dpc_credit_account'),
-            'dpc_amount' => $this->request->getPost('dpc_amount'),
+            'dpc_amount' => str_replace(',', '', $this->request->getPost('dpc_amount')),
             'dpc_depreciation' => $this->request->getPost('dpc_depreciation'),
         ];
+        // print_r($insert_data);exit;
 
         // Insert main data
         $id = $this->common_model->InsertData('pro_depreciation_calculation', $insert_data);
@@ -255,10 +256,10 @@ class DepreciationCalculation extends BaseController
             $fixed_amount = (float)$fixed_amount;
             $cfs_last_yr_depreciation = (float)$asset->cfs_last_yr_depreciation;
 
-            //$fixed_amount -= $cfs_last_yr_depreciation;
+            $fixed_amount -= $cfs_last_yr_depreciation;
 
             
-            $fixed_amount -=  ($fixed_amount*$cfs_last_yr_depreciation)/100;
+            // $fixed_amount -=  ($fixed_amount*$cfs_last_yr_depreciation)/100;
 
 
             // Ensure $sel_date is in year format (extract only the year part)
@@ -667,7 +668,13 @@ class DepreciationCalculation extends BaseController
 
         $emp_journal = "";
 
+        $current_balance = $this->request->getPost( 'current_balance');
         $dep_amount = floatval($this->request->getPost('depreciation'));
+
+
+        $dep_amount = $dep_amount -  floatval(str_replace(',', '', $current_balance));
+
+        
         // echo $dep_amount;
         // exit;
 
@@ -759,8 +766,8 @@ class DepreciationCalculation extends BaseController
 
         $data['total_credit'] =  $data['total_debit'] = 0;
 
-        $j = 1;
-        foreach ($depreciation_det as $dept) {
+         $j = 1;
+        // foreach ($depreciation_det as $dept) {
 
 
             $data['jv_rows'] .= '
@@ -768,18 +775,18 @@ class DepreciationCalculation extends BaseController
         <tr class="jv_row">
                                   <th class="sl_no"> '.$j.' </th>
                                   <th class="select2_parent" width="35%"> 
-                                  <input type="text" class="form-control" name="jv_account[]" value="' . $dept->dpcd_description . '" readonly>
+                                  <input type="text" class="form-control" name="jv_account[]" value="' .  $debit_acc->ca_name . '" readonly>
                                   </th>
                                   <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-                                  <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="' . $dept->dpcd_depreciation_amt . '" readonly></th>
+                                  <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="' . $dep_amount  . '" readonly></th>
                                   <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
       </tr>
       ';
       
-      $data['total_debit'] += $dept->dpcd_depreciation_amt;
+      $data['total_debit'] = $dep_amount;
 
-      $j++;
-        }
+       $j++;
+    //     }
 
 
 

@@ -355,7 +355,7 @@ class PurchaseVoucherReport extends BaseController
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_vendor_inv}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pr_vendor_ref}</td>";
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->cc_customer_name}</td>";
                 

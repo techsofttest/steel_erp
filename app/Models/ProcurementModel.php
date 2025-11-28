@@ -9,7 +9,16 @@ use CodeIgniter\Database\ConnectionInterface;
 class ProcurementModel extends Model
 {
 
+
+
     protected $db;
+    // public $report_model;
+    
+    // public function __construct() {
+
+    //     $this->report_model = new \App\Models\ReportModel();
+    // }
+
 
     public function FetchWhereJoinGp($table, $cond, $joins, $group_by_col)
     {

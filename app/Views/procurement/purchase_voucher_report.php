@@ -801,7 +801,7 @@ span.select2.customer_width, span.select2{
                     return {
                         results: $.map(data.result, function (item) {
                             return {
-                                id: item.so_id,
+                                id: item.so_reffer_no,
                                 text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
                             };
                         }),

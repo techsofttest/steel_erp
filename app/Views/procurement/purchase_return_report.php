@@ -174,14 +174,14 @@ span.select2.customer_width, span.select2{
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
-                                                                            <tr>
+                                                                            <!-- <tr>
                                                                             <td style="width: 30%;" class="center_padding">Lpo Ref</td>
                                                                             <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref" >
                                                                                         <option value="" selected disabled>Select Lpo ref</option>
                                                                                     </select>
                                                                                 </td>
-                                                                            </tr>
+                                                                            </tr> -->
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Sales Order</td>
                                                                             <td style="width: 70%;"  colspan="4">
@@ -298,8 +298,9 @@ span.select2.customer_width, span.select2{
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor Ref</th>
                                                     <th class="" style="white-space: nowrap;width:300px">Vendor</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
+                                                    
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                 </tr>
                                             </thead>
@@ -315,17 +316,20 @@ span.select2.customer_width, span.select2{
                                                             <td class="text-center" style="width:70px"><?php echo date('d-M-Y', strtotime($pur_order->pr_date)); ?></td>
                                                             <td class="text-center" style="width:100px">
                                                                  <a href="<?php echo base_url().'Procurement/PurchaseReturn?view_so=' . $pur_order->pr_id; ?>" target="_blank"> 
-                                                                    <?php echo $pur_order->pr_reffer_id; ?></a>
+                                                                    <?php echo $pur_order->pr_vendor_ref; ?></a>
                                                             </td>
                                                             <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
                                                                                                                         echo $pur_order->pr_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';  } ?>
                                                             </td>
+
+                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pv_reffer_id; ?></td>
+                                                            
                                                             <td class="text-center" style="width:100px">
                                                                  <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> 
                                                                     <?php echo $pur_order->po_reffer_no ?? ''; ?>
                                                             </a></td>
-                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pv_reffer_id; ?></td>
-                                                            <td class="text-end" style="width:80px"><?php echo format_currency($pur_order->prp_amount); $total +=$pur_order->prp_amount; ?></td>
+                                                            
+                                                            <td class="text-end" style="width:80px"><?php echo format_currency($pur_order->pr_total_amount); $total +=$pur_order->pr_total_amount; ?></td>
                                                         </tr>
 
                                                 <?php $i++;
@@ -786,7 +790,7 @@ span.select2.customer_width, span.select2{
                     return {
                         results: $.map(data.result, function (item) {
                             return {
-                                id: item.so_id,
+                                id: item.so_reffer_no,
                                 text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
                             };
                         }),

@@ -178,6 +178,14 @@ class PurchaseReturnReport extends BaseController
                 'pk'    => 'pr_id',
                 'fk'    => 'prp_purchase_return_id',
             ),
+
+              array(
+                'table' => 'pro_purchase_voucher',
+                'pk'    => 'pv_id',
+                'fk'    => 'prp_voucher_id',
+            ),
+
+
             array(
                 'table' => 'crm_sales_orders',
                 'pk'    => 'so_reffer_no',
