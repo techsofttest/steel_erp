@@ -351,7 +351,7 @@ span.select2.customer_width, span.select2{
                                                                 <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank"><?php echo $pur_order->mrn_reffer; ?></a>
                                                                     </td>
 
-                                                            <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
+                                                            <td class="" style="white-space: wrap;width:300px"><?php foreach ($vendors as $vendor) {
                                                                                                                         echo $pur_order->mrn_vendor_name == $vendor->cc_id? $vendor->cc_customer_name : '';
                                                                                                                     } ?>
                                                             </td>
