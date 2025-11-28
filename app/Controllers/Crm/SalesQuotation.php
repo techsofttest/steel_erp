@@ -369,7 +369,9 @@ class SalesQuotation extends BaseController
 
         $data['reffer_no'] = $quotation_details->qd_reffer_no;
 
-        $data['date'] = $quotation_details->qd_date;
+        $data['date'] = date('d-M-Y',strtotime($quotation_details->qd_date));
+
+        //print_r($data['date']); exit();
 
         $data['customer'] = $quotation_details->cc_customer_name;
 
@@ -579,6 +581,19 @@ class SalesQuotation extends BaseController
 
         $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details',$cond,$joins);
 
+        
+
+        if (ctype_digit($quotation_details->qd_delivery_term)) {
+
+            $delivery_term = $quotation_details->dt_name;
+
+        }else{
+
+            $delivery_term =  $quotation_details->qd_delivery_term;
+
+        }
+
+
         $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
 
         $joins1 = array(
@@ -623,7 +638,7 @@ class SalesQuotation extends BaseController
 
         $data['payment_term']      = $quotation_details->qd_payment_term;
 
-        $data['delivery_term']     = $quotation_details->dt_name;
+        $data['delivery_term']     =  $delivery_term;
 
         $data['project']           = $quotation_details->qd_project;
 
@@ -1160,28 +1175,42 @@ class SalesQuotation extends BaseController
 
 
         $data['delivery_term']  ="";
-
-
-        foreach($delivery_term as $del_term)
-        {
-            $data['delivery_term'] .= '<option value="' .$del_term->dt_id. '"'; 
         
-            // Check if the current product head is selected
-            if ($del_term->dt_id   == $quotation_details->qd_delivery_term)
+        if (ctype_digit($quotation_details->qd_delivery_term)) {
+
+   
+            foreach($delivery_term as $del_term)
             {
-                $data['delivery_term'] .= ' selected'; 
+                $data['delivery_term'] .= '<option value="' .$del_term->dt_id. '"'; 
+            
+                // Check if the current product head is selected
+                if ($del_term->dt_id   == $quotation_details->qd_delivery_term)
+                {
+                    $data['delivery_term'] .= ' selected'; 
+                }
+            
+                $data['delivery_term'] .= '>' . $del_term->dt_name. '</option>';
             }
-        
-            $data['delivery_term'] .= '>' . $del_term->dt_name. '</option>';
+
+        }else{
+
+            $data['delivery_term']  = $quotation_details->qd_delivery_term;
+            
+
         }
+
+
+
+
+         $single_delevery_term = [
+            'qd_delivery_term' => $quotation_details->qd_delivery_term 
+        ];
+
 
 
         $data['payment_term']   = $quotation_details->qd_payment_term;
 
-        $single_delevery_term = [
-            'qd_delivery_term' => $quotation_details->qd_delivery_term // This is just an example, replace it with actual data
-        ];
-
+       
        
         $data['project']           = $quotation_details->qd_project;
 

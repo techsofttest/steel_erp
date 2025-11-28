@@ -1028,9 +1028,22 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select id="qd_edit_delivery_term_id" name="qd_delivery_term" class="edit_delivery_term form-select input_length" required></select>
-                                                                        
+                                                                        <select id="qd_edit_delivery_term_id" name="qd_delivery_term" class="edit_delivery_term form-select input_length select_delivery_term" required></select>
+
+                                                                        <!--<input type ="text"  name="qd_delivery_term" class="edit_delivery_term form-select input_length input_delivery_term">-->
+                                     
                                                                     </div>
+
+
+                                                                    
+                                                                        
+                                                                        
+                                                                           
+                                                                            
+
+                                                                    </select>
+
+
 
                                                                 </div> 
 
@@ -2094,7 +2107,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="date"  class="form-control view_date">
+                                                <input type="text"  class="form-control view_date">
                                             </div>
 
                                         </div>  
@@ -3680,11 +3693,39 @@
                         $(".edit_sales_exce").html(responseData.sales_exec);
 
                         $(".edit_contact_person").html(responseData.contact_person);
-
+                        
                         $(".edit_payment").val(responseData.payment_term);
 
                         $(".edit_delivery_term").html(responseData.delivery_term);
 
+                        /*if(/^\d+$/.test(responseData.delivery_term)){
+
+                            $(".edit_delivery_term").html(responseData.delivery_term);
+
+                           
+
+                            $('.input_delivery_term').hide();
+                        }
+                        else{
+
+                            $(".edit_delivery_term").val(responseData.delivery_term);
+
+                            $('.select_delivery_term').show();
+
+
+                        }*/
+
+                        /*if (ctype_digit(responseData.delivery_term)) {
+                            
+                            $(".edit_delivery_term").html(responseData.delivery_term);
+
+                        }
+                        else{
+
+                            $(".edit_delivery_term").val(responseData.delivery_term);
+                        }*/
+
+                        
                         $(".edit_project").val(responseData.project);
 
                         $(".edit_product-more").html(responseData.prod_details);

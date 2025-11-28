@@ -75,7 +75,7 @@ class SalesReturn extends BaseController
               'sr_date'         => date('d-M-Y',strtotime($record->sr_date)),
               'sr_customer'     => $record->cc_customer_name,
               'sr_invoice'      => $record->sr_invoice,
-              'sr_total'        => $record->sr_total,
+              'sr_total'        => format_currency($record->sr_total),
               'action'          => $action,
             );
 
