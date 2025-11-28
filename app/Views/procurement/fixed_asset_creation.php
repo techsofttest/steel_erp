@@ -1,6 +1,11 @@
 <style>
     .select2.select2-container {
         width: 100% !important;
+        text-align: center;
+    }
+    .select2-container {
+
+        text-align: center;
     }
 
     .cust_more_modal {
@@ -75,11 +80,14 @@
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         line-height: 36px;
+        white-space: wrap;
     }
 
     .select2-container--default .select2-selection--single .select2-selection__arrow {
         height: 35px;
     }
+
+ 
 </style>
 
 <div class="tab-content text-muted">
