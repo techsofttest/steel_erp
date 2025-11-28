@@ -382,7 +382,7 @@ span.select2.customer_width, span.select2{
 
 
                                                                             <td style="width:500px">
-                                                                                <?php echo $orders->product_details; ?><br>
+                                                                                <?php echo $orders->rnp_product_desc; ?><br>
                                                                             </td>
 
 
