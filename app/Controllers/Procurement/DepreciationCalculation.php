@@ -674,7 +674,7 @@ class DepreciationCalculation extends BaseController
 
         $dep_amount = $dep_amount -  floatval(str_replace(',', '', $current_balance));
 
-        
+
         // echo $dep_amount;
         // exit;
 
@@ -787,8 +787,6 @@ class DepreciationCalculation extends BaseController
 
        $j++;
     //     }
-
-
 
 
 
