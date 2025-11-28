@@ -82,7 +82,7 @@ class MaterialReceivedNote extends BaseController
               'mrn_purchase_order' => $record->po_reffer_no,
               'mrn_vendor_name'    => $record->cc_customer_name,
               'mrn_date'           => date('d-M-Y',strtotime($record->mrn_date)),
-              'mrn_total_amount'   => $record->mrn_total_amount,
+              'mrn_total_amount'   => format_currency($record->mrn_total_amount),
               "action"             => $action,
            );
            $i++; 
