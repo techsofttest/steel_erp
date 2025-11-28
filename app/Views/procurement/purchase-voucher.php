@@ -2941,6 +2941,10 @@ InitDebitSelectAdd1()
 
             InitDebitSelectAdd();
 
+            $('.total_table').attr("style", "width:228px !important");
+
+            $('td.total_label').attr("style", "width:35% !important");
+
         });
 
 
