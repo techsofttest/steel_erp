@@ -535,6 +535,11 @@ class PurchaseReturn extends BaseController
 
                 $originalPrice = $multipliedTotal - $per_amount;
 
+                //$originalPrice = ($product->pvp_rate * $current_qty) * (1 - ($product->pvp_discount / 100));
+
+               
+
+
 
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->pvp_id.'">
                                             <td class="si_no text-center">'.$j.'</td>

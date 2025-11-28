@@ -660,7 +660,7 @@
                                                                 <td><input type="text" name="qc_unit[0]"  class="form-control cost_unit_clz text-center" required></td>
                                                                 <td><input type="number" name="qc_qty[0]" class="form-control cost_qty_clz text-center" required></td>
                                                                 <td style="text-align: center;padding: 10px 10px;"><a href="javascript:void(0)" onclick="costVendor.call(this)">Click</a></td>
-                                                                <td><input type="text" name="qc_rate[0]"  class="form-control cost_rate_clz ktext-end" required autocomplete="new-password"></td>
+                                                                <td><input type="text" name="qc_rate[0]"  class="form-control cost_rate_clz text-end" required autocomplete="new-password"></td>
                                                                 
                                                                 <td><input type="text" name="qc_amount[0]" class="form-control cost_amount_clz text-end" readonly></td>
                                                                 <td><div class="tecs" style="text-align: center;"><span class="add_icon add_product3"><i class="ri-add-circle-line"></i> </span></div></td>
@@ -743,15 +743,15 @@
                                                 
                                                 
                                                 <!--table section start-->
-                                                <div class="mt-4">
+                                                <div class="mt-4 content_table">
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No.</td>
+                                                                <td style="width: 4%;" >SI</td>
                                                                 <td colspan="2">Cost Of Materials / Services</td>
-                                                                <td>Vendor</td>
-                                                                <td>Date</td>
-                                                                <td>Rate</td>
+                                                                <td style="width: 9%;">Vendor</td>
+                                                                <td style="width: 10%;">Date</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 
                                                             </tr>
                                                            

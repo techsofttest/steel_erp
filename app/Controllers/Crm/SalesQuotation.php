@@ -1946,11 +1946,11 @@ class SalesQuotation extends BaseController
         foreach($fetch_vendor as $fetch_ven){
            
             $data['prod_details'] .='<tr>
-            <td><input type="text"  value="'.$i.'" class="form-control " readonly></td>
-            <td colspan="2"><input type="text"  value="'.$fetch_ven->product_details.'" class="form-control" readonly></td>
-            <td><input type="text"  value="'.$fetch_ven->ven_name.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$fetch_ven->po_date.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$fetch_ven->pop_rate.'" class="form-control" readonly></td>
+            <td class="text-center">'.$i.'</td>
+            <td colspan="2">'.$fetch_ven->product_details.'</td>
+            <td class="text-center">'.$fetch_ven->ven_name.'</td>
+            <td class="text-center">'.date('d-M-Y',strtotime($fetch_ven->po_date)).'</td>
+            <td class="text-end">'.format_currency($fetch_ven->pop_rate).'</td>
            
             </tr>'; 
 
