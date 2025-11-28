@@ -78,7 +78,7 @@ class PurchaseOrder extends BaseController
               'po_reffer_no'  => $record->po_reffer_no,
               'po_mrn_reff'   => $record->mr_reffer_no,
               'ven_name'      => $record->cc_customer_name,
-              'po_amount'     => $record->po_amount,
+              'po_amount'     => format_currency($record->po_amount),
               'po_date'       => date('d-M-Y',strtotime($record->po_date)),
               "action"        => $action,
            );
@@ -548,7 +548,7 @@ class PurchaseOrder extends BaseController
                                             <td><input type="text" name="" value="'.$product->so_reffer_no.'" class="form-control text-center" readonly></td>
                                             <td style="text-align: left;padding:10px 10px;">'.$product->product_details.'</td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->mrp_unit.'" class="form-control text-center" readonly></td>
-                                            <td><input type="text" name="pop_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"></td>
+                                            <td><input type="text" name="pop_qty[]" value="'.format_currency($current_qty).'"  class="form-control add_prod_qty text-center" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"></td>
                                             <td><input type="text" name="pop_rate[]" value=""  class="form-control add_prod_rate text-end" required></td>
                                             <td><input type="text" name="pop_discount[]" value="" step="0.01" class="form-control add_discount text-center" min="0" max="100" onkeyup="MinMax(this)" required></td>
                                             <td><input type="text" name="pop_amount[]" value=""  class="form-control add_prod_amount text-end" readonly></td>
