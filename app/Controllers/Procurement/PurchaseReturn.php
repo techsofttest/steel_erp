@@ -193,7 +193,7 @@ class PurchaseReturn extends BaseController
             $updated_data = [
 
                
-               'pr_date'            => date('Y-m-d',strtotime($this->request->getPost('pr_date'))),
+                'pr_date'            => date('Y-m-d',strtotime($this->request->getPost('pr_date'))),
 
                 'pr_vendor_name'     => $this->request->getPost('pr_vendor_name'),
 
@@ -248,6 +248,7 @@ class PurchaseReturn extends BaseController
                             'prp_voucher_prod_id'     =>  $_POST['prp_id'][$j],
                             'prp_voucher_id'          =>  $_POST['prp_voucher_id'][$j],
                             'prp_purchase_return_id'  =>  $this->request->getPost('pr_id'),
+                            
                         );
 
                        

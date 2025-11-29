@@ -920,11 +920,11 @@ class CrmReportModel extends Model
 
             $result[$i]->journal_voucher        = $this->FetchJournalVoucher('accounts_journal_invoices',array('ji_sales_order_id' => $res->so_id));
 
-            $result[$i]->cash_invoice           = $this->FetchWhere('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
+            $result[$i]->cash_invoice           = $this->FetchCashInvoice('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
 
-            $result[$i]->credit_invoice         = $this->FetchWhere('crm_credit_invoice',array('cci_sales_order' => $res->so_id));
+            $result[$i]->credit_invoice         = $this->FetchCreditInvoice('crm_credit_invoice',array('cci_sales_order' => $res->so_id));
 
-            $result[$i]->sales_return          = $this->FetchWhere('crm_sales_return',array('sr_sales_order' => $res->so_id));
+            $result[$i]->sales_return           = $this->FetchWhere('crm_sales_return',array('sr_sales_order' => $res->so_id));
            
             $i++;
         }
@@ -934,21 +934,78 @@ class CrmReportModel extends Model
     }
 
 
-    public function FetchPurchaseVoucher($table,$cond){
- 
+    public function FetchCreditInvoice($table,$cond){
+
+
         $query = $this->db->table($table)
 
         ->select('*')
 
         ->where($cond);
 
+        $results = $query->get()->getResult();
+
+        $i=0;
+
+        foreach($results as $result){
+          
+          $results[$i]->credit_prod = $this->FetchWhere('crm_credit_invoice_prod_det',array('ipd_credit_invoice' => $result->cci_id  ));
+          $i++;
+        }
+        
+        
+
+        return $results;
+
+
+    }
+
+
+    public function FetchCashInvoice($table,$cond){
+           
+        $query = $this->db->table($table)
+
+        ->select('*')
+
+        ->where($cond);
+
+        $results = $query->get()->getResult();
+
+        $i=0;
+
+        foreach($results as $result){
+          
+          $results[$i]->cash_prod = $this->FetchWhere('crm_cash_invoice_prod_det',array('cipd_cash_invoice' => $result->ci_id ));
+          $i++;
+        }
+        
+        
+
+        return $results;
+
+    }
+
+
+    public function FetchPurchaseVoucher($table,$cond){
+ 
+        $query = $this->db->table($table)
+
+        ->select('*')
+    
+        ->where($cond);
+
         $query->join('pro_purchase_voucher','pro_purchase_voucher.pv_id =pro_purchase_voucher_prod.pvp_reffer_id','left');
 
-        $query->groupBy('pro_purchase_voucher.pv_reffer_id');
+        //$query->groupBy('pro_purchase_voucher.pv_reffer_id');
 
         $result = $query->get()->getResult();
 
         return $result;
+
+
+        
+
+    return $result;
 
     }
 
@@ -963,7 +1020,7 @@ class CrmReportModel extends Model
 
         $query->join('pro_purchase_return','pro_purchase_return.pr_id =pro_purchase_return_prod.prp_purchase_return_id','left');
 
-        $query->groupBy('pro_purchase_return.pr_reffer_id');
+        //$query->groupBy('pro_purchase_return.pr_reffer_id');
 
         $result = $query->get()->getResult();
 
@@ -1000,7 +1057,7 @@ class CrmReportModel extends Model
 
         $query->join('accounts_journal_vouchers','accounts_journal_vouchers.jv_id = accounts_journal_invoices.ji_voucher_id','left');
 
-        $query->groupBy('accounts_journal_vouchers.jv_voucher_no');
+        //$query->groupBy('accounts_journal_vouchers.jv_voucher_no');
 
         $result = $query->get()->getResult();
 
