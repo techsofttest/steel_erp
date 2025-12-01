@@ -330,9 +330,9 @@
                                                                 foreach ($pvList as $index => $pv) { ?> 
                                                                                 
                                                                 <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                     <?php if ($index == 0): ?>
+                                                                     <?php if ($index == 0){ ?>
                                                                     <td  style="width:100px" ><?= $pv->pv_reffer_id ?> </td>
-                                                                      <?php endif; ?>
+                                                                      <?php } else{?><td  style="width:100px" >&nbsp </td> <?php } ?>
                                                                 </tr>
 
                                                             <?php } } 
@@ -344,10 +344,10 @@
 
                                                                     foreach($pvList1 as $index => $pr){ ?> 
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
-                                                                    
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                                                         <?php if ($index == 0){ ?>
                                                                         <td  style="width:100px" ><?php echo $pr->pr_reffer_id; ?> </td>
-                                                                    
+                                                                        <?php } else{?><td  style="width:100px" >&nbsp </td> <?php } ?>
                                                                     
                                                                     </tr>
 
@@ -355,13 +355,16 @@
                                                                 <?php  }  }
 
                                                                 if(!empty($sales_order->petty_cash)){
-                                                                
-                                                                    foreach($sales_order->petty_cash as $p_cash){ ?>
 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
-                                                                    
-                                                                        <td  style="width:100px" ><?php echo $p_cash->pcv_voucher_no; ?> </td>
+                                                                    $pvList5 = $sales_order->petty_cash;
+                                                                    $rowCount5 = count($pvList5);
                                                                 
+                                                                    foreach($pvList5 as $index => $pc){ ?>
+
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                                                        <?php if ($index == 0){ ?>
+                                                                        <td  style="width:100px" ><?php echo $pc->pcv_voucher_no; ?> </td>
+                                                                        <?php } else{?><td  style="width:100px" >&nbsp </td> <?php } ?>
                                                                 
                                                                     </tr>  
 
@@ -374,10 +377,10 @@
                                                                     
                                                                     foreach($pvList2 as $index => $jv){ ?> 
                                                                       
-                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center">
-                                                                    
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                                                        <?php if ($index == 0){ ?>
                                                                         <td  style="width:100px" ><?php echo $jv->jv_voucher_no; ?> </td>
-                                                                
+                                                                         <?php } else{?><td  style="width:100px" >&nbsp </td> <?php } ?>
                                                                     </tr>  
                                                                     
                                                                     <?php } }
@@ -513,14 +516,12 @@
 
 
             <?php }
+
             if(!empty($sales_order->purchase_vouchers)){
-                
-                
+               
 
                 foreach ($sales_order->purchase_vouchers as $pur_vouch) { 
-                    
-                    
-                    
+                 
                 ?> 
                     
                     <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
@@ -536,9 +537,10 @@
 
             /* PURCHASE RETURN */
             if(!empty($sales_order->purchase_return_prod)){
+                
                 foreach($sales_order->purchase_return_prod as $pv_prod){ ?> 
 
-                    <tr style="background: unset;border-bottom: hidden !important;">
+                    <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
                         <td style="width:100px" class="text-end">
                             -<?php echo format_currency($pv_prod->prp_amount); ?>
                         </td>
@@ -553,7 +555,7 @@
             if(!empty($sales_order->petty_cash)){
                 foreach($sales_order->petty_cash as $p_cash){ ?>
 
-                    <tr style="background: unset;border-bottom: hidden !important;">
+                    <tr style="background: unset;border-bottom: hidden !important;" >
                         <td style="width:100px" class="text-end">
                             <?php echo format_currency($p_cash->pci_amount); ?>
                         </td>
