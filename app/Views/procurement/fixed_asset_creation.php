@@ -1,11 +1,11 @@
 <style>
     .select2.select2-container {
         width: 100% !important;
-        text-align: center;
+        /* text-align: center; */
     }
     .select2-container {
 
-        text-align: center;
+        /* text-align: center; */
     }
 
     .cust_more_modal {
