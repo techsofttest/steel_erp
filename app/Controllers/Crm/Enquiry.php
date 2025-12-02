@@ -349,17 +349,25 @@ class Enquiry extends BaseController
     {
         $cond = array('contact_customer_creation' => $this->request->getPost('ID'));
 
+       
+
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+
+        //print_r($contact_details); exit(); 
         
         $data['customer_name'] ="";
 
         $data['customer_name'] ='<option value="" selected disabled>Select Contact Person</option>';
 
-        foreach($contact_details as $con_det)
-        {
-            $data['customer_name'] .='<option class="droup_color" value='.$con_det->contact_id.'';
-           
-            $data['customer_name'] .='>' .$con_det->contact_person. '</option>'; 
+        if(!empty($contact_details)){
+
+            foreach($contact_details as $con_det)
+            {
+                $data['customer_name'] .='<option class="droup_color" value='.$con_det->contact_id.'';
+            
+                $data['customer_name'] .='>' .$con_det->contact_person. '</option>'; 
+            }
+
         }
 
         echo json_encode($data);

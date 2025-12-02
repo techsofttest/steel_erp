@@ -385,7 +385,7 @@ class SalesQuotation extends BaseController
 
         $data['payment_term'] = $quotation_details->qd_payment_term;
 
-        $data['delivery_term'] = $quotation_details->dt_name;
+        $data['delivery_term'] = $quotation_details->qd_delivery_term;
 
         $data['project'] = $quotation_details->qd_project;
 
@@ -1176,7 +1176,7 @@ class SalesQuotation extends BaseController
 
         $data['delivery_term']  ="";
         
-        if (ctype_digit($quotation_details->qd_delivery_term)) {
+       
 
    
             foreach($delivery_term as $del_term)
@@ -1184,7 +1184,7 @@ class SalesQuotation extends BaseController
                 $data['delivery_term'] .= '<option value="' .$del_term->dt_id. '"'; 
             
                 // Check if the current product head is selected
-                if ($del_term->dt_id   == $quotation_details->qd_delivery_term)
+                if ($del_term->dt_name   == $quotation_details->qd_delivery_term)
                 {
                     $data['delivery_term'] .= ' selected'; 
                 }
@@ -1192,12 +1192,7 @@ class SalesQuotation extends BaseController
                 $data['delivery_term'] .= '>' . $del_term->dt_name. '</option>';
             }
 
-        }else{
-
-            $data['delivery_term']  = $quotation_details->qd_delivery_term;
-            
-
-        }
+       
 
 
 

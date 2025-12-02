@@ -412,7 +412,7 @@
                                                                         <select id="qd_delivery_term_id" name="qd_delivery_term" class="delivery_term_clz input_length2" required>
                                                                             <option>Selected Disabled</option>
                                                                             <?php foreach($delivery_term as $delv_term){?> 
-                                                                                <option value="<?php echo $delv_term->dt_id;?>"><?php echo $delv_term->dt_name;?></option> 
+                                                                                <option value="<?php echo $delv_term->dt_name;?>"><?php echo $delv_term->dt_name;?></option> 
                                                                             <?php } ?>
                                                                             
 
