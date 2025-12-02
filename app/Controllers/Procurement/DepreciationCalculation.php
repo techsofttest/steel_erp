@@ -294,7 +294,7 @@ class DepreciationCalculation extends BaseController
                                 <td><input type="text" name="dpcd_description[]" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
                                 <td><input type="text" name="dpcd_acquired_date[]" value="' . $asset->cfs_acquired_date . '" class="form-control"  readonly></td>
                                 <td><input type="text" name="dpcd_amount[]" value="' .  format_currency($fixed_amount) . '" class="form-control"  style="text-align: end;" readonly></td>
-                                <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation_percent) . '%" class="form-control" style="text-align: end;"  readonly></td>
+                                <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation) . '%" class="form-control" style="text-align: end;"  readonly></td>
                                 <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control" style="text-align: end;"  readonly></td>
                                 <td><input type="text" name="dpcd_depreciation_amt[]" value="' .  format_currency($depreciation_amount) . '" class="form-control" style="text-align: end;" readonly></td>
                             </tr>';
