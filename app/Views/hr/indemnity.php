@@ -575,7 +575,8 @@
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl</th>
-                                <th>Date</th>
+                                <th >Date</th>
+                                <th >JV</th>
                                 <th>Debit Account</th>
                                 <th>Credit Account</th>
                                 <th>Total</th>
@@ -1144,11 +1145,13 @@
                 },
                 'columnDefs' : [
                     { width: '10px', targets: 0 },
-                    { width: '70px', targets: 1 },
+                    { width: '100px', targets: 1 },
+                    { width: '150px', targets: 3 },
                 ],
                 'columns': [
                     { data: 'id_id' },
                     { data : "vt_date"},
+                    { data : "jv"},
                     { data : "vt_debit_account" },
                     { data : "vt_credit_account" },
                     { data : "vt_total" },

@@ -3311,9 +3311,9 @@
                 },
                 'columnDefs' : [
                     { width: '10px', targets: 0 },
-                    { width: '50px', targets: 1 },
+                    { width: '100px', targets: 1 },
                     { width: '50px', targets: 3 },
-                    { width: '65px', targets: 5 },
+                    { width: '100px', targets: 5 },
                 ],
 
                 'columns': [
@@ -3339,12 +3339,15 @@
 
         $('.add_model_btn').click(function(){
 
-
             $('.added_id').val('');
 
             $('#add_form')[0].reset();
 
-            $('.add_form')[0].reset();
+            $('#salary_add_form')[0].reset();
+
+            $('#document_add_form')[0].reset();
+
+            $('.account_head_clz').val(null).trigger('change');
 
             $.ajax({
 

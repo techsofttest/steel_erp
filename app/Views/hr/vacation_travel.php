@@ -28,6 +28,8 @@
     word-wrap: break-word;      /* Ensure the text wraps if it's too long */
     }
 
+    
+
     </style>
     
 
@@ -45,6 +47,12 @@
 
     <!--sidebar section end-->
 
+
+    <style>
+    td.text-end {
+    padding: .55rem 6px !important;
+    }
+    </style>
     
     <!-- Vertical Overlay-->
     <div class="vertical-overlay"></div>
@@ -868,7 +876,7 @@
 
                             $('#total_amount_input').val(data.total_amount);
 
-                            $('#total_amount_view').html(data.total_amount);
+                            $('#total_amount_view').html(data.total_amount_view);
 
                             $('#jv_rows').html(data.jv_rows);
 
@@ -899,7 +907,7 @@
 
 
                         //$(".account_select2").select2({
-                        $('.account_select2').each(function() {
+                        $('.account_select2').each(function() {     
                         $(this).select2({   
                         placeholder: "Select Account",
                         theme : "default form-control-",
@@ -1140,7 +1148,7 @@
             datatable = $('#datatable').DataTable({
                 'stateSave': true,
                 'processing': true,
-                'serverSide': true,
+                'serverSide': true, 
                 'serverMethod': 'post',
                 'ajax': {
                     'url': "<?php echo base_url(); ?>HR/VacationTravel/FetchData",

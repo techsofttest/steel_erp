@@ -1532,7 +1532,7 @@ class CreditInvoice extends BaseController
         $del_data = [];
         foreach ($delivery_reffer as $del_reff) {
             $del_data[] = $del_reff->dn_reffer_no;
-        }
+        } 
         $del_data_string = implode(", ", $del_data);
 
         $date = date('d-M-Y', strtotime($credit_invoice->cci_date));

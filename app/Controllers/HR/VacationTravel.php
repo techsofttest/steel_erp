@@ -145,6 +145,8 @@ class VacationTravel extends BaseController
 
             $data['total_amount'] = 0;
 
+             $data['total_amount_view'] = 0;
+
             $slno=0;
 
             foreach($employees as $emp)
@@ -191,7 +193,7 @@ class VacationTravel extends BaseController
 
                     <td class='text-center'>".date('d M Y',strtotime($emp->emp_air_ticket_due_from))."</td>
 
-                    <td align='right'>{$emp->emp_budgeted_ticket_amount}</td>
+                    <td align='right'>".format_currency($emp->emp_budgeted_ticket_amount)."</td>
 
                     <td class='text-center'>{$emp->emp_air_ticket_per_year}</td>
 
@@ -199,7 +201,7 @@ class VacationTravel extends BaseController
 
                     <td class='text-center'>{$entitlement}</td>
 
-                    <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
+                    <td class='text-end'>".format_currency($amount)."</td>
 
                     </tr>
                 
@@ -212,6 +214,8 @@ class VacationTravel extends BaseController
             $jv_sl=0;
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+            $data['total_amount_view'] = format_currency($data['total_amount']);
 
             $data['jv_total'] = $data['total_amount']-$data['current_balance'];
 
@@ -351,24 +355,28 @@ class VacationTravel extends BaseController
 
                 $total_vacations = $total_vacations+$emp->emp_vacation_taken;
 
-                $ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from. "+ 1 day"));
+                $ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from));
 
 
-                $ticket_due_date_format = new DateTime($ticket_due_date);
+                //$ticket_due_date_format = new DateTime($ticket_due_date);
 
-                $selected_date_format = new DateTime($date);
+                //$selected_date_format = new DateTime($date);
 
-                $interval = $ticket_due_date_format->diff($selected_date_format);
+                //$interval = $ticket_due_date_format->diff($selected_date_format);
 
-                $diff = $interval->days;
+                //$diff = $interval->days;
 
-                //$diff = abs(strtotime($ticket_due_date) - strtotime($date));
+                //$entitlement = $diff;
 
-                //$years = floor($diff / (365*60*60*24));
-                //$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                //$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                $from = new DateTime($emp->emp_air_ticket_due_from); // Vacation Due From
+                $to   = new DateTime($date); // Selected Report Date
 
-                $entitlement = $diff;
+                $interval = $from->diff($to);
+
+                // Excel formula: (to - from) + 1
+                $entitlement = $interval->days + 1;
+
+                
 
                 $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
@@ -666,7 +674,7 @@ class VacationTravel extends BaseController
         'margin_left' => 5, 
         'margin_right' => 5,
         'margin_top' => 2,
-        'fontDir' => array_merge($fontDirs, [
+        /*'fontDir' => array_merge($fontDirs, [
             __DIR__ . '/fonts'
         ]),
         'fontdata' => $fontData + [
@@ -676,7 +684,7 @@ class VacationTravel extends BaseController
             ],
         ],
         'default_font' => 'bentonsans'
-        
+        */
     ]);
 
 
@@ -690,9 +698,8 @@ class VacationTravel extends BaseController
     <style>
 
     body {
-      font-family: bentonsans, sans-serif;
       margin: 40px;
-      font-size:12px;
+      font-size:7px;
     }
     h2 {
       text-align: center;
@@ -740,7 +747,7 @@ class VacationTravel extends BaseController
     }
 
     th, td {
-      padding: 2px 2px;
+      padding: 2px 5px;
       text-align: left;
     }
 
@@ -857,15 +864,15 @@ class VacationTravel extends BaseController
 
 <tr>
 
-<th align="center">SL #</th>
+<th align="center">Sl</th>
 
-<th align="center">Employee ID</th>
+<th align="center">Emp ID</th>
 
-<th align="center">Name</th>
+<th align="center" style="width:130px;">Name</th>
 
 <th align="center">Nationality</th>
 
-<th align="center">Designation</th>
+<th align="center" style="width:130px;">Designation</th>
 
 <th align="center">D O J</th>
 

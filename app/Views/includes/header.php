@@ -1095,12 +1095,12 @@ height:100% !important;
 
     td.text-end{
 
-        padding: 0px 6px !important;
+        padding: .55rem 6px !important;
     }
     
     td>.text-end{
 
-        padding: 0px 6px !important;
+        padding: .55rem 6px !important;
     }
     table.dataTable thead>tr>th.sorting:before, table.dataTable thead>tr>th.sorting_asc:before, table.dataTable thead>tr>th.sorting_desc:before, table.dataTable thead>tr>th.sorting_asc_disabled:before, table.dataTable thead>tr>th.sorting_desc_disabled:before, table.dataTable thead>tr>td.sorting:before, table.dataTable thead>tr>td.sorting_asc:before, table.dataTable thead>tr>td.sorting_desc:before, table.dataTable thead>tr>td.sorting_asc_disabled:before, table.dataTable thead>tr>td.sorting_desc_disabled:before {
         

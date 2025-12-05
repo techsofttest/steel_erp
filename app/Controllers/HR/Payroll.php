@@ -283,11 +283,11 @@ class Payroll extends BaseController
 
             <tr class="emp_row">
 
-                        <td>'.$ts->emp_uid.'</td>
+                        <td class="text-center">'.$ts->emp_uid.'</td>
 
-                        <td>'.$ts->emp_name.'</td>
+                        <td class="text-center">'.$ts->emp_name.'</td>
 
-                        <td>'.$ts->div_name.'</td>
+                        <td class="text-center">'.$ts->div_name.'</td>
 
                         <td class="text-end">'.format_currency(round($ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance, 2)).'</td>
 
@@ -1148,6 +1148,8 @@ class Payroll extends BaseController
     $timesheet_rows = "";
 
 
+    $ts_sl = 1;
+
     foreach($timesheets as $ts)
     {
 
@@ -1156,21 +1158,21 @@ class Payroll extends BaseController
     <tr>
     
 
-    <td>1</td>
+    <td align="center">'.$ts_sl.'</td>
 
-    <td>'.$ts->emp_uid.'</td>
+    <td align="center">'.$ts->emp_uid.'</td>
 
-    <td>'.$ts->emp_name.'</td>
+    <td align="left">'.$ts->emp_name.'</td>
 
-    <td>'.$ts->emp_qatar_id_no.'</td>
+    <td align="center">'.$ts->emp_qatar_id_no.'</td>
 
-    <td>'.$ts->emp_passport_no.'</td>
+    <td align="center">'.$ts->emp_passport_no.'</td>
 
-    <td>'.$ts->emp_designation.'</td>
+    <td align="center">'.$ts->emp_designation.'</td>
 
-    <td>'.date('d-M-Y', strtotime($ts->emp_date_of_join)).'</td>
+    <td align="center">'.date('d-M-Y', strtotime($ts->emp_date_of_join)).'</td>
 
-    <td>'.$ts->div_name.'</td>
+    <td align="center">'.$ts->div_name.'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_basic_salary).'</td>
 
@@ -1216,6 +1218,8 @@ class Payroll extends BaseController
     </tr>
 
     ';
+
+    $ts_sl++;
 
     }
 
@@ -1328,7 +1332,7 @@ class Payroll extends BaseController
     body {
       font-family: bentonsans, sans-serif;
       margin: 40px;
-      font-size:8px;
+      font-size:6px;
     }
     h2 {
       text-align: center;
@@ -1359,17 +1363,17 @@ class Payroll extends BaseController
 
     tr
     {
-    border: 1px solid #999;
+    border: 1px solid #000;
     }
     
     td
     {
-    border-right: 1px solid #999;
-    border-left: 1px solid #999;
+    border-right: 1px solid #000;
+    border-left: 1px solid #000;
     }
 
     th, td {
-      padding: 8px;
+      padding: 2px;
       text-align: left;
     }
 
@@ -1427,6 +1431,13 @@ class Payroll extends BaseController
     text-align:center;
     }
 
+    .header_tr th
+    {
+    border-right: 1px solid #000;
+    padding:3px 4px;
+    text-align:center;
+    }
+
     .section-title {
       font-weight: bold;
       margin-top: 30px;
@@ -1465,72 +1476,74 @@ class Payroll extends BaseController
         <body>
 
 
-        <table style="margin:0;" class="no-border-table">
+        <table style="margin-top:20px;" class="no-border-table">
 
-        <tr class="">
+         <tr class="" style="padding:0px; margin:0px;">
 
-        <td width="50%" align="center" style="font-size:8px">Staff salary for </td>
+        <td style="padding:0px; margin:0px;" width="50%" align="center" style="font-size:8px"></td>
 
-        <td width="50%" align="center" style="font-size:8px">Al Fuzail Engineering Services</td>
+        <td style="padding:0px; margin:0px;" width="50%" align="center" style="font-size:8px"></td>
+
+        </tr>
+
+        <tr class="" style="padding:0px; margin:0px;">
+
+        <td style="padding:0px; margin:0px;" width="50%" align="center" style="font-size:8px"><b>Staff salary for '.date('M',strtotime($month)).' '.date('Y',strtotime($year)).'</b></td>
+
+        <td style="padding:0px; margin:0px;" width="50%" align="center" style="font-size:8px"><b>Al Fuzail Engineering Services</b></td>
 
         </tr>
 
         </table>
 
          
-        <table>
+        <table style="margin-top:0px">
 
-        <tr class="">
+          <tr class="header_tr">
+            <th rowspan="2" style="padding:7px">Sl</th>
+            <th rowspan="2" style="width:40px;">Employee ID</th>
+            <th rowspan="2" style="width:120px;">Name</th>
+            <th rowspan="2">QID/Visa</th>
+            <th rowspan="2">Passport</th>
+            <th rowspan="2">Position</th>
+            <th rowspan="2">DOJ</th>
+            <th rowspan="2">Department</th>
+            <th rowspan="2">Basic Salary</th>
 
-        <th>Sl</th>
+            <!-- Leave group -->
+            <th colspan="5">Leave</th>
 
-        <th>Employee ID</th>
+            <!-- Overtime group -->
+            <th colspan="2">Overtime</th>
 
-        <th>Name</th>
+            <!-- Friday OT group -->
+            <th colspan="2">OT Friday</th>
 
-        <th>QID/Visa</th>
+            <th rowspan="2">HRA</th>
+            <th rowspan="2">Transp Allowance</th>
+            <th rowspan="2">Tel Allowance</th>
+            <th rowspan="2">Food Allowance</th>
+            <th rowspan="2">Other Allowance</th>
+            <th rowspan="2">Total Salary (Qr)</th>
+            <th rowspan="2">Net Salary (Qr)</th>
+        </tr>
 
-        <th>Passport</th>
+        <tr class="header_tr">
 
-        <th>Position</th>
+            <!-- Leave subcolumns -->
+            <th>Days</th>
+            <th>ML</th>
+            <th>NL</th>
+            <th>Vac</th>
+            <th>Amount</th>
 
-        <th>DOJ</th>
+            <!-- Overtime subcolumns -->
+            <th>Hours</th>
+            <th>Amount</th>
 
-        <th>Department</th>
-
-        <th>Basic Salary</th>
-
-        <th>Days</th>
-
-        <th>ML</th>
-
-        <th>NL</th>
-
-        <th>Vac</th>
-
-        <th>Amount</th>
-
-        <th>Normal Ot Hours</th>
-
-        <th>Normal Ot Amount</th>
-
-        <th>Friday Ot Hours</th>
-
-        <th>Friday Ot Amount</th>
-
-        <th>HRA</th>
-
-        <th>Transp Allowance</th>
-
-        <th>Tel Allowance</th>
-
-        <th>Food Allowance</th>
-
-        <th>Other Allowance</th>
-
-        <th>Total Salary (Qr)</th>
-
-        <th>Net Salary (Qr)</th>
+            <!-- Friday OT subcolumns -->
+            <th>Hours</th>
+            <th>Amount</th>
 
         </tr>
 

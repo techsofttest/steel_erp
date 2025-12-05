@@ -42,6 +42,17 @@
     line-height:1 !important;
 }
 
+select.timesheet-selectbox
+{
+    padding:0px !important;
+    text-align:center;
+}
+
+.employee-selector
+{
+    padding-right:5px !important;
+}
+
     </style>
     
 
@@ -754,7 +765,7 @@
                     <div class="row align-items-center mb-2">
 
 
-                    <div class="col-6">
+                    <div class="col-7">
 
                     <div class="row align-items-start justify-content-end">
 
@@ -764,7 +775,7 @@
 
                     </div> -->
 
-                    <div class="col-col-md-12 col-lg-12 select2-center" id="add_te_parent">
+                    <div class="col-col-md-12 col-lg-12 select2-center employee-selector" id="add_te_parent">
 
                     <select class="form-control add_te" name="employee" required>
 
@@ -777,13 +788,13 @@
                     </div>
 
 
-                    <div class="col-6">
+                    <div class="col-5">
 
-                    <div class="row align-items-start justify-content-start">
+                    <div class="row align-items-center justify-content-center" style="margin:0px;">
 
-                    <div class="col-col-md-7 col-lg-7">
+                    <div class="col-col-md-8 col-lg-8 p-0">
                        
-                    <select class="form-select " name="month"  required>
+                    <select class="form-select timesheet-selectbox" name="month"  required>
                     
 
                     <?php
@@ -834,9 +845,9 @@
                         
                     </div>
 
-                    <div class="col-col-md-5 col-lg-5 p-0">
+                    <div class="col-col-md-4 col-lg-4 p-0">
                        
-                    <select class="form-select " name="year"  required>
+                    <select class="form-select timesheet-selectbox" name="year"  required>
 
 
                     <?php for($m=date('Y');$m<=date('Y');$m++){ ?>
@@ -904,6 +915,8 @@
                     <div class="col-lg-12 text-center">
 
                     <a class="btn btn-success" id="test_btn" href="javascript:void(0);">Auto Fill</a>
+
+                    <a class="btn btn-success" id="vacation_btn" href="javascript:void(0);">Vacation</a>
 
                     </div>
 
@@ -2263,6 +2276,7 @@
                                 <th class="no-sort">Sl</th>
                                 <th>Emp ID</th>
                                 <th>Name</th>
+                                <th>Designation</th>
                                 <th>Month</th>
                                 <th>Year</th>
                                 <th>Amount</th>
@@ -2830,15 +2844,18 @@
                 'columnDefs' : [
                     { width: '10px', targets: 0 },
                     { width: '70px', targets: 1 },
-                    { width: '60px', targets: 3 },
-                    { width: '40px', targets: 4 },
-                    { width: '80px', targets: 5 },
+                    { width: '100px', targets: 2 },
+                    { width: '100px', targets: 3 },
+                    { width: '60px', targets: 4 },
+                    { width: '40px', targets: 5 },
                     { width: '80px', targets: 6 },
+                    { width: '100px', targets: 7 },
                 ],
                 'columns': [
                     { data: 'ts_id' },
                     { data : "employee_id"},
-                    { data : "employee_name" },
+                    { data : "employee_name"},
+                    { data : "designation"},
                     { data: 'month' },
                     { data : 'year'},
                     { data: 'total_salary'},
@@ -3311,12 +3328,14 @@
 
             }
 
-            if(selected=="Public Holiday")
+            if((selected=="Public Holiday")  || (selected=="Vacation"))
             {
 
             parent.find('input').removeAttr('required');
             
             }
+
+           
 
 
             $('#leave_total_amount').val(0);
@@ -3899,6 +3918,14 @@ $('#test_btn').click(function(){
 
 $('.time_from').not('.fri').val('07:00').trigger('change');
 $('.time_to').not('.fri').val('16:00').trigger('change');
+    
+})
+
+
+
+$('#vacation_btn').click(function(){
+
+$('.day_type').val(7).trigger('change');
     
 })
 

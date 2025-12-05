@@ -44,7 +44,13 @@ class Indemnity extends BaseController
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_indemnity','id_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
-        $joins = array();
+        $joins = array(
+            array(
+            'table' => 'accounts_journal_vouchers',
+            'pk' => 'jv_id',
+            'fk' => 'id_jv_id',
+            )
+        );
         ## Fetch records
         $records = $this->common_model->GetRecord('hr_indemnity','id_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
@@ -75,9 +81,10 @@ class Indemnity extends BaseController
         $data[] = array( 
               "id_id"=>$i,
               "vt_date" => date('d M Y',strtotime($record->id_date)),
+              "jv" => $record->jv_voucher_no,
               "vt_debit_account" => $debit_account,
               "vt_credit_account" => $credit_account,
-              "vt_total" => $record->id_total,
+              "vt_total" => format_currency($record->id_total),
               "action" =>$action,
         );
 

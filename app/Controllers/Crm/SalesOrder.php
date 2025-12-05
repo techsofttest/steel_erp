@@ -1607,7 +1607,7 @@ class SalesOrder extends BaseController
             $pdf_data = "";
              $k=1;
             foreach($product_details as $prod_det)
-            {   
+            {      
                 $rate = format_currency($prod_det->spd_rate);
 
                 $amount = format_currency($prod_det->spd_amount);
@@ -1820,7 +1820,7 @@ class SalesOrder extends BaseController
             $footer_common = '
             
 
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+                <table style="padding:2px;border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
 
                     <tr>
                     
@@ -1833,7 +1833,7 @@ class SalesOrder extends BaseController
 
                     <tr>
                     
-                        <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
+                        <td >Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
                         <td style="text-align:right;">Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
                 
 
@@ -1848,7 +1848,7 @@ class SalesOrder extends BaseController
             //Fix Footer
             $last_page_footer = '
               
-             <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-bottom:2px;">
+             <table class="footer-tables" style="padding:2px;border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-bottom:2px;">
             
                     <tr>
                         <td>Promised Date</td>
@@ -1874,7 +1874,7 @@ class SalesOrder extends BaseController
                 </table>
 
 
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;padding: 0">
+                <table class="footer-tables" style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
             
                     <tr>
                         <td style="width:12%" rowspan="2">Order Terms</td>
@@ -1894,18 +1894,15 @@ class SalesOrder extends BaseController
 
                         <td style="width:29%">'.$sales_order->qd_reffer_no.'</td>
 
-                        
-                        
-
                     </tr>
             
                 </table>
 
 
 
-                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+                <table class="footer-tables" style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
 
-                    <tr>
+                    <tr style="padding:2px">
                     
                         <td>Antony Raphel - Production In-charge</td>
                         <td style="text-align:right;">Justin Jose - Operations Manager</td>
@@ -1914,7 +1911,7 @@ class SalesOrder extends BaseController
                     </tr>
 
 
-                    <tr>
+                    <tr style="padding:2px">
                     
                         <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
                         <td style="text-align:right;">Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
@@ -1933,8 +1930,12 @@ class SalesOrder extends BaseController
 
 
             $main_table = '<style>
-                    th, td { font-size: 12px; }
+                    th, td {font-size: 12px;}
                     p { font-size: 12px; margin-bottom: 13px; }
+                    .footer-tables tr
+                    {
+                    padding:2px;    
+                    }
                 </style>
 
                 <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
@@ -1969,9 +1970,12 @@ class SalesOrder extends BaseController
 
                //$mpdf->WriteHTML($footer_common, \Mpdf\HTMLParserMode::HEADER_CSS);
 
+
+              
+
                $mpdf->SetHTMLHeader($header_html);
                
-               $mpdf->SetHTMLFooter($footer_common);
+               $mpdf->WriteHTML($footer_common);
 
                 // $mpdf->SetAutoPageBreak(true, 50);
 

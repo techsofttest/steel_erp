@@ -29,6 +29,12 @@
     word-wrap: break-word;      /* Ensure the text wraps if it's too long */
 }
 
+select.payroll-select
+{
+    padding:5px !important;
+    text-align:center;
+}
+
     </style>
     
 
@@ -194,9 +200,9 @@
                     <div class="row align-items-center mb-2" id="add_ah_parent">
 
 
-                    <div class="col-col-md-6 col-lg-6">
+                    <div class="col-col-md-6 col-lg-4">
                        
-                    <select class="form-select " name="month"  required>
+                    <select class="form-select payroll-select" name="month"  required>
                     
                     <?php foreach($months as $key=>$month){ ?>
                     <option value="<?= $key ?>"><?= $month ?></option>
@@ -207,9 +213,9 @@
                     </div>
 
 
-                    <div class="col-col-md-6 col-lg-6">
+                    <div class="col-col-md-6 col-lg-4">
                        
-                    <select class="form-select " name="year"  required>
+                    <select class="form-select payroll-select" name="year"  required>
 
 
                     <?php for($m=2000;$m<=date('Y');$m++){ ?>
@@ -271,11 +277,11 @@
 
                         <tr>
 
-                        <th>Employee ID</th>
+                        <th class="text-center">Employee ID</th>
 
-                        <th>Employee Name</th>
+                        <th class="text-center">Employee Name</th>
 
-                        <th class="">Division</th>
+                        <th class="text-center">Division</th>
 
                         <th class="text-end" style="width: 10%;">Salary</th>
                         <th class="text-end" style="width: 10%;">Leave</th>
@@ -312,7 +318,7 @@
 
                                 <tr>
 
-                                <td align="right">Staff Salary</td> 
+                                <td align="right" width="90%">Staff Salary</td> 
 
                                 <th class="text-end" id="staff_salary_add"></th>
 
@@ -629,7 +635,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text"  name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
+                            <input type="text"  name="jv_date" class="form-control datepicker_ap journal_datepicker" value="<?= date('d M Y') ?>" required>
 
                             </div>
 
@@ -1020,6 +1026,35 @@
 
         /*###*/
 
+
+
+        
+
+        $('.journal_datepicker').change(function(){
+
+        var date = $(this).val();
+
+        var year = date.substring(0, 4);   // "2025"
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+date,
+
+        method : "GET",
+
+        success:function(data)
+        {
+
+        alert(data);
+
+        $('#uid').val(data);
+
+        }
+
+        });
+        
+
+        });
 
 
 

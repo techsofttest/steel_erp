@@ -250,7 +250,15 @@ class Employees extends BaseController
             $update_data['emp_passport_no'] = $this->request->getPost('passport_no');
             $update_data['emp_passport_expiry'] = date('Y-m-d',strtotime($this->request->getPost('passport_expiry')));
             $update_data['emp_visa_no'] = $this->request->getPost('visa_no');
-            $update_data['emp_visa_expiry'] = date('Y-m-d',strtotime($this->request->getPost('visa_expiry')));
+
+            $visaExpiryPost = trim($this->request->getPost('visa_expiry'));
+            
+            $update_data['emp_visa_expiry'] = !empty($visaExpiryPost)
+            ? date('Y-m-d', strtotime($visaExpiryPost))
+            : null;
+
+
+
             $update_data['emp_qatar_id_no'] = $this->request->getPost('qatar_id');
             $update_data['emp_qatar_id_expiry'] = date('Y-m-d',strtotime($this->request->getPost('qid_expiry')));
             $update_data['emp_contract_expiry'] = date('Y-m-d',strtotime($this->request->getPost('contract_expiry')));
@@ -447,7 +455,13 @@ class Employees extends BaseController
             $update_data['emp_passport_no'] = $this->request->getPost('passport_no');
             $update_data['emp_passport_expiry'] = date('Y-m-d',strtotime($this->request->getPost('passport_expiry')));
             $update_data['emp_visa_no'] = $this->request->getPost('visa_no');
-            $update_data['emp_visa_expiry'] = date('Y-m-d',strtotime($this->request->getPost('visa_expiry')));
+
+            $visaExpiryPost = trim($this->request->getPost('visa_expiry'));
+
+            $update_data['emp_visa_expiry'] = !empty($visaExpiryPost)
+            ? date('Y-m-d', strtotime($visaExpiryPost))
+            : null;
+            
             $update_data['emp_qatar_id_no'] = $this->request->getPost('qatar_id');
             $update_data['emp_qatar_id_expiry'] = date('Y-m-d',strtotime($this->request->getPost('qid_expiry')));
             $update_data['emp_contract_expiry'] = date('Y-m-d',strtotime($this->request->getPost('contract_expiry')));
@@ -526,6 +540,15 @@ class Employees extends BaseController
 
     if(!empty($data['employee']->emp_vacation_pay_due_from))
     $data['employee']->emp_vacation_pay_due_from = date('d-F-Y',strtotime($data['employee']->emp_vacation_pay_due_from));
+
+    if(!empty($data['employee']->emp_visa_expiry))
+    {
+    $data['employee']->emp_visa_expiry = date('d-F-Y',strtotime($data['employee']->emp_visa_expiry));
+    }
+    else
+    {
+    $data['employee']->emp_visa_expiry = null;
+    }
 
     echo json_encode($data);
 

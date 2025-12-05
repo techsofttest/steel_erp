@@ -78,6 +78,7 @@ class TimeSheets extends BaseController
               "ts_id"=>$i,
               "employee_id" => $record->emp_uid,
               "employee_name" => $record->emp_name,
+              "designation" => $record->emp_designation,
               "month" => $monthName,
               "year" => $record->ts_year,
               "total_salary" => format_currency($record->ts_cur_month_salary),
@@ -1115,11 +1116,11 @@ class TimeSheets extends BaseController
     $total_deductions = $ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation+$ts->ts_cur_month_leave;
 
 
-    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-    $fontDirs = $defaultConfig['fontDir'];
+    //$defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    //$fontDirs = $defaultConfig['fontDir'];
 
-    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-    $fontData = $defaultFontConfig['fontdata'];
+    //$defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    //$fontData = $defaultFontConfig['fontdata'];
 
 
     $mpdf = new \Mpdf\Mpdf([
@@ -1128,7 +1129,7 @@ class TimeSheets extends BaseController
         'margin_left' => 5, 
         'margin_right' => 5,
         'margin_top' => 7,
-        'fontDir' => array_merge($fontDirs, [
+        /*'fontDir' => array_merge($fontDirs, [
             __DIR__ . '/fonts'
         ]),
         'fontdata' => $fontData + [
@@ -1137,7 +1138,7 @@ class TimeSheets extends BaseController
                 'B' => 'FreeSerifBold.ttf',
             ],
         ],
-        'default_font' => 'bentonsans'
+        'default_font' => 'bentonsans'*/
         
     ]);
 
@@ -1148,7 +1149,6 @@ class TimeSheets extends BaseController
   
     <style>
     body {
-      font-family: bentonsans, sans-serif;
       margin: 40px;
       font-size:12px;
     }
@@ -1296,19 +1296,21 @@ class TimeSheets extends BaseController
 
 <tr>
 
-<td rowspan="2" width="15%">
-<img src="'.base_url().'assets/images/logo-sm.png">
+<td rowspan="2" width="15%" style="background-color:white;">
+<!--<img src="'.base_url().'assets/images/logo-sm.png">-->
+ <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" 
+         style="display:block; width:80px; height:80px;" alt="">
 </td>
 
-<td width="85%" style="line-height:1.8;">
+<td width="85%" style="line-height:1.8;" >
 
-<h2 style="text-align:left;" class="logo-text">AL FUZAIL ENGINEERING SERVICES WLL</h2>
+<h2 style="text-align:left;" class="logo-text" style="color:white">AL FUZAIL ENGINEERING SERVICES WLL</h2>
 
-<p>Tel : +974 4460 4254, Fax : +974 4029 8994</p>
+<p style="color:white">Tel : +974 4460 4254, Fax : +974 4029 8994</p>
 
-<p style="">Post Box : 201978, Doha - State of Qatar</p>
+<p style="color:white">Post Box : 201978, Doha - State of Qatar</p>
 
-<p style="">engineering@alfuzailgroup.com, www.alfuzailgroup.com</p>
+<p style="color:white">engineering@alfuzailgroup.com, www.alfuzailgroup.com</p>
 
 </td>
 

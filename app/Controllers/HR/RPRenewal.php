@@ -200,17 +200,17 @@ class RPRenewal extends BaseController
                     <input type='hidden' name='amount[]' value='{$amount}'>
                     
 
-                    <td class='text-end'>{$slno}</td>
+                    <td class='text-center'>{$slno}</td>
                     
-                    <td class='text-end'>{$emp->emp_uid}</td>
+                    <td class='text-center'>{$emp->emp_uid}</td>
 
                     <td class='text-start'>{$emp->emp_name}</td>
 
-                    <td class='text-end'>{$emp->emp_qatar_id_no}</td>
+                    <td class='text-center'>{$emp->emp_qatar_id_no}</td>
 
-                    <td class='text-end'>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
+                    <td class='text-center'>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
 
-                    <td class='text-end'>".date('d M Y',strtotime($emp->emp_qatar_id_expiry))."</td>
+                    <td class='text-center'>".date('d M Y',strtotime($emp->emp_qatar_id_expiry))."</td>
 
                     <td class='text-end'>1,220.00</td>
                     

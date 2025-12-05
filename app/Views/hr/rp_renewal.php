@@ -423,12 +423,12 @@
                     <thead>
                     
                     <tr>
-                        <td class="">Sl No</td>
-                        <td class="">Employee ID</td>
+                        <td class="text-center">Sl No</td>
+                        <td class="text-center">Employee ID</td>
                         <td class="text-center">Name</td>
-                        <td class="text-end">QID Number</td>
-                        <td class="text-end">Date Of Joining</td>
-                        <td class="text-end">ID Expiry Date</td>
+                        <td class="text-center">QID Number</td>
+                        <td class="text-center">Date Of Joining</td>
+                        <td class="text-center">ID Expiry Date</td>
                         <td class="text-end">Charges</td>
                         <td class="text-end">Entitlement</td>
                         <td class="text-end">Amount</td>
