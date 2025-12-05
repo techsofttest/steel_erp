@@ -977,4 +977,21 @@
 </script>
 
 
+<script>
+
+function disableAutoComplete() {
+    document.querySelectorAll('form').forEach(form => {
+        form.setAttribute('autocomplete', 'off');
+    });
+
+    document.querySelectorAll('input').forEach(input => {
+        input.setAttribute('autocomplete', 'off');
+    });
+}
+
+document.addEventListener('DOMContentLoaded', disableAutoComplete);
+
+</script>
+
+
 
