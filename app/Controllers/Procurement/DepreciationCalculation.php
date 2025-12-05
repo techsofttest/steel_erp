@@ -254,7 +254,10 @@ class DepreciationCalculation extends BaseController
             // echo ' | '.$fixed_amount.'  |  ';
 
             $fixed_amount = (float)$fixed_amount;
-            $cfs_last_yr_depreciation = (float)$asset->cfs_last_yr_depreciation;
+            $cfs_last_yr_depreciation = (float) preg_replace('/,/', '', $asset->cfs_last_yr_depreciation);
+
+
+            // echo $fixed_amount.' = '.$cfs_last_yr_depreciation;exit;
 
             $fixed_amount -= $cfs_last_yr_depreciation;
 
