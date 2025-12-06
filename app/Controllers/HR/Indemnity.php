@@ -124,11 +124,10 @@ class Indemnity extends BaseController
 
         {
         
-            $serializedData = $this->request->getPost('journal_form');
-            $formData = [];
-            parse_str($serializedData, $formData);
+            //$serializedData = $this->request->getPost('journal_form');
+            //$formData = [];
+            //parse_str($serializedData, $formData);
 
-           
             $credit_account = $this->request->getPost('credit_account');
 
             $debit_account = $this->request->getPost('debit_account');
@@ -231,6 +230,8 @@ class Indemnity extends BaseController
 
         $insert_journal['jv_added_date'] = date('Y-m-d');
 
+        //print_r($insert_journal); exit;
+
         $journal_id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_journal);
 
         $indem_id = $this->common_model->InsertData('hr_indemnity',$insert_indemnity);
@@ -259,11 +260,11 @@ class Indemnity extends BaseController
 
         //Insert Journal invoices
         
-            for ($ji = 0; $ji < count($formData['jv_account']); $ji++) {
-                $account = $formData['jv_account'][$ji];
-                $debit = !empty($formData['jv_debit'][$ji]) ? $formData['jv_debit'][$ji] : 0;
-                $credit = !empty($formData['jv_credit'][$ji]) ? $formData['jv_credit'][$ji] : 0;
-                $narration = $formData['jv_remarks'][$ji] ?? '';
+            for ($ji = 0; $ji < count($_POST['jv_account']); $ji++) {
+                $account = $_POST['jv_account'][$ji];
+                $debit = !empty($_POST['jv_debit'][$ji]) ? $_POST['jv_debit'][$ji] : 0;
+                $credit = !empty($_POST['jv_credit'][$ji]) ? $_POST['jv_credit'][$ji] : 0;
+                $narration = $_POST['jv_remarks'][$ji] ?? '';
 
                 $insert_journal_invoice = [
                     'ji_voucher_id' => $journal_id,

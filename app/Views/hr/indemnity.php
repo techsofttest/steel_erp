@@ -687,7 +687,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text"  name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
+                            <input type="text" id="jvdate"  name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
 
                             </div>
 
@@ -946,18 +946,27 @@
 
         e.preventDefault();
 
-        var journal_form = $(this).serialize();
+        //var journal_form = $(this).serialize();
 
-        var credit_account = $('#credit_account').val();
+        //var credit_account = $('#credit_account').val();
 
-        var debit_account = $('#debit_account').val();
+        //var debit_account = $('#debit_account').val();
 
-        var date = $('#date').val();
+        //var date = $('#date').val();
+
+        var formData = new FormData(this); // takes all form inputs automatically
+
+        formData.append('credit_account', $('#credit_account').val());
+        formData.append('debit_account', $('#debit_account').val());
+        formData.append('date', $('#date').val());
 
         $.ajax({
             url: "<?php echo base_url(); ?>HR/Indemnity/AddJournal",
             method: "POST",
-            data: {journal_form:journal_form,credit_account:credit_account,debit_account:debit_account,date:date},
+            //data: {journal_form:journal_form,credit_account:credit_account,debit_account:debit_account,date:date},
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function(data) 
             {
                 var data = JSON.parse(data);
@@ -1063,7 +1072,7 @@
             $('#save_to_jv_btn').click(function(){
 
             //Fetch the date from the date_view element and convert it to year only
-            var dateText = $('#date').val();
+            var dateText = $('#jvdate').val();
             var date = '';
             if (dateText) {
                 var parsedDate = new Date(dateText);
@@ -1072,10 +1081,9 @@
                 }
             }
 
-
             $.ajax({
 
-            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/e/"+date+"",
+            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+date+"",
 
             method : "GET",
 
@@ -1146,6 +1154,7 @@
                 'columnDefs' : [
                     { width: '10px', targets: 0 },
                     { width: '100px', targets: 1 },
+                    { width: '100px', targets: 2 },
                     { width: '150px', targets: 3 },
                 ],
                 'columns': [
