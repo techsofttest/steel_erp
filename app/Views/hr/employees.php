@@ -1328,9 +1328,9 @@
 
             <tr>
 
-            <th></th>
+            <th class="border-none"></th>
 
-            <td colspan="2"></td>
+            <td colspan="2" class="border-none"></td>
 
             <th>Indemnity Advance</th>
 
