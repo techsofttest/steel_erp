@@ -168,10 +168,12 @@ class HRModel extends Model
 
 
 
-    public function FetchVacationTotal($date)
+    public function FetchVacationTotal($date,$emp_id)
     {
 
     $query = $this->db->table('hr_timesheets');
+
+    $query->where('ts_emp_id',$emp_id);
 
     $query->selectSum('ts_vacation','total_vacation');
 

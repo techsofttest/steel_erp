@@ -531,9 +531,9 @@ class Employees extends BaseController
 
     $this->hr_model = new \App\Models\HRModel();
 
-    $total_vacations = $this->hr_model->FetchVacationTotal(date('Y-m-d'));
+    $total_vacations = $this->hr_model->FetchVacationTotal(date('Y-m-d'),$id);
 
-    $data['employee']->total_vacations = $total_vacations;
+    $data['employee']->total_vacations = $total_vacations + $data['employee']->emp_vacation_taken;
 
     if(!empty($data['employee']->emp_air_ticket_due_from))
     $data['employee']->emp_air_ticket_due_from = date('d-F-Y',strtotime($data['employee']->emp_air_ticket_due_from));

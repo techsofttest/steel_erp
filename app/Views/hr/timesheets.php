@@ -25,6 +25,30 @@
 {
     vertical-align:middle;
     text-align:center;
+    border:1px solid black;
+    padding:2px !important;
+}
+
+#month_days_row .form-control
+{
+    border:none !important;
+}
+
+.month_header
+{
+    vertical-align: middle;
+    border: 1px solid black;
+
+}
+
+.month_header th
+{
+    border: 1px solid black;
+}
+
+#month_days_row tr
+{
+    border:1px solid black;
 }
 
 .day_row input,select
@@ -912,7 +936,7 @@ select.timesheet-selectbox
                     <div class="row align-items-start form_sec" id="timesheet_sec" style="display:none;">
 
 
-                    <div class="col-lg-12 text-center">
+                    <div class="col-lg-12 text-center my-3">
 
                     <a class="btn btn-success" id="test_btn" href="javascript:void(0);">Auto Fill</a>
 
@@ -923,7 +947,7 @@ select.timesheet-selectbox
                     <div class="col-lg-12">
 
 
-                        <table class="table table-bordered">
+                        <table class="table">
 
 
                         <tr class="month_header">

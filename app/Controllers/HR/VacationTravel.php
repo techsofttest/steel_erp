@@ -155,7 +155,7 @@ class VacationTravel extends BaseController
                 $slno++;
 
 
-                $total_vacations = $this->hr_model->FetchVacationTotal($date);
+                $total_vacations = $this->hr_model->FetchVacationTotal($date,$emp->emp_id);
 
                 $total_vacations = $total_vacations+$emp->emp_vacation_taken;
 
@@ -179,6 +179,8 @@ class VacationTravel extends BaseController
                 $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
                 $amount = $amount/365;
+
+                $amount = round($amount);
                                 
 
                 $data['emp_row'] .="
@@ -214,6 +216,8 @@ class VacationTravel extends BaseController
             $jv_sl=0;
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+            //$data['total_amount'] = 
 
             $data['total_amount_view'] = format_currency($data['total_amount']);
 
@@ -412,7 +416,7 @@ class VacationTravel extends BaseController
 
         $insert_vacation_travel['vt_current_balance'] = $data['current_balance'];
        
-        $insert_vacation_travel['vt_total'] = $data['total_amount'];
+        $insert_vacation_travel['vt_total'] = round($data['total_amount']);
         
 
         //Insert Journal voucher

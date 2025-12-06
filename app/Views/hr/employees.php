@@ -1040,6 +1040,36 @@
 
  <!-- View Modal Start -->
 
+ <style>
+
+.emp-table th
+{
+    border:1px solid black;
+}
+
+.emp-table td
+{
+    border:1px solid black;
+}
+
+.emp-no-border th
+{
+
+    border:none;
+
+}
+
+
+
+.emp-no-border td
+{
+    
+    border:none;
+
+}
+
+ </style>
+
     <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
             
@@ -1054,21 +1084,17 @@
     <div class="row">
         
 
-    <table class="table table-bordered">
+    <table class="table table-bordered emp-table">
 
             <tbody>
 
-            <tr>
+            <tr class="emp-no-border">
 
             <th colspan="5" style="font-size:20px;font-weight:bold;text-align:center">Employee Details</th>
 
             </tr>
 
-            <tr>
-
-            <td colspan="2" id="view_employee_id" valign="middle" style="font-size:35px;"></td>
-
-            <td colspan="2" id="view_name" valign="middle" style="font-size:35px;"></td>
+            <tr class="emp-no-border">
 
             <td colspan="" align="right">
 
@@ -1076,25 +1102,22 @@
 
             </td>
 
+            <td colspan="3" valign="middle" style="">
 
-            </tr>
+            <p id="view_employee_id"></p>
 
-         
-            <tr>
+            <p id="view_name"></p>
 
-            <th>Contact Number</th>
+            <p id="view_designation"></p>
 
-            <td colspan="2" id="view_contact_no"></td>
+            <p id="view_contact_no"></p>
 
+            <p id="view_home_contact"></p>
 
-            <th>Home Country Contact</th>
-
-            <td colspan="2" id="view_home_contact"></td>
-            
+            </td>
 
 
             </tr>
-
 
 
 
@@ -1115,15 +1138,9 @@
 
             <tr>
 
-            <th>Designation</th>
-
-            <td colspan="2"  id="view_designation"></td>
-
-
             <th>Nationality</th>
 
             <td colspan="2" id="view_nationality"></td>
-
 
             </tr>
 
@@ -1145,7 +1162,7 @@
 
             <th>Basic Salary</th>
 
-            <td colspan="2" id="" align="">
+            <td colspan="2" id="" align="right">
 
             <p id="view_basic_salary" style="width:70%;text-align:right;"></p>
 
@@ -1154,7 +1171,7 @@
 
             <th>Mode Of Payment</th>
 
-            <td colspan="2" id="view_mop"></td>
+            <td colspan="2" id="view_mop" align="right"></td>
 
 
             </tr>
@@ -1164,7 +1181,7 @@
 
             <th>House Rent Allowance</th>
 
-            <td colspan="2" id="" align="">
+            <td colspan="2" id="" align="right">
 
             <p id="view_hra" style="width:70%;text-align:right;"></p>
 
@@ -1183,7 +1200,7 @@
 
             <th>Transportation Allowance</th>
 
-            <td colspan="2" id="" align="">
+            <td colspan="2" id="" align="right">
 
             <p id="view_transport_allow" style="width:70%;text-align:right;"></p>
 
@@ -1202,7 +1219,7 @@
 
             <th>Telephone Allowance</th>
 
-            <td colspan="2" id="" align="">
+            <td colspan="2" id="" align="right">
 
             <p id="view_tel_allow" style="width:70%;text-align:right;"></p>
 
@@ -1223,7 +1240,7 @@
 
             <th>Food Allowance</th>
 
-            <td colspan="2" id="" align="">
+            <td colspan="2" id="" align="right">
 
             <p id="view_food_allowance" style="width:70%;text-align:right;"></p>
 
@@ -1232,7 +1249,7 @@
 
             <th>Budgeted Ticket Amount</th>
 
-            <td colspan="2" id="view_budgeted_ticket_amount"></td>
+            <td colspan="2" id="view_budgeted_ticket_amount" align="right"></td>
 
 
             </tr>
@@ -1245,7 +1262,7 @@
 
             <th>Other Allowance</th>
 
-            <td colspan="2" id="">
+            <td colspan="2" id="" align="right">
 
             <p id="view_other_allowance" style="width:70%;text-align:right;"></p>
 
@@ -1267,7 +1284,7 @@
 
            <th>Total Salary</th>
 
-            <td colspan="2" >
+            <td colspan="2" align="right">
 
             <p id="view_total_salary" style="width:70%;text-align:right;"></p>
 
@@ -1275,7 +1292,7 @@
 
             <th>Vacation Taken</th>
 
-            <td colspan="2"><span id="view_vacation_taken"></span> + <span id="view_vacation_taken_timesheet"></span></td>
+            <td colspan="2"><span id="view_vacation_taken"></span></td>
 
 
             </tr>
@@ -1308,7 +1325,7 @@
 
             <th>Indemnity Advance</th>
 
-            <td colspan="2" id="view_indemnity_advance"></td>
+            <td colspan="2" id="view_indemnity_advance" align="right"></td>
 
             </tr>
 
@@ -3008,9 +3025,9 @@
 
                         $('#view_other_allowance').html(formatNumber(data.employee.emp_other_allow));
 
-                        $('#view_vacation_taken').html(data.employee.emp_vacation_taken);
+                        $('#view_vacation_taken').html(data.employee.total_vacations);
 
-                        $('#view_vacation_taken_timesheet').html(data.employee.total_vacations);
+                        //$('#view_vacation_taken_timesheet').html(data.employee.total_vacations);
 
                         $('#view_air_ticket_due_from').html(data.employee.emp_air_ticket_due_from);
 
