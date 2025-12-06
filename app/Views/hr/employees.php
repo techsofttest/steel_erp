@@ -1087,7 +1087,7 @@
     <div class="row">
         
 
-    <table class="table table-bordered emp-table">
+    <table class="table emp-table">
 
             <tbody>
 
@@ -1159,7 +1159,7 @@
             <tr>
 
                         
-            <th colspan="5" style="font-size:20px;font-weight:bold;text-align:center">Salary Details</th>
+            <th class="border-none" colspan="5" style="font-size:20px;font-weight:bold;text-align:center">Salary Details</th>
                     
 
             </tr>
@@ -1310,7 +1310,7 @@
 
 
 
-            <tr>
+            <tr class="border-none">
 
             <th class="border-none"></th>
 
@@ -1326,7 +1326,7 @@
 
 
 
-            <tr>
+            <tr class="border-none">
 
             <th class="border-none"></th>
 
@@ -1347,7 +1347,7 @@
 
             <tr>
 
-            <th colspan="5" style="font-size:20px;font-weight:bold;text-align:center">Documents</th>
+            <th class="border-none" colspan="5" style="font-size:20px;font-weight:bold;text-align:center">Documents</th>
 
             </tr>
 

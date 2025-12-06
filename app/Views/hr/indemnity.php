@@ -1176,6 +1176,10 @@
 
             $('.add_form')[0].reset();
 
+            $('#debit_account').val(null).trigger('change');
+
+            $('#credit_account').val(null).trigger('change');
+
             $('#timesheet_sec').hide();
 
             $('#timesheets_row').html('');
