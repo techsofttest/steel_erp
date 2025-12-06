@@ -1059,13 +1059,16 @@
 
 }
 
-
-
 .emp-no-border td
 {
     
     border:none;
 
+}
+
+.border-none
+{
+    border:none !important;
 }
 
  </style>
@@ -1141,6 +1144,12 @@
             <th>Nationality</th>
 
             <td colspan="2" id="view_nationality"></td>
+
+
+            <th class="border-none"></th>
+
+            <td colspan="2" class="border-none"></td>
+            
 
             </tr>
 
@@ -1303,9 +1312,9 @@
 
             <tr>
 
-            <th></th>
+            <th class="border-none"></th>
 
-            <td colspan="2"></td>
+            <td colspan="2" class="border-none"></td>
 
 
             <th>Vacation Pay Due From</th>
