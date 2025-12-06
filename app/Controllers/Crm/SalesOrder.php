@@ -1877,7 +1877,7 @@ class SalesOrder extends BaseController
                 <table class="footer-tables" style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
             
                     <tr>
-                        <td style="width:12%" rowspan="2">Order Terms</td>
+                        <td style="width:15%" rowspan="2">Order Terms</td>
 
                         <td style="width:15%">LPO Reference:</td>
 
@@ -1930,12 +1930,8 @@ class SalesOrder extends BaseController
 
 
             $main_table = '<style>
-                    th, td {font-size: 12px;}
+                    th, td {padding: 4px; font-size: 12px;}
                     p { font-size: 12px; margin-bottom: 13px; }
-                    .footer-tables tr
-                    {
-                    padding:2px;    
-                    }
                 </style>
 
                 <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">

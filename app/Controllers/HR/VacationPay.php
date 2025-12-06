@@ -451,13 +451,13 @@ class VacationPay extends BaseController
 
                 $entitlement = $diff*$days_per_year/365;
 
-                $entitlement = number_format($entitlement,2,'.');
-
-
-
                 $amount = $emp->emp_basic_salary*12/365*$entitlement;
 
-                $data['total_amount']+=number_format((float)$amount,2,'.','');
+
+                $entitlement = round($entitlement, 2);
+                $amount = round($amount, 2);
+
+                $data['total_amount']+=$amount;
 
                 $insert_emp_data['vpe_vacation_due_from'][$emp->emp_id] = $vacation_pay_due_date;
 
@@ -475,7 +475,7 @@ class VacationPay extends BaseController
 
             $jv_sl=0;
 
-            $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+            $data['jv_total'] = $data['total_amount']-$data['current_balance'];
 
 
 
@@ -498,9 +498,9 @@ class VacationPay extends BaseController
 
         $insert_journal['jv_date'] = date('Y-m-d',strtotime($formData['jv_date']));
 
-        $insert_journal['jv_debit_total'] = $data['total_amount'];
+        $insert_journal['jv_debit_total'] = $data['jv_total'];
 
-        $insert_journal['jv_credit_total'] = $data['total_amount'];
+        $insert_journal['jv_credit_total'] = $data['jv_total'];
 
         $insert_journal['jv_added_date'] = date('Y-m-d');
 

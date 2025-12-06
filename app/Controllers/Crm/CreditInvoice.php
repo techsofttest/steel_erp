@@ -1464,34 +1464,36 @@ class CreditInvoice extends BaseController
             foreach ($lines as $line) {
             if ($first_line) {
 
-            $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">' . $k . '</td>';
-            $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
-            $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">' . $prod_det->ipd_quantity . '</td>';
-            $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">' . $prod_det->ipd_unit . '</td>';
-            $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">' . $rate . '</td>';
-            $pdf_data .= '<td align="center" style="color: red;padding: 2px; vertical-align: top;"><i>' . $disc . '</i></td>';
-            $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">' . $amount . '</td></tr>';
+            $pdf_data .= '<tr class="product-padding"><td align="center" style="padding: 1px; vertical-align: top;">' . $k . '</td>';
+            $pdf_data .= '<td align="left" style="padding: 1px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
+            $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">' . $prod_det->ipd_quantity . '</td>';
+            $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">' . $prod_det->ipd_unit . '</td>';
+            $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">' . $rate . '</td>';
+            $pdf_data .= '<td align="center" style="color: red;padding: 1px; vertical-align: top;"><i>' . $disc . '</i></td>';
+            $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">' . $amount . '</td></tr>';
             $k++;
             $first_line = false;
             }
             else
             {
             // Extra line → only description column
-            $pdf_data .= '<tr>
+            $pdf_data .= '<tr class="product-padding">
             <td align="center" width="8%" >&nbsp;</td>
-            <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
-            <td align="center" style="padding:2px;">&nbsp;</td>
-            <td align="center" style="padding:2px;">&nbsp;</td>
-            <td align="right" style="padding:2px;">&nbsp;</td>
-            <td align="center" style="padding:2px;">&nbsp;</td>
-            <td align="right" style="padding:2px;">&nbsp;</td>
+            <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+            <td align="center" style="padding:1px;">&nbsp;</td>
+            <td align="center" style="padding:1px;">&nbsp;</td>
+            <td align="right" style="padding:1px;">&nbsp;</td>
+            <td align="center" style="padding:1px;">&nbsp;</td>
+            <td align="right" style="padding:1px;">&nbsp;</td>
             </tr>';
             }
 
             }
 
-
         }
+
+            
+
 
         $join = array(
             array(
@@ -1663,16 +1665,16 @@ class CreditInvoice extends BaseController
     
                         </table>
         
-                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
+                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;padding: 0">
                             <tr>
-                                <td style="width:13%"></td>
+                                <td style="width:15%"></td>
                                 <td style="width:13%">LPO Ref</td>
                                 <td style="width:33%">' . $credit_invoice->cci_lpo_reff. '</td>
                                 <td style="width:13%">Payment:</td>
                                 <td>' . $credit_invoice->cci_payment_term. '</td>
                             </tr>
                             <tr>
-                                <td style="width:13%">Invoice Terms</td>
+                                <td style="width:15%">Invoice Terms</td>
                                 <td style="width:13%">Project:</td>
                                 <td style="width:33%">' . $credit_invoice->cci_project. '</td>
                                 <td style="width:13%">Sales Order:</td>
@@ -1680,7 +1682,7 @@ class CreditInvoice extends BaseController
                                 
                             </tr>
                             <tr>
-                                <td style="width:13%"></td>
+                                <td style="width:15%"></td>
                                 <td style="width:13%">DN No:</td>
                                 <td colspan="3">' .$del_data_string. '</td>
                             </tr>
@@ -1689,6 +1691,17 @@ class CreditInvoice extends BaseController
 
         $main_table = ' <style>
                             th, td { padding: 4px; font-size: 12px; }
+                            tr.product-padding th,
+                            tr.product-padding td {
+                                padding: 1px; 
+                            }
+                            tr.end-padding th,
+                            tr.end-padding td {
+                                padding: 4px; 
+                            }
+                            tr.product-padding td:last-child {
+                            padding-bottom: 4px !important;
+                            }
                             p { font-size: 12px; margin-bottom: 13px; }
                         </style>
                         <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
@@ -1713,6 +1726,8 @@ class CreditInvoice extends BaseController
                         //$mpdf->SetAutoPageBreak(true, 50);
 
                         $mpdf->WriteHTML($main_table);
+
+                        echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                         // Output summary just before footer on last page
                         $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');

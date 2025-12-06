@@ -1083,7 +1083,7 @@
 
             $.ajax({
 
-            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/e/"+date+"",
+            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+date+"",
 
             method : "GET",
 

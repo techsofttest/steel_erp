@@ -1740,7 +1740,7 @@ class ProFormaInvoice extends BaseController
     
                                 </table>';
 
-                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px;padding: 0">
                 
                         <tr>
                             <td></td>
@@ -1759,7 +1759,7 @@ class ProFormaInvoice extends BaseController
             
                             <td>Bank Details</td>
                         
-                            <td style=width="60%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                            <td style=width="59%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
 
                             <td style="font-weight: bold;width: 17%;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
 
@@ -1792,10 +1792,11 @@ class ProFormaInvoice extends BaseController
                         </tr>
     
                     </table>
-                    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
+
+                    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;padding: 0">
                 
                         <tr>
-                            <td style="width:15%" rowspan="2">Invoice Terms</td>
+                            <td style="width:14%" rowspan="2">Invoice Terms</td>
             
                             <td style="width:20%">LPO Ref:</td>
             
@@ -1855,6 +1856,8 @@ class ProFormaInvoice extends BaseController
                                 //$mpdf->SetAutoPageBreak(true, 50);
 
                                 $mpdf->WriteHTML($main_table);
+
+                                //echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                                 // Output summary just before footer on last page
                                 $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
