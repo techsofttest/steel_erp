@@ -1172,7 +1172,7 @@
                 },
                 'columnDefs' : [
                     { width: '10px', targets: 0 },
-                    { width: '70px', targets: 1 },
+                    { width: '130px', targets: 1 },
                 ],
                 'columns': [
                     { data: 'vt_id' },
