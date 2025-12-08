@@ -121,6 +121,8 @@ class VacationTravel extends BaseController
 
             $date = date('Y-m-d',strtotime($this->request->getPost('date')));
 
+            //echo $date; exit;
+            
             $credit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $account));
 
             $debit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $debit_account));
@@ -129,7 +131,7 @@ class VacationTravel extends BaseController
 
             //$gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
         
-            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date="",$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
+            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date,$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
 
             $total_credit = array_sum(array_column($account_ledger,'credit_amount'));
 
@@ -147,7 +149,7 @@ class VacationTravel extends BaseController
 
             $data['total_amount'] = 0;
 
-             $data['total_amount_view'] = 0;
+            $data['total_amount_view'] = 0;
 
             $slno=0;
 
@@ -161,7 +163,7 @@ class VacationTravel extends BaseController
 
                 $total_vacations = $total_vacations+$emp->emp_vacation_taken;
 
-                
+
                 $ticket_due_date_format = new DateTime($emp->emp_air_ticket_due_from);
 
                 $selected_date_format = new DateTime($date);
