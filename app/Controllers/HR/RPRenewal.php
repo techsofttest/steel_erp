@@ -44,7 +44,14 @@ class RPRenewal extends BaseController
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_rp_renewals','rpr_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
-        $joins = array();
+        $joins = array(
+            array(
+            'table' => 'accounts_journal_vouchers',
+            'pk' => 'jv_id',
+            'fk' => 'rpr_jv_id',
+            )
+        );
+
         ## Fetch records
         $records = $this->common_model->GetRecord('hr_rp_renewals','rpr_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
@@ -75,6 +82,7 @@ class RPRenewal extends BaseController
         $data[] = array( 
               "rpr_id"=>$i,
               "rpr_date" => date('d M Y',strtotime($record->rpr_date)),
+              "jv" => $record->jv_voucher_no,
               "rpr_credit_account" => $debit_account,
               "rpr_debit_account" => $credit_account,
               "rpr_total" => $record->rpr_total,
@@ -135,6 +143,8 @@ class RPRenewal extends BaseController
             $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
             $data['current_balance'] = abs($gl_balance);
+
+            $data['current_balance_view'] = format_currency($data['current_balance']);
 
             $data['emp_row'] = "";
 
@@ -229,11 +239,17 @@ class RPRenewal extends BaseController
 
             $jv_sl=0;
 
+            $data['total_amount'] = round($data['total_amount']);
+
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
 
             $data['jv_total'] = $data['total_amount']-$data['current_balance'];
 
-            $data['jv_total'] = number_format((float)$data['jv_total'],2,'.','');
+            $data['jv_total'] = round($data['jv_total']) ;
+
+            //$data['jv_total'] = number_format((float)$data['jv_total'],2,'.','');
+
+            $data['jv_total'] = format_currency($data['jv_total']);
 
             $data['jv_rows'] ='';
 
@@ -253,9 +269,9 @@ class RPRenewal extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['jv_total'].'" readonly></th>
+                                        <th><input name="jv_debit[]" type="text" class="form-control text-end" value="'.$data['jv_total'].'" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                        <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" readonly></th>
 
             </tr>
 
@@ -279,9 +295,9 @@ class RPRenewal extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
+                                        <th><input name="jv_debit[]" type="text" class="form-control text-end" value="" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['jv_total'].'" readonly></th>
+                                        <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="'.$data['jv_total'].'" readonly></th>
 
             </tr>
 
@@ -461,9 +477,11 @@ class RPRenewal extends BaseController
 
             $jv_sl=0;
 
-            $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+            $data['total_amount'] = round($data['total_amount']);
 
             $data['jv_total'] = $data['total_amount']-$data['current_balance'];
+
+            $data['jv_total'] = round($data['jv_total']);
 
 
             //Insert Vacation Travel
@@ -486,7 +504,7 @@ class RPRenewal extends BaseController
 
         $insert_journal['jv_voucher_no'] = $juid;
 
-        $insert_journal['jv_date'] = date('Y-m-d',strtotime($formData['jv_date']));
+        $insert_journal['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
 
         $insert_journal['jv_debit_total'] = $data['total_amount'];
 
@@ -524,17 +542,17 @@ class RPRenewal extends BaseController
 
         //Insert Journal invoices
 
-            for ($ji = 0; $ji < count($formData['jv_account']); $ji++) {
-                $account = $formData['jv_account'][$ji];
-                $debit = !empty($formData['jv_debit'][$ji]) ? $formData['jv_debit'][$ji] : 0;
-                $credit = !empty($formData['jv_credit'][$ji]) ? $formData['jv_credit'][$ji] : 0;
-                $narration = $formData['jv_remarks'][$ji] ?? '';
+            for ($ji = 0; $ji < count($_POST['jv_account']); $ji++) {
+                $account = $_POST['jv_account'][$ji];
+                $debit = !empty($_POST['jv_debit'][$ji]) ? $_POST['jv_debit'][$ji] : 0;
+                $credit = !empty($_POST['jv_credit'][$ji]) ? $_POST['jv_credit'][$ji] : 0;
+                $narration = $_POST['jv_remarks'][$ji] ?? '';
 
                 $insert_journal_invoice = [
                     'ji_voucher_id' => $journal_id,
                     'ji_account' => $account,
-                    'ji_debit' => $debit,
-                    'ji_credit' => $credit,
+                    'ji_debit' => str_replace(",","",$debit),
+                    'ji_credit' => str_replace(",","",$credit),
                     'ji_narration' => $narration
                 ];
 

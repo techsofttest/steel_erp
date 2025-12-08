@@ -77,7 +77,7 @@ class VacationPay extends BaseController
               "vp_date" => date('d M Y',strtotime($record->vp_date)),
               "vp_debit_account" => $debit_account,
               "vp_credit_account" => $credit_account,
-              "vp_total" => $record->vp_total,
+              "vp_total" => format_currency($record->vp_total),
               "action" =>$action,
         );
 
@@ -136,9 +136,13 @@ class VacationPay extends BaseController
 
             $data['current_balance'] = abs($gl_balance);
 
+            $data['current_balance_view'] = format_currency($data['current_balance']);
+
             $data['emp_row'] = "";
 
             $data['total_amount'] = 0;
+
+            $data['total_amount_view'] = 0;
 
             $slno = 0;
 
@@ -206,7 +210,7 @@ class VacationPay extends BaseController
 
                     <td class='text-center'>{$entitlement}</td>
 
-                    <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
+                    <td class='text-end'>".format_currency($amount)."</td>
 
                     </tr>
                 
@@ -218,11 +222,20 @@ class VacationPay extends BaseController
 
             $jv_sl=0;
 
+           
+            $data['total_amount'] = round($data['total_amount']);
+
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+            $data['total_amount_view'] = format_currency($data['total_amount']);
 
             $data['jv_total'] = $data['total_amount']-$data['current_balance'];
 
+            $data['jv_total'] = round($data['jv_total']);
+
             $data['jv_total'] = number_format((float)$data['jv_total'],2,'.','');
+
+            $data['jv_total'] = format_currency($data['jv_total']);
 
             $data['jv_rows'] ='';
 
@@ -242,9 +255,9 @@ class VacationPay extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['jv_total'].'" readonly></th>
+                                        <th><input name="jv_debit[]" type="text" class="form-control text-end" value="'.$data['jv_total'].'" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                        <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" readonly></th>
 
             </tr>
 
@@ -268,9 +281,9 @@ class VacationPay extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
+                                        <th><input name="jv_debit[]" type="text" class="form-control text-end" value="" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['jv_total'].'" readonly></th>
+                                        <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="'.$data['jv_total'].'" readonly></th>
 
             </tr>
 
@@ -401,30 +414,6 @@ class VacationPay extends BaseController
             foreach($employees as $emp)
             {
 
-                $total_years = abs(strtotime($emp->emp_date_of_join) - strtotime($date));
-
-                $total_years = floor($total_years / (365*60*60*24));
-
-
-                $days_per_year = $this->calculateLeave($date,$emp->emp_date_of_join);
-
-
-                $vacation_pay_due_date = date('Y-m-d',strtotime($emp->emp_vacation_pay_due_from. "+ 1 day"));
-
-                //Entitlement Calc
-                /*
-                $diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
-
-                $years = floor($diff / (365*60*60*24));
-                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-
-                $entitlement = $days*$days_per_year/365;
-
-                $entitlement = number_format($entitlement,2,'.');
-                */
-
-
                 $date1 = new \DateTime($emp->emp_date_of_join);
                 $date2 = new \DateTime($date);
                 $interval = $date1->diff($date2);
@@ -451,11 +440,10 @@ class VacationPay extends BaseController
 
                 $entitlement = $diff*$days_per_year/365;
 
-                $amount = $emp->emp_basic_salary*12/365*$entitlement;
+                $entitlement = number_format($entitlement,2,'.');
 
+                $amount = $emp->emp_basic_salary*12/365*$entitlement; 
 
-                $entitlement = round($entitlement, 2);
-                $amount = round($amount, 2);
 
                 $data['total_amount']+=$amount;
 
@@ -477,6 +465,9 @@ class VacationPay extends BaseController
 
             $data['jv_total'] = $data['total_amount']-$data['current_balance'];
 
+            $data['jv_total'] =round($data['jv_total']);
+
+            $data['total_amount'] = round($data['total_amount']);
 
 
             //Insert Vacation Travel
@@ -537,8 +528,8 @@ class VacationPay extends BaseController
                 $insert_journal_invoice = [
                     'ji_voucher_id' => $journal_id,
                     'ji_account' => $account,
-                    'ji_debit' => $debit,
-                    'ji_credit' => $credit,
+                    'ji_debit' => str_replace(",","",$debit),
+                    'ji_credit' => str_replace(",","",$credit),
                     'ji_narration' => $narration
                 ];
 

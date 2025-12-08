@@ -141,6 +141,8 @@ class VacationTravel extends BaseController
 
             $data['current_balance'] = abs($gl_balance);
 
+            $data['current_balance_view'] = format_currency($data['current_balance']);
+
             $data['emp_row'] = "";
 
             $data['total_amount'] = 0;
@@ -180,7 +182,7 @@ class VacationTravel extends BaseController
 
                 $amount = $amount/365;
 
-                $amount = round($amount);
+                //$amount = round($amount);
                                 
 
                 $data['emp_row'] .="
@@ -217,13 +219,15 @@ class VacationTravel extends BaseController
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
 
-            //$data['total_amount'] = 
+            $data['total_amount'] = round($data['total_amount']);
 
             $data['total_amount_view'] = format_currency($data['total_amount']);
 
             $data['jv_total'] = $data['total_amount']-$data['current_balance'];
 
             $data['jv_total'] =  number_format((float)$data['jv_total'],2,'.','');
+
+            $data['jv_total'] = format_currency($data['jv_total']);
 
             $data['jv_rows'] ='';
 
@@ -243,9 +247,9 @@ class VacationTravel extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['jv_total'].'" readonly></th>
+                                        <th><input name="jv_debit[]" type="text" step="0.01" class="form-control text-end" value="'.$data['jv_total'].'" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                        <th><input name="jv_credit[]" type="text" class="form-control text-end credit_amount" readonly></th>
 
             </tr>
 
@@ -269,9 +273,9 @@ class VacationTravel extends BaseController
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
+                                        <th><input name="jv_debit[]" type="text" step="0.01" class="form-control text-end" value="" readonly></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['jv_total'].'" readonly></th>
+                                        <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="'.$data['jv_total'].'" readonly></th>
 
             </tr>
 
@@ -355,7 +359,7 @@ class VacationTravel extends BaseController
             foreach($employees as $emp)
             {
 
-                $total_vacations = $this->hr_model->FetchVacationTotal($date);
+                $total_vacations = $this->hr_model->FetchVacationTotal($date,$emp->emp_id);
 
                 $total_vacations = $total_vacations+$emp->emp_vacation_taken;
 
@@ -405,6 +409,8 @@ class VacationTravel extends BaseController
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
 
 
+            $data['total_amount'] = round($data['total_amount']);
+
 
         //Insert Vacation Travel
 
@@ -416,7 +422,7 @@ class VacationTravel extends BaseController
 
         $insert_vacation_travel['vt_current_balance'] = $data['current_balance'];
        
-        $insert_vacation_travel['vt_total'] = round($data['total_amount']);
+        $insert_vacation_travel['vt_total'] = $data['total_amount'];
         
 
         //Insert Journal voucher
@@ -471,8 +477,8 @@ class VacationTravel extends BaseController
                 $insert_journal_invoice = [
                     'ji_voucher_id' => $journal_id,
                     'ji_account' => $account,
-                    'ji_debit' => $debit,
-                    'ji_credit' => $credit,
+                    'ji_debit' => str_replace(",","",$debit),
+                    'ji_credit' => str_replace(",","",$credit), 
                     'ji_narration' => $narration
                 ];
 

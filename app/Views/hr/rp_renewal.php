@@ -389,7 +389,7 @@
 
                     <div class="col-col-md-8 col-lg-8">
 
-                    <input id="current_balance" type="number" step="0.01" class="form-control" readonly>
+                    <input id="current_balance" class="form-control" readonly>
 
                     </div>
 
@@ -560,6 +560,7 @@
                             <tr>
                                 <th class="no-sort">Sl</th>
                                 <th>Date</th>
+                                <th>JV</th>
                                 <th>Debit Account</th>
                                 <th>Credit Account</th>
                                 <th>Total</th>
@@ -704,9 +705,9 @@
 
                                     <td colspan="3" align="right">Total</td>
                                    
-                                    <th id="total_amount_debit_disp">0</th>
+                                    <th id="total_amount_debit_disp" class="text-end">0</th>
 
-                                    <th  id="total_amount_credit_disp">0</th>
+                                    <th  id="total_amount_credit_disp" class="text-end">0</th>
                                     
                                     <input type="hidden" id="total_amount_inp" name="total_amount">
 
@@ -847,7 +848,7 @@
                             if(data.status=="1")
                             {
 
-                            $('#current_balance').val(data.current_balance);
+                            $('#current_balance').val(data.current_balance_view);
 
                             $('#emp_rows').html(data.emp_row);
 
@@ -936,18 +937,27 @@
 
             e.preventDefault();
 
-            var journal_form = $(this).serialize();
+            //var journal_form = $(this).serialize();
 
-            var credit_account = $('#credit_account').val();
+            //var credit_account = $('#credit_account').val();
 
-            var debit_account = $('#debit_account').val();
+            //var debit_account = $('#debit_account').val();
 
-            var date = $('#date').val();
+            //var date = $('#date').val();
+
+            var formData = new FormData(this); // takes all form inputs automatically
+
+            formData.append('credit_account', $('#credit_account').val());
+            formData.append('debit_account', $('#debit_account').val());
+            formData.append('date', $('#date').val());
 
             $.ajax({
                         url: "<?php echo base_url(); ?>HR/RPRenewal/AddJournal",
                         method: "POST",
-                        data: {journal_form:journal_form,credit_account:credit_account,debit_account:debit_account,date:date},
+                        //data: {journal_form:journal_form,credit_account:credit_account,debit_account:debit_account,date:date},
+                        data: formData,
+                        processData: false, 
+                        contentType: false,
                         success: function(data) 
                         {
                             var data = JSON.parse(data);
@@ -1154,11 +1164,13 @@
                 },
                 'columnDefs' : [
                     { width: '10px', targets: 0 },
-                    { width: '70px', targets: 1 },
+                    { width: '130px', targets: 1 },
+                    { width: '130px', targets: 2 },
                 ],
                 'columns': [
                     { data: 'rpr_id' },
                     { data : "rpr_date"},
+                    { data : "jv"},
                     { data : "rpr_debit_account" },
                     { data : "rpr_credit_account" },
                     { data : "rpr_total" },

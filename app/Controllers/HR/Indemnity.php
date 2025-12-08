@@ -198,7 +198,11 @@ class Indemnity extends BaseController
 
             $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
 
+            $data['total_amount'] = round($data['total_amount']);
+
             $data['jv_total'] = $data['total_amount']-$data['current_balance'];
+
+            $data['jv_total'] = round($data['jv_total']);
 
 
 
@@ -269,8 +273,8 @@ class Indemnity extends BaseController
                 $insert_journal_invoice = [
                     'ji_voucher_id' => $journal_id,
                     'ji_account' => $account,
-                    'ji_debit' => $debit,
-                    'ji_credit' => $credit,
+                    'ji_debit' => str_replace(",","",$debit),
+                    'ji_credit' => str_replace(",","",$credit),
                     'ji_narration' => $narration
                 ];
 
@@ -327,6 +331,8 @@ class Indemnity extends BaseController
            $gl_balance = number_format($total_debit-$total_credit,2,'.','');
 
            $data['current_balance'] = abs($gl_balance);
+
+           $data['current_balance_view'] = format_currency($data['current_balance']);
 
            $data['emp_row'] = "";
 
@@ -404,9 +410,15 @@ class Indemnity extends BaseController
 
            $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
 
+           $data['total_amount'] = round($data['total_amount']);
+
            $data['jv_total'] = $data['total_amount']-$data['current_balance'];
 
-           $data['jv_total'] = number_format((float)$data['jv_total'],2,'.','');
+           //$data['jv_total'] = number_format((float)$data['jv_total'],2,'.','');
+
+           $data['jv_total'] = round($data['jv_total']);
+
+           $data['jv_total_view'] = format_currency($data['jv_total']);
 
            $data['jv_rows'] ='';
 
@@ -426,9 +438,9 @@ class Indemnity extends BaseController
                                        
                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                       <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['jv_total'].'" readonly></th>
+                                       <th><input name="jv_debit[]" type="text" class="form-control text-end" value="'.format_currency($data['jv_total']).'" readonly></th>
 
-                                       <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                       <th><input name="jv_credit[]" type="text" class="form-control text-end credit_amount" readonly></th>
 
            </tr>
 
@@ -452,9 +464,9 @@ class Indemnity extends BaseController
                                        
                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                       <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
+                                       <th><input name="jv_debit[]" type="text"  class="form-control text-end" value="" readonly></th>
 
-                                       <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['jv_total'].'" readonly></th>
+                                       <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="'.format_currency($data['jv_total']).'" readonly></th>
 
            </tr>
 

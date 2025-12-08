@@ -404,7 +404,7 @@
 
 <div class="col-col-md-8 col-lg-8">
 
-<input id="current_balance" type="number" step="0.01" class="form-control" readonly>
+<input id="current_balance" type="text" class="form-control" readonly>
 
 </div>
 
@@ -722,9 +722,9 @@
 
                                     <td colspan="3" align="right">Total</td>
                                    
-                                    <th id="total_amount_debit_disp">0</th>
+                                    <th id="total_amount_debit_disp" class="text-end">0</th>
 
-                                    <th  id="total_amount_credit_disp">0</th>
+                                    <th  id="total_amount_credit_disp" class="text-end">0</th>
                                     
                                     <input type="hidden" id="total_amount_inp" name="total_amount">
 
@@ -866,13 +866,13 @@
                             if(data.status=="1")
                             {
 
-                            $('#current_balance').val(data.current_balance);
+                            $('#current_balance').val(data.current_balance_view);
 
                             $('#emp_rows').html(data.emp_row);
 
                             $('#total_amount_input').val(data.total_amount);
 
-                            $('#total_amount_view').html(data.total_amount);
+                            $('#total_amount_view').html(data.total_amount_view);
 
                             $('#jv_rows').html(data.jv_rows);
 
