@@ -178,9 +178,9 @@ class VacationTravel extends BaseController
                 //$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                 //$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
-                $diff = abs(strtotime($date) - strtotime($emp->emp_air_ticket_due_from)) / 86400; // 285
+                $diff = (int)(abs(strtotime($date) - strtotime($emp->emp_air_ticket_due_from)) / 86400);
                 
-                $entitlement = $diff + 1; 
+                $entitlement = $diff + 1; // 286
 
                 //$entitlement = $diff+1;
 
