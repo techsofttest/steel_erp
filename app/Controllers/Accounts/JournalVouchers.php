@@ -699,9 +699,9 @@ class JournalVouchers extends BaseController
 
         $this->common_model->DeleteData('accounts_journal_invoices',$cond_invoices);
 
-        $cond_payrolls = array('pr_journal_id' => $this->request->getPost('id'));
+        //$cond_payrolls = array('pr_journal_id' => $this->request->getPost('id'));
 
-        $this->common_model->DeleteData('hr_payrolls',$cond_payrolls);
+        //$this->common_model->DeleteData('hr_payrolls',$cond_payrolls);
 
         $data['status'] =1;
 

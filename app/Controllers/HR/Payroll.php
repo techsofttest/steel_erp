@@ -66,7 +66,7 @@ class Payroll extends BaseController
            
         $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> </a> 
         <a href="javascript:void(0);" data-id="'.$record->pr_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i> </a>
-        <!--<a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>-->';
+        <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $data[] = array( 
               "pr_id"=>$i,
@@ -1062,15 +1062,34 @@ class Payroll extends BaseController
         
         $payroll = $this->common_model->SingleRow('hr_payrolls',$cond);
 
-        $this->common_model->DeleteData('hr_payrolls',$cond);
 
         $jv_cond = array('jv_id' => $payroll->pr_journal_id);
+
+        //CHeck Journal
+        
+        $journal_check = $this->common_model->SingleRow('accounts_journal_vouchers',$jv_cond);
+
+        if(!empty($journal_check))
+        {
+
+        $data['status'] = 0;
+
+        $data['msg'] ="Please delete ".$journal_check->jv_voucher_no." to remove this payroll!";
+
+        echo json_encode($data);
+
+        exit;
+
+        }
+
+
+        $this->common_model->DeleteData('hr_payrolls',$cond);
 
         $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
 
         $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $payroll->pr_journal_id));
 
-        $data['status'] =1;
+        $data['status'] = 1;
 
         $data['msg'] ="Data Deleted Successfully";
 

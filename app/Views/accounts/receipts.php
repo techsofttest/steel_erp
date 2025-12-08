@@ -24,7 +24,31 @@
     }
     */
 
+
+
+    .add_more_container .select2-selection
+    {
+        text-align:left !important;
+    }
+
+    .add_more_container .select2-container
+    {
+        padding: 6px 0px;
+    }
+
+    .add_more_container .select2-container--open .select2-dropdown
+    {
+        text-align:left;
+    }
  
+
+    .no-border-td{
+        border-bottom:unset !important;
+    }
+
+    .no-border-td td{
+        border:unset !important;
+    }
   
 </style>
 
@@ -117,7 +141,7 @@
                                                     </div>
 
 
-                                                    <div class="col-col-md-9 col-lg-9 select2_parent select2-center text-center">
+                                                    <div class="col-col-md-9 col-lg-9 select2_parent select2-center">
 
                                                         <select class="form-control debit_account_select2" name="r_debit_account" required>
 
@@ -339,15 +363,15 @@
                                                             </td>
 
 
-                                                            <td width="55%" class="select2_parent p-0">
+                                                            <td width="45%" class="select2_parent p-0">
 
-                                                                <select class="form-control credit_account credit_account_select2" name="r_credit_account[]" data-max="">
+                                                                <select class="form-control credit_account credit_account_select2 text-start" name="r_credit_account[]" data-max="">
 
                                                                 </select>
                                                             </td>
 
 
-                                                            <td width="5%" class="p-0">
+                                                            <td width="10%" class="p-0">
 
                                                                 <input title="Only numbers, commas, and dots allowed" class="number_format form-control credit_amount p-0" autocomplete="off" type="text" name="inv_amount[]" value="">
 
@@ -528,13 +552,13 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Sl</th>
-                                                                    <th width="20%">Date</th>
-                                                                    <th width="30%">Invoice No</th>
-                                                                    <th width="30%">LPO Ref</th>
-                                                                    <th>Amount</th>
-                                                                    <th>Receipt</th>
+                                                                    <th width="13%">Date</th>
+                                                                    <th width="16%">Invoice No</th>
+                                                                    <th width="25%">LPO Ref</th>
+                                                                    <th width="13%">Amount</th>
+                                                                    <th width="13%">Receipt</th>
                                                                   
-                                                                    <th>Tick</th>
+                                                                    <th width="5%">Tick</th>
                                                                 </tr>
                                                             </thead>
 
@@ -546,20 +570,20 @@
 
 
 
-                                                            <tr>
+                                                            <tr class="no-border-td">
 
                                                                 <td class="px-0" colspan="2">Total</td>
 
-                                                                <td class="invoice_total"></td>
+                                                                <td class="invoice_total text-end"></td>
 
                                                                 <td>Adjusted</td>
 
-                                                                <td class="invoice_adjusted"></td>
+                                                                <td class="invoice_adjusted text-end"></td>
 
 
                                                                 <td>Balance</td>
 
-                                                                <td class="invoice_balance"></td>
+                                                                <td class="invoice_balance text-end"></td>
 
                                                             </tr>
 
@@ -574,11 +598,11 @@
                                                     <div class="col-lg-2">
 
 
-                                                        <button type="button" class="w-100" id="add_so_advance_btn">Advance</button>
+                                                        <button type="button" class="w-50" id="add_so_advance_btn">Advance</button>
 
-                                                        <button class="w-100" id="fifo_add" type="button">FIFO</button>
+                                                        <button class="w-50" id="fifo_add" type="button">FIFO</button>
 
-                                                        <button class="w-100" type="submit">Save</button>
+                                                        <button class="w-50" type="submit">Save</button>
 
 
 

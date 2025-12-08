@@ -77,6 +77,13 @@ select.timesheet-selectbox
     padding-right:5px !important;
 }
 
+
+.Dashboard-form .form-control
+{   
+  height: 37px;
+}
+
+
     </style>
     
 

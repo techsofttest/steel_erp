@@ -365,7 +365,7 @@ class VacationTravel extends BaseController
             foreach($employees as $emp)
             {
 
-                $total_vacations = $this->hr_model->FetchVacationTotal($date,$emp->emp_id);
+                $total_vacations = $this->hr_model->FetchVacationTotal($dfull,$emp->emp_id);
 
                 $total_vacations = $total_vacations+$emp->emp_vacation_taken;
 
@@ -586,13 +586,30 @@ class VacationTravel extends BaseController
     
     $vt = $this->common_model->SingleRow('hr_vacation_travel',$cond);
 
-    $this->common_model->DeleteData('hr_vacation_travel',$cond);
+    
 
     //Delete VT Emp Tables
 
-    $this->common_model->DeleteData('hr_vacation_travel_employees',array('vte_main_id'=>    $id));
-
     $jv_cond = array('jv_id' => $vt->vt_jv_id);
+
+    $journal_check = $this->common_model->SingleRow('accounts_journal_vouchers',$jv_cond);
+
+    if(!empty($journal_check))
+        {
+
+        $data['status'] = 0;
+
+        $data['msg'] ="Please delete ".$journal_check->jv_voucher_no." to remove this!";
+
+        echo json_encode($data);
+
+        exit;
+
+    }
+
+    $this->common_model->DeleteData('hr_vacation_travel',$cond);
+
+    $this->common_model->DeleteData('hr_vacation_travel_employees',array('vte_main_id'=>    $id));
 
     $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
 

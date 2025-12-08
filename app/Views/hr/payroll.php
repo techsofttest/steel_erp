@@ -1133,38 +1133,7 @@ select.payroll-select
 
 
         /*account head delete*/ 
-        $("body").on('click', '.delete_btn', function(){ 
-            
-            if (!confirm('Are you absolutely sure you want to delete?')) return;
-            var id = $(this).data('id');
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>HR/Timesheets/Delete",
-
-                method : "POST",
-
-                data: {id: id},
-
-                success:function(data)
-                {  
-                    var data = JSON.parse(data);
-                    
-                    if(data.status === 1){
-                        
-                        alertify.success(data.msg).delay(2).dismissOthers();
-
-                        datatable.ajax.reload(null,false);
- 
-                    } else{
-
-                        alertify.error(data.msg).delay(2).dismissOthers();
-                    } 
-                }
-
-
-            });
-
-        });
+        
         /*###*/
 
 
@@ -1286,7 +1255,7 @@ select.payroll-select
        
         $("body").on('click', '.delete_btn', function() {
 
-            //if (!confirm('Are you absolutely sure you want to delete?')) return;
+            if (!confirm('Are you absolutely sure you want to delete?')) return;
             var id = $(this).data('id');
             $.ajax({
 
@@ -1304,13 +1273,13 @@ select.payroll-select
                         
                         if(data.status === 1){
                             
-                            alertify.success(data.msg).delay(2).dismissOthers();
+                            alertify.success(data.msg).delay(4).dismissOthers();
 
                             datatable.ajax.reload(null,false);
     
                         } else{
 
-                            alertify.error(data.msg).delay(2).dismissOthers();
+                            alertify.error(data.msg).delay(4).dismissOthers();
                         } 
                 }
 

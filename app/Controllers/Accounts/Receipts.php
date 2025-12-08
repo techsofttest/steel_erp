@@ -713,11 +713,11 @@ class Receipts extends BaseController
      <th width="2%" class="p-0">'.++$sl.'</th>
      <th>'.date('d M Y',strtotime($inv->ci_date)).'</th>
      <th>'.$inv->ci_reffer_no.'</th>
-     <th width="40%" class="p-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_lpo_reff.'" required></th>
-     <th>'.format_currency($remaining_amount).'
+     <th class="p-0"><input class="form-control text-center" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_lpo_reff.'" required></th>
+     <th class="text-end">'.format_currency($remaining_amount).'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th class="p-0 text-center"><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" data-link-max="'.$reciept_amount.'" type="text" value=""></th>
+     <th class="p-0 text-end"><input class="form-control invoice_receipt_amount number_format text-end" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" data-link-max="'.$reciept_amount.'" type="text" value=""></th>
      
      <th>
      '.$tick.'
@@ -770,11 +770,11 @@ class Receipts extends BaseController
      <th width="2%" class="p-0">'.++$sl.'</th>
      <th>'.date('d M Y',strtotime($inv->cci_date)).'</th>
      <th>'.$inv->cci_reffer_no.'</th>
-     <th width="40%" class="p-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->cci_lpo_reff.'" required></th>
-     <th>'.format_currency($remaining_amount).'
+     <th class="p-0"><input class="form-control text-center" name="inv_lpo_ref[]" type="text" value="'.$inv->cci_lpo_reff.'" required></th>
+     <th class="text-end">'.format_currency($remaining_amount).'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th class="p-0 text-center"><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-link-max="'.$reciept_amount.'" type="text" value=""></th>
+     <th class="p-0 text-end"><input class="form-control invoice_receipt_amount number_format text-end" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-link-max="'.$reciept_amount.'" type="text" value=""></th>
     
      <th>
      '.$tick.'
