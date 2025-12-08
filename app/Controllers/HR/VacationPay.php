@@ -174,15 +174,22 @@ class VacationPay extends BaseController
                 $diff++;
                 */
 
+                $start = new DateTime($emp->emp_vacation_pay_due_from);
+                $end   = new DateTime($date);
+                $days  = $start->diff($end)->days + 1;
+                $entitlement = round($days * ($emp->days_per_year / 365), 2);
 
-                $diff = (int)(abs(strtotime($date) - strtotime($emp->emp_vacation_pay_due_from)) / 86400);
+
+                /*$diff = (int)(abs(strtotime($date) - strtotime($emp->emp_vacation_pay_due_from)) / 86400);
                 
                 $entitlement = $diff + 1;
+
+                $entitlement = round($diff + 1, 2);
 
                 //Entitlement Calc
                 //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
 
-                $entitlement = $diff*$days_per_year/365;
+                $entitlement = $diff*$days_per_year/365; */
 
                 $entitlement = number_format($entitlement,2,'.');
 
