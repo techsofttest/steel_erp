@@ -369,7 +369,7 @@ class VacationTravel extends BaseController
 
                 $total_vacations = $total_vacations+$emp->emp_vacation_taken;
 
-                $ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from));
+                //$ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from));
 
 
                 //$ticket_due_date_format = new DateTime($ticket_due_date);
@@ -390,7 +390,7 @@ class VacationTravel extends BaseController
                 // Excel formula: (to - from) + 1
                 //$entitlement = $interval->days + 1;
 
-                $diff = (int)(abs(strtotime($date) - strtotime($emp->emp_air_ticket_due_from)) / 86400);
+                $diff = (int)(abs(strtotime($dfull) - strtotime($emp->emp_air_ticket_due_from)) / 86400);
                 
                 $entitlement = $diff + 1;
 
