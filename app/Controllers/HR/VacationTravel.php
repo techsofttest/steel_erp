@@ -164,13 +164,13 @@ class VacationTravel extends BaseController
                 $total_vacations = $total_vacations+$emp->emp_vacation_taken;
 
 
-                $ticket_due_date_format = new DateTime($emp->emp_air_ticket_due_from);
+                //$ticket_due_date_format = new DateTime($emp->emp_air_ticket_due_from);
 
-                $selected_date_format = new DateTime($date);
+                //$selected_date_format = new DateTime($date);
 
-                $interval = $ticket_due_date_format->diff($selected_date_format);
+                //$interval = $ticket_due_date_format->diff($selected_date_format);
 
-                $diff = $interval->days;
+                //$diff = $interval->days;
 
                 //$diff = abs(strtotime($ticket_due_date) - strtotime($date));
 
@@ -178,7 +178,11 @@ class VacationTravel extends BaseController
                 //$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                 //$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
-                $entitlement = $diff+1;
+                $diff = abs(strtotime($date) - strtotime($emp->emp_air_ticket_due_from)) / 86400; // 285
+                
+                $entitlement = $diff + 1; 
+
+                //$entitlement = $diff+1;
 
                 $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
