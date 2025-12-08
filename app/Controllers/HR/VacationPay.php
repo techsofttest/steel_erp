@@ -126,7 +126,7 @@ class VacationPay extends BaseController
 
             //$account_ledger = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
         
-            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date="",$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
+            $account_ledger = $this->report_model->FetchGLTransactions($date_from="",$date_to="",$account_head="",$account_type="",$account,$time_frame="",$range_from="",$range_to="");
 
             $total_credit = array_sum(array_column($account_ledger,'credit_amount'));
 
@@ -164,6 +164,7 @@ class VacationPay extends BaseController
 
                 $days_per_year = $this->calculateLeave($date,$emp->emp_date_of_join);
 
+                /*
                 $vacation_pay_due_date = date('Y-m-d',strtotime($emp->emp_vacation_pay_due_from. "+ 1 day"));
 
                 $interval = $vacation_pay_due_date_format->diff($selected_date_format);
@@ -171,6 +172,12 @@ class VacationPay extends BaseController
                 $diff = $interval->days;
 
                 $diff++;
+                */
+
+
+                $diff = (int)(abs(strtotime($date) - strtotime($emp->emp_vacation_pay_due_from)) / 86400);
+                
+                $entitlement = $diff + 1;
 
                 //Entitlement Calc
                 //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
@@ -427,13 +434,19 @@ class VacationPay extends BaseController
 
                 $days_per_year = $this->calculateLeave($date,$emp->emp_date_of_join);
 
+                /*
                 $vacation_pay_due_date = date('Y-m-d',strtotime($emp->emp_vacation_pay_due_from. "+ 1 day"));
 
                 $interval = $vacation_pay_due_date_format->diff($selected_date_format);
 
                 $diff = $interval->days;
+                */
 
-                $diff++;
+                $diff = (int)(abs(strtotime($date) - strtotime($emp->emp_vacation_pay_due_from)) / 86400);
+                
+                $entitlement = $diff + 1;
+
+                //$diff++;
 
                 //Entitlement Calc
                 //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
