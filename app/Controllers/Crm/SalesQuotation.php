@@ -2191,8 +2191,12 @@ class SalesQuotation extends BaseController
     $lines = explode("\n", $wrapped);
 
     $first_line = true;
+    $last_line_index = count($lines) - 1;
 
-    foreach ($lines as $line) {
+    foreach ($lines as $i => $line) {
+
+        $extra_padding = ($i === $last_line_index) ? 'padding-bottom:4px;' : '';
+
         if ($first_line) {
             // Full row with all details
             $pdf_data .= '<tr>
@@ -2202,7 +2206,7 @@ class SalesQuotation extends BaseController
                 <td align="center" style="padding:1px; vertical-align:top;">' . $prod_det->qpd_unit . '</td>
                 <td align="right" style="padding:1px; vertical-align:top;">' . $rate . '</td>
                 <td align="center" style="padding:1px; color:red; vertical-align:top;"><i>' . $disc . '</i></td>
-                <td align="right" style="padding:1px; vertical-align:top;">' . $amount . '</td>
+                <td align="right" style="padding:1px; vertical-align:top;'.$extra_padding.'">' . $amount . '</td>
             </tr>';
             $first_line = false;
             $k++;
@@ -2215,7 +2219,7 @@ class SalesQuotation extends BaseController
                 <td align="center" style="padding:1px;">&nbsp;</td>
                 <td align="right" style="padding:1px;">&nbsp;</td>
                 <td align="center" style="padding:1px;">&nbsp;</td>
-                <td align="right" style="padding:1px;">&nbsp;</td>
+                <td align="right" style="padding:1px;'.$extra_padding.'">&nbsp;</td>
             </tr>';
         }
     }
@@ -2336,7 +2340,7 @@ class SalesQuotation extends BaseController
         $summary_html = '
         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
             <tr>
-                <td>Quote Validity</td>
+                <td style="width:14%;">Quote Validity</td>
                 <td width="62%">' . $quotation_details->qd_validity . '</td>
                 <td style="font-weight: bold;width: 15%;">Net Quote Value</td>
                 <td style="font-weight: bold;">' . format_currency($quotation_details->qd_sales_amount) . '</td>
@@ -2483,6 +2487,8 @@ class SalesQuotation extends BaseController
         $mpdf->SetHTMLFooter($last_page_footer);
 
         //$mpdf->SetHtmlFooterByName('last');
+
+        //echo $header_html.$main_table.$summary_html.$footer_common; exit;
        
 
         // Output summary just before footer on last page

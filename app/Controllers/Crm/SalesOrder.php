@@ -1620,7 +1620,12 @@ class SalesOrder extends BaseController
 
                 $first_line = true;
 
-                foreach ($lines as $line) {
+                $last_line_index = count($lines) - 1;
+
+                foreach ($lines as $i => $line) {
+
+                $extra_padding = ($i === $last_line_index) ? 'padding-bottom:4px;' : '';   
+
                 if ($first_line) {
                     // Full row with all details
 
@@ -1636,7 +1641,7 @@ class SalesOrder extends BaseController
 
                 $pdf_data .= '<td align="center" style="color: red;padding: 1px; vertical-align: top;";><i>'.$disc.'</i></td>';
 
-                $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">'.$amount.'</td></tr>';
+                $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;'.$extra_padding.'">'.$amount.'</td></tr>';
 
                 $k++;
 
@@ -1648,13 +1653,13 @@ class SalesOrder extends BaseController
 
                      // Extra line → only description column
                 $pdf_data .= '<tr>
-                <td align="center" width="8%" >&nbsp;</td>
+                <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
                 <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
                 <td align="center" style="padding:1px;">&nbsp;</td>
                 <td align="center" style="padding:1px;">&nbsp;</td>
                 <td align="right" style="padding:1px;">&nbsp;</td>
                 <td align="center" style="padding:1px;">&nbsp;</td>
-                <td align="right" style="padding:1px;">&nbsp;</td>
+                <td align="right" style="padding:1px;'.$extra_padding.'">&nbsp;</td>
                 </tr>';
 
                 }
@@ -1971,7 +1976,7 @@ class SalesOrder extends BaseController
 
                $mpdf->SetHTMLHeader($header_html);
                
-               $mpdf->WriteHTML($footer_common);
+               $mpdf->SetHTMLFooter($footer_common);
 
                 // $mpdf->SetAutoPageBreak(true, 50);
 
@@ -1990,6 +1995,8 @@ class SalesOrder extends BaseController
             //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
             $mpdf->SetHTMLFooter($last_page_footer); // Fix Footer
+
+            //echo $header_html.$main_table.$last_page_footer.$footer_common; exit;
 
 
             $this->response->setHeader('Content-Type', 'application/pdf');

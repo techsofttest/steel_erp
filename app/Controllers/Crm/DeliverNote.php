@@ -1697,19 +1697,23 @@ class DeliverNote extends BaseController
                     $lines = explode("\n", $wrapped);
     
                     $first_line = true;
+                    $last_line_index = count($lines) - 1;
 
-                    foreach ($lines as $line) {
+                    foreach ($lines as $i => $line) {
+
+                    $extra_padding = ($i === $last_line_index) ? 'padding-bottom:4px;' : '';
+
                     if ($first_line) {
 
-                    $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
+                    $pdf_data .= '<tr><td align="center" style="padding: 1px; vertical-align: top;">'.$k.'</td>';
 
-                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
+                    $pdf_data .= '<td align="left" style="padding: 1px; vertical-align: top;">' . htmlspecialchars($line) . '</td>';
 
-                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->dpd_unit.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">'.$prod_det->dpd_unit.'</td>';
 
-                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->dpd_order_qty.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">'.$prod_det->dpd_order_qty.'</td>';
 
-                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->dpd_current_qty.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;'.$extra_padding.'">'.$prod_det->dpd_current_qty.'</td>';
 
                     $k++;
                     $first_line = false;
@@ -1718,13 +1722,13 @@ class DeliverNote extends BaseController
                     {
 
                     $pdf_data .= '<tr>
-                    <td align="center" width="8%" >&nbsp;</td>
-                    <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="right" style="padding:2px;">&nbsp;</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="right" style="padding:2px;">&nbsp;</td>
+                    <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
+                    <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;'.$extra_padding.'">&nbsp;</td>
                     </tr>';
 
                     }

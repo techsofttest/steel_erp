@@ -1460,8 +1460,12 @@ class CreditInvoice extends BaseController
             $lines = explode("\n", $wrapped);
 
             $first_line = true;
+            $last_line_index = count($lines) - 1;
 
-            foreach ($lines as $line) {
+            foreach ($lines as $i => $line) {
+
+            $extra_padding = ($i === $last_line_index) ? 'padding-bottom:4px;' : '';
+
             if ($first_line) {
 
             $pdf_data .= '<tr class="product-padding"><td align="center" style="padding: 1px; vertical-align: top;">' . $k . '</td>';
@@ -1470,7 +1474,7 @@ class CreditInvoice extends BaseController
             $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">' . $prod_det->ipd_unit . '</td>';
             $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">' . $rate . '</td>';
             $pdf_data .= '<td align="center" style="color: red;padding: 1px; vertical-align: top;"><i>' . $disc . '</i></td>';
-            $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">' . $amount . '</td></tr>';
+            $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;'.$extra_padding.'">' . $amount . '</td></tr>';
             $k++;
             $first_line = false;
             }
@@ -1478,13 +1482,13 @@ class CreditInvoice extends BaseController
             {
             // Extra line → only description column
             $pdf_data .= '<tr class="product-padding">
-            <td align="center" width="8%" >&nbsp;</td>
+            <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
             <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
             <td align="center" style="padding:1px;">&nbsp;</td>
             <td align="center" style="padding:1px;">&nbsp;</td>
             <td align="right" style="padding:1px;">&nbsp;</td>
             <td align="center" style="padding:1px;">&nbsp;</td>
-            <td align="right" style="padding:1px;">&nbsp;</td>
+            <td align="right" style="padding:1px;'.$extra_padding.'">&nbsp;</td>
             </tr>';
             }
 
@@ -1699,9 +1703,6 @@ class CreditInvoice extends BaseController
                             tr.end-padding td {
                                 padding: 4px; 
                             }
-                            tr.product-padding td:last-child {
-                            padding-bottom: 4px !important;
-                            }
                             p { font-size: 12px; margin-bottom: 13px; }
                         </style>
                         <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
@@ -1727,7 +1728,7 @@ class CreditInvoice extends BaseController
 
                         $mpdf->WriteHTML($main_table);
 
-                        echo $header_html.$main_table.$summary_html.$footer_common; exit;
+                        //echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                         // Output summary just before footer on last page
                         $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');

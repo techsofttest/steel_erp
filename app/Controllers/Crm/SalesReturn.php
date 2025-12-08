@@ -2228,24 +2228,28 @@ class SalesReturn extends BaseController
                     $lines = explode("\n", $wrapped);
 
                     $first_line = true;
+                    $last_line_index = count($lines) - 1;
 
-                    foreach ($lines as $line) {
+                    foreach ($lines as $i => $line) {
+
+                        $extra_padding = ($i === $last_line_index) ? 'padding-bottom:4px;' : '';
+
                     if ($first_line) {
     
     
-                    $pdf_data .= '<tr><td align="center" style="padding: 2px; vertical-align: top;">'.$k.'</td>';
+                    $pdf_data .= '<tr><td align="center" style="padding: 1px; vertical-align: top;">'.$k.'</td>';
     
-                    $pdf_data .= '<td align="left" style="padding: 2px; vertical-align: top;">'.htmlspecialchars($line).'</td>';
+                    $pdf_data .= '<td align="left" style="padding: 1px; vertical-align: top;">'.htmlspecialchars($line).'</td>';
     
-                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->srp_quantity.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">'.$prod_det->srp_quantity.'</td>';
     
-                    $pdf_data .= '<td align="center" style="padding: 2px; vertical-align: top;">'.$prod_det->srp_unit.'</td>';
+                    $pdf_data .= '<td align="center" style="padding: 1px; vertical-align: top;">'.$prod_det->srp_unit.'</td>';
     
-                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$rate.'</td>';
+                    $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">'.$rate.'</td>';
     
-                    $pdf_data .= '<td align="center" style="color: red;padding: 2px; vertical-align: top;"><i>'.$disc.'</i></td>';
+                    $pdf_data .= '<td align="center" style="color: red;padding: 1px; vertical-align: top;"><i>'.$disc.'</i></td>';
     
-                    $pdf_data .= '<td align="right" style="padding: 2px; vertical-align: top;">'.$amount.'</td></tr>';
+                    $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;'.$extra_padding.'">'.$amount.'</td></tr>';
     
                     $k++;
 
@@ -2256,13 +2260,13 @@ class SalesReturn extends BaseController
                     {
 
                     $pdf_data .= '<tr>
-                    <td align="center" width="8%" >&nbsp;</td>
+                    <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
                     <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="right" style="padding:2px;">&nbsp;</td>
-                    <td align="center" style="padding:2px;">&nbsp;</td>
-                    <td align="right" style="padding:2px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;">&nbsp;</td>
+                    <td align="center" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;'.$extra_padding.'">&nbsp;</td>
                     </tr>';
 
                     }
@@ -2419,7 +2423,7 @@ class SalesReturn extends BaseController
 
                         $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
                             <tr>
-                                <td></td>
+                                <td style="width:13%"></td>
                                 <td>IBAN : QA97CBQA000000004570407137001</td>
                                 <td style="font-weight: bold;width: 18%;">Total Invoice value</td>
                                 <td style="font-weight: bold;">' . format_currency($sales_order->sr_total) . '</td>
@@ -2439,7 +2443,7 @@ class SalesReturn extends BaseController
                                 <td style="width: 60%;">' . currency_to_words($sales_order->sr_total) . '</td>
                             </tr>
                         </table>
-                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:18px;margin-right:20px;padding: 0">
+                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;padding: 0">
                             <tr>
                                 <td style="width:13%"></td>
                                 <td style="width:13%">LPO Ref</td>
@@ -2492,6 +2496,9 @@ class SalesReturn extends BaseController
 
                         // Output summary just before footer on last page
                         $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+                        
+                        //echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                         $this->response->setHeader('Content-Type', 'application/pdf');
                         $mpdf->Output($title . '.pdf', 'I');

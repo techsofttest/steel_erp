@@ -1474,8 +1474,12 @@ class ProFormaInvoice extends BaseController
                     $lines = explode("\n", $wrapped);
     
                     $first_line = true;
+                    $last_line_index = count($lines) - 1;
 
-                    foreach ($lines as $line) {
+                    foreach ($lines as $i => $line) {
+
+                    $extra_padding = ($i === $last_line_index) ? 'padding-bottom:4px;' : '';
+
                     if ($first_line) {
 
                     $pdf_data .= '<tr><td align="center" style="padding: 1px; vertical-align: top;">'.$k.'</td>';
@@ -1490,7 +1494,7 @@ class ProFormaInvoice extends BaseController
 
                     $pdf_data .= '<td align="center" style="color: red;padding: 1px; vertical-align: top;"><i>'.$disc.'</i></td>';
 
-                    $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;">'.$amount.'</td>';
+                    $pdf_data .= '<td align="right" style="padding: 1px; vertical-align: top;'.$extra_padding.'">'.$amount.'</td>';
                     
                     $k++;
 
@@ -1500,13 +1504,13 @@ class ProFormaInvoice extends BaseController
                     {
 
                     $pdf_data .= '<tr>
-                    <td align="center" width="8%" >&nbsp;</td>
+                    <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
                     <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
                     <td align="center" style="padding:1px;">&nbsp;</td>
                     <td align="center" style="padding:1px;">&nbsp;</td>
                     <td align="right" style="padding:1px;">&nbsp;</td>
                     <td align="center" style="padding:1px;">&nbsp;</td>
-                    <td align="right" style="padding:1px;">&nbsp;</td>
+                    <td align="right" style="padding:1px;'.$extra_padding.'">&nbsp;</td>
                     </tr>';
 
                     }
