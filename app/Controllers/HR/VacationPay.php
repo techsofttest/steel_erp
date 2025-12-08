@@ -463,7 +463,7 @@ class VacationPay extends BaseController
 
                 $data['total_amount']+=$amount;
 
-                $insert_emp_data['vpe_vacation_due_from'][$emp->emp_id] = $vacation_pay_due_date;
+                $insert_emp_data['vpe_vacation_due_from'][$emp->emp_id] = $emp->emp_vacation_pay_due_from;
 
                 $insert_emp_data['vpe_basic_salary'][$emp->emp_id] = $emp->emp_basic_salary ?? "";
 
