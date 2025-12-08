@@ -382,13 +382,17 @@ class VacationTravel extends BaseController
 
                 //$entitlement = $diff;
 
-                $from = new DateTime($emp->emp_air_ticket_due_from); // Vacation Due From
-                $to   = new DateTime($date); // Selected Report Date
+                //$from = new DateTime($emp->emp_air_ticket_due_from); // Vacation Due From
+                //$to   = new DateTime($date); // Selected Report Date
 
-                $interval = $from->diff($to);
+                //$interval = $from->diff($to);
 
                 // Excel formula: (to - from) + 1
-                $entitlement = $interval->days + 1;
+                //$entitlement = $interval->days + 1;
+
+                $diff = (int)(abs(strtotime($date) - strtotime($emp->emp_air_ticket_due_from)) / 86400);
+                
+                $entitlement = $diff + 1;
 
                 
 
