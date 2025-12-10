@@ -674,6 +674,12 @@ class RPRenewal extends BaseController
 
     //$this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $rpr->rpr_jv_id));
 
+    $data['status'] = 1;
+
+    $data['msg'] ="Data deleted successfully!";
+
+    echo json_encode($data);
+
 
     }
 

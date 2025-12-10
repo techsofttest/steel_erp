@@ -1085,9 +1085,9 @@ class Payroll extends BaseController
 
         $this->common_model->DeleteData('hr_payrolls',$cond);
 
-        $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
+        //$this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
 
-        $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $payroll->pr_journal_id));
+        //$this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $payroll->pr_journal_id));
 
         $data['status'] = 1;
 

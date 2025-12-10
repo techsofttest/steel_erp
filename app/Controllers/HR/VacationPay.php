@@ -665,6 +665,12 @@ class VacationPay extends BaseController
 
     $this->common_model->DeleteData('hr_vacation_pay_employees',array('vpe_vp_id' => $id));
 
+
+    $data['status'] = 1;
+
+    $data['msg'] ="Data deleted successfully!";
+
+    echo json_encode($data);
     
 
     //$this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);

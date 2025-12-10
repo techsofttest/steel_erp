@@ -704,7 +704,7 @@
                         <div class="col-col-md-12 col-lg-12 emp_sec">
 
 
-                        <table class="table table-bordered" style="overflow-y:scroll;">
+                        <table class="table table-bordered add_more_container" style="overflow-y:scroll;">
 
                                     <thead>
                                         <tr>    

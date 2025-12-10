@@ -613,7 +613,7 @@ class VacationTravel extends BaseController
 
     $data['status'] = 1;
 
-    $data['msg'] ="Deleted !";
+    $data['msg'] ="Data deleted successfully!";
 
     echo json_encode($data);
 

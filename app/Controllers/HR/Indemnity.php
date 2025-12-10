@@ -589,13 +589,19 @@ class Indemnity extends BaseController
 
     }
 
-    //$this->common_model->DeleteData('hr_indemnity',$cond);
+    $this->common_model->DeleteData('hr_indemnity',$cond);
 
-    //$this->common_model->DeleteData('hr_indemnity_employees',array('ide_main_id' => $id));
+    $this->common_model->DeleteData('hr_indemnity_employees',array('ide_main_id' => $id));
 
-    $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
+    //$this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
 
-    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $indemnity->id_jv_id));
+    //$this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $indemnity->id_jv_id));
+
+    $data['status'] = 1;
+
+    $data['msg'] ="Data deleted successfully!";
+
+    echo json_encode($data);
 
 
     }
