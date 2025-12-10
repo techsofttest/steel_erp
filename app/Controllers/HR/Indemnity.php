@@ -436,11 +436,11 @@ class Indemnity extends BaseController
 
                                        </th>
                                        
-                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
                                        <th><input name="jv_debit[]" type="text" class="form-control text-end" value="'.format_currency($data['jv_total']).'" readonly></th>
 
                                        <th><input name="jv_credit[]" type="text" class="form-control text-end credit_amount" readonly></th>
+
+                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
            </tr>
 
@@ -462,11 +462,11 @@ class Indemnity extends BaseController
 
                                        </th>
                                        
-                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
                                        <th><input name="jv_debit[]" type="text"  class="form-control text-end" value="" readonly></th>
 
                                        <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="'.format_currency($data['jv_total']).'" readonly></th>
+
+                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
            </tr>
 

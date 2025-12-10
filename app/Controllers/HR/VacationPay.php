@@ -263,11 +263,11 @@ class VacationPay extends BaseController
 
                                         </th>
                                         
-                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
                                         <th><input name="jv_debit[]" type="text" class="form-control text-end" value="'.$data['jv_total'].'" readonly></th>
 
                                         <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" readonly></th>
+
+                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
             </tr>
 
@@ -289,11 +289,11 @@ class VacationPay extends BaseController
 
                                         </th>
                                         
-                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
                                         <th><input name="jv_debit[]" type="text" class="form-control text-end" value="" readonly></th>
 
                                         <th><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="'.$data['jv_total'].'" readonly></th>
+
+                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
             </tr>
 

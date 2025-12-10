@@ -510,11 +510,13 @@ class Payroll extends BaseController
 
                                         </th>
                                         
-                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+                                        
 
                                         <th width="10%"><input name="jv_debit[]" type="text" class="text-end number_format form-control debit_amount" value="'.format_currency($staff_salary).'" readonly></th>
 
                                         <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
+
+                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
             </tr>
 
@@ -534,11 +536,13 @@ class Payroll extends BaseController
 
                                       </th>
                                       
-                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+                                      
 
                                       <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end number_format form-control debit_amount" value="'.format_currency($salaries_wages).'" readonly ></th>
 
                                       <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
+
+                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
           </tr>
 
@@ -558,11 +562,13 @@ class Payroll extends BaseController
 
                                       </th>
                                       
-                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+                                     
 
                                       <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end number_format form-control debit_amount" value="'.format_currency($total_ot).'" readonly></th>
 
                                       <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
+
+                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
           </tr>
           
@@ -587,11 +593,11 @@ class Payroll extends BaseController
 
                                       </th>
                                       
-                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
                                       <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end number_format form-control debit_amount" value="'.format_currency($house_rent_allow).'" readonly></th>
 
                                       <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
+
+                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
           </tr>
           
@@ -620,11 +626,11 @@ class Payroll extends BaseController
 
                                     </th>
                                     
-                                    <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
                                     <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end form-control number_format debit_amount" value="'.format_currency($transport_allow).'" readonly></th>
 
                                     <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
+
+                                    <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
         </tr>
         
@@ -654,11 +660,11 @@ class Payroll extends BaseController
 
                                   </th>
                                   
-                                  <th><input name="jv_remarks[]" type="text" class="form-control" value=""></th>
-
                                   <th width="10%"><input name="jv_debit[]" type="text" step="0.01" class="text-end number_format form-control debit_amount" value="'.format_currency($telephone_allow).'" readonly></th>
 
                                   <th width="10%"><input name="jv_credit[]" type="number" class="text-end form-control credit_amount" readonly></th>
+
+                                  <th><input name="jv_remarks[]" type="text" class="form-control" value=""></th>
 
       </tr>
       
@@ -751,11 +757,11 @@ class Payroll extends BaseController
 
                                </th>
                                
-                               <th><input name="jv_remarks[]" type="text" class="form-control" value="Salary : '.date("M Y",strtotime(date("01-{$month}-{$year} "))).'"></th>
-
                                <th width="10%"><input name="jv_debit[]" type="number" step="0.01" class="text-end form-control debit_amount" value="" readonly></th>
 
                                <th width="10%"><input name="jv_credit[]" type="text" class="text-end form-control number_format credit_amount" value="'.format_currency($ts->ts_cur_month_salary).'" readonly></th>
+
+                               <th><input name="jv_remarks[]" type="text" class="form-control" value="Salary : '.date("M Y",strtotime(date("01-{$month}-{$year} "))).'"></th>
 
     </tr>
 

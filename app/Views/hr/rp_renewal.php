@@ -28,6 +28,18 @@
     word-wrap: break-word;      /* Ensure the text wraps if it's too long */
     }
 
+
+    .add_more_container .form-control
+    {
+        background: transparent !important;
+        height: 35px !important;
+    }
+
+ .add_more_container th
+    {
+        padding: 5px !important;
+    }
+
     </style>
     
 
@@ -684,15 +696,15 @@
                         <div class="col-col-md-12 col-lg-12">
 
 
-                        <table class="table table-bordered" style="overflow-y:scroll;">
+                        <table class="table table-bordered add_more_container" style="overflow-y:scroll;">
 
                                     <thead>
                                         <tr>    
                                         <th>Sl No</th>
                                         <th>Account</th>
+                                        <th width="10%">Debit</th>
+                                        <th width="10%">Credit</th>
                                         <th>Narration</th>
-                                        <th>Debit</th>
-                                        <th>Credit</th>
                                         </tr>
                                     </thead>
 
@@ -701,9 +713,11 @@
                                     </tbody>
 
 
-                                    <tr>
+                                    <tr class="no-border">
 
-                                    <td colspan="3" align="right">Total</td>
+                                    <td colspan="" align="right" class="no-border"></td>
+
+                                    <td colspan="" align="right">Total</td>
                                    
                                     <th id="total_amount_debit_disp" class="text-end">0</th>
 
