@@ -3367,6 +3367,10 @@
 
             $('.added_id').val('');
 
+            $('.form_sec').hide();
+
+            $('#employee_sec').show();
+
             $('#add_form')[0].reset();
 
             $('#salary_add_form')[0].reset();
