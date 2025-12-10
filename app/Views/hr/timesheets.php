@@ -80,7 +80,7 @@ select.timesheet-selectbox
 
 .Dashboard-form .form-control
 {   
-  height: 37px;
+  height: 37px !important;
 }
 
 

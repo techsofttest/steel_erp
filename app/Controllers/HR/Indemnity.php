@@ -571,11 +571,27 @@ class Indemnity extends BaseController
     
     $indemnity = $this->common_model->SingleRow('hr_indemnity',$cond);
 
-    $this->common_model->DeleteData('hr_indemnity',$cond);
-
-    $this->common_model->DeleteData('hr_indemnity_employees',array('ide_main_id' => $id));
-    
     $jv_cond = array('jv_id' => $indemnity->id_jv_id);
+
+
+    $journal_check = $this->common_model->SingleRow('accounts_journal_vouchers',$jv_cond);
+
+    if(!empty($journal_check))
+    {
+
+        $data['status'] = 0;
+
+        $data['msg'] ="Please delete ".$journal_check->jv_voucher_no." to remove!";
+
+        echo json_encode($data);
+
+        exit;
+
+    }
+
+    //$this->common_model->DeleteData('hr_indemnity',$cond);
+
+    //$this->common_model->DeleteData('hr_indemnity_employees',array('ide_main_id' => $id));
 
     $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
 

@@ -1225,9 +1225,19 @@
 
             success: function(data) {
 
-                alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+              var data = JSON.parse(data);
 
-                datatable.ajax.reload(null, false)
+                if(data.status === 1){
+                            
+                            alertify.success(data.msg).delay(4).dismissOthers();
+
+                            datatable.ajax.reload(null,false);
+    
+                        } else{
+
+                            alertify.error(data.msg).delay(4).dismissOthers();
+                } 
+                
             }
 
 

@@ -599,7 +599,7 @@ class VacationTravel extends BaseController
 
         $data['status'] = 0;
 
-        $data['msg'] ="Please delete ".$journal_check->jv_voucher_no." to remove this!";
+        $data['msg'] ="Please delete ".$journal_check->jv_voucher_no." to remove!";
 
         echo json_encode($data);
 
@@ -609,11 +609,18 @@ class VacationTravel extends BaseController
 
     $this->common_model->DeleteData('hr_vacation_travel',$cond);
 
-    $this->common_model->DeleteData('hr_vacation_travel_employees',array('vte_main_id'=>    $id));
+    $this->common_model->DeleteData('hr_vacation_travel_employees',array('vte_main_id'=> $id));
 
-    $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
+    $data['status'] = 1;
 
-    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $vt->vt_jv_id));
+    $data['msg'] ="Deleted !";
+
+    echo json_encode($data);
+
+    //$this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
+
+    //$this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $vt->vt_jv_id));
+
 
 
     }
