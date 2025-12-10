@@ -2259,7 +2259,7 @@ class SalesQuotation extends BaseController
         /* Trail For Calculation */
          $mpdf_trial = new \Mpdf\Mpdf([    
             'margin_top' => 68,
-            'margin_bottom' =>100,
+            'margin_bottom' =>110,
             'margin_header' => 10,
             //'margin_footer' => 10,
             'margin_left' => 5,
@@ -2457,7 +2457,7 @@ class SalesQuotation extends BaseController
         // Single page - need larger bottom margin for extended footer
         $mpdf = new \Mpdf\Mpdf([    
             'margin_top' => 68,
-            'margin_bottom' => 100,  // Larger margin to accommodate last_page_footer
+            'margin_bottom' => 110,  // Larger margin to accommodate last_page_footer
             'margin_header' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
@@ -2465,12 +2465,12 @@ class SalesQuotation extends BaseController
             'setAutoTopMargin' => 'stretch',
             'setAutoBottomMargin' => 'stretch',
         ]);
-        $mpdf->SetAutoPageBreak(true, 100);
+        $mpdf->SetAutoPageBreak(true, 110);
     } else {
         // Multiple pages - normal margin, will add extended footer only to last page
         $mpdf = new \Mpdf\Mpdf([    
             'margin_top' => 68,
-            'margin_bottom' => 35,  // Normal margin
+            'margin_bottom' => 45,  // Normal margin
             'margin_header' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
@@ -2478,7 +2478,7 @@ class SalesQuotation extends BaseController
             'setAutoTopMargin' => 'stretch',
             'setAutoBottomMargin' => 'stretch',
         ]);
-        $mpdf->SetAutoPageBreak(true, 40);
+        $mpdf->SetAutoPageBreak(true, 45);
     }
 
         $mpdf->SetTitle($title);
