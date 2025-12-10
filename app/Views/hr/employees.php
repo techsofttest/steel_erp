@@ -19,13 +19,21 @@
         #ViewModal th
         {
             color:#000000b5 !important;
+            padding:5px 5px;
         }
 
         #ViewModal td
         {
             color:black !important;
             font-weight:600;
+            padding:5px 5px;
         }
+
+        #ViewModal td p
+        {
+        margin:0px;
+        }
+        
 
         .sec_btn,.sec_btn_edit
         {
@@ -1107,15 +1115,15 @@
 
             <td colspan="3" valign="middle" style="">
 
-            <p id="view_employee_id"></p>
+            <p id="view_employee_id" class="my-2"></p>
 
-            <p id="view_name"></p>
+            <p id="view_name" class="my-2"></p>
 
-            <p id="view_designation"></p>
+            <p id="view_designation" class="my-2"></p>
 
-            <p id="view_contact_no"></p>
+            <p id="view_contact_no" class="my-2"></p>
 
-            <p id="view_home_contact"></p>
+            <p id="view_home_contact" class="my-2"></p>
 
             </td>
 
@@ -1180,7 +1188,7 @@
 
             <th>Mode Of Payment</th>
 
-            <td colspan="2" id="view_mop" align="right"></td>
+            <td colspan="2" id="view_mop" align="left"></td>
 
 
             </tr>
