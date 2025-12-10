@@ -2470,7 +2470,7 @@ class SalesQuotation extends BaseController
         // Multiple pages - normal margin, will add extended footer only to last page
         $mpdf = new \Mpdf\Mpdf([    
             'margin_top' => 68,
-            'margin_bottom' => 30,  // Normal margin
+            'margin_bottom' => 35,  // Normal margin
             'margin_header' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
