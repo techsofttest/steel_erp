@@ -659,7 +659,14 @@ class Employees extends BaseController
 
         $id = $this->request->getPost('ID');
 
+        if(!empty($id))
+        {
         $data['account_id'] = $this->common_model->FetchNextHeadId($id);
+        }
+        else
+        {
+        $data['account_id'] = "";
+        }
 
         echo json_encode($data);
 
