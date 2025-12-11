@@ -2375,13 +2375,12 @@ class SalesQuotation extends BaseController
 
 
         $last_page_footer = '
-        
         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
         
             <tr>
-                <td width="14%">Quote Validity</td>
-                <td width="62%">' . $quotation_details->qd_validity . '</td>
-                <td style="font-weight: bold;width: 15%;">Net Quote Value</td>
+                <td width="15%">Quote Validity</td>
+                <td width="59%">' . $quotation_details->qd_validity . '</td>
+                <td style="font-weight: bold;" width="15%">Net Quote Value</td>
                 <td style="font-weight: bold;">' . format_currency($quotation_details->qd_sales_amount) . '</td>
             </tr>
             <tr><td>Currency</td><td>Qatar Riyals</td></tr>
@@ -2393,14 +2392,14 @@ class SalesQuotation extends BaseController
         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
         
             <tr>
-                <td width="14%" rowspan="2">Quote Terms</td>
+                <td width="15%" rowspan="2">Quote Terms</td>
                
-                <td style="width:15%">Payment:</td>
+                <td style="width:20%" align="left">Payment:</td>
                 <td style="">' . $quotation_details->qd_payment_term . '</td>
             </tr>
-            <tr style="margin-bottom:0px">
+            <tr>
                 
-                <td style="width:15%" rowspan="2">Delivery Period:</td>
+                <td style="width:20%" >Delivery Period:</td>
                 <td style="">' . $quotation_details->dt_name . '</td>
                 
             </tr>
@@ -2421,7 +2420,7 @@ class SalesQuotation extends BaseController
         
         </table>
 
-
+        
         ';
 
         $main_table = '<style>
@@ -2457,15 +2456,21 @@ class SalesQuotation extends BaseController
         // Single page - need larger bottom margin for extended footer
         $mpdf = new \Mpdf\Mpdf([    
             'margin_top' => 68,
-            'margin_bottom' => 110,  // Larger margin to accommodate last_page_footer
+            'margin_bottom' => 100,  // Larger margin to accommodate last_page_footer
             'margin_header' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
-            'defaultfooterline' => 0,
+            //'defaultfooterline' => 0,
             'setAutoTopMargin' => 'stretch',
             'setAutoBottomMargin' => 'stretch',
         ]);
         $mpdf->SetAutoPageBreak(true, 110);
+
+        $mpdf->SetTitle($title);
+        $mpdf->SetHTMLHeader($header_html);
+        $mpdf->SetHTMLFooter($last_page_footer);  // Set the extended footer
+        $mpdf->WriteHTML($main_table);
+
     } else {
         // Multiple pages - normal margin, will add extended footer only to last page
         $mpdf = new \Mpdf\Mpdf([    
@@ -2474,51 +2479,28 @@ class SalesQuotation extends BaseController
             'margin_header' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
-            'defaultfooterline' => 0,
+            //'defaultfooterline' => 0,
             'setAutoTopMargin' => 'stretch',
             'setAutoBottomMargin' => 'stretch',
         ]);
+        
         $mpdf->SetAutoPageBreak(true, 45);
-    }
 
         $mpdf->SetTitle($title);
 
         //echo $header_html.$main_table.$last_page_footer; exit;
 
-        $mpdf_trial->SetHTMLHeader($header_html);
-
-        $mpdf_trial->SetHTMLFooter($footer_common); 
-
-        //$mpdf->WriteHTML($main_table,\Mpdf\HTMLParserMode::HTML_PARSE_NO_WRITE);
- 
-       
-
-        $pageCount = $mpdf_trial->page;
-
-        /* Yes, Done */
-
-        // Check if we're still on page 1 (meaning content fits on one page)
-        
-
         $mpdf->SetHTMLHeader($header_html);
 
         $mpdf->SetHTMLFooter($footer_common); 
-
-        //$mpdf->WriteHTML($main_table,\Mpdf\HTMLParserMode::HTML_PARSE_NO_WRITE);
  
         $mpdf->WriteHTML($main_table);
 
-
-        // Now set the last page footer
-        
         $mpdf->SetHTMLFooter($last_page_footer);
 
-        //$mpdf->SetHtmlFooterByName('last');
+    }
 
-        //echo $header_html.$main_table.$summary_html.$footer_common; exit;
-
-        // Output summary just before footer on last page
-        //$mpdf->SetHTMLFooter($last_page_footer);
+       
 
         $this->response->setHeader('Content-Type', 'application/pdf');
 
@@ -2704,7 +2686,7 @@ class SalesQuotation extends BaseController
     $mpdf->SetTitle($title);
 
     $last_page_footer = '
-    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;">
         <tr>
             <td>Quote Validity</td>
             <td width="62%">' . $quotation_details->qd_validity . '</td>
@@ -2715,7 +2697,7 @@ class SalesQuotation extends BaseController
         <tr><td>Amount in words</td><td>' . $amount_in_words . '</td></tr>
     </table>
 
-    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;">
         <tr>
             <td style="width:14%;" rowspan="2">Quote Terms</td>
             <td style="width:15%">Payment:</td>
@@ -2727,7 +2709,7 @@ class SalesQuotation extends BaseController
         </tr>
     </table>
 
-    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;margin-left:20px;margin-right:20px;">
         <tr>
             <td>Antony Raphel - Production In-charge</td>
             <td style="text-align:right;">Justin Jose - Operations Manager</td>
