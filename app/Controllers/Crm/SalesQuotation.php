@@ -2458,7 +2458,7 @@ class SalesQuotation extends BaseController
             'margin_top' => 68, 
             'margin_bottom' => 40,  // Larger margin to accommodate last_page_footer
             'margin_header' => 10,
-            'margin_footer' => 160,
+            'margin_footer' => 40,
             'margin_left' => 5,
             'margin_right' => 5,
             //'defaultfooterline' => 0,
