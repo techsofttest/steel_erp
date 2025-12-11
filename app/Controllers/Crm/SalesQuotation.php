@@ -2425,7 +2425,7 @@ class SalesQuotation extends BaseController
 
         $main_table = '<style>
                 th, td {padding: 4px; font-size: 12px; }
-                p { font-size: 12px; margin-bottom: 13px; } 
+                p { font-size: 11px; margin-bottom: 13px; } 
             </style>
             <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
                 <thead>
