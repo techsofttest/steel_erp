@@ -2455,17 +2455,17 @@ class SalesQuotation extends BaseController
     if ($pageCount == 1) {
         // Single page - need larger bottom margin for extended footer
         $mpdf = new \Mpdf\Mpdf([    
-            'margin_top' => 68,
-            'margin_bottom' => 130,  // Larger margin to accommodate last_page_footer
+            'margin_top' => 68, 
+            'margin_bottom' => 160,  // Larger margin to accommodate last_page_footer
             'margin_header' => 10,
-            'margin_footer' => 130,
+            'margin_footer' => 160,
             'margin_left' => 5,
             'margin_right' => 5,
             //'defaultfooterline' => 0,
             'setAutoTopMargin' => 'stretch',
             'setAutoBottomMargin' => 'stretch',
         ]);
-        $mpdf->SetAutoPageBreak(true, 130);
+        $mpdf->SetAutoPageBreak(true, 160);
 
         $mpdf->SetTitle($title);
         $mpdf->SetHTMLHeader($header_html);
