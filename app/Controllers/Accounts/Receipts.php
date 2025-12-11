@@ -710,7 +710,7 @@ class Receipts extends BaseController
      
      <input type="hidden" name="type[]" value="cash_invoice">
      <input type="hidden" name="credit_account_invoice[]" value="'.$inv->ci_id.'">
-     <th width="2%" class="p-0">'.++$sl.'</th>
+     <th width="2%" class="p-0 invoice_add_sl">'.++$sl.'</th>
      <th>'.date('d M Y',strtotime($inv->ci_date)).'</th>
      <th>'.$inv->ci_reffer_no.'</th>
      <th class="p-0"><input class="form-control text-center" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_lpo_reff.'" required></th>
@@ -767,7 +767,7 @@ class Receipts extends BaseController
      $data['invoices'].='<tr id="'.$inv->cci_id.'">
      <input type="hidden" name="type[]" value="credit_invoice">
      <input type="hidden" name="credit_account_invoice[]" value="'.$inv->cci_id.'">
-     <th width="2%" class="p-0">'.++$sl.'</th>
+     <th width="2%" class="p-0 invoice_add_sl">'.++$sl.'</th>
      <th>'.date('d M Y',strtotime($inv->cci_date)).'</th>
      <th>'.$inv->cci_reffer_no.'</th>
      <th class="p-0"><input class="form-control text-center" name="inv_lpo_ref[]" type="text" value="'.$inv->cci_lpo_reff.'" required></th>
@@ -1039,6 +1039,12 @@ class Receipts extends BaseController
 
         <input type="hidden" name="so_id[]" value="'.$so->so_id.'">
 
+        <input type="hidden" name="so_uid[]" value="'.$so->so_reffer_no.'">
+
+        <input type="hidden" name="so_amount[]" value="'.format_currency($balance_total).'">
+
+        <input type="hidden" name="so_date[]" value="'.date('d M Y',strtotime($so->so_date)).'">
+
         <td class="p-0">
         '.$sl.'
         </td>
@@ -1057,7 +1063,7 @@ class Receipts extends BaseController
 
         <td class="p-0">
         <input type="hidden" class="advance_total_amount" value="'.$balance_total.'">
-        <input type="text" class="form-control so_receipt_amount number_format" maxlength="'.$balance_total.'" name="so_receipt_amount[]">
+        <input type="text" class="form-control so_receipt_amount number_format text-end" maxlength="'.$balance_total.'" name="so_receipt_amount[]">
         </td>
 
 
@@ -1183,6 +1189,8 @@ class Receipts extends BaseController
           //print_r($allAdvance[$accountId]); exit;
 
           $this->session->set('receipt_advance',$allAdvance);
+
+          echo json_encode($allAdvance[$accountId]);
 
         }
     

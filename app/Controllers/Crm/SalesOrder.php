@@ -1856,9 +1856,9 @@ class SalesOrder extends BaseController
              <table class="footer-tables" style="padding:2px;border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-bottom:2px;">
             
                     <tr>
-                        <td>Promised Date</td>
+                        <td width="15%">Promised Date</td>
 
-                        <td width="62%">'.$delivery_date.'</td>
+                        <td width="59%">'.$delivery_date.'</td>
 
                         <td style="font-weight: bold;width: 15%;" >Net Order Value</td>
             
@@ -1870,23 +1870,23 @@ class SalesOrder extends BaseController
 
                     <tr  style="width:100%";>
         
-                        <td>Amount in words</td>
+                        <td width="15%">Amount in words</td>
                     
-                        <td style="width: 60%;">'.currency_to_words($sales_order->so_amount_total).'</td>
+                        <td style="width: 59%;">'.currency_to_words($sales_order->so_amount_total).'</td>
     
                     </tr>
 
                 </table>
 
 
-                <table class="footer-tables" style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+                <table class="footer-tables" style="padding:2px;border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
             
                     <tr>
-                        <td style="width:15%" rowspan="2">Order Terms</td>
+                        <td width="15%">Order Terms</td>
 
-                        <td style="width:15%">LPO Reference:</td>
+                        <td style="width:13%">LPO Reference:</td>
 
-                        <td style="width:29%">'.$sales_order->so_lpo.'</td>
+                        <td width="15%">'.$sales_order->so_lpo.'</td>
 
                         <td style="width:9%">Payment:</td>
 
@@ -1895,6 +1895,7 @@ class SalesOrder extends BaseController
                     </tr>
 
                     <tr>
+                    
                         <td style="width:15%" rowspan="2">Quote Reference:</td>
 
                         <td style="width:29%">'.$sales_order->qd_reffer_no.'</td>

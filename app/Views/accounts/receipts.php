@@ -49,6 +49,19 @@
     .no-border-td td{
         border:unset !important;
     }
+
+    .add_invoice_data_sec
+    {
+        
+    }
+
+
+    .invoice_selection_window th,.invoice_selection_window td
+    {
+
+    font-weight:500;
+
+    }
   
 </style>
 
@@ -544,7 +557,7 @@
 
                                                 <div class="row align-items-center">
 
-                                                    <div class="col-lg-10 add_more_container p-0">
+                                                    <div class="col-lg-10 add_more_container invoice_selection_window p-0">
 
                                                         <table class="table table-bordered" id="add_invoice_data_sec">
 
@@ -569,8 +582,14 @@
                                                             </tbody>
 
 
+                                                            <tbody id="advance_tbody">
 
-                                                            <tr class="no-border-td">
+
+                                                            </tbody>
+
+
+
+                                                            <tr class="no-border no-border-td">
 
                                                                 <td class="px-0" colspan="2">Total</td>
 
@@ -3686,6 +3705,47 @@
                 data: $('#add_sales_order_advance_form').serialize(),
 
                 success: function(data) {
+
+                        var data = JSON.parse(data);
+
+                        
+
+                        // Example: your table body
+                        var tbody = $("#advance_tbody");
+                        tbody.empty(); // clear previous rows
+
+                        let lastSl = parseInt($('.invoice_add_sl:last').text()) || 0;
+
+                        var ids = data.so_id;
+                        var receipt = data.so_receipt_amount;
+                        var amount = data.so_amount;
+                        var so_uid = data.so_uid;
+                        var so_date = data.so_date;
+                        var credits = data.so_credit_id;
+
+                        for (var i = 0; i < ids.length; i++) {
+
+                            // Skip empty receipt amounts
+                            if (!receipt[i] || receipt[i] === "") continue;
+
+                            lastSl++;
+
+                            var row = `
+                                <tr>
+                                    <th class="p-0">${lastSl}</td>
+                                    <th>${so_date[i]}</td>
+                                    <th>${so_uid[i]}</th>
+                                    <th></th>
+                                    <th class="text-end" align="right">${amount[i]}</th>
+                                    <th class="text-end" align="right">${receipt[i]}</th>
+                                    <th></th>
+                                </tr>
+                            `;
+
+                            tbody.append(row);
+                        }
+
+                    //console.log(data);
 
                     $('#AddSOAdvanceModal').modal('hide');
 

@@ -567,7 +567,11 @@
                                             <td><?php echo date('d-M-Y',strtotime($vc->transaction_date)); ?></td>
 
                                             <td>
-                                            <?php if(($vc->voucher_type=="Receipt")){
+                                            <?php 
+                                            
+
+                                            if(($vc->voucher_type=="Receipt")){
+                                           
                                              $href="Accounts/Receipts";
                                              } 
                                              else if($vc->voucher_type=="Cash Invoice")
