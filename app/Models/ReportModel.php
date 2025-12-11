@@ -1899,6 +1899,8 @@ $query .= ")";
 
 //Fetch Invoices All New
 
+//{$this->db->getPrefix()}accounts_receipt_invoices.ri_amount AS credit_amount,
+
 $query .= "UNION ALL 
 (SELECT 
 {$receipt_table}.r_id AS id, 
@@ -1906,7 +1908,7 @@ $query .= "UNION ALL
 {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
 {$receipt_table}.r_date AS transaction_date,
 {$receipt_table}.r_method AS method,
-{$this->db->getPrefix()}accounts_receipt_invoices.ri_amount AS credit_amount,
+{$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt AS credit_amount,
 NULL AS debit_amount,
 'Receipt' as voucher_type,
     {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
@@ -2005,7 +2007,6 @@ $query .= ")";
 
 
 //Discount Receipt Fetch 
-
 $query .= "UNION ALL 
 (SELECT 
 {$receipt_table}.r_id AS id, 
@@ -2120,7 +2121,6 @@ $query .= ")";
 
 
 //Receipt Debit Account Select
-
 $query .= "UNION ALL 
 (SELECT 
 {$receipt_table}.r_id AS id, 
