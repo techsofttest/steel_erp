@@ -2339,7 +2339,7 @@ class SalesQuotation extends BaseController
         
         
         $summary_html = '
-        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 11px;">
             <tr>
                 <td style="width:14%;">Quote Validity</td>
                 <td width="62%">' . $quotation_details->qd_validity . '</td>
@@ -2375,7 +2375,7 @@ class SalesQuotation extends BaseController
 
 
         $last_page_footer = '
-        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
+        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 11px;">
         
             <tr>
                 <td width="15%">Quote Validity</td>
