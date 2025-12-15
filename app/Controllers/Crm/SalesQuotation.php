@@ -2300,17 +2300,15 @@ class SalesQuotation extends BaseController
         /* Trail For Calculation */
          $mpdf_trial = new \Mpdf\Mpdf([    
             'margin_top' => 68,
-            'margin_bottom' =>110,
+            'margin_bottom' => 20,  // Normal margin
             'margin_header' => 10,
-            //'margin_footer' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
-            'defaultfooterline' => 0,
-            //'setAutoTopMargin'   => 'stretch',
-            //'setAutoBottomMargin'   => 'stretch',
+            //'defaultfooterline' => 0,
+            'setAutoTopMargin' => 'stretch',
+            'setAutoBottomMargin' => 'stretch',
         ]);
         /* Trial For Calculation */
-
 
 
         //$mpdf->SetAutoPageBreak(true, 40);
@@ -2489,9 +2487,13 @@ class SalesQuotation extends BaseController
             
             ';
 
-        $main_table = $main_table;
-
         /* Trial It */
+
+
+        $mpdf_trial->SetHTMLHeader($header_html); 
+        $mpdf_trial->SetHTMLFooter($footer_common); 
+        $mpdf_trial->WriteHTML($main_table); 
+        $pageCount = $mpdf_trial->page;
 
 
     $mpdf_footer_measure = new \Mpdf\Mpdf([    
@@ -2500,7 +2502,7 @@ class SalesQuotation extends BaseController
     'margin_left' => 5,
     'margin_right' => 5,
     ]);
-    $mpdf_footer_measure->WriteHTML($last_page_footer);
+    $mpdf_footer_measure->WriteHTML($footer_common.$last_page_footer);
     $footer_height = $mpdf_footer_measure->y; // Get the height used
 
     // Add safety margin (10mm extra)
@@ -2532,9 +2534,11 @@ class SalesQuotation extends BaseController
 
         //$mpdf->WriteHTML('<div style="height:80mm;"></div>');
 
+        if ($pageCount == 1) {
+        $mpdf->WriteHTML('<div style="height:'.$required_bottom_margin.';"></div>');
+        }
+
         $mpdf->WriteHTML($last_page_footer);
-
-
 
        
 
