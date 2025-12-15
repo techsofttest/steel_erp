@@ -1545,7 +1545,7 @@ class CreditInvoice extends BaseController
         $title = 'CRN - ' . $credit_invoice->cci_reffer_no;
 
         $mpdf = new \Mpdf\Mpdf([
-            'margin_top' => 79,
+            'margin_top' => 81,
             'margin_bottom' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
