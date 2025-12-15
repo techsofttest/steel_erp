@@ -2507,37 +2507,6 @@ class SalesQuotation extends BaseController
     $required_bottom_margin = $footer_height + 10;
 
 
-    $mpdf_trial->SetHTMLHeader($header_html);
-    $mpdf_trial->SetHTMLFooter($footer_common); 
-    $mpdf_trial->WriteHTML($main_table);
-
-    $pageCount = $mpdf_trial->page;
-
-    //echo $pageCount; exit;
-
-        // ACTUAL PDF: Create with appropriate margins
-    if ($pageCount == 1) {
-        // Single page - need larger bottom margin for extended footer
-        $mpdf = new \Mpdf\Mpdf([    
-            'margin_top' => 68, 
-            'margin_bottom' => 120,  // Larger margin to accommodate last_page_footer
-            'margin_header' => 10,
-            //'margin_footer' => 40,
-            'margin_left' => 5,
-            'margin_right' => 5,
-            //'defaultfooterline' => 0,
-            'setAutoTopMargin' => 'stretch',
-            'setAutoBottomMargin' => 'stretch',
-        ]);
-        $mpdf->SetAutoPageBreak(true, 120);
-
-        $mpdf->SetTitle($title);
-        $mpdf->SetHTMLHeader($header_html);
-        $mpdf->SetHTMLFooter($last_page_footer);  // Set the extended footer
-        $mpdf->WriteHTML($main_table);
-
-    } else {
-        // Multiple pages - normal margin, will add extended footer only to last page
         $mpdf = new \Mpdf\Mpdf([    
             'margin_top' => 68,
             'margin_bottom' => 20,  // Normal margin
@@ -2565,11 +2534,7 @@ class SalesQuotation extends BaseController
 
         $mpdf->WriteHTML($last_page_footer);
 
-        //$mpdf->WriteHTML('<div style="position: fixed; bottom: 25mm; left: 5mm; right: 5mm; background: white;">' . $last_page_footer . '</div>');
-       
-        //$mpdf->SetHTMLFooter($last_page_footer);
 
-    }
 
        
 
