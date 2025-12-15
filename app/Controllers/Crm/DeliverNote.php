@@ -1971,6 +1971,7 @@ class DeliverNote extends BaseController
                                     p { font-size: 12px; margin-bottom: 13px; }
                                 </style>
                                 <table  width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
+                                  
                                     <thead>
                                         <tr>
                     
@@ -1978,11 +1979,12 @@ class DeliverNote extends BaseController
                                         
                                             <th align="center" style="border-bottom:1px solid;" width="60%">Description</th>
                                         
-                                            <th align="center" style="border-bottom:1px solid;">Unit</th>
+                                            <th align="center" style="border-bottom:1px solid;" width="10%">Unit</th>
                                         
-                                            <th align="center" style="border-bottom:1px solid;">Qty Ordered</th>
+                                            <th align="center" style="border-bottom:1px solid;" width="18%">Qty Ordered</th>
                                 
-                                            <th align="center" style="border-bottom:1px solid;">Delivery</th>
+                                            <th align="center" style="border-bottom:1px solid;" width="10%">Delivery</th>
+                                             
             
                                         </tr>
                                     </thead>
