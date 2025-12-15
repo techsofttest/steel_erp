@@ -1561,7 +1561,7 @@ class ProFormaInvoice extends BaseController
                 $title = 'PINV - '.$proforma_invoice->pf_reffer_no;
 
                 $mpdf = new \Mpdf\Mpdf([
-                    'margin_top' => 73,
+                    'margin_top' => 75,
                     'margin_bottom' => 10,
                     'margin_left' => 5,
                     'margin_right' => 5,
