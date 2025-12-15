@@ -1687,7 +1687,7 @@ class DeliverNote extends BaseController
                 $pdf_data = "";
                 $k=1;
 
-                $max_chars_per_line = 55;
+                $max_chars_per_line = 78;
                 
                 foreach($product_details as $prod_det)
                 {
@@ -1722,8 +1722,8 @@ class DeliverNote extends BaseController
                     {
 
                     $pdf_data .= '<tr>
-                    <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
-                    <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                    <td align="center" width="" style="padding:1px;">&nbsp;</td>
+                    <td align="left" width="" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
                     <td align="center" style="padding:1px;">&nbsp;</td>
                     <td align="center" style="padding:1px;">&nbsp;</td>
                     <td align="right" style="padding:1px;">&nbsp;</td>
@@ -1977,13 +1977,13 @@ class DeliverNote extends BaseController
                     
                                             <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
                                         
-                                            <th align="center" style="border-bottom:1px solid;" width="60%">Description</th>
+                                            <th align="center" style="border-bottom:1px solid;" width="67%">Description</th>
                                         
-                                            <th align="center" style="border-bottom:1px solid;" width="10%">Unit</th>
+                                            <th align="center" style="border-bottom:1px solid;" width="">Unit</th>
                                         
-                                            <th align="center" style="border-bottom:1px solid;" width="18%">Qty Ordered</th>
+                                            <th align="center" style="border-bottom:1px solid;" width="">Qty Ordered</th>
                                 
-                                            <th align="center" style="border-bottom:1px solid;" width="10%">Delivery</th>
+                                            <th align="center" style="border-bottom:1px solid;" width="">Delivery</th>
                                              
             
                                         </tr>
