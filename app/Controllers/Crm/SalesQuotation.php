@@ -2534,12 +2534,8 @@ class SalesQuotation extends BaseController
 
         //$mpdf->WriteHTML('<div style="height:80mm;"></div>');
 
-        if ($pageCount == 1) {
-        $mpdf->WriteHTML('<div style="height:'.$required_bottom_margin.';"></div>');
-        }
 
         $mpdf->WriteHTML($last_page_footer);
-
        
 
         $this->response->setHeader('Content-Type', 'application/pdf');
