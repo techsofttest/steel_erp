@@ -1733,7 +1733,7 @@ class SalesOrder extends BaseController
             //$mpdf = new \Mpdf\Mpdf();
 
             $mpdf = new \Mpdf\Mpdf([   
-                'margin_top' => 68,
+                'margin_top' => 70,
                 //'margin_bottom' => 20,
                 'margin_header' => 10, //Fix Footer
                 'margin_footer' => 15, //Fix Footer
