@@ -1940,7 +1940,7 @@ class DeliverNote extends BaseController
                         
                                         <td style="width:10%">Lpo Ref:</td>
                         
-                                        <td style="width:20%">'.$delivery_note->dn_lpo_reference.'</td>
+                                        <td style="width:30%">'.$delivery_note->dn_lpo_reference.'</td>
 
                                         <td style="width:12%">Payment:</td>
                         
