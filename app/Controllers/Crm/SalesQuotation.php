@@ -2511,7 +2511,7 @@ class SalesQuotation extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([    
             'margin_top' => 68,
-            'margin_bottom' => 20,  // Normal margin
+            'margin_bottom' => 23,  // Normal margin
             'margin_header' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
@@ -2520,7 +2520,7 @@ class SalesQuotation extends BaseController
             'setAutoBottomMargin' => 'stretch',
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 20);
+        $mpdf->SetAutoPageBreak(true, 23);
 
         $mpdf->SetTitle($title);
 
