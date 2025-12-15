@@ -2502,7 +2502,7 @@ class SalesQuotation extends BaseController
     'margin_left' => 5,
     'margin_right' => 5,
     ]);
-    $mpdf_footer_measure->WriteHTML($footer_common.$last_page_footer);
+    $mpdf_footer_measure->WriteHTML($last_page_footer);
     $footer_height = $mpdf_footer_measure->y; // Get the height used
 
     // Add safety margin (10mm extra)
