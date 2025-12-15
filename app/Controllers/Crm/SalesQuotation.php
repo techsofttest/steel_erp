@@ -2511,16 +2511,16 @@ class SalesQuotation extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([    
             'margin_top' => 68,
-            'margin_bottom' => 25,  // Normal margin
+            'margin_bottom' => 30,  // Normal margin
             'margin_header' => 10,
             'margin_left' => 5,
             'margin_right' => 5,
             //'defaultfooterline' => 0,
-            'setAutoTopMargin' => 'stretch',
-            'setAutoBottomMargin' => 'stretch',
+            //'setAutoTopMargin' => 'stretch',
+            //'setAutoBottomMargin' => 'stretch',
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 25);
+        $mpdf->SetAutoPageBreak(true, 30);
 
         $mpdf->SetTitle($title);
 
