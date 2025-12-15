@@ -1562,13 +1562,13 @@ class ProFormaInvoice extends BaseController
 
                 $mpdf = new \Mpdf\Mpdf([
                     'margin_top' => 81,
-                    'margin_bottom' => 20,
+                    'margin_bottom' => 30,
                     'margin_left' => 5,
                     'margin_right' => 5,
                     'defaultfooterline' => 0,
                 ]);
 
-                $mpdf->SetAutoPageBreak(true, 20);
+                $mpdf->SetAutoPageBreak(true, 30);
 
                 $mpdf->SetTitle($title);
 
