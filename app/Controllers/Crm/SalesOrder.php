@@ -270,7 +270,7 @@ class SalesOrder extends BaseController
                         
                         'spd_product_details'   =>  $_POST['spd_product_details'][$j],
                         'spd_unit'              =>  $_POST['spd_unit'][$j],
-                        'spd_quantity'          =>  $_POST['spd_quantity'][$j],
+                        'spd_quantity'          =>  preg_replace('/[,]/', '',$_POST['spd_quantity'][$j]),
                         'spd_rate'              =>  preg_replace('/[,]/', '',$_POST['spd_rate'][$j]),
                         'spd_discount'          =>  $_POST['spd_discount'][$j],
                         'spd_amount'            =>  preg_replace('/[,]/', '',$_POST['spd_amount'][$j]),
@@ -468,7 +468,7 @@ class SalesOrder extends BaseController
             <td><select name="spd_product_details['.$si.']" class="form-control droup_product add_prod">'.$options_product.'</select>
             </td>
             <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id text-center" required></td>
-            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'" step="0.01"  class="form-control qtn_clz_id text-center"  required></td>
+            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'"   class="form-control qtn_clz_id text-center"  required></td>
             <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id text-end"   required></td>
             <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"  class="form-control discount_clz_id text-center" required></td>
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id text-end" readonly></td>
@@ -1266,6 +1266,10 @@ class SalesOrder extends BaseController
             $insert_data['spd_amount'] = preg_replace('/[,]/', '', $insert_data['spd_amount']);
         }
 
+        if (isset($insert_data['spd_quantity'])) {
+            $insert_data['spd_quantity'] = preg_replace('/[,]/', '', $insert_data['spd_quantity']);
+        }
+
         $sales_det = $this->common_model->InsertData('crm_sales_product_details',$insert_data);
 
         $cond = array('spd_id' => $sales_det);
@@ -1367,7 +1371,7 @@ class SalesOrder extends BaseController
             <td> <select name="spd_product_details" class="form-control product_select2_edit droup_product">'.$options_product.'</select></td>
 
             <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control text-center" required></td>
-            <td> <input type="text" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
+            <td> <input type="text" name="spd_quantity" value="'.format_currency($prod_det->spd_quantity).'" class="form-control edit_prod_qty text-center" required></td>
             <td> <input type="text" name="spd_rate" value="'.format_currency($prod_det->spd_rate).'" class="form-control edit_prod_rate text-end" required></td>
             <td> <input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount text-center" required></td>
             <td> <input type="text" name="spd_amount" value="'.format_currency($prod_det->spd_amount).'" class="form-control edit_prod_amount text-end" readonly></td>
@@ -1392,6 +1396,10 @@ class SalesOrder extends BaseController
         
         if (isset($update_data['spd_amount'])) {
             $update_data['spd_amount'] = preg_replace('/[,]/', '', $update_data['spd_amount']);
+        }
+
+        if (isset($update_data['spd_quantity'])) {
+            $update_data['spd_quantity'] = preg_replace('/[,]/', '', $update_data['spd_quantity']);
         }
 
         if (array_key_exists('spd_id', $update_data)){
@@ -1725,7 +1733,7 @@ class SalesOrder extends BaseController
             //$mpdf = new \Mpdf\Mpdf();
 
             $mpdf = new \Mpdf\Mpdf([   
-                'margin_top' => 68,
+                'margin_top' => 70,
                 //'margin_bottom' => 20,
                 'margin_header' => 10, //Fix Footer
                 'margin_footer' => 15, //Fix Footer

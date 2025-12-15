@@ -126,7 +126,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_reffer_no" id="uid" value="" class="form-control input_length" required >
+                                                                        <input type="text" name="so_reffer_no" id="uid" value="" class="form-control input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -930,7 +930,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text"   name="spd_unit" class="form-control text-center" required></td>
-                                                                <td><input type="number" name="spd_quantity" class="form-control edit_add_qty text-center" required></td>
+                                                                <td><input type="text" name="spd_quantity" class="form-control edit_add_qty text-center" required></td>
                                                                 <td><input type="text" name="spd_rate" class="form-control edit_add_rate text-end" required></td>
                                                                 <td><input type="number" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount text-center" required></td>
                                                                 <td><input type="text" name="spd_amount" class="form-control edit_add_amount text-end" ></td>
@@ -2067,7 +2067,7 @@
                 
                // $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                
-               $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]'   class='form-control unit_clz_id text-center' required=''></td><td><input type='text' min='0'  step='0.01' name='spd_quantity["+so+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' step='0.01' class='form-control discount_clz_id text-center' required=''></td><td><input type='text' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+               $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]'   class='form-control unit_clz_id text-center' required=''></td><td><input type='text' name='spd_quantity["+so+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' step='0.01' class='form-control discount_clz_id text-center' required=''></td><td><input type='text' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
 			}
 
@@ -2248,7 +2248,7 @@
         $("body").on("input", ".qtn_clz_id", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
-
+             
             // Ensure only one decimal point
             if ((rawValue.match(/\./g) || []).length > 1) {
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
@@ -2260,6 +2260,7 @@
 
         $("body").on("blur", ".qtn_clz_id", function () {
             var $this = $(this);
+           
             var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
 
             if (rawValue !== "") {
@@ -2268,6 +2269,10 @@
                 console.log("Formatted Output:", formattedValue); // Debugging
             }
         });
+
+
+        
+        /**/
 
 
 
@@ -2282,6 +2287,8 @@
             // Remove commas before performing calculations
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
+
+            //var quantity = parseFloat(quantityElement.val().replace(/,/g, "")) || 0;
 
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;
@@ -2754,6 +2761,8 @@
             // Remove commas before performing calculations
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
+
+           
 
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;
