@@ -187,6 +187,46 @@ class SalesQuotation extends BaseController
 
             $uid = $this->FetchReference("r");
         }
+
+        /***/
+
+        /*if (ctype_digit($this->request->getPost('qd_delivery_term'))) {
+
+            $delivery_term = $quotation_details->dt_name;
+
+        }else{
+
+            $delivery_term =  $quotation_details->qd_delivery_term;
+
+        }*/
+
+        $cond1 = array('dt_id' => $this->request->getPost('qd_delivery_term'));
+
+        $single_delivery_term = $this->common_model->SingleRow('master_delivery_term',$cond1);
+        
+        if(empty($single_delivery_term)){
+
+            $delivery_insert = [
+
+                'dt_name'     => $this->request->getPost('qd_delivery_term'),
+
+                'dt_status'   => 1,
+
+            ];
+
+           
+            $qd_delivery_term = $this->common_model->InsertData('master_delivery_term',$delivery_insert);
+
+
+
+        }
+        else{
+
+            $qd_delivery_term = $this->request->getPost('qd_delivery_term');
+        }
+        
+
+        /***/
         
        
         $insert_data = [
@@ -207,7 +247,7 @@ class SalesQuotation extends BaseController
 
             'qd_payment_term'               => $this->request->getPost('qd_payment_term'),
 
-            'qd_delivery_term'              => $this->request->getPost('qd_delivery_term'),
+            'qd_delivery_term'              => $qd_delivery_term,
 
             'qd_project'                    => $this->request->getPost('qd_project'),
 
@@ -385,7 +425,7 @@ class SalesQuotation extends BaseController
 
         $data['payment_term'] = $quotation_details->qd_payment_term;
 
-        $data['delivery_term'] = $quotation_details->qd_delivery_term;
+        $data['delivery_term'] = $quotation_details->dt_name;
 
         $data['project'] = $quotation_details->qd_project;
 
@@ -583,7 +623,7 @@ class SalesQuotation extends BaseController
 
         
 
-        if (ctype_digit($quotation_details->qd_delivery_term)) {
+        /*if (ctype_digit($quotation_details->qd_delivery_term)) {
 
             $delivery_term = $quotation_details->dt_name;
 
@@ -591,7 +631,7 @@ class SalesQuotation extends BaseController
 
             $delivery_term =  $quotation_details->qd_delivery_term;
 
-        }
+        }*/
 
 
         $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
@@ -638,7 +678,7 @@ class SalesQuotation extends BaseController
 
         $data['payment_term']      = $quotation_details->qd_payment_term;
 
-        $data['delivery_term']     =  $delivery_term;
+        $data['delivery_term']     = $quotation_details->dt_name;
 
         $data['project']           = $quotation_details->qd_project;
 
@@ -1184,7 +1224,7 @@ class SalesQuotation extends BaseController
                 $data['delivery_term'] .= '<option value="' .$del_term->dt_id. '"'; 
             
                 // Check if the current product head is selected
-                if ($del_term->dt_name   == $quotation_details->qd_delivery_term)
+                if ($del_term->dt_id   == $quotation_details->qd_delivery_term)
                 {
                     $data['delivery_term'] .= ' selected'; 
                 }
@@ -1197,9 +1237,9 @@ class SalesQuotation extends BaseController
 
 
 
-         $single_delevery_term = [
+        /*$single_delevery_term = [
             'qd_delivery_term' => $quotation_details->qd_delivery_term 
-        ];
+        ];*/
 
 
 
@@ -2163,6 +2203,7 @@ class SalesQuotation extends BaseController
 
         echo json_encode($data); 
     }
+
 
 
     /**/

@@ -1882,19 +1882,25 @@ class SalesOrder extends BaseController
                 <table class="footer-tables" style="padding:2px;border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;">
             
                     <tr>
-                        <td width="15%">Order Terms</td>
+                        <td width="15%" rowspan="2">Order Terms</td>
 
-                        <td style="width:13%">LPO Reference:</td>
+                        <td style="width:13%" >LPO Reference:</td>
 
                         <td width="15%">'.$sales_order->so_lpo.'</td>
 
-                        <td style="width:9%">Payment:</td>
+                         <td style="width:9%">Payment:</td>
 
                         <td style="">'.$sales_order->so_payment_term.'</td>
+
+                        
                         
                     </tr>
 
                     <tr>
+
+                        
+
+                       
                     
                         <td style="width:15%" rowspan="2">Quote Reference:</td>
 

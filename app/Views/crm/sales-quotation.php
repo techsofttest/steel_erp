@@ -166,7 +166,15 @@
         width: 205px;
     
     }
-   
+    
+    /**/
+    .selectize-dropdown {
+    z-index: 1056 !important; /* Bootstrap modal is 1055 */
+}
+
+
+    /**/
+
 </style>
 
 <div class="tab-content text-muted">
@@ -203,6 +211,7 @@
                                                         <div class="row">
 
                                                             <!-- Single Row Start -->
+                                                             
                                                             <div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
@@ -412,7 +421,7 @@
                                                                         <select id="qd_delivery_term_id" name="qd_delivery_term" class="delivery_term_clz input_length2" required>
                                                                             <option>Selected Disabled</option>
                                                                             <?php foreach($delivery_term as $delv_term){?> 
-                                                                                <option value="<?php echo $delv_term->dt_name;?>"><?php echo $delv_term->dt_name;?></option> 
+                                                                                <option value="<?php echo $delv_term->dt_id;?>"><?php echo $delv_term->dt_name;?></option> 
                                                                             <?php } ?>
                                                                             
 
@@ -3288,9 +3297,15 @@
 
         $(function() {
             $('#qd_delivery_term_id').selectize({
-                create: true
+                dropdownParent: 'body',
+                create: true,
+                closeAfterSelect: true
             });
         });
+
+
+        
+
 
         
        
