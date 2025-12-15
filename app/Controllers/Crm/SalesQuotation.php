@@ -2510,7 +2510,7 @@ class SalesQuotation extends BaseController
 
 
         $mpdf = new \Mpdf\Mpdf([    
-            'margin_top' => 68,
+            'margin_top' => 70,
             'margin_bottom' => 20,  // Normal margin
             'margin_header' => 10,
             'margin_left' => 5,
