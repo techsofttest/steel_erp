@@ -165,7 +165,8 @@ class MaterialReceivedNote extends BaseController
             }
             else{
 
-                $uid = $this->FetchReference("r");
+                //$uid = $this->FetchReference("r");
+                $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('mrn_date'))));
             }
             
             $insert_data = [

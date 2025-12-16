@@ -142,7 +142,8 @@ class MaterialRequisition extends BaseController
         }
         else{
 
-            $uid = $this->FetchReference("r");
+            //$uid = $this->FetchReference("r");
+            $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('mr_date'))));
         }
         
         $insert_data = [

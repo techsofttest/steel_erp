@@ -207,7 +207,8 @@ class SalesReturn extends BaseController
             }
             else{
         
-                $uid = $this->FetchReference("r");
+               // $uid = $this->FetchReference("r");
+                $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('sr_date'))));
             }
 
 

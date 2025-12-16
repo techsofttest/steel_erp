@@ -150,7 +150,18 @@ class PurchaseReturn extends BaseController
         {   
             
 
-            $uid = $this->FetchReference("r");
+            //$uid = $this->FetchReference("r");
+
+            $ruid_check = $this->common_model->SingleRow('pro_purchase_return',array('pr_reffer_id' => $this->request->getPost('pr_reffer_id')));
+        
+            if(empty($ruid_check)){
+
+                $uid = $this->request->getPost('pr_reffer_id');
+            }
+            else{
+
+                $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('pr_date'))));
+            }
              
             $insert_data = [
 

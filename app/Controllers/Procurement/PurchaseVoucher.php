@@ -216,7 +216,8 @@ class PurchaseVoucher extends BaseController
             }
             else{
 
-                $uid = $this->FetchReference("r");
+                //$uid = $this->FetchReference("r");
+                $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('purchase_date'))));
             }
 
             $insert_data = [

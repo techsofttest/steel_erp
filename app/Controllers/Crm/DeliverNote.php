@@ -195,12 +195,18 @@ class DeliverNote extends BaseController
 
             $delivery_note_data = $this->common_model->FetchWhere('crm_delivery_note',array('dn_reffer_no' => $this->request->getPost('dn_reffer_no')));
 
-            if(empty($delivery_note_data))
-            {
+            if(empty($delivery_note_data)){
+
+                $uid = $this->request->getPost('dn_reffer_no');
+
+            }else{
+
+                $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('dn_date'))));
+            }
 
                 $insert_data = [
 
-                    'dn_reffer_no'        => $this->request->getPost('dn_reffer_no'),
+                    'dn_reffer_no'        => $uid,
 
                     'dn_date'             => date('Y-m-d',strtotime($this->request->getPost('dn_date'))),
 
@@ -244,12 +250,12 @@ class DeliverNote extends BaseController
                 $data['sales_order'] = $delivery->dn_sales_order_num;
 
                 $data['delivery_id'] = $delivery_id;
-            }
+            /*}
             else
             {
 
                 $data['status'] = "false";
-            } 
+            } */
         }
         else
         {   

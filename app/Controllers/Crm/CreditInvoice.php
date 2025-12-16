@@ -227,7 +227,8 @@ class CreditInvoice extends BaseController
                 }
                 else{
             
-                    $uid = $this->FetchReference("r");
+                    //$uid = $this->FetchReference("r");
+                    $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('cci_date'))));
                 }
 
                 $insert_data = [

@@ -227,12 +227,21 @@ class CashInvoice extends BaseController
 
             $cash_invoice_data = $this->common_model->FetchWhere('crm_cash_invoice',array('ci_reffer_no' => $this->request->getPost('ci_reffer_no')));
 
-            if(empty($cash_invoice_data))
-            {
+            if(empty($cash_invoice_data)){
+
+		        $uid = $this->request->getPost('ci_reffer_no');
+	        }
+            else{
+
+                $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('ci_date'))));
+            }
+
+            /*if(empty($cash_invoice_data))
+            {*/
 
                 $insert_data = [
 
-                    'ci_reffer_no'       => $this->request->getPost('ci_reffer_no'),
+                    'ci_reffer_no'       => $uid,
 
                     'ci_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
 
@@ -281,11 +290,11 @@ class CashInvoice extends BaseController
 
                 $data['status']  = "true";
 
-            }
+            /*}
             else{
 
                 $data['status']  = "false";
-            }
+            }*/
             
            
 
