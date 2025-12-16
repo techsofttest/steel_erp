@@ -168,9 +168,14 @@
     }
     
     /**/
+    
     .selectize-dropdown {
-    z-index: 1056 !important; /* Bootstrap modal is 1055 */
-}
+        z-index: 1056 !important; /* Bootstrap modal is 1055 */
+    }
+
+    .selectize-dropdown .option {
+        background-color: #ffffff;
+    }
 
 
     /**/
