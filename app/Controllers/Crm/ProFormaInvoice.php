@@ -1568,7 +1568,7 @@ class ProFormaInvoice extends BaseController
                     'defaultfooterline' => 0,
                 ]);
 
-                $mpdf->SetAutoPageBreak(true, 50);
+                $mpdf->SetAutoPageBreak(true, 20);
 
                 $mpdf->SetTitle($title);
 
