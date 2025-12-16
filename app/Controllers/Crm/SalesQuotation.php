@@ -2530,7 +2530,7 @@ class SalesQuotation extends BaseController
  
         $mpdf->WriteHTML($main_table);
 
-        $mpdf->WriteHtml('<div style="margin-top:50mm"></div>');
+        $mpdf->WriteHtml('<div style="height:45mm"></div>');
 
         $mpdf->SetHTMLFooter($last_page_footer); 
 
