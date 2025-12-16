@@ -1748,9 +1748,9 @@ class ProFormaInvoice extends BaseController
                 $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;padding: 0">
                 
                         <tr>
-                            <td style="width: 15%;"></td>
+                            <td width="15%"></td>
 
-                            <td style=width="60%">IBAN : QA97CBQA000000004570407137001</td>
+                            <td style=width="59%">IBAN : QA97CBQA000000004570407137001</td>
 
                             <td style="width: 15%;">Net Order Value:</td>
                 
@@ -1764,7 +1764,7 @@ class ProFormaInvoice extends BaseController
             
                             <td>Bank Details</td>
                         
-                            <td style=width="59%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                            <td width="59%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
 
                             <td style="font-weight: bold;width: 17%;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
 
@@ -1788,7 +1788,7 @@ class ProFormaInvoice extends BaseController
     
                         <tr style="width:100%";>
             
-                            <td style="width: 15%;">Amount in words</td>
+                            <td width="15%">Amount in words</td>
                         
                             <td style="width: 59%;">'.currency_to_words($proforma_invoice->pf_current_claim_value).'</td>
                 
@@ -1801,7 +1801,7 @@ class ProFormaInvoice extends BaseController
                     <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;padding: 0">
                 
                         <tr>
-                            <td style="width:15%" rowspan="2">Invoice Terms</td>
+                            <td width="15%" rowspan="2">Invoice Terms</td>
             
                             <td style="width:20%">LPO Ref:</td>
             
@@ -1826,9 +1826,6 @@ class ProFormaInvoice extends BaseController
 
                             <td style="">'.$proforma_invoice->so_reffer_no.'</td>
             
-                            
-            
-                            
                             
                         </tr>
     
@@ -1874,6 +1871,8 @@ class ProFormaInvoice extends BaseController
                                 // Output summary just before footer on last page
                                 //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
+
+                                
 
 
                                 $this->response->setHeader('Content-Type', 'application/pdf');
