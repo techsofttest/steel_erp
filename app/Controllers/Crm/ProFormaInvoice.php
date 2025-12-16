@@ -298,7 +298,7 @@ class ProFormaInvoice extends BaseController
                         
                         'pp_product_det'    =>  $_POST['pp_product_det'][$j],
                         'pp_unit'           =>  $_POST['pp_unit'][$j],
-                        'pp_quantity'       =>  $_POST['pp_quantity'][$j],
+                        'pp_quantity'       =>  preg_replace('/[,]/', '',$_POST['pp_quantity'][$j]),
                         'pp_rate'           =>  preg_replace('/[,]/', '',$_POST['pp_rate'][$j]),
                         'pp_discount'       =>  $_POST['pp_discount'][$j],
                         'pp_amount'         =>  preg_replace('/[,]/', '',$_POST['pp_amount'][$j]),
@@ -320,7 +320,7 @@ class ProFormaInvoice extends BaseController
 
                     $sales_qty = $sales_prod_sigle->spd_quantity;
 
-                    $total_qty = $current_qty + $_POST['pp_quantity'][$j];
+                    $total_qty = $current_qty + preg_replace('/[,]/', '',$_POST['pp_quantity'][$j]);
 
                     $update_data = array(  
                        
@@ -753,7 +753,7 @@ class ProFormaInvoice extends BaseController
                                             <td><select name="pp_product_det['.$j.']" class="form-control add_prod2">'.$options_product.'</select>
                                             </td>
                                             <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
-                                            <td><input type="number" name="pp_quantity['.$j.']" value="'.$avaliable_qty.'" class="form-control qtn_clz_id text-center" required></td>
+                                            <td><input type="text" name="pp_quantity['.$j.']" value="'.format_currency($avaliable_qty).'" class="form-control qtn_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_rate['.$j.']" value="'.format_currency($prod_det->spd_rate).'" class="form-control rate_clz_id text-end" required></td>
                                             <td><input type="number" name="pp_discount['.$j.']" value="'.format_currency($prod_det->spd_discount).'" class="form-control discount_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_amount['.$j.']" value="'.format_currency($prod_det->spd_amount).'" class="form-control amount_clz_id text-end" readonly></td>

@@ -468,7 +468,7 @@ class SalesOrder extends BaseController
             <td><select name="spd_product_details['.$si.']" class="form-control droup_product add_prod">'.$options_product.'</select>
             </td>
             <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id text-center" required></td>
-            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'"   class="form-control qtn_clz_id text-center"  required></td>
+            <td> <input type="text" name="spd_quantity['.$si.']" value="'.format_currency($prod_det->qpd_quantity).'"   class="form-control qtn_clz_id text-center"  required></td>
             <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id text-end"   required></td>
             <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"  class="form-control discount_clz_id text-center" required></td>
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id text-end" readonly></td>

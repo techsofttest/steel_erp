@@ -2201,6 +2201,9 @@ InitProductSelectEdit();
             }
         });
 
+       
+
+
         $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
             var $this = $(this);
 
