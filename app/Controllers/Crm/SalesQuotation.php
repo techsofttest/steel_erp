@@ -2416,7 +2416,6 @@ class SalesQuotation extends BaseController
 
 
         $last_page_footer = '
-        <div style="position: fixed; bottom: 0mm; left: 0mm; right: 0mm;">
         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 11px;">
         
             <tr>
@@ -2447,11 +2446,7 @@ class SalesQuotation extends BaseController
             </tr>
         
         </table>
-        
-        </div>
-        ';
 
-        $no ='
          <table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
          
             <tr>
@@ -2464,7 +2459,10 @@ class SalesQuotation extends BaseController
             </tr>
         
         </table>
+
         ';
+
+        $no ='';
 
         $main_table = '<style>
                 th, td {padding: 4px; font-size: 12px; }
@@ -2532,12 +2530,13 @@ class SalesQuotation extends BaseController
  
         $mpdf->WriteHTML($main_table);
 
+        $mpdf->WriteHtml('<div style="margin-top:'.$required_bottom_margin.'"></div>');
+
+        $mpdf->SetHTMLFooter($last_page_footer); 
+
         //$mpdf->WriteHTML('<div style="height:80mm;"></div>');
 
-
-        $mpdf->WriteHTML($last_page_footer);
        
-
         $this->response->setHeader('Content-Type', 'application/pdf');
 
         $mpdf->Output($title . '.pdf', 'I');
