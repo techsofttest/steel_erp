@@ -1949,8 +1949,7 @@ class DeliverNote extends BaseController
                                     </tr>
     
                                     <tr>
-                                        
-                        
+                                      
                                         <td>Project:</td>
 
                                         <td>'.$delivery_note->dn_project.'</td>
@@ -1959,7 +1958,6 @@ class DeliverNote extends BaseController
 
                                         <td>'.$delivery_note->so_reffer_no.'</td>
                         
-                                        
                         
                                     </tr>
                 
