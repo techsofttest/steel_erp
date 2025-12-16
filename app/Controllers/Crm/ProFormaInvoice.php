@@ -1745,7 +1745,7 @@ class ProFormaInvoice extends BaseController
                                 </table>';
 
 
-                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px;padding: 0">
+                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;padding: 0">
                 
                         <tr>
                             <td></td>
