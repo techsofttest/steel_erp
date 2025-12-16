@@ -1750,7 +1750,7 @@ class ProFormaInvoice extends BaseController
                         <tr>
                             <td width="15%"></td>
 
-                            <td >IBAN : QA97CBQA000000004570407137001</td>
+                            <td>IBAN : QA97CBQA000000004570407137001</td>
 
                             <td style="width: 15%;">Net Order Value:</td>
                 
@@ -1777,7 +1777,7 @@ class ProFormaInvoice extends BaseController
 
                         <tr>
             
-                            <td></td>
+                            <td width="15%"></td>
                         
                             <td>SWIFT : CBQAQAQA</td>
     
