@@ -1562,13 +1562,13 @@ class ProFormaInvoice extends BaseController
 
                 $mpdf = new \Mpdf\Mpdf([
                     'margin_top' => 81,
-                    'margin_bottom' => 50,
+                    'margin_bottom' => 20,
                     'margin_left' => 5,
                     'margin_right' => 5,
                     'defaultfooterline' => 0,
                 ]);
 
-                $mpdf->SetAutoPageBreak(true, 50);
+                $mpdf->SetAutoPageBreak(true, 20);
 
                 $mpdf->SetTitle($title);
 
@@ -1744,10 +1744,11 @@ class ProFormaInvoice extends BaseController
     
                                 </table>';
 
-                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px;padding: 0">
+
+                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;padding: 0">
                 
                         <tr>
-                            <td></td>
+                            <td style="width: 15%;"></td>
 
                             <td style=width="60%">IBAN : QA97CBQA000000004570407137001</td>
 
@@ -1797,10 +1798,10 @@ class ProFormaInvoice extends BaseController
     
                     </table>
 
-                    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;padding: 0">
+                    <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;padding: 0">
                 
                         <tr>
-                            <td style="width:14%" rowspan="2">Invoice Terms</td>
+                            <td style="width:15%" rowspan="2">Invoice Terms</td>
             
                             <td style="width:20%">LPO Ref:</td>
             
@@ -1835,6 +1836,9 @@ class ProFormaInvoice extends BaseController
                 
                     </table>';
 
+
+                $last_page_footer = $summary_html.$footer_common;
+
                 $main_table = ' <style>
                                     th, td { padding: 4px; font-size: 12px; }
                                     p { font-size: 12px; margin-bottom: 13px; }
@@ -1861,10 +1865,16 @@ class ProFormaInvoice extends BaseController
 
                                 $mpdf->WriteHTML($main_table);
 
+                                $mpdf->WriteHtml('<div style="height:40mm"></div>');
+
+                                $mpdf->SetHTMLFooter($last_page_footer); 
+
                                 //echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                                 // Output summary just before footer on last page
-                                $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+                                //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+
 
                                 $this->response->setHeader('Content-Type', 'application/pdf');
                                 $mpdf->Output($title . '.pdf', 'I');
