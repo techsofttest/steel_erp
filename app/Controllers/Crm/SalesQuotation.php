@@ -2504,7 +2504,7 @@ class SalesQuotation extends BaseController
     $footer_height = $mpdf_footer_measure->y; // Get the height used
 
     // Add safety margin (10mm extra)
-    $required_bottom_margin = $footer_height;
+    $required_bottom_margin = $footer_height+10;
 
 
         $mpdf = new \Mpdf\Mpdf([    
@@ -2530,7 +2530,7 @@ class SalesQuotation extends BaseController
  
         $mpdf->WriteHTML($main_table);
 
-        $mpdf->WriteHtml('<div style="margin-top:'.$required_bottom_margin.'"></div>');
+        $mpdf->WriteHtml('<div style="margin-top:70mm"></div>');
 
         $mpdf->SetHTMLFooter($last_page_footer); 
 
