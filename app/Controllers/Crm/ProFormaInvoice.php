@@ -1750,7 +1750,7 @@ class ProFormaInvoice extends BaseController
                         <tr>
                             <td width="15%"></td>
 
-                            <td style=width="59%">IBAN : QA97CBQA000000004570407137001</td>
+                            <td >IBAN : QA97CBQA000000004570407137001</td>
 
                             <td style="width: 15%;">Net Order Value:</td>
                 
@@ -1764,7 +1764,7 @@ class ProFormaInvoice extends BaseController
             
                             <td width="15%">Bank Details</td>
                         
-                            <td width="59%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                            <td >Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
 
                             <td style="font-weight: bold;width: 17%;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
 
@@ -1790,7 +1790,7 @@ class ProFormaInvoice extends BaseController
             
                             <td width="15%">Amount in words</td>
                         
-                            <td style="width: 59%;">'.currency_to_words($proforma_invoice->pf_current_claim_value).'</td>
+                            <td >'.currency_to_words($proforma_invoice->pf_current_claim_value).'</td>
                 
                             
                         
