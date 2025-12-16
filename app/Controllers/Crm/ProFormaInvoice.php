@@ -1762,7 +1762,7 @@ class ProFormaInvoice extends BaseController
     
                         <tr>
             
-                            <td>Bank Details</td>
+                            <td width="15%">Bank Details</td>
                         
                             <td width="59%">Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
 
