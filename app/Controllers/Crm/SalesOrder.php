@@ -196,12 +196,19 @@ class SalesOrder extends BaseController
         $sales_datas = $this->common_model->FetchWhere('crm_sales_orders',array('so_reffer_no' => $this->request->getPost('so_reffer_no')));
         
         if(empty($sales_datas)){
+             
+            $uid = $this->request->getPost('so_reffer_no');
 
+        }
+        else{
+
+		    $uid = $this->FetchReference("r",date('Y',strtotime($this->request->getPost('so_date'))));
+	    }
            
 
         $insert_data = [
 
-            'so_reffer_no'              => $this->request->getPost('so_reffer_no'),
+            'so_reffer_no'              => $uid,
 
             'so_date'                   => date('Y-m-d',strtotime($this->request->getPost('so_date'))),
 
@@ -323,11 +330,11 @@ class SalesOrder extends BaseController
         $return['status'] = "true";
         
         
-        }
+        /*}
         else
         {
             $return['status'] = "false";
-        }
+        }*/
 
         echo json_encode($return);
 
