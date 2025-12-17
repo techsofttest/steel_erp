@@ -1744,9 +1744,6 @@ class SalesOrder extends BaseController
                 'margin_bottom' => 20,
                 'margin_left' => 5,
                 'margin_right' => 5,
-                'defaultfooterline' => 0,
-                'setAutoTopMargin'   => 'stretch',
-                'setAutoBottomMargin'   => 'stretch',
             ]);
 
            $mpdf->SetAutoPageBreak(true, 20); //Fix Footer
