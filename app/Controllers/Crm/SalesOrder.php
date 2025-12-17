@@ -1741,9 +1741,7 @@ class SalesOrder extends BaseController
 
             $mpdf = new \Mpdf\Mpdf([   
                 'margin_top' => 70,
-                //'margin_bottom' => 20,
-                'margin_header' => 10, //Fix Footer
-                'margin_footer' => 15, //Fix Footer
+                'margin_bottom' => 20,
                 'margin_left' => 5,
                 'margin_right' => 5,
                 'defaultfooterline' => 0,
@@ -2004,14 +2002,7 @@ class SalesOrder extends BaseController
 
                $mpdf->WriteHTML($main_table);
 
-               // Check if we're still on page 1 (meaning content fits on one page)
-                if ($mpdf->page == 1) {
-                    // Single page scenario - need to adjust margin for larger footer
-                    $mpdf->SetAutoPageBreak(true, 40);  // Increase bottom margin
-                    // Force a check to see if content now overflows
-                    $mpdf->WriteHTML('<div style="margin:0;padding:0;"></div>'); // Trigger reflow
-                    
-                }
+               $mpdf->WriteHtml('<div style="height:40mm"></div>');
 
                 
             //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
