@@ -1039,7 +1039,7 @@ class SalesQuotation extends BaseController
 
             $data['product_detail'] .=  '<tr class="prod_row enq_remove quot_row_leng" id="'.$prod_det->pd_id.'">
                 <td  class="si_no "><input type="text"  value="'.$i.'" class="form-control " readonly></td>
-                <td><select name="qpd_product_description['.$k.']" class="form-control add_select2_prod">'.$options_product.'</select></td>
+                <td class="open-select2"><select name="qpd_product_description['.$k.']" class="form-control add_select2_prod ">'.$options_product.'</select></td>
                 <td><input type="text" name="qpd_unit['.$k.']" value="'.$prod_det->pd_unit.'" class="form-control unit_clz_id text-center" required></td>
                 <td><input type="number" name="qpd_quantity['.$k.']" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
                 <td><input type="text" name="qpd_rate['.$k.']"  class="form-control rate_clz_id text-end" required></td>

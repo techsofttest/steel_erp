@@ -158,7 +158,7 @@
                                                                         <label for="basicInput" class="form-label">Customer Name <span class="add_more_icon cust_more_modal  ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                         <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                         </select>
@@ -327,7 +327,7 @@
                                                         <tbody class="travelerinfo">
                                                             <tr class="prod_row">
                                                                 <td style="width: 4%;padding:10px 15px;"class="si_no">1</td>
-                                                                <td style="height:auto;">
+                                                                <td style="height:auto;" class="open-select2">
                                                                 <!--<span class="add_more_icon prod_add_more">New</span>--->
                                                                     <select class="form-select ser_product_det" name="pd_product_detail[0]" required>
                                                                         <option value=""  selected disabled>Select Product Description</option>
@@ -1024,7 +1024,7 @@
 
                                                         <tr>
                                                           
-                                                            <td>
+                                                            <td class="open-select2">
                                                                 <select class="edit_add_prod form-control" name="pd_product_detail" required>
                                                                     <option value="" selected disabled>select</option>
                                                                 </select>
@@ -1276,7 +1276,7 @@
 	           
                 //$("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;padding:10px 15px'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz text-center' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz text-center' required=''></td><td style='width: 8%;text-align: center;padding-top: 6px;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;padding:10px 15px'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz text-center' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz text-center' required=''></td><td style='width: 8%;text-align: center;padding-top: 6px;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;padding:10px 15px'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td class='open-select2'><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz text-center' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz text-center' required=''></td><td style='width: 8%;text-align: center;padding-top: 6px;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
                 slno_add();
                 /*customer droup drown search*/

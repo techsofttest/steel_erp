@@ -2952,7 +2952,7 @@
  
                 //$(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod add_select2_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)' required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td class='open-select2'><select class='form-select add_prod add_select2_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)' required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
 			}
             
@@ -5534,10 +5534,8 @@ $(document).ajaxError(function() {
 });
      
 
-      
-        
-         
-
-
-
+ 
 </script>
+
+
+

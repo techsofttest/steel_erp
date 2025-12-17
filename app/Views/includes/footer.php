@@ -994,4 +994,15 @@ document.addEventListener('DOMContentLoaded', disableAutoComplete);
 </script>
 
 
+<script>
+$(document).on('click', '.open-select2', function (e) {
+    // prevent double trigger
+    if ($(e.target).is('select, option, .select2-selection, input')) return;
+
+    $(this).find('select').select2('open');
+});
+
+</script>
+
+
 

@@ -672,7 +672,7 @@ class Enquiry extends BaseController
        
             $data['prod_details'] .='<tr class="edit_single_prod">
             <td><input type="text"   value="1" class="form-control " readonly></td>
-            <td> 
+            <td class="open-select2"> 
                 <select name="pd_product_detail" class="form-control prod_select2_edit">'.$options_product.'</select>
             </td>
 
