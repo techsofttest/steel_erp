@@ -153,7 +153,7 @@
                                                                         <label for="basicInput" class="form-label">Vendor Name</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
 
                                                                         <select class="form-select select_vendor add_vendor vendor_data input_length" name="mrn_vendor_name" id="" required>
 

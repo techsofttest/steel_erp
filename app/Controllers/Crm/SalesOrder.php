@@ -472,7 +472,7 @@ class SalesOrder extends BaseController
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove sales_row_leng" id="'.$prod_det->qpd_id.'">
             <td class="si_no2 text-center" style="border">'.$i.'</td>
-            <td><select name="spd_product_details['.$si.']" class="form-control droup_product add_prod">'.$options_product.'</select>
+            <td class="open-select2"><select name="spd_product_details['.$si.']" class="form-control droup_product add_prod">'.$options_product.'</select>
             </td>
             <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id text-center" required></td>
             <td> <input type="text" name="spd_quantity['.$si.']" value="'.format_currency($prod_det->qpd_quantity).'"   class="form-control qtn_clz_id text-center"  required></td>
@@ -1375,7 +1375,7 @@ class SalesOrder extends BaseController
             $data['prod_details'] .='<tr class="edit_prod_row">
            
            
-            <td> <select name="spd_product_details" class="form-control product_select2_edit droup_product">'.$options_product.'</select></td>
+            <td class="open-select2"> <select name="spd_product_details" class="form-control product_select2_edit droup_product">'.$options_product.'</select></td>
 
             <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control text-center" required></td>
             <td> <input type="text" name="spd_quantity" value="'.format_currency($prod_det->spd_quantity).'" class="form-control edit_prod_qty text-center" required></td>

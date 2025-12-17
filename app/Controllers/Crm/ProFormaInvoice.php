@@ -750,7 +750,7 @@ class ProFormaInvoice extends BaseController
 
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
                                             <td class="si_no text-center">'.$i.'</td>
-                                            <td><select name="pp_product_det['.$j.']" class="form-control add_prod2">'.$options_product.'</select>
+                                            <td class="open-select2"><select name="pp_product_det['.$j.']" class="form-control add_prod2">'.$options_product.'</select>
                                             </td>
                                             <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_quantity['.$j.']" value="'.format_currency($avaliable_qty).'" class="form-control qtn_clz_id text-center" required></td>

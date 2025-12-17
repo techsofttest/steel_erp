@@ -219,7 +219,7 @@
                                                                         <label for="basicInput" class="form-label">Vendor Name <span class="add_more_icon add_new vendor_new_modal  ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                         
                                                                         <select class="form-select select_vendor add_vendor input_length" name="po_vendor_name" id=""  required>
                                                                             

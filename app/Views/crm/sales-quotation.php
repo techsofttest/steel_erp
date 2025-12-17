@@ -266,7 +266,7 @@
                                                                         <label for="basicInput" class="form-label">Customer Name<span class="add_more_icon cust_more_modal  ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                         <select class="form-select droup_customer_id" name="qd_customer" id="customer_id"  required>
                                                                            
                                                                         </select>
@@ -663,7 +663,7 @@
                                                             <tr class="cost_cal_row cost_cal_row2">
 
                                                                 <td class="cost_ci_no text-center" style="padding: 10px 10px;">1</td>
-                                                                <td>
+                                                                <td class="open-select2">
                                                                     <select class="form-select cost_service_clz cost_product_det" name="qc_material[0]" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
@@ -1260,7 +1260,8 @@
                                                         <tbody>
                                                             <tr class="edit_cost_cal_row">
                                                                 
-                                                                <td >
+                                                                <td class="open-select2">
+                                                                    
                                                                     <select class="form-select  edit_cost_product_det edit_cost_prod" name="qc_material" required>
                                                                         <option selected>Select Product Description</option>
                                                                        
@@ -1511,7 +1512,7 @@
                                                         <tbody>
                                                             <tr class="edit_add_prod_det_row">
                                                                 
-                                                                <td>
+                                                                <td class="open-select2">
                                                                     <select class="form-select  edit_add_quot_prod" name="qpd_product_description" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
                                                                        

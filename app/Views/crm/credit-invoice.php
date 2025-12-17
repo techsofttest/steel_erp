@@ -167,7 +167,7 @@ span.select2.customer_width, span.select2 {
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                         
                                                                         <select class="form-select customer_sel customer_id input_length" name="cci_customer" required></select>
                                                                
@@ -193,7 +193,7 @@ span.select2.customer_width, span.select2 {
                                                                         <label for="basicInput" class="form-label">Credit Account</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                       
                                                                         <select class="form-select input_length credit_select input_length" name="ci_credit_account" id="" required></select>
                                                                         

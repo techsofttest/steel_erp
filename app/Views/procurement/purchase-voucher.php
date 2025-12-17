@@ -153,7 +153,10 @@
     td.total_label {
        /* width: 44%;*/
 
-       width: 65%;
+       /*width: 65%;*/
+
+        width: 159px;
+
     
     }
     
@@ -268,7 +271,7 @@
                                                                         <label for="basicInput" class="form-label">Vendor Name <span class="add_more_icon add_new vendor_new_modal  ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                         
                                                                         <select class="form-select select_vendor add_vendor vendor_data input_length" name="purchase_vendor_name" id=""  required>
                                                                             
@@ -2926,7 +2929,7 @@ InitDebitSelectAdd1()
           */ 
          
           
-          $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td ><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+          $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td class='open-select2'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
              
           
               

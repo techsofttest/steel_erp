@@ -1726,7 +1726,7 @@ class SalesQuotation extends BaseController
             $data['prod_details'] .='<tr class="edit_prod_row">
            
            
-            <td><select name="qpd_product_description" class="form-control product_select2_edit">'.$options_product.'</select></td>
+            <td class="open-select2"><select name="qpd_product_description" class="form-control product_select2_edit">'.$options_product.'</select></td>
 
             <td><input type="text" name="qpd_unit"  value="'.$prod_det->qpd_unit.'" class="form-control text-center" required></td>
             <td><input type="text" name="qpd_quantity" value="'.$prod_det->qpd_quantity.'" class="form-control edit_prod_qty text-center" required></td>

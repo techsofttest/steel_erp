@@ -164,7 +164,7 @@ span.select2.customer_width, span.select2 {
                                                                     <label for="basicInput" class="form-label">Customer</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                         
 
                                                                         <select class="form-select customer_sel customer_clz_id input_length " name="pf_customer" id="customer_id " required>
@@ -1292,7 +1292,7 @@ span.select2.customer_width, span.select2 {
 
                                                             <tr class="edit_add_prod_row">
                                                                
-                                                                <td>
+                                                                <td class="open-select2">
                                                                     <select class="form-select  edit_product_det" name="pp_product_det" required>
                                                                         
                                                                         <option value="" selected disabled>Select Product Description</option>
@@ -1378,7 +1378,7 @@ span.select2.customer_width, span.select2 {
                                                         <tbody>
                                                             <tr class="edit_product_row">
                                                                
-                                                                <td >
+                                                                <td class="open-select2">
                                                                     <select class="form-select  edit_cost_product_det forma_edit_prod" name="pp_product_det" required>
                                                                         <option selected>Select Product Description</option>
                                                                        
@@ -2369,7 +2369,7 @@ InitProductSelectEdit();
             
            // $(".product-more2").append("<tr class='prod_row performa_row_lenght'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
            
-           $(".product-more2").append("<tr class='prod_row performa_row_lenght text-center'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id text-center' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id text-center' required></td><td><input type='text' name='pp_rate["+prl+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id text-center' required></td><td><input type='text' name='pp_amount["+prl+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding: 10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+           $(".product-more2").append("<tr class='prod_row performa_row_lenght text-center'><td class='si_no'>"+pp+"</td><td class='open-select2'><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id text-center' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id text-center' required></td><td><input type='text' name='pp_rate["+prl+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id text-center' required></td><td><input type='text' name='pp_amount["+prl+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding: 10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
         }
 

@@ -157,7 +157,7 @@ span.select2.customer_width, span.select2 {
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                         
 
                                                                         <select class="form-select customer_sel customer_id input_length" name="sr_customer" required></select>
@@ -183,7 +183,7 @@ span.select2.customer_width, span.select2 {
                                                                         <label for="basicInput" class="form-label">Invoice No <span class="add_more_icon cust_more_modal ri-add-line" id="blink"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-9 col-lg-9 open-select2">
                                                                       
                                                                         
 
