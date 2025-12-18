@@ -2167,7 +2167,7 @@
 
         });
         
-        $("body").on("input", ".add_prod_qty", function () {
+        /*$("body").on("input", ".add_prod_qty", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -2190,7 +2190,7 @@
                 console.log("Formatted Output:", formattedValue); // Debugging
             }
 
-        });
+        });*/
 
 	    /*$("body").on('keyup', '.add_discount, .add_prod_qty, .add_prod_rate', function(){ 
 
@@ -2635,7 +2635,7 @@
         });
 
         // Allow typing without formatting while user is entering the value
-        $("body").on("input", ".edit_prod_qty", function () {
+        /*$("body").on("input", ".edit_prod_qty", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -2657,7 +2657,7 @@
                 $this.val(formattedValue);
                 console.log("Formatted Output:", formattedValue); // Debugging
             }
-        });
+        });*/
 
          // Allow typing without formatting while user is entering the value
          $("body").on("input", ".edit_prod_discount", function () {

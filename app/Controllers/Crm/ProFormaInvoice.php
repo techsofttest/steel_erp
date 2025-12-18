@@ -753,7 +753,7 @@ class ProFormaInvoice extends BaseController
                                             <td class="open-select2"><select name="pp_product_det['.$j.']" class="form-control add_prod2">'.$options_product.'</select>
                                             </td>
                                             <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
-                                            <td><input type="text" name="pp_quantity['.$j.']" value="'.format_currency($avaliable_qty).'" class="form-control qtn_clz_id text-center" required></td>
+                                            <td><input type="text" name="pp_quantity['.$j.']" value="'.$avaliable_qty.'" class="form-control qtn_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_rate['.$j.']" value="'.format_currency($prod_det->spd_rate).'" class="form-control rate_clz_id text-end" required></td>
                                             <td><input type="number" name="pp_discount['.$j.']" value="'.format_currency($prod_det->spd_discount).'" class="form-control discount_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_amount['.$j.']" value="'.format_currency($prod_det->spd_amount).'" class="form-control amount_clz_id text-end" readonly></td>

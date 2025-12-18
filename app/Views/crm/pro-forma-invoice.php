@@ -2177,7 +2177,7 @@ InitProductSelectEdit();
             }
         });
 
-        $("body").on("input", ".qtn_clz_id", function () {
+        /*$("body").on("input", ".qtn_clz_id", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -2199,7 +2199,7 @@ InitProductSelectEdit();
                 $this.val(formattedValue);
                 //console.log("Formatted Output:", formattedValue); // Debugging
             }
-        });
+        });*/
 
        
 

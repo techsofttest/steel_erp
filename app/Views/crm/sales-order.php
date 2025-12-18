@@ -2245,7 +2245,7 @@
         });
 
 
-        $("body").on("input", ".qtn_clz_id", function () {
+        /*$("body").on("input", ".qtn_clz_id", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
              
@@ -2268,7 +2268,7 @@
                 $this.val(formattedValue);
                 console.log("Formatted Output:", formattedValue); // Debugging
             }
-        });
+        });*/
 
 
         
@@ -2725,7 +2725,7 @@
         });
 
 
-        $("body").on("input", ".edit_add_qty", function () {
+        /*$("body").on("input", ".edit_add_qty", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -2746,7 +2746,7 @@
                 $this.val(formattedValue);
                 console.log("Formatted Output:", formattedValue); // Debugging
             }
-        });
+        });*/
 
 
 
@@ -3134,7 +3134,7 @@
             }
         });
 
-        $("body").on("input", ".edit_prod_qty", function () {
+        /*$("body").on("input", ".edit_prod_qty", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -3157,7 +3157,7 @@
                 console.log("Formatted Output:", formattedValue); // Debugging
             }
             
-        });
+        });*/
 
 
 
