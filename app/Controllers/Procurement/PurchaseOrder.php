@@ -1433,7 +1433,7 @@ class PurchaseOrder extends BaseController
                             
                                 <tr>
                                 
-                                    <td> </td>
+                                    <td width="10%"> </td>
                                     
                                     
                                     <td>'.$purchase_order->cc_customer_name.'</td>
