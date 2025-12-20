@@ -1836,7 +1836,7 @@ class DeliverNote extends BaseController
         
                                     <tr>
                                     
-                                        <td > </td>
+                                        <td width="11%"> </td>
                                         
                                         <td >'.$delivery_note->cc_customer_name.'</td>
                                     
