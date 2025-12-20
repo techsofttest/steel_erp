@@ -2375,7 +2375,7 @@ class SalesReturn extends BaseController
                         </table>
                         <table width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
                             <tr><td></td><td></td></tr>
-                            <tr><td></td><td>' . $sales_order->cc_customer_name. '</td></tr>
+                            <tr><td width="10%"></td><td>' . $sales_order->cc_customer_name. '</td></tr>
                             <tr><td>Customer</td><td>Tel : ' . $sales_order->cc_telephone . ', Fax : ' . $sales_order->cc_fax . ', Email : ' . $sales_order->cc_email . '</td></tr>
                             <tr><td></td><td>Post Box: ' . $sales_order->cc_post_box . ', ' . $sales_order->cc_city . ', ' . $customers->cc_country . '</td></tr>
                             <tr><td>Attention</td><td>' . $sales_order->contact_person . ' - ' . $sales_order->contact_designation . ', Mobile:-' . $sales_order->contact_mobile . ', Email: - ' . $sales_order->contact_email . '</td></tr>

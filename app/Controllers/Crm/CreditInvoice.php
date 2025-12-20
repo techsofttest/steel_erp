@@ -1579,7 +1579,7 @@ class CreditInvoice extends BaseController
                         </table>
                         <table width="100%" style="margin-top:2px;border-top:1px solid;border-collapse: collapse;line-height:15px;">
                             <tr><td></td><td></td></tr>
-                            <tr><td></td><td>' . $credit_invoice->cc_customer_name . '</td></tr>
+                            <tr><td width="10%"></td><td>' . $credit_invoice->cc_customer_name . '</td></tr>
                             <tr><td>Customer</td><td>Tel : ' . $credit_invoice->cc_telephone . ', Fax : ' . $credit_invoice->cc_fax . ', Email : ' . $credit_invoice->cc_email . '</td></tr>
                             <tr><td></td><td>Post Box: ' . $credit_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td></tr>
                             <tr><td>Attention</td><td>' . $credit_invoice->contact_person . ' - ' . $credit_invoice->contact_designation . ', Mobile:-' . $credit_invoice->contact_mobile . ', Email: - ' . $credit_invoice->contact_email . '</td></tr>

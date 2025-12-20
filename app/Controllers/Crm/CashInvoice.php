@@ -2087,7 +2087,7 @@ class CashInvoice extends BaseController
         
                         <tr>
                         
-                            <td> </td>
+                            <td width="10.5%"> </td>
                             
                             <td>'.$cash_invoice->cc_customer_name.'</td>
                         
@@ -2260,7 +2260,7 @@ class CashInvoice extends BaseController
 
                                         <td rowspan="2" style="width:14%;vertical-align: middle;margin:0;">Invoice Terms</td>
                         
-                                        <td style="width:10%; margin:0;">Project:</td>
+                                        <td style="width:11%; margin:0;">Project:</td>
                         
                                         <td style="width:30%; margin:0;">'.$cash_invoice->ci_project.'</td>
                         
