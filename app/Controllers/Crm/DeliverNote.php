@@ -1820,7 +1820,7 @@ class DeliverNote extends BaseController
                     
                                     <tr >
                                         <td width="10%"></td>
-                                        <td width="20%">Date : '.$date.'</td>
+                                        <td width="22%">Date : '.$date.'</td>
                                         <td align="center">'.$delivery_note->dn_reffer_no.'</td>
                                         <td align="right"><h2>Delivery Note</h2></td>
                                     </tr>
@@ -1836,7 +1836,7 @@ class DeliverNote extends BaseController
         
                                     <tr>
                                     
-                                        <td width="11%"> </td>
+                                        <td width="10.5%"> </td>
                                         
                                         <td >'.$delivery_note->cc_customer_name.'</td>
                                     
