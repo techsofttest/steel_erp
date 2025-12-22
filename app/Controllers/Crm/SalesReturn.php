@@ -2432,8 +2432,8 @@ class SalesReturn extends BaseController
                         $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;">
                             <tr>
                                 <td style="width:13%"></td>
-                                <td>IBAN : QA97CBQA000000004570407137001</td>
-                                <td style="font-weight: bold;width: 18%;">Total Invoice value</td>
+                                <td style="">IBAN : QA97CBQA000000004570407137001</td>
+                                <td style="font-weight: bold;width: 18%;width:23%">Total Sales Return value</td>
                                 <td style="font-weight: bold;">' . format_currency($sales_order->sr_total) . '</td>
                             </tr>
                             <tr>
@@ -2448,7 +2448,7 @@ class SalesReturn extends BaseController
                             </tr>
                             <tr>
                                 <td>Amount in words</td>
-                                <td style="width: 60%;">' . currency_to_words($sales_order->sr_total) . '</td>
+                                <td style="width: 55%;">' . currency_to_words($sales_order->sr_total) . '</td>
                             </tr>
                         </table>
                         <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;padding: 0">
