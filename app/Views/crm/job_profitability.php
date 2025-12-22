@@ -643,11 +643,9 @@
     $total_gross_profit = 0;
 } ?>
 
-<table>
-    <tr><td><?php  echo format_currency($total_gross_profit); ?></td></tr>
-</table>
-        
 
+        
+<?php  echo format_currency($total_gross_profit); ?>
 </td>
 
 <!-- NOW OUTSIDE EXPENSE TABLE: PERCENTAGE COLUMN -->
