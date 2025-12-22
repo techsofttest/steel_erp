@@ -1625,7 +1625,7 @@ class CreditInvoice extends BaseController
                             </tr>
                         </table>';
 
-        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;">
                 
                             <tr>
 
@@ -1669,7 +1669,7 @@ class CreditInvoice extends BaseController
     
                         </table>
         
-                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;padding: 0">
+                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;padding: 0">
                             <tr>
                                 <td style="width:15%"></td>
                                 <td style="width:13%">LPO Ref</td>
