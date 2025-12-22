@@ -1547,10 +1547,9 @@ class CreditInvoice extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 81,
-            'margin_bottom' => 10,
+            'margin_bottom' => 20,
             'margin_left' => 5,
             'margin_right' => 5,
-            'defaultfooterline' => 0,
         ]);
 
         $mpdf->SetAutoPageBreak(true, 20);
@@ -1694,6 +1693,9 @@ class CreditInvoice extends BaseController
                         </table>';
 
 
+        $last_page_footer = $summary_html.$footer_common;
+
+
         $main_table = ' <style>
                             th, td { padding: 4px; font-size: 12px; }
                             tr.product-padding th,
@@ -1733,6 +1735,10 @@ class CreditInvoice extends BaseController
 
                         // Output summary just before footer on last page
                         $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+                        $mpdf->WriteHtml('<div style="height:40mm"></div>');
+
+                        $mpdf->SetHTMLFooter($last_page_footer); 
 
                         $this->response->setHeader('Content-Type', 'application/pdf');
                         $mpdf->Output($title . '.pdf', 'I');
