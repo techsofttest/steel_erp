@@ -386,7 +386,30 @@
                                                                     <?php } }
                                                                 
                                                                 
-                                                                ?>                        
+                                                                ?>    
+                                                                
+                                                                <!---->
+
+                                                                <?php
+                                                                   
+                                                                    if(!empty($sales_order->sales_return)){
+
+                                                                        foreach($sales_order->sales_return as $sales_ret){  ?>
+
+                                                                        <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                                                    
+                                                                            <td  style="width:100px" ><?php echo $sales_ret->sr_reffer_no; ?> </td>
+
+                                                                        </tr>
+
+
+                                                                <?php        }
+
+                                                                    }
+                                                                
+                                                                ?>
+
+                                                                <!---->
                                                                                             
                                                             </table>
                                                         </td>

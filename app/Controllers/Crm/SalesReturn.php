@@ -1098,7 +1098,8 @@ class SalesReturn extends BaseController
             
             
             if(!empty($credit_invoice))
-            {
+            {   
+                
                 $data['ci_lpo'] = $credit_invoice->cci_lpo_reff;
 
                 $data['ci_project'] = $credit_invoice->cci_project;
@@ -1107,18 +1108,24 @@ class SalesReturn extends BaseController
 
                 $data['sales_order'] = $credit_invoice->cci_sales_order;
                 
-
                 $data['debit_account'] = $credit_invoice->ca_name;
+
+                
 
                 foreach($contact_details as $cont_det)
                 {   
                     $data['contact_detail'] = ""; 
+
 
                     $data['contact_detail'] .='<option value='.$cont_det->contact_id.'';
                     if($cont_det->contact_id == $credit_invoice->cci_contact_person){ $data['contact_detail'] .=' selected';}
                     $data['contact_detail'] .='>'.$cont_det->contact_person.'</option>';
                 }
             }
+
+            //print_r($credit_invoice->cci_contact_person); exit();
+
+            //print_r($data['contact_detail']); exit();
 
 
             echo json_encode($data);

@@ -1731,6 +1731,7 @@ span.select2.customer_width, span.select2 {
 
                     $(".cont_person").html(data.contact_detail);
 
+
                     $(".credit_account").val(data.debit_account);
 
                     $(".sales_order_hidden").val(data.sales_order);
