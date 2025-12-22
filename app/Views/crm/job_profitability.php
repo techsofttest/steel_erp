@@ -626,15 +626,21 @@
 
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
 <td class="text-end">
-    <?php
-       $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
-       if ($invoice_revenue > 0) {
+    <?php 
+         $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
+
+         if (($single_cash + $single_credit) > 0) {
+         
     $row_revenue = $invoice_revenue;
+    $total_gross_profit = $row_revenue - $expenses;
+
 } else {
-    $row_revenue = $sales_order->so_amount_total;
+    
+    $row_revenue = 0;
+    $total_gross_profit = 0;
 }
-       $total_gross_profit = $row_revenue - $expenses; 
-       // $total_gross_profit =  $sales_order->so_amount_total - $expenses;
+
+        //$total_gross_profit =  $sales_order->so_amount_total - $expenses;
         echo format_currency($total_gross_profit); 
     ?>
 </td>
