@@ -1698,17 +1698,9 @@ class CreditInvoice extends BaseController
 
         $main_table = ' <style>
                             th, td { padding: 4px; font-size: 12px; }
-                            tr.product-padding th,
-                            tr.product-padding td {
-                                padding: 1px; 
-                            }
-                            tr.end-padding th,
-                            tr.end-padding td {
-                                padding: 4px; 
-                            }
                             p { font-size: 12px; margin-bottom: 13px; }
                         </style>
-                        <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
+                        <table width="100%" style="border-collapse: collapse; margin-top: 10px;margin-bottom:2px;border-top:1px solid;line-height:18px;" autosize="1">
                             <thead>
                                 <tr>
                                     <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
