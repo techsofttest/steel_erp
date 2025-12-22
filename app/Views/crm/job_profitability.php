@@ -625,7 +625,10 @@
 </td>
 
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
+
+<!---->
 <td class="text-end">
+    
     <?php 
          $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
 
@@ -638,12 +641,15 @@
     
     $row_revenue = 0;
     $total_gross_profit = 0;
-}
+} ?>
 
-        //$total_gross_profit =  $sales_order->so_amount_total - $expenses;
-        echo format_currency($total_gross_profit); 
-    ?>
+<table>
+    <tr><td><?php  echo format_currency($total_gross_profit); ?></td></tr>
+</table>
+        
+
 </td>
+
 <!-- NOW OUTSIDE EXPENSE TABLE: PERCENTAGE COLUMN -->
 <td class="text-end">
     <?php 
