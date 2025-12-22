@@ -1483,6 +1483,19 @@ class PurchaseVoucher extends BaseController
 
 
         }
+        else{
+            
+            $this->common_model->DeleteData('pro_purchase_voucher',$cond);
+
+            $cond2 = array('pvp_reffer_id' => $this->request->getPost('ID'));
+    
+            $this->common_model->DeleteData('pro_purchase_voucher_prod',$cond2);
+
+            $data['status'] = 1;
+        
+            $data['msg'] ="Data Deleted Successfully";
+
+        }
         
         
          
