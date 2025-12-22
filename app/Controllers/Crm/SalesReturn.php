@@ -2422,7 +2422,7 @@ class SalesReturn extends BaseController
                             </tr>
                         </table>';
 
-                        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+                        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;">
                             <tr>
                                 <td style="width:13%"></td>
                                 <td>IBAN : QA97CBQA000000004570407137001</td>
@@ -2444,7 +2444,7 @@ class SalesReturn extends BaseController
                                 <td style="width: 60%;">' . currency_to_words($sales_order->sr_total) . '</td>
                             </tr>
                         </table>
-                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;padding: 0">
+                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;padding: 0">
                             <tr>
                                 <td style="width:13%"></td>
                                 <td style="width:13%">LPO Ref</td>
@@ -2467,6 +2467,9 @@ class SalesReturn extends BaseController
                                 <td style="width:33%" >'.$sales_order->sr_invoice.'</td>
                             </tr>
                         </table>';
+
+
+                        $last_page_footer = $summary_html.$footer_common;
 
                         $main_table = ' <style>
                             th, td { padding: 4px; font-size: 12px; }
@@ -2496,10 +2499,13 @@ class SalesReturn extends BaseController
                         $mpdf->WriteHTML($main_table);
 
                         // Output summary just before footer on last page
-                        $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+                        //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
+                        $mpdf->WriteHtml('<div style="height:40mm"></div>');
+
+                        $mpdf->SetHTMLFooter($last_page_footer); 
                         
-                        //echo $header_html.$main_table.$summary_html.$footer_common; exit;
+                        echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                         $this->response->setHeader('Content-Type', 'application/pdf');
                         $mpdf->Output($title . '.pdf', 'I');

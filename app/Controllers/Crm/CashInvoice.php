@@ -2039,8 +2039,7 @@ class CashInvoice extends BaseController
                 ]);
                
                 //$mpdf->SetAutoPageBreak(true, 45);
-
-                $mpdf->SetAutoPageBreak(true, 20);
+                $mpdf->SetAutoPageBreak(true, 10);
 
                 $mpdf->SetTitle($title);
 
@@ -2211,7 +2210,7 @@ class CashInvoice extends BaseController
     
                     </table>';
 
-                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+                $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;">
                 
                                     <tr>
                                         <td width="14%"></td>
@@ -2254,7 +2253,7 @@ class CashInvoice extends BaseController
     
                                 </table>
 
-                                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-bottom:2px;margin-left:20px;margin-right:20px;padding: 0">
+                                <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-bottom:2px;padding: 0">
 
                                     <tr>
 
@@ -2282,6 +2281,9 @@ class CashInvoice extends BaseController
                                     </tr>
                 
                                 </table>';
+
+
+                $last_page_footer = $summary_html.$footer_common;
 
                 $main_table = '<style>
                                     th, td { padding: 4px; font-size: 12px; }
@@ -2328,7 +2330,11 @@ class CashInvoice extends BaseController
                 //echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                 // Output summary just before footer on last page
-                $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+                //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+                $mpdf->WriteHtml('<div style="height:40mm"></div>');
+
+                $mpdf->SetHTMLFooter($last_page_footer); 
 
                 $this->response->setHeader('Content-Type', 'application/pdf');
                 $mpdf->Output($title . '.pdf', 'I');
