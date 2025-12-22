@@ -1585,7 +1585,7 @@ class CreditInvoice extends BaseController
                         
                         </table>';
 
-        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:2px;">
                             <tr>
                                 <td><i>Received by: </i></td>
                                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
@@ -1625,7 +1625,7 @@ class CreditInvoice extends BaseController
                             </tr>
                         </table>';
 
-        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;">
+        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:1px;">
                 
                             <tr>
 
