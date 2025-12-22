@@ -627,9 +627,16 @@
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
 <td class="text-end">
 <?php
+    // Revenue from invoices only
     $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
 
-    if (($single_cash + $single_credit) > 0) {
+    // Force numeric values
+    $invoice_revenue = (float) $invoice_revenue;
+    $expenses        = (float) $expenses;
+
+    // BUSINESS RULE:
+    // Gross Profit only if BOTH revenue and expenses exist
+    if ($invoice_revenue > 0 && $expenses > 0) {
         $total_gross_profit = $invoice_revenue - $expenses;
     } else {
         $total_gross_profit = 0;
