@@ -2262,7 +2262,7 @@ class SalesReturn extends BaseController
 
                     $pdf_data .= '<tr>
                     <td align="center" width="8%" style="padding:1px;">&nbsp;</td>
-                    <td align="left" width="45%" style="padding:2px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
+                    <td align="left" width="45%" style="padding:1px; vertical-align:top;">' . htmlspecialchars($line) . '</td>
                     <td align="center" style="padding:1px;">&nbsp;</td>
                     <td align="center" style="padding:1px;">&nbsp;</td>
                     <td align="right" style="padding:1px;">&nbsp;</td>
@@ -2505,7 +2505,7 @@ class SalesReturn extends BaseController
 
                         $mpdf->SetHTMLFooter($last_page_footer); 
                         
-                        echo $header_html.$main_table.$summary_html.$footer_common; exit;
+                        //echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                         $this->response->setHeader('Content-Type', 'application/pdf');
                         $mpdf->Output($title . '.pdf', 'I');
