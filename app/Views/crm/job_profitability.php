@@ -626,24 +626,24 @@
 
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
 <td class="text-end">
-<?php
-    // Debug actual values:
-    echo "<!-- Debug: cash=$single_cash, credit=$single_credit, returns=$single_returns, expenses=$expenses -->";
+    <?php 
+         $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
 
-    $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
-    $invoice_revenue = (float) $invoice_revenue;
-    $expenses        = (float) $expenses;
+         if (($single_cash + $single_credit) > 0) {
+         
+    $row_revenue = $invoice_revenue;
+    $total_gross_profit = $row_revenue - $expenses;
 
-    if ($invoice_revenue > 0 && $expenses > 0) {
-        $total_gross_profit = $invoice_revenue - $expenses;
-    } else {
-        $total_gross_profit = 0;
-    }
+} else {
+    
+    $row_revenue = 0;
+    $total_gross_profit = 0;
+}
 
-    echo format_currency($total_gross_profit);
-?>
+        //$total_gross_profit =  $sales_order->so_amount_total - $expenses;
+        echo format_currency($total_gross_profit); 
+    ?>
 </td>
-
 <!-- NOW OUTSIDE EXPENSE TABLE: PERCENTAGE COLUMN -->
 <td class="text-end">
     <?php 
