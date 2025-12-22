@@ -1111,10 +1111,10 @@ class SalesReturn extends BaseController
                 $data['debit_account'] = $credit_invoice->ca_name;
 
                 
-
+                $data['contact_detail'] = ""; 
                 foreach($contact_details as $cont_det)
                 {   
-                    $data['contact_detail'] = ""; 
+                    
 
 
                     $data['contact_detail'] .='<option value='.$cont_det->contact_id.'';
