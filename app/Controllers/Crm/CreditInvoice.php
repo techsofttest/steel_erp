@@ -1547,12 +1547,12 @@ class CreditInvoice extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 81,
-            'margin_bottom' => 20,
+            'margin_bottom' => 25,
             'margin_left' => 5,
             'margin_right' => 5,
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 20);
+        $mpdf->SetAutoPageBreak(true, 25);
 
         $mpdf->SetTitle($title);
 
@@ -1700,7 +1700,7 @@ class CreditInvoice extends BaseController
                             th, td { padding: 4px; font-size: 12px; }
                             p { font-size: 12px; margin-bottom: 13px; }
                         </style>
-                        <table width="100%" style="border-collapse: collapse; margin-top: 10px;margin-bottom:2px;border-top:1px solid;line-height:18px;" autosize="1">
+                        <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
                             <thead>
                                 <tr>
                                     <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
@@ -1718,8 +1718,6 @@ class CreditInvoice extends BaseController
                         $mpdf->SetHTMLHeader($header_html);
 
                         $mpdf->SetHTMLFooter($footer_common);
-
-                        //$mpdf->SetAutoPageBreak(true, 50);
 
                         $mpdf->WriteHTML($main_table);
 
