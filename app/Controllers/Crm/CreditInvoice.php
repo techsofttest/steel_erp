@@ -1547,12 +1547,12 @@ class CreditInvoice extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 81,
-            'margin_bottom' => 25,
+            'margin_bottom' => 20,
             'margin_left' => 5,
             'margin_right' => 5,
         ]);
 
-        $mpdf->SetAutoPageBreak(true, 25);
+        $mpdf->SetAutoPageBreak(true, 20);
 
         $mpdf->SetTitle($title);
 
@@ -1585,7 +1585,7 @@ class CreditInvoice extends BaseController
                         
                         </table>';
 
-        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:2px;">
+        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:2px;padding-top:4px;">
                             <tr>
                                 <td><i>Received by: </i></td>
                                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
