@@ -1734,7 +1734,7 @@ class CreditInvoice extends BaseController
                         //echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                         // Output summary just before footer on last page
-                        $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+                        //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
 
                         $mpdf->WriteHtml('<div style="height:40mm"></div>');
 
