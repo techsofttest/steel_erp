@@ -329,7 +329,7 @@
                                                         
                                                         ?>
 
-                                                         <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = $single_cash + $single_credit; echo format_currency($cash_credit); ?></br><?php if(!empty($single_returns) && $single_returns!=0.00){ echo "-". format_currency($single_returns); } ?></td>
+                                                        <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = ($single_cash + $single_credit) - $single_returns; echo format_currency($cash_credit); ?></td>
 
 
                                                         <td colspan="1" align="left" class="p-0">
