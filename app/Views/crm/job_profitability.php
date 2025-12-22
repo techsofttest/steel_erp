@@ -625,51 +625,24 @@
 </td>
 
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
-<td colspan="1" align="left" class="p-0">
-   <table>
-   <?php foreach($sales_orders as $sales_order): 
-
-        $single_cash = 0;
-        $single_credit = 0;
-        $single_returns = 0;
-        $expenses = 0;
-
-        // Calculate cash, credit, returns for this sales order
-        if(!empty($sales_order->cash_invoice)) {
-            foreach($sales_order->cash_invoice as $cash_inv) {
-                $single_cash += $cash_inv->ci_total_amount;
-            }
-        }
-        if(!empty($sales_order->credit_invoice)) {
-            foreach($sales_order->credit_invoice as $credit_inv) {
-                $single_credit += $credit_inv->cci_total_amount;
-            }
-        }
-        if(!empty($sales_order->sales_return)) {
-            foreach($sales_order->sales_return as $return_inv) {
-                $single_returns += $return_inv->sr_total;
-            }
-        }
+<td class="text-end">
+    <?php 
          $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
 
-        if (($single_cash + $single_credit) > 0) {
-            $row_revenue = $invoice_revenue;
-            $total_gross_profit = $row_revenue - $expenses;
-        } else {
-            $row_revenue = 0;
-            $total_gross_profit = 0;
-        }?> 
+         if (($single_cash + $single_credit) > 0) {
+         
+    $row_revenue = $invoice_revenue;
+    $total_gross_profit = $row_revenue - $expenses;
 
-        <tr>
-            <td class="text-end">
-        <?php echo format_currency($total_gross_profit); ?>
-    </td>
-
-        </tr>
+} else {
     
-    <?php endforeach; ?>
-    </table>
+    $row_revenue = 0;
+    $total_gross_profit = 0;
+}
 
+        //$total_gross_profit =  $sales_order->so_amount_total - $expenses;
+        echo format_currency($total_gross_profit); 
+    ?>
 </td>
 <!-- NOW OUTSIDE EXPENSE TABLE: PERCENTAGE COLUMN -->
 <td class="text-end">
