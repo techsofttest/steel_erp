@@ -129,21 +129,71 @@ class WorkProgress extends BaseController
     public function GetData()
     {
        
-        //Filter 
-         
-        if(!empty($_GET['form_date']))
+        if(!empty($_GET["form_date"]))
         {
-            $from_date = $_GET['form_date'];
+            $from_date = $_GET["form_date"];
         }
         else
         {
             $from_date = "";
         }
 
-        $data['work_progress'] = $this->crm_modal->PurchaseVoucher($from_date,'	pv_date');  
+        if(!empty($_GET["to_date"]))
+        {
+            $to_date = $_GET["to_date"];
+        }
+        else
+        {
+            $to_date = "";
+        }
 
-       //print_r($data['work_progress']); exit();
+        if(!empty($_GET["customer"]))
+        {
+            $data1 = $_GET["customer"];
+        }
+        else
+        {
+            $data1 = "";
+        }
+
+        if(!empty($_GET["sales_order"]))
+        {
+            $data2 = $_GET["sales_order"];
+        }
+        else
+        {
+            $data2 = "";
+        }
+
+
+        if(!empty($_GET["sales_executive"]))
+        {
+            $data3 = $_GET["sales_executive"];
+        }
+        else
+        {
+            $data3 = "";
+        }
+
+
+        $joins = array(
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'so_sales_executive',
+            ),
+        );
+
         
+        $data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive');  
+
+        
+       // print_r($data['sales_orders']); exit();
 
         if(!empty($from_date))
         {
@@ -155,20 +205,26 @@ class WorkProgress extends BaseController
         } 
         
 
-     
+        if(!empty($to_date))
+        {
+            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
+        }
+        else
+        {
+            $data['to_dates'] = "";
+        }
 
         if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
         {
-            $this->Pdf($data['work_progress'],$data['from_dates']);
+           $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
         }
+        
 
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
-        
-        $data['sales_executive_data'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $data['sales_executive']   = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
        
         $data['content'] = view('crm/work-progress',$data);
 
