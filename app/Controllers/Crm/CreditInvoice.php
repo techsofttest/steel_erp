@@ -1547,10 +1547,9 @@ class CreditInvoice extends BaseController
 
         $mpdf = new \Mpdf\Mpdf([
             'margin_top' => 81,
-            'margin_bottom' => 10,
+            'margin_bottom' => 20,
             'margin_left' => 5,
             'margin_right' => 5,
-            'defaultfooterline' => 0,
         ]);
 
         $mpdf->SetAutoPageBreak(true, 20);
@@ -1586,7 +1585,7 @@ class CreditInvoice extends BaseController
                         
                         </table>';
 
-        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:0px;">
+        $footer_common = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; margin-top:2px;padding-top:4px;">
                             <tr>
                                 <td><i>Received by: </i></td>
                                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
@@ -1626,7 +1625,7 @@ class CreditInvoice extends BaseController
                             </tr>
                         </table>';
 
-        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:2px;margin-left:20px;margin-right:20px">
+        $summary_html = '<table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom:1px;">
                 
                             <tr>
 
@@ -1670,7 +1669,7 @@ class CreditInvoice extends BaseController
     
                         </table>
         
-                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;margin-left:20px;margin-right:20px;padding: 0">
+                        <table style="border-top:1px solid; border-collapse: collapse; width: 100%; font-size: 12px;padding: 0">
                             <tr>
                                 <td style="width:15%"></td>
                                 <td style="width:13%">LPO Ref</td>
@@ -1694,16 +1693,11 @@ class CreditInvoice extends BaseController
                         </table>';
 
 
+        $last_page_footer = $summary_html.$footer_common;
+
+
         $main_table = ' <style>
                             th, td { padding: 4px; font-size: 12px; }
-                            tr.product-padding th,
-                            tr.product-padding td {
-                                padding: 1px; 
-                            }
-                            tr.end-padding th,
-                            tr.end-padding td {
-                                padding: 4px; 
-                            }
                             p { font-size: 12px; margin-bottom: 13px; }
                         </style>
                         <table width="100%" style="border-collapse: collapse; margin-top: 10px;border-top:1px solid;line-height:18px;" autosize="1">
@@ -1725,14 +1719,16 @@ class CreditInvoice extends BaseController
 
                         $mpdf->SetHTMLFooter($footer_common);
 
-                        //$mpdf->SetAutoPageBreak(true, 50);
-
                         $mpdf->WriteHTML($main_table);
 
                         //echo $header_html.$main_table.$summary_html.$footer_common; exit;
 
                         // Output summary just before footer on last page
-                        $mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+                        //$mpdf->WriteHTML('<div style="position: absolute; bottom: 80px; left: 0; right: 0; font-size: 12px;">' . $summary_html . '</div>');
+
+                        $mpdf->WriteHtml('<div style="height:40mm"></div>');
+
+                        $mpdf->SetHTMLFooter($last_page_footer); 
 
                         $this->response->setHeader('Content-Type', 'application/pdf');
                         $mpdf->Output($title . '.pdf', 'I');
