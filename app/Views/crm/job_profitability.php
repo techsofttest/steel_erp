@@ -508,7 +508,7 @@
                 
                 $cash_count = !empty($sales_order->cash_invoice) ? count($sales_order->cash_invoice) : 0;
 
-                for ($i = 0; $i < $cash_count-1; $i++) {
+                for ($j = 0; $j < $cash_count-1; $j++) {
                     
                     echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td></td></tr>";
                 }
@@ -525,7 +525,7 @@
 
                 $credit_count = !empty($sales_order->credit_invoice) ? count($sales_order->credit_invoice) : 0;
 
-                for ($i = 0; $i < $credit_count-1; $i++) {
+                for ($j = 0; $j < $credit_count-1; $j++) {
                     
                     echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td></td></tr>";
                 } ?>
