@@ -1317,11 +1317,11 @@ class PurchaseOrder extends BaseController
 
                 $pdf_data .= '<td align="center" style="padding:1px; vertical-align:top;">'.$prod_det->pop_unit.'</td>';
 
-                $pdf_data .= '<td align="right" style="padding:1px; vertical-align:top;">'.$rate.'</td>';
+                $pdf_data .= '<td align="center" style="padding:1px; vertical-align:top;">'.$rate.'</td>';
 
                 $pdf_data .= '<td align="center" style="color: red;padding:1px; vertical-align:top;";><i>'.$disc.'</i></td>';
 
-                $pdf_data .= '<td align="right" style="padding:1px; vertical-align:top;">'.$amount.'</td></tr>';
+                $pdf_data .= '<td align="center" style="padding:1px; vertical-align:top;">'.$amount.'</td></tr>';
 
                 $k++;
             }
