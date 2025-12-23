@@ -1309,19 +1309,19 @@ class PurchaseOrder extends BaseController
                 $disc = number_format($prod_det->pop_discount, 2);
 
 
-                $pdf_data .= '<tr><td align="center">'.$k.'</td>';
+                $pdf_data .= '<tr><td align="center" style="padding:1px; vertical-align:top;">'.$k.'</td>';
 
-                $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+                $pdf_data .= '<td align="left" style="padding:1px; vertical-align:top;">'.$prod_det->product_details.'</td>';
 
-                $pdf_data .= '<td align="center">'.$prod_det->pop_qty.'</td>';
+                $pdf_data .= '<td align="center" style="padding:1px; vertical-align:top;">'.$prod_det->pop_qty.'</td>';
 
-                $pdf_data .= '<td align="center">'.$prod_det->pop_unit.'</td>';
+                $pdf_data .= '<td align="center" style="padding:1px; vertical-align:top;">'.$prod_det->pop_unit.'</td>';
 
-                $pdf_data .= '<td align="right">'.$rate.'</td>';
+                $pdf_data .= '<td align="right" style="padding:1px; vertical-align:top;">'.$rate.'</td>';
 
-                $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
+                $pdf_data .= '<td align="center" style="color: red;padding:1px; vertical-align:top;";><i>'.$disc.'</i></td>';
 
-                $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+                $pdf_data .= '<td align="right" style="padding:1px; vertical-align:top;">'.$amount.'</td></tr>';
 
                 $k++;
             }
