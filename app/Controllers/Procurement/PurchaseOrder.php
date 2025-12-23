@@ -1548,11 +1548,11 @@ class PurchaseOrder extends BaseController
                                     
                                         <th align="center" style="border-bottom:1px solid;">Unit</th>
                                     
-                                        <th align="center" style="border-bottom:1px solid;">Rate</th>
+                                        <th align="right" style="border-bottom:1px solid;">Rate</th>
                             
                                         <th align="center" style="border-bottom:1px solid;">Disc%</th>
                             
-                                        <th align="center" style="border-bottom:1px solid;">Amount</th>
+                                        <th align="right" style="border-bottom:1px solid;">Amount</th>
                             
                                     
                                     </tr>
