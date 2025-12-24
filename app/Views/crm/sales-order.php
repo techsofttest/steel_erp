@@ -1,8 +1,6 @@
 <style>
 
 
- 
-
 .left_input .row
 {
     justify-content: unset;

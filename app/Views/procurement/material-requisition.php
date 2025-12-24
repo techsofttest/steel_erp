@@ -65,6 +65,14 @@
     .form-select {
      padding: unset !important; 
 }
+.select2-results__option[aria-selected] {
+    
+    text-align: left;
+}
+.select2-container--default .select2-results>.select2-results__options {
+   
+    color: black !important;
+}
 </style>
 
 <div class="tab-content text-muted">
@@ -933,7 +941,7 @@
 
                 slno();
                 /*customer droup drown search*/
-                 InitSelect2();
+                 InitProductSelectAdd();
 			}
 
             
@@ -982,7 +990,7 @@
 
 
        /*Product Drop Down*/
-        function InitSelect2(){
+        /*function InitSelect2(){
           $(".ser_product_det:last").select2({
             placeholder: "Select Product",
             theme : "default form-control- droup_color select_width",
@@ -1006,7 +1014,7 @@
                     return {
                         results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
                         pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                        
                             more: (page * 10) <= data.total_count
                         }
                     };
@@ -1015,7 +1023,52 @@
         })
         }
 
-        InitSelect2();
+        InitSelect2();*/
+
+
+        function InitProductSelectAdd(){
+
+            $('body .ser_product_det').each(function() {
+
+                    
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width ",
+                    dropdownParent: $($(this).closest('.prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Procurement/MaterialRequisition/FetchProd",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+                   
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                                pagination: {
+                                
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },        
+                    }
+                })
+
+            });
+        }
+
+        InitProductSelectAdd();
+
+
+
 
         /*###*/
 
