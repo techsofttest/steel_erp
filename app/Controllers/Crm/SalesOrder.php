@@ -1776,6 +1776,7 @@ class SalesOrder extends BaseController
             
         
                 <tr width="100%">
+                
                     <td width="9%"></td>
                     <td width="20%">Date : '.$date.'</td>
                     <td align="center">'.$sales_order->so_reffer_no.'</td>
@@ -1805,22 +1806,24 @@ class SalesOrder extends BaseController
             
                     <td>Customer</td>
             
-                    <td >Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
+                    <td>Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
 
                 </tr>
         
                 <tr>
                 
-                    <td ></td>
-                    <td>Post Box: ' . $sales_order->cc_post_box . ', ' . $sales_order->cc_city . ', ' . $customers->cc_country . '</td>
+                    <td></td>
+
+                    <td>Post Box: ' . $sales_order->cc_post_box . ', ' . $sales_order->cc_city . ', ' . $customers->cc_country. '</td>
+
                 </tr>
     
     
                 <tr>
             
-                    <td >Attention</td>
+                    <td>Attention</td>
             
-                    <td >'.$sales_order->contact_person.' - '.$sales_order->contact_designation.', Mobile:-'.$sales_order->contact_mobile.', Email: - '.$sales_order->contact_email.'</td>
+                    <td>'.$sales_order->contact_person.' - '.$sales_order->contact_designation.', Mobile:-'.$sales_order->contact_mobile.', Email: - '.$sales_order->contact_email.'</td>
             
                 </tr>
     
