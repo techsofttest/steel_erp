@@ -330,7 +330,7 @@ span.select2.customer_width, span.select2{
         <col style="width:80px">  <!-- 9. Rate (part of nested block) -->
         <col style="width:80px">  <!-- 10. Discount (part of nested block) -->
         <col style="width:100px"> <!-- 11. Amount (Product) (part of nested block) -->
-        <col style="width:100px"> <!-- 12. MRN Ref (part of nested block) -->
+
         <col style="width:100px"> <!-- 13. Amount (MRN) (part of nested block) -->
         <col style="width:90px">  <!-- 14. Difference (part of nested block) -->
     </colgroup>
@@ -348,7 +348,7 @@ span.select2.customer_width, span.select2{
             <th class="text-end" style="white-space: nowrap;">Rate</th>
             <th class="text-end" style="white-space: nowrap;">Discount</th>
             <th class="text-end" style="white-space: nowrap;">Amount <br>(Product)</th>
-            <th class="text-center" style="white-space: nowrap;">MRN Ref</th>
+  
             <th class="text-end" style="white-space: nowrap;">Amount <br>(MRN)</th>
             <th class="text-end" style="white-space: nowrap;">Difference</th>
         </tr>
@@ -379,7 +379,7 @@ span.select2.customer_width, span.select2{
 
                     <?php if (!empty($pur_order->product_orders)) { ?>
                         <!-- This td needs to span the remaining 10 columns after the first 4 -->
-                        <td colspan="10" align="left" class="p-0">
+                        <td colspan="9" align="left" class="p-0">
                             <table class="nested-table" style="width:100%; table-layout:fixed; margin-bottom: 0px !important; border: none;">
                                 <colgroup>
                                     <!-- These widths must match parent colgroup columns 5 to 14 exactly -->
@@ -390,7 +390,7 @@ span.select2.customer_width, span.select2{
                                     <col style="width:80px">  <!-- Rate -->
                                     <col style="width:80px">  <!-- Discount -->
                                     <col style="width:100px"> <!-- Amount (Product) -->
-                                    <col style="width:100px"> <!-- MRN Ref -->
+                                   
                                     <col style="width:100px"> <!-- Amount (MRN) -->
                                     <col style="width:90px">  <!-- Difference -->
                                 </colgroup>
@@ -427,9 +427,7 @@ span.select2.customer_width, span.select2{
                                             ?>
                                         </td>
 
-                                        <td class="text-center" style="white-space: nowrap;">
-                                            <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank"><?php echo $pur_order->mrn_reffer; ?></a>
-                                        </td>
+                                
 
                                         <td class="text-end" style="white-space: nowrap;">
                                             <?php
@@ -453,7 +451,7 @@ span.select2.customer_width, span.select2{
                     } else {
                     ?>
                         <!-- This colspan accounts for columns 5 through 14 -->
-                        <td colspan="10" class="text-center" style="white-space: nowrap;">No product details available for this PO.</td>
+                        <td colspan="9" class="text-center" style="white-space: nowrap;">No product details available for this PO.</td>
                     <?php
                     }
                     ?>
@@ -468,7 +466,7 @@ span.select2.customer_width, span.select2{
                 <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total_po_main_amount); ?></th> <!-- Amount (PO) -->
                 <th colspan="4"></th> <!-- Product, Quantity, Rate, Discount -->
                 <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total_mr_amount); ?></th> <!-- Amount (Product) -->
-                <th></th> <!-- MRN Ref -->
+       
                 <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total_po_amount_product_received); ?></th> <!-- Amount (MRN) -->
                 <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total_difference); ?></th> <!-- Difference -->
             </tr>

@@ -4,7 +4,6 @@ namespace App\Controllers\Procurement;
 
 use App\Controllers\BaseController;
 
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -32,7 +31,6 @@ class LPO_MRNReport extends BaseController
 
         return view('procurement/report-module', $data);
     }
-
 
     //customer droupdrown
     public function FetchTypes()
@@ -243,13 +241,13 @@ class LPO_MRNReport extends BaseController
         $new_order = [];
 
         foreach ($data['purchase_order'] as $orders) {
-        
+
             // Fetch the MRN record for each purchase order
             $pvs = $this->common_model->SingleRow('pro_purchase_order', ['po_id' => $orders->po_id]);
-        
+
             // Check if the record exists and if po_id is valid
             if ($pvs && isset($pvs->po_id) && $pvs->po_id != '') {
-        
+
                 $joins2 = array(
                     array(
                         'table' => 'crm_products',
@@ -272,10 +270,10 @@ class LPO_MRNReport extends BaseController
                     //     'fk'    => 'pop_purchase_order',
                     // ),
                 );
-        
+
                 // Fetch related purchase order products with a join
-                $pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', ['pop_purchase_order' => $pvs->po_id], $joins2,'pop_id');
-        
+                $pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', ['pop_purchase_order' => $pvs->po_id], $joins2, 'pop_id');
+
                 // If there are products, assign them to the current order
                 if ($pvps) {
                     $orders->product_orders = $pvps;
@@ -287,14 +285,14 @@ class LPO_MRNReport extends BaseController
                 // If $pvs is not found, assign an empty product_orders array
                 $orders->product_orders = [];
             }
-        
+
             // Add the updated order to $new_order
             $new_order[] = $orders;
         }
-        
+
         // Assign the result back to the purchase_order data
         $data['purchase_order'] = $new_order;
-        
+
         // echo '<pre>';
         // print_r($data['purchase_order'] );exit;
 
@@ -304,30 +302,49 @@ class LPO_MRNReport extends BaseController
 
 
 
-        if ($data6 != "" || $data7 != "") {
+      if ($data6 != "" || $data7 != "") {
 
-            if ($data6 != "") {
-                // Filter the array to remove instances where 'mrn_id' is empty
-                $filterdata = array_filter($data['purchase_order'], function ($item) {
-                    return empty($item->mrn_id);
-                });
-            }
+    $filteredPO = [];
 
-            if ($data7 != "") {
-                // Filter the array to remove instances where 'mrn_id' is empty
-                $filterdata = array_filter($data['purchase_order'], function ($item) {
-                    return !empty($item->mrn_id);
-                });
-            }
+    foreach ($data['purchase_order'] as $po) {
 
-            if ($data7 != "" && $data6 != "") {
-                // Filter the array to remove instances where 'mrn_id' is empty
-                $filterdata = $data['purchase_order'];
-            }
-
-
-            $data['purchase_order'] = $filterdata;
+        if (empty($po->product_orders)) {
+            continue; // no products → nothing to evaluate
         }
+
+        $filteredProducts = array_filter($po->product_orders, function ($product) use ($data6, $data7) {
+
+            $hasRNP = !empty($product->rnp_material_received_note);
+
+            // Both selected → show all
+            if ($data6 != "" && $data7 != "") {
+                return true;
+            }
+
+            // Pending → NO RNP
+            if ($data6 != "") {
+                return !$hasRNP;
+            }
+
+            // Linked → HAS RNP
+            if ($data7 != "") {
+                return $hasRNP;
+            }
+
+            return true;
+        });
+
+        // Keep PO only if at least one product survives
+        if (!empty($filteredProducts)) {
+            $po->product_orders = array_values($filteredProducts);
+            $filteredPO[] = $po;
+        }
+    }
+
+    $data['purchase_order'] = array_values($filteredPO);
+}
+
+
 
         // echo '<pre>';
         // print_r($data['purchase_order']);
@@ -403,7 +420,7 @@ class LPO_MRNReport extends BaseController
         );
 
         // Get Sales Order data from the database based on lpo_ref
-        $sales_orders = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', ['pop_purchase_order' => $lpo_ref], $joins1,'pop_sales_order');
+        $sales_orders = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', ['pop_purchase_order' => $lpo_ref], $joins1, 'pop_sales_order');
 
         echo json_encode($sales_orders); // Return data as JSON response
     }
@@ -474,8 +491,6 @@ class LPO_MRNReport extends BaseController
                         $pdf_data .= "<td style=''></td>";
 
                         $pdf_data .= "<td style=''></td>";
-
-                    
                     }
 
 
@@ -492,7 +507,7 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency($order_data->po_amount)."</td>";
+                    $pdf_data .= "'>" . format_currency($order_data->po_amount) . "</td>";
 
 
                     $pdf_data .= "<td style='";
@@ -507,22 +522,14 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency($prod_del->pop_qty)."</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->pop_qty) . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
-
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>".format_currency($prod_del->pop_discount)."</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->pop_rate) . "</td>";
 
 
                     $pdf_data .= "<td style='text-align:right;";
@@ -530,10 +537,18 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency($prod_del->pop_amount)."</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->pop_discount) . "</td>";
+
+
+                    $pdf_data .= "<td style='text-align:right;";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>" . format_currency($prod_del->pop_amount) . "</td>";
                     $pop_amt += $prod_del->pop_amount;
 
-                   
+
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
@@ -564,7 +579,7 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency(($prod_del->rnp_amount ?? 0)) . "</td>";
+                    $pdf_data .= "'>" . format_currency(($prod_del->rnp_amount ?? 0)) . "</td>";
                     $rnp_amt += $prod_del->rnp_amount ?? 0;
 
                     $pdf_data .= "<td style='text-align:right;";
@@ -572,7 +587,7 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency(($prod_del->pop_amount - $prod_del->rnp_amount)) . "</td>";
+                    $pdf_data .= "'>" . format_currency(($prod_del->pop_amount - $prod_del->rnp_amount)) . "</td>";
                     $diff_amt += $prod_del->pop_amount - $prod_del->rnp_amount;
 
                     // 
@@ -608,14 +623,14 @@ class LPO_MRNReport extends BaseController
 
             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
             $fontDirs = $defaultConfig['fontDir'];
- 
+
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'format' => 'Letter-L', // Custom page size in millimeters
-                'default_font_size' => 9, 
-                'margin_left' => 5, 
+                'default_font_size' => 9,
+                'margin_left' => 5,
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
                 'fontDir' => array_merge($fontDirs, [
@@ -623,13 +638,13 @@ class LPO_MRNReport extends BaseController
                 ]),
                 'fontdata' => $fontData + [
                     'bentonsans' => [
-                      
+
                         'R' => 'OpenSans-Regular.ttf',
                         'B' => 'OpenSans-Bold.ttf',
                     ],
                 ],
                 'default_font' => 'bentonsans'
-                
+
             ]);
 
 
@@ -745,7 +760,7 @@ class LPO_MRNReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid; text-align:right;">' .format_currency( $pop_amt) . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' . format_currency($pop_amt) . '</td>
                 <td style="border-top: 2px solid;"></td>
              
                 <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
@@ -995,24 +1010,25 @@ class LPO_MRNReport extends BaseController
 
 
 
-    
-    public function FetchVendors(){
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+    public function FetchVendors()
+    {
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation', 'cc_customer_name', 'asc', $term, $start, $end);
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
-    public function FetchLpoRef(){
+    public function FetchLpoRef()
+    {
 
         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
@@ -1029,18 +1045,17 @@ class LPO_MRNReport extends BaseController
                     'table' => 'crm_customer_creation',
                     'pk'    => 'cc_id',
                     'fk'    => 'so_customer',
-                ),*/
-            );
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond,'po_reffer_no',$term, $joins1, 'po_reffer_no');
+                ),*/);
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond, 'po_reffer_no', $term, $joins1, 'po_reffer_no');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
-
     }
 
-    public function FetchSalesOrder(){
+    public function FetchSalesOrder()
+    {
 
-         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
         if ($lpo_ref == "") {
@@ -1051,31 +1066,28 @@ class LPO_MRNReport extends BaseController
         } else {
             $cond = array('pop_purchase_order' => $lpo_ref);
             $joins1 = array(
-                 array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'pop_sales_order',
+                ),
             );
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond,'so_reffer_no',$term, $joins1, 'pop_sales_order');
-
-        
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond, 'so_reffer_no', $term, $joins1, 'pop_sales_order');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
-
     }
 
     public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
-       
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
+
         // if($salesorder != ''){
         //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
         //         array(   'table' => 'crm_products',
@@ -1084,13 +1096,11 @@ class LPO_MRNReport extends BaseController
         //         )
         //     ));
         // }else{
-             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
         // }
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
-
 }
