@@ -117,7 +117,7 @@ span.select2.customer_width, span.select2 {
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="sr_reffer_no" id="uid" value="" class="form-control input_length" required readonly>
+                                                                        <input type="text" name="sr_reffer_no" id="uid" value="" class="form-control input_length" required >
                                                                     </div>
 
                                                                 </div> 
