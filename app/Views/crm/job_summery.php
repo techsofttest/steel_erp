@@ -230,7 +230,7 @@
                                             <?php
                                                
 
-
+                                                $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
                                                 if(!empty($sales_orders))
                                                 {   
                                                     $revenue =0 ;
@@ -336,7 +336,7 @@
     <table>
         <?php 
             // initialize
-            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
+            
 
             /* PURCHASE VOUCHERS */
             if(!empty($sales_order->purchase_vouchers)){
