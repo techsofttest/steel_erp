@@ -332,71 +332,57 @@
                                                         <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = ($single_cash + $single_credit) - $single_returns; echo format_currency($cash_credit); ?></td>
 
 
-                                                        <td colspan="1" align="left" class="p-0">
-<?php
-$expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
+                                                 <td colspan="1" align="left" class="p-0">
+    <table>
+        <?php 
+            // initialize
+            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-$pv_ids = $pr_ids = $pc_ids = $jv_ids = [];
+            /* PURCHASE VOUCHERS */
+            if(!empty($sales_order->purchase_vouchers)){
+                foreach ($sales_order->purchase_vouchers as $pur_vouch) {  
+                    $expenses1 += $pur_vouch->pv_total;
+                }
+            }
 
-/* PURCHASE VOUCHERS */
-foreach ($sales_order->purchase_vouchers ?? [] as $p) {
-    if (!in_array($p->id, $pv_ids)) {
-        $expenses1 += (float) $p->pv_total;
-        $pv_ids[] = $p->id;
-    }
-}
+            /* PURCHASE RETURN (should subtract) */
+            if(!empty($sales_order->purchase_return_prod)){
+                foreach($sales_order->purchase_return_prod as $pv_prod){  
+                    $expenses2 += $pv_prod->pr_total_amount;
+                }
+            }
 
-/* PURCHASE RETURN */
-foreach ($sales_order->purchase_return_prod ?? [] as $r) {
-    if (!in_array($r->id, $pr_ids)) {
-        $expenses2 += (float) $r->pr_total_amount;
-        $pr_ids[] = $r->id;
-    }
-}
+            /* PETTY CASH */
+            if(!empty($sales_order->petty_cash)){
+                foreach($sales_order->petty_cash as $p_cash){ 
+                    $expenses3 += $p_cash->pci_amount;
+                }
+            }
 
-/* PETTY CASH */
-foreach ($sales_order->petty_cash ?? [] as $c) {
-    if (!in_array($c->id, $pc_ids)) {
-        $expenses3 += (float) $c->pci_amount;
-        $pc_ids[] = $c->id;
-    }
-}
+            /* JOURNAL VOUCHER */
+            if(!empty($sales_order->journal_voucher)){
+                foreach($sales_order->journal_voucher as $jour_vouch){  
+                    if(!empty($jour_vouch->ji_debit))  
+                        $expenses4 += $jour_vouch->ji_debit;
 
-/* JOURNAL VOUCHER */
-foreach ($sales_order->journal_voucher ?? [] as $j) {
-    if (!in_array($j->id, $jv_ids)) {
-        $expenses4 += (float) ($j->ji_debit ?? 0);
-        $expenses5 += (float) ($j->ji_credit ?? 0);
-        $jv_ids[] = $j->id;
-    }
-}
+                    if(!empty($jour_vouch->ji_credit)) 
+                        $expenses5 += $jour_vouch->ji_credit;
+                }
+            }
 
-/* ✅ FINAL TOTAL */
-$expenses = $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
+            /* FINAL TOTAL EXPENSES */
+            $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
+        ?>
 
-/* 🔍 DEBUG OUTPUT */
-echo '<pre>';
-echo "Purchase Vouchers : " . number_format($expenses1, 2) . PHP_EOL;
-echo "Purchase Returns  : " . number_format($expenses2, 2) . PHP_EOL;
-echo "Petty Cash        : " . number_format($expenses3, 2) . PHP_EOL;
-echo "Journal Debit     : " . number_format($expenses4, 2) . PHP_EOL;
-echo "Journal Credit    : " . number_format($expenses5, 2) . PHP_EOL;
-echo "-----------------------------" . PHP_EOL;
-echo "TOTAL             : " . number_format($expenses, 2) . PHP_EOL;
-echo '</pre>';
-exit;
-?>
+        <!-- TOTAL EXPENSES ROW -->
+        <tr style="">
+            <td style="width:100px" class="text-end">
+                <?= format_currency($expenses); ?>
+            </td>
+        </tr>
 
-<table>
-    <tr>
-        <td class="text-end">
-            <?= format_currency($expenses); ?>
-        </td>
-    </tr>
-</table>
-
+    </table>
 </td>
-
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
 <td class="text-end">
     
