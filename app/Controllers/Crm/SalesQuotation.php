@@ -2002,7 +2002,11 @@ class SalesQuotation extends BaseController
     {    
         $id = $this->request->getPost('ID');
 
+        //print_r($id); exit();
+
         $fetch_vendor = $this->common_model->FetchVendor($id);
+
+        //print_r($fetch_vendor); exit();
 
         $data['prod_details'] ="";
         
@@ -2012,7 +2016,7 @@ class SalesQuotation extends BaseController
             $data['prod_details'] .='<tr>
             <td class="text-center">'.$i.'</td>
             <td colspan="2">'.$fetch_ven->product_details.'</td>
-            <td class="text-center">'.$fetch_ven->ven_name.'</td>
+            <td class="text-center">'.$fetch_ven->cc_customer_name.'</td>
             <td class="text-center">'.date('d-M-Y',strtotime($fetch_ven->po_date)).'</td>
             <td class="text-end">'.format_currency($fetch_ven->pop_rate).'</td>
            
