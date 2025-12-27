@@ -230,7 +230,7 @@
                                             <?php
                                                
 
-                                                $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
+                                               
                                                 if(!empty($sales_orders))
                                                 {   
                                                     $revenue =0 ;
@@ -334,14 +334,9 @@
 
                                                         <td colspan="1" align="left" class="p-0">
 <?php
-// calculate ONCE
 $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-// arrays to avoid duplicate addition
-$pv_ids = [];
-$pr_ids = [];
-$pc_ids = [];
-$jv_ids = [];
+$pv_ids = $pr_ids = $pc_ids = $jv_ids = [];
 
 /* PURCHASE VOUCHERS */
 foreach ($sales_order->purchase_vouchers ?? [] as $p) {
@@ -376,9 +371,8 @@ foreach ($sales_order->journal_voucher ?? [] as $j) {
     }
 }
 
-/* FINAL TOTAL */
-$expenses = ($expenses1 + $expenses3 + $expenses4)
-          - ($expenses2 + $expenses5);
+/* ✅ FINAL TOTAL (ALL are expenses in your case) */
+$expenses = $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
 ?>
 
 <table>
@@ -388,6 +382,7 @@ $expenses = ($expenses1 + $expenses3 + $expenses4)
         </td>
     </tr>
 </table>
+
 </td>
 
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
