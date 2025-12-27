@@ -63,16 +63,16 @@
     }
 
     .form-select {
-     padding: unset !important; 
-}
-.select2-results__option[aria-selected] {
+        padding: unset !important; 
+    }
+    .select2-results__option[aria-selected] {
+        
+        text-align: left;
+    }
+    .select2-container--default .select2-results>.select2-results__options {
     
-    text-align: left;
-}
-.select2-container--default .select2-results>.select2-results__options {
-   
-    color: black !important;
-}
+        color: black !important;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -107,7 +107,9 @@
                                                     <div class="col-lg-6">
 
                                                         <div class="row">
+
                                                             <!-- Single Row Start -->
+                                                             
                                                             <div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">

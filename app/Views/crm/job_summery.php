@@ -371,7 +371,9 @@
             }
 
             /* FINAL TOTAL EXPENSES */
-            $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
+            //$expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
+            $expenses = ($expenses1 + $expenses3 + $expenses4)
+          - ($expenses2 + $expenses5);
         ?>
 
         <!-- TOTAL EXPENSES ROW -->
@@ -411,6 +413,7 @@
 <td class="text-end">
 
     <?php 
+
         $total_percentage = 0;
 
         if($sales_order->so_amount_total != 0){
