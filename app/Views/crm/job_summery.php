@@ -337,28 +337,50 @@
 // calculate ONCE
 $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
+// arrays to avoid duplicate addition
+$pv_ids = [];
+$pr_ids = [];
+$pc_ids = [];
+$jv_ids = [];
+
+/* PURCHASE VOUCHERS */
 foreach ($sales_order->purchase_vouchers ?? [] as $p) {
-    $expenses1 += (float) $p->pv_total;
+    if (!in_array($p->id, $pv_ids)) {
+        $expenses1 += (float) $p->pv_total;
+        $pv_ids[] = $p->id;
+    }
 }
 
+/* PURCHASE RETURN */
 foreach ($sales_order->purchase_return_prod ?? [] as $r) {
-    $expenses2 += (float) $r->pr_total_amount;
+    if (!in_array($r->id, $pr_ids)) {
+        $expenses2 += (float) $r->pr_total_amount;
+        $pr_ids[] = $r->id;
+    }
 }
 
+/* PETTY CASH */
 foreach ($sales_order->petty_cash ?? [] as $c) {
-    $expenses3 += (float) $c->pci_amount;
+    if (!in_array($c->id, $pc_ids)) {
+        $expenses3 += (float) $c->pci_amount;
+        $pc_ids[] = $c->id;
+    }
 }
 
+/* JOURNAL VOUCHER */
 foreach ($sales_order->journal_voucher ?? [] as $j) {
-    $expenses4 += (float) ($j->ji_debit ?? 0);
-    $expenses5 += (float) ($j->ji_credit ?? 0);
+    if (!in_array($j->id, $jv_ids)) {
+        $expenses4 += (float) ($j->ji_debit ?? 0);
+        $expenses5 += (float) ($j->ji_credit ?? 0);
+        $jv_ids[] = $j->id;
+    }
 }
 
+/* FINAL TOTAL */
 $expenses = ($expenses1 + $expenses3 + $expenses4)
           - ($expenses2 + $expenses5);
 ?>
 
-<!-- now display it -->
 <table>
     <tr>
         <td class="text-end">
