@@ -39,15 +39,16 @@
         
           <li class="nav-item"><a class="nav-link <?php  if($uri->getSegment(2)=="MaterialReqReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Procurement/MaterialReqReport"role="tab" aria-selected="true">Material Requesition Report </a></li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="PurchaseOrderReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Procurement/PurchaseOrderReport" role="tab" aria-selected="false">Purchase Order Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="PurchaseOrderSummaryReport"){echo "active";}?>"  href="<?= base_url();?>Procurement/PurchaseOrderSummaryReport" role="tab" aria-selected="false">Purchase Order Summary Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="MaterialRecReport"){echo "active" ;}?>" href="<?= base_url();?>Procurement/MaterialRecReport" role="tab" aria-selected="false">Material Received Note Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="LPO_MRNReport"){echo "active" ;}?>" href="<?= base_url();?>Procurement/LPO_MRNReport" role="tab" aria-selected="false">LPO to MRN Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="MRN_PVReport"){echo "active" ;}?>"  href="<?= base_url();?>Procurement/MRN_PVReport" role="tab" aria-selected="false">MRN to Purchase Voucher Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="LPO_PVReport"){echo "active";}?>"  href="<?= base_url();?>Procurement/LPO_PVReport" role="tab" aria-selected="false">LPO to Purchase Voucher Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="PurchaseVoucherReport"){echo "active";}?>"  href="<?= base_url();?>Procurement/PurchaseVoucherReport" role="tab" aria-selected="false">Purchase Voucher Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="PurchaseVoucherSummaryReport"){echo "active";}?>"  href="<?= base_url();?>Procurement/PurchaseVoucherSummaryReport" role="tab" aria-selected="false">Purchase Voucher Summary Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="PendingPurchaseVoucherReport"){echo "active";}?>"  href="<?= base_url();?>Procurement/PendingPurchaseVoucherReport" role="tab" aria-selected="false">Pending Purchase Voucher Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="PurchaseReturnReport"){echo "active";}?>"  href="<?= base_url();?>Procurement/PurchaseReturnReport" role="tab" aria-selected="false">Purchase Return Report</a> </li>
-
-          
+         
         </ul>
 			</div>
 		</div>
