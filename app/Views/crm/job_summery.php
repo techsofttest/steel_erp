@@ -371,8 +371,20 @@ foreach ($sales_order->journal_voucher ?? [] as $j) {
     }
 }
 
-/* ✅ FINAL TOTAL (ALL are expenses in your case) */
+/* ✅ FINAL TOTAL */
 $expenses = $expenses1 + $expenses2 + $expenses3 + $expenses4 + $expenses5;
+
+/* 🔍 DEBUG OUTPUT */
+echo '<pre>';
+echo "Purchase Vouchers : " . number_format($expenses1, 2) . PHP_EOL;
+echo "Purchase Returns  : " . number_format($expenses2, 2) . PHP_EOL;
+echo "Petty Cash        : " . number_format($expenses3, 2) . PHP_EOL;
+echo "Journal Debit     : " . number_format($expenses4, 2) . PHP_EOL;
+echo "Journal Credit    : " . number_format($expenses5, 2) . PHP_EOL;
+echo "-----------------------------" . PHP_EOL;
+echo "TOTAL             : " . number_format($expenses, 2) . PHP_EOL;
+echo '</pre>';
+exit;
 ?>
 
 <table>
