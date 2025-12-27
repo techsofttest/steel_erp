@@ -333,56 +333,38 @@
 
 
                                                         <td colspan="1" align="left" class="p-0">
-   <table>
-<?php 
-    // ✅ INITIALIZE (VERY IMPORTANT)
-    $expenses1 = 0;
-    $expenses2 = 0;
-    $expenses3 = 0;
-    $expenses4 = 0;
-    $expenses5 = 0;
+<?php
+// calculate ONCE
+$expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-    /* PURCHASE VOUCHERS */
-    if (!empty($sales_order->purchase_vouchers)) {
-        foreach ($sales_order->purchase_vouchers as $pur_vouch) {  
-            $expenses1 += (float) $pur_vouch->pv_total;
-        }
-    }
+foreach ($sales_order->purchase_vouchers ?? [] as $p) {
+    $expenses1 += (float) $p->pv_total;
+}
 
-    /* PURCHASE RETURN (subtract) */
-    if (!empty($sales_order->purchase_return_prod)) {
-        foreach ($sales_order->purchase_return_prod as $pv_prod) {  
-            $expenses2 += (float) $pv_prod->pr_total_amount;
-        }
-    }
+foreach ($sales_order->purchase_return_prod ?? [] as $r) {
+    $expenses2 += (float) $r->pr_total_amount;
+}
 
-    /* PETTY CASH */
-    if (!empty($sales_order->petty_cash)) {
-        foreach ($sales_order->petty_cash as $p_cash) { 
-            $expenses3 += (float) $p_cash->pci_amount;
-        }
-    }
+foreach ($sales_order->petty_cash ?? [] as $c) {
+    $expenses3 += (float) $c->pci_amount;
+}
 
-    /* JOURNAL VOUCHER */
-    if (!empty($sales_order->journal_voucher)) {
-        foreach ($sales_order->journal_voucher as $jour_vouch) {  
-            $expenses4 += (float) ($jour_vouch->ji_debit ?? 0);
-            $expenses5 += (float) ($jour_vouch->ji_credit ?? 0);
-        }
-    }
+foreach ($sales_order->journal_voucher ?? [] as $j) {
+    $expenses4 += (float) ($j->ji_debit ?? 0);
+    $expenses5 += (float) ($j->ji_credit ?? 0);
+}
 
-    /* ✅ FINAL TOTAL EXPENSES */
-    $expenses = ($expenses1 + $expenses3 + $expenses4)
-              - ($expenses2 + $expenses5);
+$expenses = ($expenses1 + $expenses3 + $expenses4)
+          - ($expenses2 + $expenses5);
 ?>
 
-    <!-- TOTAL EXPENSES ROW -->
+<!-- now display it -->
+<table>
     <tr>
-        <td style="width:100px" class="text-end">
+        <td class="text-end">
             <?= format_currency($expenses); ?>
         </td>
     </tr>
-
 </table>
 </td>
 
