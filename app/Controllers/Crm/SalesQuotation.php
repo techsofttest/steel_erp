@@ -2010,10 +2010,12 @@ class SalesQuotation extends BaseController
 
         $data['prod_details'] ="";
         
-        $i =1; 
+        $i =1;
+
         foreach($fetch_vendor as $fetch_ven){
            
             $data['prod_details'] .='<tr>
+            
             <td class="text-center">'.$i.'</td>
             <td colspan="2">'.$fetch_ven->product_details.'</td>
             <td class="text-center">'.$fetch_ven->cc_customer_name.'</td>
@@ -2022,14 +2024,13 @@ class SalesQuotation extends BaseController
            
             </tr>'; 
 
-        $i++;
+            $i++;
         
         }
 
 
         echo json_encode($data); 
 
-        
        
     }
 
