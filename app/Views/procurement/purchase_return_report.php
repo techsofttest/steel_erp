@@ -262,7 +262,7 @@ span.select2.customer_width, span.select2{
 
 
                         <!--datatable section start-->
-
+<?php if (!empty($_GET)) { ?>   
                         <div class="row">
                             <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
@@ -344,7 +344,7 @@ span.select2.customer_width, span.select2{
                                                             <th class="text-end"><?php echo format_currency($total); ?></th>
                                                             </tr>
                                               <?php   } ?>
-   <tr>
+  
                                                            
                                                         
                                             </tbody>
@@ -354,6 +354,8 @@ span.select2.customer_width, span.select2{
                                     </div>
                                 </div>
                             </div>
+
+                            <?php } ?>
                             <!--end col-->
                         </div>
 

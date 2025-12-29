@@ -302,41 +302,69 @@ class LPO_MRNReport extends BaseController
 
 
 
-      if ($data6 != "" || $data7 != "") {
+       if ($data6 != "" || $data7 != "") {
 
     $filteredPO = [];
 
     foreach ($data['purchase_order'] as $po) {
 
         if (empty($po->product_orders)) {
-            continue; // no products → nothing to evaluate
+            continue;
         }
 
-        $filteredProducts = array_filter($po->product_orders, function ($product) use ($data6, $data7) {
+        // Group MRNs by PO product
+        $productMap = [];
 
-            $hasRNP = !empty($product->rnp_material_received_note);
+        
+        foreach ($po->product_orders as $prod) {
 
-            // Both selected → show all
+            $pid = $prod->pop_id;
+
+            if (!isset($productMap[$pid])) {
+                $productMap[$pid] = [
+                    'product' => $prod,
+                    'po_qty'  => (float) $prod->pop_qty,
+                    'mrn_qty' => 0,
+                ];
+            }
+
+            // Add MRN qty if exists
+            if (isset($prod->rnp_current_delivery)) {           
+                $productMap[$pid]['mrn_qty'] += (float) $prod->rnp_current_delivery;
+            }
+            
+           
+        }
+
+        $finalProducts = [];
+
+        foreach ($productMap as $item) {
+
+            $poQty  = $item['po_qty'];
+            $mrnQty = $item['mrn_qty'];
+
+
+
+            $isLinked = ($mrnQty >= $poQty);
+            $isPending = ($mrnQty < $poQty);
+
+            // Both selected → include all
             if ($data6 != "" && $data7 != "") {
-                return true;
+                $finalProducts[] = $item['product'];
+                continue;
             }
 
-            // Pending → NO RNP
-            if ($data6 != "") {
-                return !$hasRNP;
+            if ($data6 != "" && $isPending) {
+                $finalProducts[] = $item['product'];
             }
 
-            // Linked → HAS RNP
-            if ($data7 != "") {
-                return $hasRNP;
+            if ($data7 != "" && $isLinked) {
+                $finalProducts[] = $item['product'];
             }
+        }
 
-            return true;
-        });
-
-        // Keep PO only if at least one product survives
-        if (!empty($filteredProducts)) {
-            $po->product_orders = array_values($filteredProducts);
+        if (!empty($finalProducts)) {
+            $po->product_orders = array_values($finalProducts);
             $filteredPO[] = $po;
         }
     }
@@ -346,10 +374,13 @@ class LPO_MRNReport extends BaseController
 
 
 
-        // echo '<pre>';
-        // print_r($data['purchase_order']);
-        // echo '</pre>';
-        // exit();
+// echo '<pre>';
+//             print_r($productMap);
+//             exit;
+//         echo '<pre>';
+//         print_r($data['purchase_order']);
+//         echo '</pre>';
+//         exit();
 
 
         if (!empty($from_date)) {
