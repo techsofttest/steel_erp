@@ -337,7 +337,7 @@
                                                  <td colspan="1" align="left" class="p-0">
     <table>
         <?php
-        $expenses1 = 0;
+        $expenses1 =  0;
 $expenses2 = 0;
 $expenses3 = 0;
 $expenses4 = 0;
