@@ -388,7 +388,7 @@
     <?php 
          $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
 
-         if (($single_cash + $single_credit) > 0) {
+         if (($single_cash + $single_credit) >  0) {
          
     $row_revenue = $invoice_revenue;
     $total_gross_profit = $row_revenue - $expenses;
