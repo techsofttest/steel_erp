@@ -245,11 +245,11 @@
 
                                                     $final_percentage = 0;
 
-                                                    $expenses1 = 0;
+                                                    /*$expenses1 = 0;
                                                     $expenses2 = 0;
                                                     $expenses3 = 0;
                                                     $expenses4 = 0;
-                                                    $expenses5 = 0;
+                                                    $expenses5 = 0;*/
     
                                                     $gross_profit1 = 0;
                                                     $gross_profit2 = 0;
@@ -337,45 +337,58 @@
                                                  <td colspan="1" align="left" class="p-0">
     <table>
         <?php
+        $expenses1 = 0;
+$expenses2 = 0;
+$expenses3 = 0;
+$expenses4 = 0;
+$expenses5 = 0;
         // ✅ calculate ONLY ONCE per sales order
-        if (!isset($expense_cache[$sales_order->so_id])) {
+        if (!isset($expense_cache[$sales_order->so_id]))  {
 
-            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
+          
 
-            if (!empty($sales_order->purchase_vouchers)) {
-                foreach ($sales_order->purchase_vouchers as $pur_vouch) {
-                    $expenses1 += $pur_vouch->pv_total;
-                }
-            }
+           // Purchase vouchers
+    if (!empty($sales_order->purchase_vouchers)) {
+        foreach ($sales_order->purchase_vouchers as $pur_vouch) {
+            
+                $expenses1 += $pur_vouch->pv_total;
+            
+        }
+    }
 
-            if (!empty($sales_order->purchase_return_prod)) {
-                foreach ($sales_order->purchase_return_prod as $pv_prod) {
-                    $expenses2 += $pv_prod->pr_total_amount;
-                }
-            }
+              // Purchase return
+    if (!empty($sales_order->purchase_return_prod)) {
+        foreach ($sales_order->purchase_return_prod as $pv_prod) {
+           
+                $expenses2 += $pv_prod->pr_total_amount;
+            
+        }
+    }
 
-            if (!empty($sales_order->petty_cash)) {
-                foreach ($sales_order->petty_cash as $p_cash) {
-                    $expenses3 += $p_cash->pci_amount;
-                }
-            }
+           // Petty cash
+    if (!empty($sales_order->petty_cash)) {
+        foreach ($sales_order->petty_cash as $p_cash) {
+            
+                $expenses3 += $p_cash->pci_amount;
+            
+        }
+    }
 
-            if (!empty($sales_order->journal_voucher)) {
-                foreach ($sales_order->journal_voucher as $jour_vouch) {
-                    if (!empty($jour_vouch->ji_debit)) {
-                        $expenses4 += $jour_vouch->ji_debit;
-                    }
-                    if (!empty($jour_vouch->ji_credit)) {
-                        $expenses5 += $jour_vouch->ji_credit;
-                    }
-                }
-            }
+             // Journal voucher
+    if (!empty($sales_order->journal_voucher)) {
+        foreach ($sales_order->journal_voucher as $jour_vouch) {
+           
+                $expenses4 += (float)$jour_vouch->ji_debit;
+                $expenses5 += (float)$jour_vouch->ji_credit;
+            
+        }
+    }
 
             $expense_cache[$sales_order->so_id] =
-                ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
+        ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
         }
 
-        $expenses = $expense_cache[$sales_order->so_id];
+       $expenses = $expense_cache[$sales_order->so_id];
         ?>
 
         <tr>
@@ -445,7 +458,6 @@ $final_percentage = 0;
 if ($revenue > 0) {
     $final_percentage = ($final_gross / $revenue) * 100;
 }
-
 
    /* if (!in_array($sales_order->so_id, $calculated_so)) {
 
