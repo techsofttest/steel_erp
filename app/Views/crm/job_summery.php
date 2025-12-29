@@ -386,9 +386,9 @@
 <td class="text-end">
     
     <?php 
-         $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
+        $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
 
-         if (($single_cash + $single_credit) >  0) {
+        if (($single_cash + $single_credit) >  0) {
          
     $row_revenue = $invoice_revenue;
     $total_gross_profit = $row_revenue - $expenses;
@@ -401,7 +401,7 @@
 
 
         
-<?php  echo format_currency($total_gross_profit); ?>
+<?php echo format_currency($total_gross_profit); ?>
 </td>
 
 
@@ -410,6 +410,7 @@
     <?php 
         $total_percentage = 0;
         if($sales_order->so_amount_total != 0){
+            
             $total_percentage = ($total_gross_profit / $sales_order->so_amount_total) * 100;
         }
         echo number_format($total_percentage, 2) . '%';
