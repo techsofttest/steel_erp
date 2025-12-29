@@ -265,6 +265,7 @@
 
                                                     $i=1;
                                                     $expense_cache = [];
+                                                    $calculated_so = [];
                                                     foreach($sales_orders as $sales_order){
                                                          
                                                     ?> 
@@ -426,11 +427,24 @@
 
 <?php 
 
-    $expenses_total  +=  $expenses; 
+   /* $expenses_total  +=  $expenses; 
     
     $final_gross  +=  $total_gross_profit;
 
-    $final_percentage += $total_percentage;
+    $final_percentage += $total_percentage;*/
+
+    if (!isset($calculated_so[$sales_order->so_id])) {
+
+    $expenses_total += $expenses;
+    $final_gross += $total_gross_profit;
+
+    $calculated_so[$sales_order->so_id] = true;
+}
+
+$final_percentage = 0;
+if ($revenue > 0) {
+    $final_percentage = ($final_gross / $revenue) * 100;
+}
 
 
    /* if (!in_array($sales_order->so_id, $calculated_so)) {
