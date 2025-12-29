@@ -335,44 +335,46 @@
                                                  <td colspan="1" align="left" class="p-0">
     <table>
         <?php 
-            // initialize
-            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
+    // initialize
+    $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-            /* PURCHASE VOUCHERS */
-            if(!empty($sales_order->purchase_vouchers)){
-                foreach ($sales_order->purchase_vouchers as $pur_vouch) {  
-                    $expenses1 += $pur_vouch->pv_total;
-                }
-            }
+    $expenses = 0; // ✅ ADD THIS LINE (CRITICAL)
 
-            /* PURCHASE RETURN (should subtract) */
-            if(!empty($sales_order->purchase_return_prod)){
-                foreach($sales_order->purchase_return_prod as $pv_prod){  
-                    $expenses2 += $pv_prod->pr_total_amount;
-                }
-            }
+    /* PURCHASE VOUCHERS */
+    if(!empty($sales_order->purchase_vouchers)){
+        foreach ($sales_order->purchase_vouchers as $pur_vouch) {  
+            $expenses1 += $pur_vouch->pv_total;
+        }
+    }
 
-            /* PETTY CASH */
-            if(!empty($sales_order->petty_cash)){
-                foreach($sales_order->petty_cash as $p_cash){ 
-                    $expenses3 += $p_cash->pci_amount;
-                }
-            }
+    /* PURCHASE RETURN (should subtract) */
+    if(!empty($sales_order->purchase_return_prod)){
+        foreach($sales_order->purchase_return_prod as $pv_prod){  
+            $expenses2 += $pv_prod->pr_total_amount;
+        }
+    }
 
-            /* JOURNAL VOUCHER */
-            if(!empty($sales_order->journal_voucher)){
-                foreach($sales_order->journal_voucher as $jour_vouch){  
-                    if(!empty($jour_vouch->ji_debit))  
-                        $expenses4 += $jour_vouch->ji_debit;
+    /* PETTY CASH */
+    if(!empty($sales_order->petty_cash)){
+        foreach($sales_order->petty_cash as $p_cash){ 
+            $expenses3 += $p_cash->pci_amount;
+        }
+    }
 
-                    if(!empty($jour_vouch->ji_credit)) 
-                        $expenses5 += $jour_vouch->ji_credit;
-                }
-            }
+    /* JOURNAL VOUCHER */
+    if(!empty($sales_order->journal_voucher)){
+        foreach($sales_order->journal_voucher as $jour_vouch){  
+            if(!empty($jour_vouch->ji_debit))  
+                $expenses4 += $jour_vouch->ji_debit;
 
-            /* FINAL TOTAL EXPENSES */
-            $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
-        ?>
+            if(!empty($jour_vouch->ji_credit)) 
+                $expenses5 += $jour_vouch->ji_credit;
+        }
+    }
+
+    /* FINAL TOTAL EXPENSES */
+    $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
+?>
 
         <!-- TOTAL EXPENSES ROW -->
         <tr style="">
@@ -430,6 +432,15 @@
     $final_gross  +=  $total_gross_profit;
 
     $final_percentage += $total_percentage;
+
+
+   /* if (!in_array($sales_order->so_id, $calculated_so)) {
+
+    $expenses_total += $expenses;
+    $final_gross += $total_gross_profit;
+
+    $calculated_so[] = $sales_order->so_id;
+}*/
 
      
 ?>
