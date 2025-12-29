@@ -264,6 +264,7 @@
                                                     $percentage5 = 0;
 
                                                     $i=1;
+                                                    $expense_cache = [];
                                                     foreach($sales_orders as $sales_order){
                                                          
                                                     ?> 
@@ -334,55 +335,53 @@
 
                                                  <td colspan="1" align="left" class="p-0">
     <table>
-        <?php 
-    // initialize
-    $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
+        <?php
+        // ✅ calculate ONLY ONCE per sales order
+        if (!isset($expense_cache[$sales_order->so_id])) {
 
-    $expenses = 0; // ✅ ADD THIS LINE (CRITICAL)
+            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-    /* PURCHASE VOUCHERS */
-    if(!empty($sales_order->purchase_vouchers)){
-        foreach ($sales_order->purchase_vouchers as $pur_vouch) {  
-            $expenses1 += $pur_vouch->pv_total;
+            if (!empty($sales_order->purchase_vouchers)) {
+                foreach ($sales_order->purchase_vouchers as $pur_vouch) {
+                    $expenses1 += $pur_vouch->pv_total;
+                }
+            }
+
+            if (!empty($sales_order->purchase_return_prod)) {
+                foreach ($sales_order->purchase_return_prod as $pv_prod) {
+                    $expenses2 += $pv_prod->pr_total_amount;
+                }
+            }
+
+            if (!empty($sales_order->petty_cash)) {
+                foreach ($sales_order->petty_cash as $p_cash) {
+                    $expenses3 += $p_cash->pci_amount;
+                }
+            }
+
+            if (!empty($sales_order->journal_voucher)) {
+                foreach ($sales_order->journal_voucher as $jour_vouch) {
+                    if (!empty($jour_vouch->ji_debit)) {
+                        $expenses4 += $jour_vouch->ji_debit;
+                    }
+                    if (!empty($jour_vouch->ji_credit)) {
+                        $expenses5 += $jour_vouch->ji_credit;
+                    }
+                }
+            }
+
+            $expense_cache[$sales_order->so_id] =
+                ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
         }
-    }
 
-    /* PURCHASE RETURN (should subtract) */
-    if(!empty($sales_order->purchase_return_prod)){
-        foreach($sales_order->purchase_return_prod as $pv_prod){  
-            $expenses2 += $pv_prod->pr_total_amount;
-        }
-    }
+        $expenses = $expense_cache[$sales_order->so_id];
+        ?>
 
-    /* PETTY CASH */
-    if(!empty($sales_order->petty_cash)){
-        foreach($sales_order->petty_cash as $p_cash){ 
-            $expenses3 += $p_cash->pci_amount;
-        }
-    }
-
-    /* JOURNAL VOUCHER */
-    if(!empty($sales_order->journal_voucher)){
-        foreach($sales_order->journal_voucher as $jour_vouch){  
-            if(!empty($jour_vouch->ji_debit))  
-                $expenses4 += $jour_vouch->ji_debit;
-
-            if(!empty($jour_vouch->ji_credit)) 
-                $expenses5 += $jour_vouch->ji_credit;
-        }
-    }
-
-    /* FINAL TOTAL EXPENSES */
-    $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
-?>
-
-        <!-- TOTAL EXPENSES ROW -->
-        <tr style="">
-            <td style="width:100px" class="text-end">
+        <tr>
+            <td class="text-end" style="width:100px">
                 <?= format_currency($expenses); ?>
             </td>
         </tr>
-
     </table>
 </td>
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
