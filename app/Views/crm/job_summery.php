@@ -338,57 +338,46 @@
     <table>
         <?php
         $expenses1 =  0;
-$expenses2 = 0;
-$expenses3 = 0;
-$expenses4 = 0;
-$expenses5 = 0;
+        $expenses2 = 0;
+        $expenses3 = 0;
+        $expenses4 = 0;
+        $expenses5 = 0;
         // ✅ calculate ONLY ONCE per sales order
         if (!isset($expense_cache[$sales_order->so_id]))  {
 
           
 
-           // Purchase vouchers
-    if (!empty($sales_order->purchase_vouchers)) {
-        foreach ($sales_order->purchase_vouchers as $pur_vouch) {
-            
-                $expenses1 += $pur_vouch->pv_total;
-            
-        }
-    }
+            /* PURCHASE VOUCHERS */
+            if (!empty($sales_order->purchase_vouchers)) {
+                foreach ($sales_order->purchase_vouchers as $pur_vouch) {
+                    $expenses1 += (float)$pur_vouch->pv_total;
+                }
+            }
 
-              // Purchase return
-    if (!empty($sales_order->purchase_return_prod)) {
-        foreach ($sales_order->purchase_return_prod as $pv_prod) {
-           
-                $expenses2 += $pv_prod->pr_total_amount;
-            
-        }
-    }
+            /* PURCHASE RETURN */
+            if (!empty($sales_order->purchase_return_prod)) {
+                foreach ($sales_order->purchase_return_prod as $pv_prod) {
+                    $expenses2 += (float)$pv_prod->pr_total_amount;
+                }
+            }
 
-           // Petty cash
-    if (!empty($sales_order->petty_cash)) {
-        foreach ($sales_order->petty_cash as $p_cash) {
-            
-                $expenses3 += $p_cash->pci_amount;
-            
-        }
-    }
+            /* PETTY CASH */
+            if (!empty($sales_order->petty_cash)) {
+                foreach ($sales_order->petty_cash as $p_cash) {
+                    $expenses3 += (float)$p_cash->pci_amount;
+                }
+            }
 
-             // Journal voucher
-    if (!empty($sales_order->journal_voucher)) {
-        foreach ($sales_order->journal_voucher as $jour_vouch) {
-           
-                $expenses4 += (float)$jour_vouch->ji_debit;
-                $expenses5 += (float)$jour_vouch->ji_credit;
-            
-        }
-    }
+            /* JOURNAL VOUCHER */
+            if (!empty($sales_order->journal_voucher)) {
+                foreach ($sales_order->journal_voucher as $jour_vouch) {
+                    $expenses4 += (float)$jour_vouch->ji_debit;
+                    $expenses5 += (float)$jour_vouch->ji_credit;
+                }
+            }
 
-            $expense_cache[$sales_order->so_id] =
-        ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
-        }
-
-       $expenses = $expense_cache[$sales_order->so_id];
+            /* FINAL EXPENSE */
+            $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
         ?>
 
         <tr>
@@ -467,7 +456,7 @@ if ($revenue > 0) {
     $calculated_so[] = $sales_order->so_id;
 }*/
 
-     
+        }     
 ?>
 
                                               
