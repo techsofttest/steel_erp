@@ -20,7 +20,7 @@
     }
 
     #DataTable td {
-                line-height: 1.5;
+        line-height: 1.5;
 
     }
 
@@ -29,71 +29,74 @@
         width: auto;
         margin: unset
     }
-    .modal-dialog{
+
+    .modal-dialog {
         width: 500px;
         margin: auto;
     }
+
     .adjust_width {
-    width: 86%;
+        width: 86%;
     }
 
-        .Dashboard-form .form-select {
-    border: 1px solid #434343 !important;
-    margin-bottom: 0px;
-    background: #f5f5f56e;
-    height: 40px;
-    width: 100%;
-    border-radius: 4px;
-}
+    .Dashboard-form .form-select {
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        background: #f5f5f56e;
+        height: 40px;
+        width: 100%;
+        border-radius: 4px;
+    }
 
-.travelerinfo td {
-    color: black;
-    vertical-align: middle;
-}
+    .travelerinfo td {
+        color: black;
+        vertical-align: middle;
+    }
 
-/* ✅ Keep widths consistent across parent and nested tables */
-#DataTable, 
-#DataTable table {
-    table-layout: fixed;
-    width: 100%;
-    border-collapse: collapse;
-}
+    /* ✅ Keep widths consistent across parent and nested tables */
+    #DataTable,
+    #DataTable table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-#DataTable th, 
-#DataTable td {
-    white-space: wrap;
-}
+    #DataTable th,
+    #DataTable td {
+        white-space: wrap;
+    }
 
-#DataTable table td, 
-#DataTable table th {
-    border: none; /* keep inner table seamless */
-}
+    #DataTable table td,
+    #DataTable table th {
+        border: none;
+        /* keep inner table seamless */
+    }
 
-/* Optional: add horizontal scroll on smaller screens */
-.table-wrapper {
-    overflow-x: auto;
-}
+    /* Optional: add horizontal scroll on smaller screens */
+    .table-wrapper {
+        overflow-x: auto;
+    }
 
-.nested-table td{
-    vertical-align: middle;
-}
+    .nested-table td {
+        vertical-align: middle;
+    }
 
-.select2.select2-container{   
-    padding-top: 5px !important;
-}
-
-
-.select2-selection__rendered {
-    white-space: wrap !important;  /* prevent weird line breaks */
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-span.select2.customer_width, span.select2{
-    width:100% !important;
-}
+    .select2.select2-container {
+        padding-top: 5px !important;
+    }
 
 
+    .select2-selection__rendered {
+        white-space: wrap !important;
+        /* prevent weird line breaks */
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    span.select2.customer_width,
+    span.select2 {
+        width: 100% !important;
+    }
 </style>
 <div class="tab-content text-muted">
 
@@ -172,10 +175,10 @@ span.select2.customer_width, span.select2{
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
-                                                                        <tr>
-                                                                                
+                                                                            <tr>
+
                                                                                 <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
-                                                                                <td ><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
+                                                                                <td><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
                                                                                 <td>
                                                                                     <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control ">
@@ -189,8 +192,8 @@ span.select2.customer_width, span.select2{
                                                                         <tbody class="travelerinfo">
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Vendor</td>
-                                                                                <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;" class="center_padding">Vendor</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select vendor_dropdown" id="vendor" name="vendor">
                                                                                         <option value="" selected disabled>Select Vendor</option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
@@ -201,26 +204,26 @@ span.select2.customer_width, span.select2{
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Lpo Ref</td>
-                                                                                <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref" >
+                                                                                <td style="width: 30%;" class="center_padding">Lpo Ref</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref">
                                                                                         <option value="" selected disabled>Select Lpo ref</option>
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Sales Order</td>
-                                                                                <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select sales_order" id="sales_order" name="sales_order" >
+                                                                                <td style="width: 30%;" class="center_padding">Sales Order</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select class="form-select sales_order" id="sales_order" name="sales_order">
                                                                                         <option value="" selected disabled>Select Sales Order</option>
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">GL Account</td>
-                                                                                <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;" class="center_padding">GL Account</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select gl_acc_clz " name="gl_account">
                                                                                         <option value="" selected disabled>Select GL</option>
                                                                                         <?php foreach ($chart_acc as $charts) { ?>
@@ -231,8 +234,8 @@ span.select2.customer_width, span.select2{
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Product</td>
-                                                                                <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;" class="center_padding">Product</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select product_clz" value="" name="product">
                                                                                         <option value="" selected disabled>Select product</option>
                                                                                         <?php foreach ($products as $product) { ?>
@@ -240,7 +243,7 @@ span.select2.customer_width, span.select2{
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                      
+
                                                                             </tr>
 
 
@@ -274,7 +277,7 @@ span.select2.customer_width, span.select2{
                         <!--####-->
 
                         <!--datatable section start-->
-
+<?php if (!empty($_GET)) { ?>   
                         <div class="row">
                             <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
@@ -301,129 +304,138 @@ span.select2.customer_width, span.select2{
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
-    
-<div class="table-wrapper">
-<table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-    <!-- 🔹 Added this colgroup so widths are consistent -->
-    <colgroup>
-        <col style="width:60px;">
-        <col style="width:70px;">
-        <col style="width:100px;">
-        <col style="width:300px;">
-        <col style="width:100px;">
-        <col style="width:100px;">
-        <col style="width:80px;">
-        <col style="width:500px;">
-        <col style="width:80px;">
-        <col style="width:80px;">
-        <col style="width:80px;">
-        <col style="width:80px;">
-    </colgroup>
 
-    <thead>
-        <tr>
-            <th class="no-sort text-center">Sl no</th>
-            <th class="text-center">Date</th>
-            <th class="text-center" style="white-space: nowrap;">Vendor Inv Ref</th>
-            <th>Vendor</th>
-            <th class="text-center" style="white-space: nowrap;">PO Ref</th>
-            <th class="text-center" style="white-space: nowrap;">MRN Ref</th>
-            <th class="text-end">Amount</th>
-            <th>Product</th>
-            <th class="text-center">Quantity</th>
-            <th class="text-end">Rate</th>
-            <th class="text-end">Discount</th>
-            <th class="text-end">Amount</th>
-        </tr>
-    </thead>
+                                        <div class="table-wrapper">
+                                            <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                                <!-- 🔹 Added this colgroup so widths are consistent -->
+                                                <colgroup>
+                                                    <col style="width:60px;">
+                                                    <col style="width:70px;">
+                                                    <col style="width:100px;">
+                                                    <col style="width:300px;">
+                                                    <col style="width:100px;">
+                                                    <col style="width:100px;">
+                                                    <col style="width:80px;">
+                                                    <col style="width:500px;">
+                                                    <col style="width:80px;">
+                                                    <col style="width:80px;">
+                                                    <col style="width:80px;">
+                                                    <col style="width:80px;">
+                                                </colgroup>
 
-    <tbody class="tbody_data">
-        <?php
-        if (!empty($purchase_order)) {
-            $i = 1;
-            $total = $pv_total = 0;
-            foreach ($purchase_order as $pur_vouc) { ?>
-                <tr>
-                    <td class="text-center"><?php echo $i; ?></td>
-                    <td class="text-center" style="white-space: nowrap;"><?php echo date('d-M-Y', strtotime($pur_vouc->pv_date)); ?></td>
-                    <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
+                                                <thead>
+                                                    <tr>
+                                                        <th class="no-sort text-center">Sl no</th>
+                                                        <th class="text-center">Date</th>
+                                                        <th class="text-center" style="white-space: nowrap;">Vendor Inv Ref</th>
+                                                        <th>Vendor</th>
+                                                        <th class="text-center" style="white-space: nowrap;">PO Ref</th>
+                                                        <th class="text-center" style="white-space: nowrap;">MRN Ref</th>
+                                                        <th class="text-end">Amount</th>
+                                                        <th>Product</th>
+                                                        <th class="text-center">Quantity</th>
+                                                        <th class="text-end">Rate</th>
+                                                        <th class="text-end">Discount</th>
+                                                        <th class="text-end">Amount</th>
+                                                    </tr>
+                                                </thead>
 
-                    <td>
-                        <?php foreach ($vendors as $vendor) {
-                            echo $pur_vouc->pv_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
-                        } ?>
-                    </td>
+                                                <tbody class="tbody_data">
+                                                    <?php
+                                                    if (!empty($purchase_order)) {
+                                                        $i = 1;
+                                                        $total = $pv_total = 0;
+                                                        foreach ($purchase_order as $pur_vouc) { ?>
+                                                            <tr>
+                                                                <td class="text-center"><?php echo $i; ?></td>
+                                                                <td class="text-center" style="white-space: nowrap;"><?php echo date('d-M-Y', strtotime($pur_vouc->pv_date)); ?></td>
+                                                                <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
 
-                    <td class="text-center" style="white-space: nowrap;">
-                        <a href="<?php echo base_url('Procurement/PurchaseOrder?view_so=' . ($pur_vouc->po_id ?? '')); ?>" target="_blank">
-                            <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a>
-                    </td>
+                                                                <td>
+                                                                    <?php foreach ($vendors as $vendor) {
+                                                                        echo $pur_vouc->pv_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
+                                                                    } ?>
+                                                                </td>
 
-                    <td colspan="7" class="p-0">
-                        <table class="nested-table" style="width:100%; table-layout:fixed;">
-                            <!-- 🔹 Added nested colgroup matching parent widths -->
-                            <colgroup>
-                                <col style="width:100px;"> <!-- MRN Ref -->
-                                <col style="width:80px;">  <!-- Amount -->
-                                <col style="width:500px;"> <!-- Product -->
-                                <col style="width:80px;">  <!-- Quantity -->
-                                <col style="width:80px;">  <!-- Rate -->
-                                <col style="width:80px;">  <!-- Discount -->
-                                <col style="width:80px;">  <!-- Amount -->
-                            </colgroup>
+                                                                <td class="text-center" style="white-space: nowrap;">
+                                                                    <a href="<?php echo base_url('Procurement/PurchaseOrder?view_so=' . ($pur_vouc->po_id ?? '')); ?>" target="_blank">
+                                                                        <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a>
+                                                                </td>
 
-                            <?php $k=0; foreach ($pur_vouc->product_orders as $orders) { $k++;?>
-                                <tr style="background: unset;border-bottom: hidden !important;">
-                                    <td style="white-space: nowrap;vertical-align: top;">
-                                         <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . ($pur_vouc->mrn_id ?? ''); ?>" target="_blank"> 
-                                            <?php echo $orders->mrn_reffer; ?>
-                                        </a></td>
-                                    <td class="text-end " style="white-space: nowrap;vertical-align: top;">
-                                        <?php if($k == 1){ echo format_currency($pur_vouc->pv_total);
-                                            $total += $pur_vouc->pv_total; } ?>
-                                    </td>
-                                    <td><?php echo $orders->pvp_prod_dec; ?></td>
-                                    <td class="text-center "><?php echo format_currency($orders->pvp_qty); ?></td>
-                                    <td class="text-end"><?php echo format_currency($orders->pvp_rate); ?></td>
-                                    <td class="text-end"><?php echo format_currency($orders->pvp_discount); ?>%</td>
-                                    <td class="text-end" style="white-space: nowrap;">
-                                        <?php echo format_currency($orders->pvp_amount);
-                                        $pv_total += $orders->pvp_amount; ?>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </table>
-                    </td>
-                </tr>
-            <?php $i++; } ?>
+                                                                <td colspan="7" class="p-0">
+                                                                    <table class="nested-table" style="width:100%; table-layout:fixed;">
+                                                                        <!-- 🔹 Added nested colgroup matching parent widths -->
+                                                                        <colgroup>
+                                                                            <col style="width:100px;"> <!-- MRN Ref -->
+                                                                            <col style="width:80px;"> <!-- Amount -->
+                                                                            <col style="width:500px;"> <!-- Product -->
+                                                                            <col style="width:80px;"> <!-- Quantity -->
+                                                                            <col style="width:80px;"> <!-- Rate -->
+                                                                            <col style="width:80px;"> <!-- Discount -->
+                                                                            <col style="width:80px;"> <!-- Amount -->
+                                                                        </colgroup>
 
-            <tr>
-                <th colspan="5"></th>
-                <td colspan="7" class="p-0">
-                    <table style="width:100%; table-layout:fixed;">
-                        <colgroup>
-                            <col style="width:100px;">
-                            <col style="width:80px;">
-                            <col style="width:500px;">
-                            <col style="width:80px;">
-                            <col style="width:80px;">
-                            <col style="width:80px;">
-                            <col style="width:80px;">
-                        </colgroup>
-                        <tr>
-                            <th></th>
-                            <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
-                            <th></th><th></th><th></th><th></th>
-                            <th class="text-end" style="white-space: nowrap;" ><?php echo format_currency($pv_total); ?></th>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+                                                                        <?php $k = 0;
+                                                                        foreach ($pur_vouc->product_orders as $orders) {
+                                                                            $k++; ?>
+                                                                            <tr style="background: unset;border-bottom: hidden !important;">
+                                                                                <td style="white-space: nowrap;vertical-align: top;">
+                                                                                    <a href="<?php echo base_url() . 'Procurement/MaterialReceivedNote?view_so=' . ($pur_vouc->mrn_id ?? ''); ?>" target="_blank">
+                                                                                        <?php echo $orders->mrn_reffer; ?>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td class="text-end " style="white-space: nowrap;vertical-align: top;">
+                                                                                    <?php if ($k == 1) {
+                                                                                        echo format_currency($pur_vouc->pv_total);
+                                                                                        $total += $pur_vouc->pv_total;
+                                                                                    } ?>
+                                                                                </td>
+                                                                                <td><?php echo $orders->pvp_prod_dec; ?></td>
+                                                                                <td class="text-center "><?php echo format_currency($orders->pvp_qty); ?></td>
+                                                                                <td class="text-end"><?php echo format_currency($orders->pvp_rate); ?></td>
+                                                                                <td class="text-end"><?php echo format_currency($orders->pvp_discount); ?>%</td>
+                                                                                <td class="text-end" style="white-space: nowrap;">
+                                                                                    <?php echo format_currency($orders->pvp_amount);
+                                                                                    $pv_total += $orders->pvp_amount; ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php } ?>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        <?php $i++;
+                                                        } ?>
 
-        <?php } ?>
-    </tbody>
-</table>
-</div>
+                                                        <tr>
+                                                            <th colspan="5"></th>
+                                                            <td colspan="7" class="p-0">
+                                                                <table style="width:100%; table-layout:fixed;">
+                                                                    <colgroup>
+                                                                        <col style="width:100px;">
+                                                                        <col style="width:80px;">
+                                                                        <col style="width:500px;">
+                                                                        <col style="width:80px;">
+                                                                        <col style="width:80px;">
+                                                                        <col style="width:80px;">
+                                                                        <col style="width:80px;">
+                                                                    </colgroup>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($pv_total); ?></th>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
 
 
                                     </div>
@@ -431,7 +443,7 @@ span.select2.customer_width, span.select2{
                             </div>
                             <!--end col-->
                         </div>
-
+<?php } ?>
                         <!---datatable section end-->
 
                     </div>
@@ -514,7 +526,7 @@ span.select2.customer_width, span.select2{
         });
     });
 </script>
-*/?>
+*/ ?>
 
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
@@ -696,10 +708,10 @@ span.select2.customer_width, span.select2{
         }
 
 
-                 
-// ======================
 
-         /*Vendor dropdown search*/
+        // ======================
+
+        /*Vendor dropdown search*/
         $(".vendor_dropdown").select2({
             placeholder: "Select Vendor",
             theme: "default form-control- customer_width",
@@ -711,19 +723,19 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.cc_id,
-                                text: $.trim(item.cc_customer_name)  // <--- trim whitespace here
+                                text: $.trim(item.cc_customer_name) // <--- trim whitespace here
                             };
                         }),
                         pagination: {
@@ -737,7 +749,7 @@ span.select2.customer_width, span.select2{
         })
 
 
-              $(".lpo_ref").select2({
+        $(".lpo_ref").select2({
             placeholder: "Select LPO Ref",
             theme: "default form-control- customer_width",
             dropdownParent: $('#PurchaseVoucherReport'),
@@ -748,20 +760,20 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         vendor_id: $('.vendor_dropdown').val(),
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.po_id,
-                                text: $.trim(item.po_reffer_no)  // <--- trim whitespace here
+                                text: $.trim(item.po_reffer_no) // <--- trim whitespace here
                             };
                         }),
                         pagination: {
@@ -789,20 +801,20 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         lpo_ref: $('.lpo_ref').val(),
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.so_reffer_no,
-                                text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
+                                text: $.trim(item.so_reffer_no) // <--- trim whitespace here
                             };
                         }),
                         pagination: {
@@ -830,18 +842,21 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                         salesorder: $('.sales_order').val() // ✅ send inside data function
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
-                            return { id: item.product_id, text: item.product_details };
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.product_id,
+                                text: item.product_details
+                            };
                         }),
                         pagination: {
                             more: (page * 10) <= data.total_count
@@ -852,10 +867,10 @@ span.select2.customer_width, span.select2{
         });
 
 
-             /*customer droup drown search*/
+        /*customer droup drown search*/
         $(".gl_acc_clz").select2({
             placeholder: "Select GL Account",
-            theme : "default form-control- customer_width",
+            theme: "default form-control- customer_width",
             dropdownParent: $('#PurchaseVoucherReport'),
             ajax: {
                 url: "<?= base_url(); ?>Procurement/PurchaseVoucherReport/FetchGLAccounts",
@@ -864,7 +879,7 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
@@ -877,19 +892,24 @@ span.select2.customer_width, span.select2{
                     //console.log(data);
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.ca_id,
+                                text: item.ca_name
+                            }
+                        }),
                         pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
                             more: (page * 10) <= data.total_count
                         }
                     };
-                },              
+                },
             }
-         
+
         })
         /*###*/
 
-// =================================
+        // =================================
 
 
 

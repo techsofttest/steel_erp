@@ -52,7 +52,7 @@
         /* Ensure padding doesn't affect fixed width calculation unexpectedly */
         padding-left: 8px; /* Adjust as needed */
         padding-right: 8px; /* Adjust as needed */
-        vertical-align: top; /* Align content to the top */
+        /* vertical-align: top; */
     }
 
 .nested-table td{
@@ -281,7 +281,7 @@ span.select2.customer_width, span.select2{
 
 
                         <!--datatable section start-->
-
+<?php if (!empty($_GET)) { ?>   
                         <div class="row">
                             <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
@@ -506,7 +506,7 @@ span.select2.customer_width, span.select2{
                             </div>
                             <!--end col-->
                         </div>
-
+   <?php } ?>
                         <!---datatable section end-->
 
                     </div>

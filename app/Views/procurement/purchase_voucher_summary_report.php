@@ -279,137 +279,137 @@
                         <!--####-->
 
                         <!--datatable section start-->
+                        <?php if (!empty($_GET)) { ?>
+                            <div class="row">
+                                <div class="col-lg-12" style="padding: 0px;">
+                                    <div class="card">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-16%">Purchase Voucher summary reports</h4>
 
-                        <div class="row">
-                            <div class="col-lg-12" style="padding: 0px;">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-16%">Purchase Voucher summary reports</h4>
+                                            <form method="POST" target="_blank">
+                                                <input type="hidden" name="pdf" value="1">
+                                                <button type="submit" class="pdf_button report_button">PDF</button>
+                                            </form>
 
-                                        <form method="POST" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button type="submit" class="pdf_button report_button">PDF</button>
-                                        </form>
+                                            <button class="excel_button report_button" type="submit">Excel</button>
 
-                                        <button class="excel_button report_button" type="submit">Excel</button>
+                                            <form method="POST" action="" target="_blank">
+                                                <input type="hidden" name="pdf" value="1">
+                                                <button class="print_button report_button" type="submit">Print</button>
+                                            </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
+                                            <!-- <form method="POST" action="" target="_blank"> -->
+                                            <!-- <input type="hidden" name="email" value="1"> -->
+                                            <button class="email_button report_button" type="button" id="email_button">Email</button>
+                                            <!-- </form> -->
 
-                                        <!-- <form method="POST" action="" target="_blank"> -->
-                                        <!-- <input type="hidden" name="email" value="1"> -->
-                                        <button class="email_button report_button" type="button" id="email_button">Email</button>
-                                        <!-- </form> -->
+                                            <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
+                                        </div><!-- end card header -->
+                                        <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
 
-                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
-                                    </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
+                                            <div class="table-wrapper">
+                                                <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                                    <!-- 🔹 Added this colgroup so widths are consistent -->
+                                                    <colgroup>
+                                                        <col style="width:60px;">
+                                                        <col style="width:70px;">
+                                                        <col style="width:100px;">
+                                                        <col style="width:500px;">
+                                                        <col style="width:100px;">
+                                                        <col style="width:80px;">
+                                                    </colgroup>
 
-                                        <div class="table-wrapper">
-                                            <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                                <!-- 🔹 Added this colgroup so widths are consistent -->
-                                                <colgroup>
-                                                    <col style="width:60px;">
-                                                    <col style="width:70px;">
-                                                    <col style="width:100px;">
-                                                    <col style="width:500px;">
-                                                    <col style="width:100px;">
-                                                    <col style="width:80px;">
-                                                </colgroup>
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="no-sort text-center">Sl no</th>
+                                                            <th class="text-center">Date</th>
+                                                            <th class="text-center" style="white-space: nowrap;">Vendor Inv Ref</th>
+                                                            <th class="text-center">Vendor</th>
+                                                            <th class="text-center" style="white-space: nowrap;">PO Ref</th>
 
-                                                <thead>
-                                                    <tr>
-                                                        <th class="no-sort text-center">Sl no</th>
-                                                        <th class="text-center">Date</th>
-                                                        <th class="text-center" style="white-space: nowrap;">Vendor Inv Ref</th>
-                                                        <th class="text-center">Vendor</th>
-                                                        <th class="text-center" style="white-space: nowrap;">PO Ref</th>
+                                                            <th class="text-end">Amount</th>
 
-                                                        <th class="text-end">Amount</th>
+                                                        </tr>
+                                                    </thead>
 
-                                                    </tr>
-                                                </thead>
+                                                    <tbody class="tbody_data">
+                                                        <?php
+                                                        if (!empty($purchase_order)) {
+                                                            $i = 1;
+                                                            $total = $pv_total = 0;
+                                                            foreach ($purchase_order as $pur_vouc) { ?>
+                                                                <tr>
+                                                                    <td class="text-center"><?php echo $i; ?></td>
+                                                                    <td class="text-center" style="white-space: nowrap;"><?php echo date('d-M-Y', strtotime($pur_vouc->pv_date)); ?></td>
+                                                                    <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
 
-                                                <tbody class="tbody_data">
-                                                    <?php
-                                                    if (!empty($purchase_order)) {
-                                                        $i = 1;
-                                                        $total = $pv_total = 0;
-                                                        foreach ($purchase_order as $pur_vouc) { ?>
+                                                                    <td>
+                                                                        <?php foreach ($vendors as $vendor) {
+                                                                            echo $pur_vouc->pv_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
+                                                                        } ?>
+                                                                    </td>
+
+                                                                    <td class="text-center" style="white-space: nowrap;">
+                                                                        <a href="<?php echo base_url('Procurement/PurchaseOrder?view_so=' . ($pur_vouc->po_id ?? '')); ?>" target="_blank">
+                                                                            <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a>
+                                                                    </td>
+
+                                                                    <td class="p-0">
+                                                                        <table class="nested-table" style="width:100%; table-layout:fixed;">
+                                                                            <!-- 🔹 Added nested colgroup matching parent widths -->
+                                                                            <colgroup>
+
+                                                                                <col style="width:80px;"> <!-- Amount -->
+
+                                                                            </colgroup>
+
+
+                                                                            <tr style="background: unset;border-bottom: hidden !important;">
+
+                                                                                <td class="text-end " style="white-space: nowrap;vertical-align: top;">
+                                                                                    <?php
+                                                                                    echo format_currency($pur_vouc->pv_total);
+                                                                                    $total += $pur_vouc->pv_total;
+                                                                                    ?>
+                                                                                </td>
+
+                                                                            </tr>
+
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php $i++;
+                                                            } ?>
+
                                                             <tr>
-                                                                <td class="text-center"><?php echo $i; ?></td>
-                                                                <td class="text-center" style="white-space: nowrap;"><?php echo date('d-M-Y', strtotime($pur_vouc->pv_date)); ?></td>
-                                                                <td class="text-center" style="white-space: nowrap;"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
-
-                                                                <td>
-                                                                    <?php foreach ($vendors as $vendor) {
-                                                                        echo $pur_vouc->pv_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
-                                                                    } ?>
-                                                                </td>
-
-                                                                <td class="text-center" style="white-space: nowrap;">
-                                                                    <a href="<?php echo base_url('Procurement/PurchaseOrder?view_so=' . ($pur_vouc->po_id ?? '')); ?>" target="_blank">
-                                                                        <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a>
-                                                                </td>
-
-                                                                <td  class="p-0">
-                                                                    <table class="nested-table" style="width:100%; table-layout:fixed;">
-                                                                        <!-- 🔹 Added nested colgroup matching parent widths -->
+                                                                <th colspan="5">Total</th>
+                                                                <td colspan="1" class="p-0">
+                                                                    <table style="width:100%; table-layout:fixed;">
                                                                         <colgroup>
-
-                                                                            <col style="width:80px;"> <!-- Amount -->
-
+                                                                            <col style="width:80px;">
                                                                         </colgroup>
-
-
-                                                                        <tr style="background: unset;border-bottom: hidden !important;">
-
-                                                                            <td class="text-end " style="white-space: nowrap;vertical-align: top;">
-                                                                                <?php
-                                                                                echo format_currency($pur_vouc->pv_total);
-                                                                                $total += $pur_vouc->pv_total;
-                                                                                ?>
-                                                                            </td>
+                                                                        <tr>
+                                                                            <th></th>
+                                                                            <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
+                                                                            <th></th>
 
                                                                         </tr>
-
                                                                     </table>
                                                                 </td>
                                                             </tr>
-                                                        <?php $i++;
-                                                        } ?>
 
-                                                        <tr>
-                                                            <th colspan="5">Total</th>
-                                                            <td colspan="1" class="p-0">
-                                                                <table style="width:100%; table-layout:fixed;">
-                                                                    <colgroup>
-                                                                        <col style="width:80px;">
-                                                                    </colgroup>
-                                                                    <tr>
-                                                                        <th></th>
-                                                                        <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
-                                                                        <th></th>
+                                                        <?php } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
 
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
                                         </div>
-
-
                                     </div>
                                 </div>
+                                <!--end col-->
                             </div>
-                            <!--end col-->
-                        </div>
-
+                        <?php } ?>
                         <!---datatable section end-->
 
                     </div>
