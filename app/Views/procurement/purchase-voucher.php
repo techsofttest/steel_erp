@@ -289,37 +289,7 @@
                                                             <!-- ### --> 
 
 
-                                                            <!-- Single Row Start -->
-
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2 margin_zero">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-        
-                                                                        <label for="basicInput" class="form-label">Purchase Order <span class="add_more_icon cust_more_modal ri-add-line" id="blink"></span></label>
-        
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        
-                                                                        <select class="form-select select_purchase purchase_order input_length" name="purchase_order" id="">
-                                                                            
-                                                                            <option value="" selected="" disabled="">Select Purchase Order</option>
-
-                                                                        </select>
-
-                                                                        <!--<input type="text" name="purchase_order" class="form-control select_purchase input_length" required>-->
-
-                                                                    </div>
-
-                                                                    
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### --> 
+                                                            
 
 
 
@@ -473,6 +443,39 @@
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         <input type="text " name="purchase_payment_term" class="form-control add_payment_term input_length" value="" required>
                                                                     </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2 margin_zero">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+        
+                                                                        <label for="basicInput" class="form-label">Purchase Order <span class="add_more_icon cust_more_modal ri-add-line" id="blink"></span></label>
+        
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                        <select class="form-select select_purchase purchase_order input_length" name="purchase_order" id="">
+                                                                            
+                                                                            <option value="" selected="" disabled="">Select Purchase Order</option>
+
+                                                                        </select>
+
+                                                                        <!--<input type="text" name="purchase_order" class="form-control select_purchase input_length" required>-->
+
+                                                                    </div>
+
+                                                                    
 
                                                                 </div> 
 
@@ -703,30 +706,7 @@
 
                                                             <!-- ### -->
 
-                                                             <!-- Single Row Start -->
-
-
-                                                             <div class="col-lg-12">
-
-<div class="row align-items-center mb-2 margin_zero">
-
-    <div class="col-col-md-3 col-lg-3">
-        <label for="basicInput" class="form-label">Purchase Order</label>
-    </div>
-
-    <div class="col-col-md-9 col-lg-9">
-
-        <input type="text" name="" class="form-control view_purchase_order input_length" readonly>
-
-    </div>
-
-</div>
-
-</div>
-
-
-<!-- ### -->
-
+                                                            
 
 
 
@@ -806,6 +786,31 @@
                                                             </div>
 
                                                             <!-- ### -->
+
+                                                            <!-- Single Row Start -->
+
+
+                                                             <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2 margin_zero">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control view_purchase_order input_length" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            <!-- ### -->
+
                                                             
                                                         </div>
 
@@ -999,29 +1004,7 @@
 
                                                             <!-- ### -->
 
-                                                            <!-- Single Row Start -->
-
-
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2 margin_zero">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-
-                                                                        <input type="text" name="pv_purchase_order" class="form-control edit_purchase_order input_length" readonly>
-
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-
-
-                                                            <!-- ### -->
+                                                            
 
 
 
@@ -1103,6 +1086,30 @@
                                                                 </div>
 
                                                             </div>
+
+                                                            <!-- ### -->
+
+                                                            <!-- Single Row Start -->
+
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2 margin_zero">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="pv_purchase_order" class="form-control edit_purchase_order input_length" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
 
                                                             <!-- ### -->
                                                             
