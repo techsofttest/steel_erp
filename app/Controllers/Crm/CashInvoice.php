@@ -471,9 +471,9 @@ class CashInvoice extends BaseController
                     if(!empty($_POST['print_btn']))
                     {
                         
-                        $data['print'] =  base_url() . 'Crm/CashInvoice/Pdf/' . urlencode($cash_invoice_id);
+                       // $data['print'] =  base_url() . 'Crm/CashInvoice/Pdf/' . urlencode($cash_invoice_id);
 
-                        //$data['print'] =  $cash_invoice_id;
+                        $data['print'] =  $cash_invoice_id;
         
                     }
         

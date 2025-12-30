@@ -1474,7 +1474,13 @@ span.select2.customer_width, span.select2 {
 
                                     if(data.print!="")
                                     {
-                                        window.open(data.print, '_blank');
+                                        //window.open(data.print, '_blank');
+                                        
+                                        id = data.print;
+                                        var pdfWindow = window.open('<?= base_url()?>Crm/CashInvoice/Pdf/'+id, '_blank');
+                                        pdfWindow.onload = function() {
+                                            pdfWindow.print();
+                                        };
                                     }
 
                                     /*
