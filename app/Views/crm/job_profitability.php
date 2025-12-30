@@ -534,7 +534,7 @@
                 } ?>
 
 
-               <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
+                <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
                     <td style="width:100px" class="text-end">
                         
                     </td>
@@ -543,23 +543,31 @@
 
             <?php }
 
-            if(!empty($sales_order->purchase_vouchers)){
-               
+            /**/
+            if (!empty($sales_order->purchase_vouchers)) {
 
-                foreach ($sales_order->purchase_vouchers as $pur_vouch) { 
-                 
-                ?> 
-                    
-                    <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
-                        <td style="width:100px" class="text-end">
-                            <?php echo format_currency($pur_vouch->pvp_amount); ?>
-                        </td>
-                    </tr>
+                $total_pur_vouch = 0;
 
-                <?php 
+                foreach ($sales_order->purchase_vouchers as $pur_vouch) {
+
+                    // Sum ONLY matching sales order vouchers
+                    if ($pur_vouch->pvp_sales_order == $sales_order->so_reffer_no) {
+                        $total_pur_vouch += $pur_vouch->pvp_amount;
+                    }
+
+                    // if you still need expenses
                     $expenses1 += $pur_vouch->pv_total;
                 }
+            ?>
+                <!-- Show ONLY the total -->
+                <tr style="background: unset; border-bottom: hidden !important;" class="tr_height_eq">
+                    <td style="width:100px" class="text-end">
+                        <?php echo format_currency($total_pur_vouch); ?>
+                    </td>
+                </tr>
+            <?php
             }
+            /**/
 
             /* PURCHASE RETURN */
             if(!empty($sales_order->purchase_return_prod)){
