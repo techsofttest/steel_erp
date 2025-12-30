@@ -78,7 +78,7 @@ class ProFormaInvoice extends BaseController
               'pf_date'         => date('d-M-Y',strtotime($record->pf_date)),
               'pf_customer'     => $record->cc_customer_name,
               'pf_sales_order'  => $record->so_reffer_no,
-              'pf_total_amount' => format_currency($record->pf_total_amount),
+              'pf_total_amount' => format_currency($record->pf_current_claim_value),
               'action'          => $action,
            );
            $i++; 
