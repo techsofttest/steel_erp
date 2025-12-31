@@ -228,43 +228,53 @@ class MRN_PVReport extends BaseController
 
         $new_order = [];
 
-        foreach ($data['purchase_order'] as $orders) {
+       foreach ($data['purchase_order'] as $orders) {
 
-            $pv_join = [
-                [
-                    'table' => 'pro_purchase_voucher',
-                    'pk'    => 'pv_id',
-                    'fk'    => 'pvp_reffer_id',
-                ],
-            ];
+    $pv_join = [
+        [
+            'table' => 'pro_purchase_voucher',
+            'pk'    => 'pv_id',
+            'fk'    => 'pvp_reffer_id',
+        ],
+    ];
 
-            $mrns = $this->common_model->FetchWhereJoin(
-                'pro_purchase_voucher_prod',
-                ['pvp_mat_rec_id' => $orders->mrn_id],
-                $pv_join
-            );
+    $mrns = $this->common_model->FetchWhereJoin(
+        'pro_purchase_voucher_prod',
+        ['pvp_mat_rec_id' => $orders->mrn_id],
+        $pv_join
+    );
 
-            // Merge MRN data INTO EACH product_orders item
-            if (!empty($mrns) && !empty($orders->product_orders)) {
+    // Index PVP rows by MRN product ID for fast lookup
+    $pvpMap = [];
+    foreach ($mrns as $pvp) {
+        $pvpMap[$pvp->pvp_mat_rec_note_prod_id] = $pvp;
+    }
 
-                foreach ($orders->product_orders as $index => $product) {
+    // Merge ONLY matching PVP data
+    if (!empty($orders->product_orders)) {
+        // echo '<pre>';
+        // print_r($orders->product_orders);
+        foreach ($orders->product_orders as $i => $product) {
 
-                    foreach ($mrns as $mrn) {
-                        foreach ($mrn as $key => $value) {
+            $prodId = $product->rnp_id;
 
-                            // Avoid overwriting existing product keys
-                            if (!property_exists($product, $key)) {
-                                $product->$key = $value;
-                            }
-                        }
+            if (isset($pvpMap[$prodId])) {
+                foreach ($pvpMap[$prodId] as $key => $value) {
+                    if (!property_exists($product, $key)) {
+                        $product->$key = $value;
                     }
-
-                    $orders->product_orders[$index] = $product;
                 }
             }
-            $new_order[] = $orders;
+
+            $orders->product_orders[$i] = $product;
         }
-        
+    }
+
+    $new_order[] = $orders;
+}
+
+$data['purchase_order'] = $new_order;
+
 
 
         $data['purchase_order'] = $new_order;
@@ -296,6 +306,7 @@ class MRN_PVReport extends BaseController
         }
 
         // echo '<pre>';
+
         // print_r($data['purchase_order']);
         // exit;
 

@@ -161,7 +161,6 @@ class DepreciationCalculation extends BaseController
         return view('procurement/pro-module', $data);
     }
 
-
     // add account head
     public function Add()
     {
@@ -186,7 +185,7 @@ class DepreciationCalculation extends BaseController
                 'dpcd_asset_id' => $this->request->getPost('dpcd_asset_id')[$i],
                 'dpcd_description' => $this->request->getPost('dpcd_description')[$i],
                 'dpcd_amount' => str_replace(',', '', $this->request->getPost('dpcd_amount')[$i]),
-                'dpcd_depreciation' => str_replace(',', '', $this->request->getPost('dpcd_depreciation')[$i]),
+                'dpcd_depreciation' => $this->request->getPost('dpcd_depreciation')[$i],
                 'dpcd_entitlement' => $this->request->getPost('dpcd_entitlement')[$i],
                 'dpcd_depreciation_amt' => str_replace(',', '', $this->request->getPost('dpcd_depreciation_amt')[$i]),
             ];
@@ -295,9 +294,9 @@ class DepreciationCalculation extends BaseController
                                 <td>' . $j . '</td>
                                 <input type="hidden" name="dpcd_asset_id[]" value="' . $asset->cfs_id . '" class="form-control"  readonly>
                                 <td><input type="text" name="dpcd_description[]" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
-                                <td><input type="text" name="dpcd_acquired_date[]" value="' . $asset->cfs_acquired_date . '" class="form-control"  readonly></td>
+                                <td><input type="text" name="dpcd_acquired_date[]" value="' . date('d-m-Y', strtotime($asset->cfs_acquired_date)) . '" class="form-control"  readonly></td>
                                 <td><input type="text" name="dpcd_amount[]" value="' .  format_currency($fixed_amount) . '" class="form-control"  style="text-align: end;" readonly></td>
-                                <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation) . '%" class="form-control" style="text-align: end;"  readonly></td>
+                                <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation_percent) . '%" class="form-control" style="text-align: end;"  readonly></td>
                                 <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control" style="text-align: end;"  readonly></td>
                                 <td><input type="text" name="dpcd_depreciation_amt[]" value="' .  format_currency($depreciation_amount) . '" class="form-control" style="text-align: end;" readonly></td>
                             </tr>';
@@ -622,7 +621,7 @@ class DepreciationCalculation extends BaseController
             $dep_det .= '<tr>
                                  <td>' . $j . '</td>
                                  <td><input type="text" name="" value="' . $det->dpcd_description . '" class="form-control"  readonly></td>
-                                 <td><input type="text" name="" value="' . $det->dpcd_acquired_date . '" class="form-control"  readonly></td>
+                                 <td><input type="text" name="" value="' . date('d-m-Y', strtotime($det->dpcd_acquired_date)) . '" class="form-control"  readonly></td>
                                  <td><input type="text" name="" value="' . $det->dpcd_amount . '" class="form-control"  readonly></td>
                                  <td><input type="text" name="" value="' . $det->dpcd_depreciation . '%" class="form-control"  readonly></td>
                                  <td><input type="text" name="" value="' . $det->dpcd_entitlement . '" class="form-control"  readonly></td>

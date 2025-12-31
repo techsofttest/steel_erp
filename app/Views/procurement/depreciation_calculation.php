@@ -2521,7 +2521,7 @@
                             $('.view_currentbalance').val(data.balance_amt);
                             $('.view_debit_account_select').val(data.debit_account).trigger('change');
                             $('.view_credit_account_select').val(data.credit_account).trigger('change');
-                            $('.view_depriciation_input').val(data.depreciation);
+                            $('.view_depriciation_input').val(data.depreciation+"%");
 
                             if (data.depreciation_det != '') {
                                 $('.view-assets-body').html(data.depreciation_det)
@@ -2589,7 +2589,7 @@
                                 $('.edit_currentbalance').val(data.balance_amt);
                                 $('.edit_debit_account_select').val(data.debit_account).trigger('change');
                                 $('.edit_credit_account_select').val(data.credit_account).trigger('change');
-                                $('.edit_depriciation_input').val(data.depreciation);
+                                $('.edit_depriciation_input').val(data.depreciation+"%");
 
                                 $('.edit_debit_account_select').prop('disabled', true).trigger('change');
                                 $('.edit_credit_account_select').prop('disabled', true).trigger('change');
