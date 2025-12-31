@@ -389,52 +389,49 @@
                                                                                     <?php echo format_currency(($orders->pop_amount ?? 0));
                                                                                     $po_amount += $orders->pop_amount;
                                                                                     $po_amt = $orders->pop_amount;
-
                                                                                     $l_po_total += $orders->pop_amount; ?><br>
                                                                                 </td>
-
                                                                             </tr>
-
-
                                                                         <?php   } ?>
                                                                     </table>
                                                                 </td>
-                                                                <?php if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {  ?>
+                                                                <?php if (isset($pur_order->vouchers) && is_array($pur_order->vouchers)) {  ?>
                                                                     <td colspan="1" align="left" class="p-0">
                                                                         <table>
+                                                                            <tr style="background: unset;border-bottom: hidden !important;">
                                                                             <?php $voc_sum = 0;
 
-                                                                            foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                                            foreach ($pur_order->vouchers as $orders) { ?>
+                                                                                                                      
+                                                                                <!-- <td> -->
+                                                                                        <?php 
+                                                                                        // echo format_currency($orders->pvp_amount ?? 0);
+                                                                                         $pv_amount += $orders->pv_total;
+                                                                                        // $voc_sum += $orders->pvp_amount;
+                                                                                        // $l_pv_total += $orders->pvp_amount;
 
-
-                                            
-
-
-                                                                                    <td class="text-end" style="width:80px">
-                                                                                        <?php echo format_currency($orders->pvp_amount ?? 0);
-                                                                                        $pv_amount += $orders->pvp_amount;
-                                                                                        $voc_sum += $orders->pvp_amount;
-                                                                                        $l_pv_total += $orders->pvp_amount; ?> </td>
-
-                                                                                </tr>
+                                                                                        $voc_sum += $orders->pv_total;
+                                                                                        $l_pv_total += $orders->pv_total
+                                                                                         ?> 
+                                                                                    <!-- </td>   -->
+                                                                                                                                                                 
                                                                             <?php } ?>
+                                                                              <td class="text-end" style="width:80px">
+                                                                                <?= format_currency($voc_sum) ?>
+                                                                            </td>
+                                                                            </tr>
                                                                         </table>
                                                                     </td>
                                                                 <?php } else { ?>
                                                                     <td></td>
-                                                               
                                                                 <?php  } ?>
-
-
-
-                                                                <?php
-                                                                if (isset($pur_order->voucher_prod) || isset($pur_order->product_orders)) { ?>
+                                                                <?php 
+                                                                if (isset($pur_order->vouchers) || isset($pur_order->product_orders)) { ?>
 
                                                                     <td colspan="1" align="left" class="p-0" style="">
                                                                         <table>
-                                                                            <?php if (isset($pur_order->voucher_prod)) {
-                                                                                $voc_count = count($pur_order->voucher_prod);
+                                                                            <?php if (isset($pur_order->vouchers)) {
+                                                                                $voc_count = count($pur_order->vouchers);
                                                                                 $count = count($pur_order->product_orders);
                                                                             } else {
                                                                                 $voc_count = 0; 

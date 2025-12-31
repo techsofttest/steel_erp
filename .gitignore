@@ -133,3 +133,6 @@ app/Config/Database.php
 
 /public/uploads/*
 !/public/uploads/.gitkeep
+
+
+* copy.php

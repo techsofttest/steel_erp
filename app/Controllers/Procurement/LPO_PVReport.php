@@ -233,14 +233,16 @@ class LPO_PVReport extends BaseController
         foreach ($data['purchase_order'] as $orders) {
 
             // Fetch the MRN record
-            $pvs = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_id]);
+            $pvs = $this->common_model->FetchWhere('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_id]);
 
             // print_r($pvs); exit;
             // Check if the record exists before accessing properties
-            if ($pvs && isset($pvs->pv_id) && $pvs->pv_id != '') {
-                $pvps = $this->pro_model->FetchWhereOrder('pro_purchase_voucher_prod', ['pvp_reffer_id' => $pvs->pv_id], 'pvp_id', 'desc');
-                $pvs->voucher_prod = $pvps;
-            }
+            // if ($pvs && isset($pvs->pv_id) && $pvs->pv_id != '') {
+            //     $pvps = $this->pro_model->FetchWhereOrder('pro_purchase_voucher_prod', ['pvp_reffer_id' => $pvs->pv_id], 'pvp_id', 'desc');
+            //     $pvs->voucher_prod = $pvps;
+            // }
+
+            $orders->vouchers = $pvs;
 
             // Merge the $orders and $pvs arrays, then cast the result back to an object
             $new_order[] = (object) array_merge((array)$orders, (array)$pvs);
