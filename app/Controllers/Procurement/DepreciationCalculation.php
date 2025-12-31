@@ -185,10 +185,10 @@ class DepreciationCalculation extends BaseController
                 'dpcd_depreciation_id' => $id,
                 'dpcd_asset_id' => $this->request->getPost('dpcd_asset_id')[$i],
                 'dpcd_description' => $this->request->getPost('dpcd_description')[$i],
-                'dpcd_amount' => $this->request->getPost('dpcd_amount')[$i],
-                'dpcd_depreciation' => $this->request->getPost('dpcd_depreciation')[$i],
+                'dpcd_amount' => str_replace(',', '', $this->request->getPost('dpcd_amount')[$i]),
+                'dpcd_depreciation' => str_replace(',', '', $this->request->getPost('dpcd_depreciation')[$i]),
                 'dpcd_entitlement' => $this->request->getPost('dpcd_entitlement')[$i],
-                'dpcd_depreciation_amt' => $this->request->getPost('dpcd_depreciation_amt')[$i],
+                'dpcd_depreciation_amt' => str_replace(',', '', $this->request->getPost('dpcd_depreciation_amt')[$i]),
             ];
 
             $this->common_model->InsertData('pro_depreciation_det', $det_data);
@@ -672,7 +672,7 @@ class DepreciationCalculation extends BaseController
         $emp_journal = "";
 
         $current_balance = $this->request->getPost( 'current_balance');
-        $dep_amount = floatval($this->request->getPost('depreciation'));
+        $dep_amount = floatval(str_replace(',', '',$this->request->getPost('depreciation')));
 
 
         $dep_amount = $dep_amount -  floatval(str_replace(',', '', $current_balance));

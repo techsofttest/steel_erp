@@ -176,8 +176,6 @@ class LPO_PVReport extends BaseController
         }
 
 
-
-
         $joins = array(
 
             array(
@@ -237,10 +235,9 @@ class LPO_PVReport extends BaseController
             // Fetch the MRN record
             $pvs = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_id]);
 
-// print_r($pvs); exit;
+            // print_r($pvs); exit;
             // Check if the record exists before accessing properties
             if ($pvs && isset($pvs->pv_id) && $pvs->pv_id != '') {
-              
                 $pvps = $this->pro_model->FetchWhereOrder('pro_purchase_voucher_prod', ['pvp_reffer_id' => $pvs->pv_id], 'pvp_id', 'desc');
                 $pvs->voucher_prod = $pvps;
             }
@@ -352,7 +349,7 @@ class LPO_PVReport extends BaseController
         );
 
         // Get Sales Order data from the database based on lpo_ref
-        $sales_orders = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', ['pop_purchase_order' => $lpo_ref], $joins1,'pop_sales_order');
+        $sales_orders = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', ['pop_purchase_order' => $lpo_ref], $joins1, 'pop_sales_order');
 
         echo json_encode($sales_orders); // Return data as JSON response
     }
@@ -437,7 +434,7 @@ class LPO_PVReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->cc_customer_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
+                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
 
 
 
@@ -448,7 +445,8 @@ class LPO_PVReport extends BaseController
                     $pdf_data .= "</tr>";
                 }
 
-                $po_amts = 0 ;$pvp_amts=0;
+                $po_amts = 0;
+                $pvp_amts = 0;
 
                 foreach ($product_details as $prod_del) {
                     if ($q != 1) {
@@ -472,14 +470,14 @@ class LPO_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".($prod_del->so_reffer_no ?? '')."</td>";
+                    $pdf_data .= "'>" . ($prod_del->so_reffer_no ?? '') . "</td>";
 
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
-                        $pdf_data .= "'>".($order_data->po_vendor_ref ?? '')."</td>";
+                        $pdf_data .= "'>" . ($order_data->po_vendor_ref ?? '') . "</td>";
                     } else {
                         $pdf_data .= "'></td>";
                     }
@@ -491,7 +489,7 @@ class LPO_PVReport extends BaseController
                     if ($q == 1) {
 
                         $pdf_data .= $border;
-                        $pdf_data .= "'>".format_currency($order_data->po_amount)."</td>";
+                        $pdf_data .= "'>" . format_currency($order_data->po_amount) . "</td>";
                     } else {
                         $pdf_data .= "'></td>";
                     }
@@ -503,65 +501,65 @@ class LPO_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".($prod_del->product_details ?? '')."</td>";
+                    $pdf_data .= "'>" . ($prod_del->product_details ?? '') . "</td>";
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency($prod_del->pop_qty ?? 0)."</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->pop_qty ?? 0) . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".(format_currency($prod_del->pop_rate ?? 0))."</td>";
+                    $pdf_data .= "'>" . (format_currency($prod_del->pop_rate ?? 0)) . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".(format_currency($prod_del->pop_discount ?? 0))."</td>";
+                    $pdf_data .= "'>" . (format_currency($prod_del->pop_discount ?? 0)) . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency($prod_del->pop_amount ?? 0)."</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->pop_amount ?? 0) . "</td>";
                     $pop_amt += $prod_del->pop_amount ?? 0;
-                    
+
                     $po_amts += $prod_del->pop_amount ?? 0;
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
+                    // $pdf_data .= "<td style='";
+                    // if ($q == 1) {
 
-                        $pdf_data .= $border;
-                        $pdf_data .= "'>" . ($order_data->pv_vendor_inv ?? '') . "</td>";
-                    } else {
-                        $pdf_data .= "'></td>";
-                    }
-
-
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency($prod_del->pvp_qty ?? 0) . "</td>";
+                    //     $pdf_data .= $border;
+                    //     $pdf_data .= "'>" . ($order_data->pv_vendor_inv ?? '') . "</td>";
+                    // } else {
+                    //     $pdf_data .= "'></td>";
+                    // }
 
 
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
 
-                        $pdf_data .= $border;
-                    }
+                    // $pdf_data .= "<td style='";
+                    // if ($q == 1) {
 
-                    $pdf_data .= "'>" . format_currency(($prod_del->pvp_rate ?? 0 )) . "</td>";
+                    //     $pdf_data .= $border;
+                    // }
+                    // $pdf_data .= "'>" . format_currency($prod_del->pvp_qty ?? 0) . "</td>";
+
+
+                    // $pdf_data .= "<td style='text-align:right;";
+                    // if ($q == 1) {
+
+                    //     $pdf_data .= $border;
+                    // }
+
+                    // $pdf_data .= "'>" . format_currency(($prod_del->pvp_rate ?? 0)) . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
@@ -570,7 +568,7 @@ class LPO_PVReport extends BaseController
                     }
                     $pdf_data .= "'>" . (format_currency($prod_del->pvp_amount ?? 0)) . "</td>";
                     $rnp_amt += $prod_del->pvp_amount ?? 0;
-                    
+
                     $pvp_amts +=  $prod_del->pvp_amount ?? 0;
 
 
@@ -580,38 +578,38 @@ class LPO_PVReport extends BaseController
                     //     $pdf_data .= $border;
                     // }
                     // $pdf_data .= "'>" . (format_currency(($po_amts - $pvp_amts))) . "</td>";
-                     
+
 
                     // 
 
-                    if ( isset($product_details)) {
+                    if (isset($product_details)) {
                         if ($q == count($product_details)) {
-                        $pdf_data .= "<td colspan='1' align='left' class='p-0' style='border-bottom: 2px solid;'><table>";
-                        }else{
+                            $pdf_data .= "<td colspan='1' align='left' class='p-0' style='border-bottom: 2px solid;'><table>";
+                        } else {
                             $pdf_data .= "<td colspan='1' align='left' class='p-0' style='border-bottom: 2px;'><table>";
                         }
-                                          
+
                         // Loop through both arrays to calculate the difference
-                       
-                            $pop_amount = $prod_del->pop_amount ?? 0;
-                            $pvp_amount = $prod_del->pvp_amount ?? 0;
-                            $difference = $pop_amount - $pvp_amount;
-                            
-                            // Format each row as a new table row within $pdf_data
-                            $pdf_data .= "<tr style='background: unset; border-bottom: hidden !important;'>
+
+                        $pop_amount = $prod_del->pop_amount ?? 0;
+                        $pvp_amount = $prod_del->pvp_amount ?? 0;
+                        $difference = $pop_amount - $pvp_amount;
+
+                        // Format each row as a new table row within $pdf_data
+                        $pdf_data .= "<tr style='background: unset; border-bottom: hidden !important;'>
                                             <td class='text-end' style='width:100px; text-align:right;'>" . format_currency($difference) . "</td>
                                           </tr>";
-                    
-                            $diff_amt += $difference;
-                        
-                    
+
+                        $diff_amt += $difference;
+
+
                         $pdf_data .= "</table></td>";
                     } else {
                         // Display an empty cell if neither array is set
                         $pdf_data .= "<td style='text-align:right; border-bottom: 2px solid;'></td>";
                     }
-                
-                    
+
+
 
 
                     if ($q != 1) {
@@ -621,16 +619,16 @@ class LPO_PVReport extends BaseController
                     $q++;
                 }
 
-               
+
 
 
                 if ($q == 1) {
                     $pdf_data .= "</tr>";
                 }
 
-                
 
-                   
+
+
 
 
                 // $pdf_data .= "<td style='border-top: 2px solid'>".format_currency($po_amts - $pvp_amts)."</td>";
@@ -651,14 +649,14 @@ class LPO_PVReport extends BaseController
 
             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
             $fontDirs = $defaultConfig['fontDir'];
- 
+
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'format' => 'Letter-L', // Custom page size in millimeters
-                'default_font_size' => 9, 
-                'margin_left' => 5, 
+                'default_font_size' => 9,
+                'margin_left' => 5,
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
                 'fontDir' => array_merge($fontDirs, [
@@ -666,13 +664,13 @@ class LPO_PVReport extends BaseController
                 ]),
                 'fontdata' => $fontData + [
                     'bentonsans' => [
-                      
+
                         'R' => 'OpenSans-Regular.ttf',
                         'B' => 'OpenSans-Bold.ttf',
                     ],
                 ],
                 'default_font' => 'bentonsans'
-                
+
             ]);
 
 
@@ -757,7 +755,7 @@ class LPO_PVReport extends BaseController
         
             <th align="left">Vendor</th>
         
-            <th align="left">MRN Ref</th>
+       
         
             <th align="left">Sales Order Ref</th>
 
@@ -775,11 +773,7 @@ class LPO_PVReport extends BaseController
 
             <th align="right">Amount</th>
 
-            <th align="left">Vendor Inv Ref</th>
-
-            <th align="right">Quantity</th>
-        
-            <th align="right">Rate</th>
+     
             
             <th align="right">Amount</th>
 
@@ -794,7 +788,6 @@ class LPO_PVReport extends BaseController
                 <td style="border-top: 2px solid;">Total</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>    
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>               
                 <td style="border-top: 2px solid; text-align:right;">' .  format_currency($po_amt) . '</td>
@@ -803,9 +796,7 @@ class LPO_PVReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid; text-align:right;">' . format_currency($pop_amt) . '</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
+           
                 <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
                 <td style="border-top: 2px solid; text-align:right;">' . format_currency($diff_amt) . '</td>
                 
@@ -1051,24 +1042,25 @@ class LPO_PVReport extends BaseController
 
 
 
-    
-    public function FetchVendors(){
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+    public function FetchVendors()
+    {
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation', 'cc_customer_name', 'asc', $term, $start, $end);
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
-    public function FetchLpoRef(){
+    public function FetchLpoRef()
+    {
 
         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
@@ -1085,18 +1077,17 @@ class LPO_PVReport extends BaseController
                     'table' => 'crm_customer_creation',
                     'pk'    => 'cc_id',
                     'fk'    => 'so_customer',
-                ),*/
-            );
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond,'po_reffer_no',$term, $joins1, 'po_reffer_no');
+                ),*/);
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond, 'po_reffer_no', $term, $joins1, 'po_reffer_no');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
-
     }
 
-    public function FetchSalesOrder(){
+    public function FetchSalesOrder()
+    {
 
-         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
         if ($lpo_ref == "") {
@@ -1107,31 +1098,28 @@ class LPO_PVReport extends BaseController
         } else {
             $cond = array('pop_purchase_order' => $lpo_ref);
             $joins1 = array(
-                 array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'pop_sales_order',
+                ),
             );
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond,'so_reffer_no',$term, $joins1, 'pop_sales_order');
-
-        
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond, 'so_reffer_no', $term, $joins1, 'pop_sales_order');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
-
     }
 
     public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
-       
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
+
         // if($salesorder != ''){
         //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
         //         array(   'table' => 'crm_products',
@@ -1140,13 +1128,11 @@ class LPO_PVReport extends BaseController
         //         )
         //     ));
         // }else{
-             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
         // }
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
-
 }

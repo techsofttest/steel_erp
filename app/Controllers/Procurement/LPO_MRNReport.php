@@ -610,16 +610,16 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . format_currency(($prod_del->rnp_amount ?? 0)) . "</td>";
-                    $rnp_amt += $prod_del->rnp_amount ?? 0;
+                    $pdf_data .= "'>" . format_currency(($order_data->rnp_amount ?? 0)) . "</td>";
+                    $rnp_amt += $order_data->rnp_amount ?? 0;
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . format_currency(($prod_del->pop_amount - $prod_del->rnp_amount)) . "</td>";
-                    $diff_amt += $prod_del->pop_amount - $prod_del->rnp_amount;
+                    $pdf_data .= "'>" . format_currency(($order_data->pop_amount - $order_data->rnp_amount)) . "</td>";
+                    $diff_amt += $order_data->pop_amount - $order_data->rnp_amount;
 
                     // 
 
