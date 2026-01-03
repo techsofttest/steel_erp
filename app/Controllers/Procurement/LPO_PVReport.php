@@ -556,17 +556,17 @@ class LPO_PVReport extends BaseController
                     <th align="center" width="4%">Sl</th>
                     <th align="center" width="7%">Date</th>
                     <th align="center" width="8%">PO Ref</th>
-                    <th align="left"   width="15%">Vendor</th>
+                    <th align="left"   width="12%">Vendor</th>
                     <th align="center" width="7%">SO Ref</th>
                     <th align="center" width="7%">Ven. Inv</th>
-                    <th align="right"  width="6%">Amt<br>(PO)</th>
-                    <th align="left"   width="16%">Product</th>
+                    <th align="right"  width="7%">Amt<br>(PO)</th>
+                    <th align="left"   width="15%">Product</th>
                     <th align="center" width="4%">Qty</th>
                     <th align="right"  width="5%">Rate</th>
                     <th align="right"  width="5%">Disc</th>
-                    <th align="right"  width="6%">Amt<br>(Prod)</th>
-                    <th align="right"  width="6%">Amt<br>(PV)</th>
-                    <th align="right"  width="6%">Balance</th>
+                    <th align="right"  width="7%">Amt<br>(Prod)</th>
+                    <th align="right"  width="7%">Amt<br>(PV)</th>
+                    <th align="right"  width="7%">Balance</th>
                 </tr>
             </thead>
             <tbody>
