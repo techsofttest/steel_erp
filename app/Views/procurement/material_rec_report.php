@@ -205,6 +205,15 @@
                                                                                 </td>
                                                                             </tr>
 
+                                                                            <tr>
+                                                                                <td style="width: 30%;" class="center_padding">Lpo Ref</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref">
+                                                                                        <option value="" selected disabled>Select Lpo ref</option>
+                                                                                    </select>
+                                                                                </td>
+                                                                            </tr>
+
 
                                                                             <tr>
                                                                                 <td style="width: 30%;"
@@ -236,7 +245,7 @@
                                                                                         class="form-select product_clz"
                                                                                         value="" name="product">
                                                                                         <option value="" selected
-                                                                                            disabled>Select Porduct
+                                                                                            disabled>Select Product
                                                                                         </option>
                                                                                         <?php foreach ($products as $product) { ?>
                                                                                             <option
@@ -296,191 +305,191 @@
 
 
                         <!--datatable section start-->
-<?php if (!empty($_GET)) { ?>   
-                        <div class="row">
-                            <div class="col-lg-12" style="padding: 0px;">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"
-                                            style="text-align: center;font-weight: 600;color: black; margin-right:-16%">
-                                            Material Received Note Report</h4>
+                        <?php if (!empty($_GET)) { ?>
+                            <div class="row">
+                                <div class="col-lg-12" style="padding: 0px;">
+                                    <div class="card">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1"
+                                                style="text-align: center;font-weight: 600;color: black; margin-right:-16%">
+                                                Material Received Note Report</h4>
 
-                                        <form method="POST" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button type="submit" class="pdf_button report_button">PDF</button>
-                                        </form>
-
-
-                                        <button class="excel_button report_button" type="submit">Excel</button>
+                                            <form method="POST" target="_blank">
+                                                <input type="hidden" name="pdf" value="1">
+                                                <button type="submit" class="pdf_button report_button">PDF</button>
+                                            </form>
 
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
+                                            <button class="excel_button report_button" type="submit">Excel</button>
 
-                                        <!-- <form method="POST" action="" target="_blank">
+
+                                            <form method="POST" action="" target="_blank">
+                                                <input type="hidden" name="pdf" value="1">
+                                                <button class="print_button report_button" type="submit">Print</button>
+                                            </form>
+
+                                            <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
-                                        <button class="email_button report_button" type="submit"
-                                            id="email_button">Email</button>
-                                        <!-- </form> -->
+                                            <button class="email_button report_button" type="submit"
+                                                id="email_button">Email</button>
+                                            <!-- </form> -->
 
-                                        <button type="button" data-bs-toggle="modal" id="clear_data"
-                                            data-bs-target="#SalesQuotReport"
-                                            class="btn btn-primary py-1 search-btn">Search</button>
-                                    </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style=" overflow:scroll">
-                                        <table style="table-layout:fixed;" id="DataTable"
-                                            class="table table-bordered table-striped delTable display dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th class="no-sort text-center"
-                                                        style="white-space: nowrap;width:60px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date
-                                                    </th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">MRN
-                                                        Ref</th>
-                                                    <th class="" style="white-space: nowrap;width:300px">
-                                                        Vendor</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">
-                                                        Purchase Order</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">
-                                                        Vendor DN Ref</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount
-                                                    </th>
-                                                    <th style="white-space: nowrap;width:500px">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">
-                                                        Quantity
-                                                    </th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate
-                                                    </th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Discount
-                                                    </th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody class="tbody_data">
-                                                <?php
-                                                if (!empty($material_requesition)) {
-                                                    $i = 1;
-                                                    $total = $mr_total = 0;
-                                                    foreach ($material_requesition as $material_req) { ?>
-
-                                                        <tr>
-
-                                                            <td class="text-center" style="white-space: nowrap;width:60px">
-                                                                <?php echo $i; ?>
-                                                            </td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px">
-                                                                <?php echo date('d-M-Y', strtotime($material_req->mrn_date)); ?>
-                                                            </td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                <a href="<?php echo base_url() . 'Procurement/MaterialReceivedNote?view_so=' . $material_req->mrn_id; ?>"
-                                                                    target="_blank"><?php echo $material_req->mrn_reffer; ?></a>
-                                                            </td>
-
-                                                            <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
-                                                                echo $material_req->mrn_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
-                                                            } ?>
-                                                            </td>
-
-                                                            <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                <a href="<?php echo base_url() . 'Procurement/PurchaseOrder?view_so=' . $material_req->po_id; ?>"
-                                                                    target="_blank"> <?php echo $material_req->po_reffer_no; ?>
-                                                            </td>
-
-                                                            <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                <?php echo $material_req->mrn_delivery_note; ?>
-                                                            </td>
-
-                                                            <td colspan="6" align="left" class="p-0">
-                                                                <table class="nested-table">
-                                                                    <?php $tot_amt = 0;
-                                                                    $k = 0;
-                                                                    foreach ($material_req->product_orders as $orders) {
-                                                                        $k++; ?>
-
-                                                                        <tr
-                                                                            style="background: unset;border-bottom: hidden !important;">
-                                                                            <td class="text-end rotate"
-                                                                                style="white-space: nowrap;width:80px; vertical-align: top;">
-                                                                                <?php if ($k == 1) {
-                                                                                    $tot_amt = 0;
-                                                                                    foreach ($material_req->product_orders as $ord) { ?>
-                                                                                        <?php $tot_amt += $ord->rnp_amount; ?>
-                                                                                    <?php }
-                                                                                    echo format_currency($tot_amt);
-                                                                                    $total += $tot_amt;
-                                                                                } ?>
-                                                                            </td>
-
-                                                                            <td class="rotate" style="width:500px">
-                                                                                <?php echo $orders->rnp_product_desc; ?><br>
-                                                                            </td>
-                                                                            <td class="text-center rotate"
-                                                                                style="white-space: nowrap;width:80px">
-                                                                                <?php echo format_currency($orders->rnp_current_delivery); ?><br>
-                                                                            </td>
-
-                                                                            <td class="text-end rotate"
-                                                                                style="white-space: nowrap;width:80px">
-                                                                                <?php echo format_currency($orders->pop_rate); ?><br>
-                                                                            </td>
-
-                                                                            <td class="text-end rotate"
-                                                                                style="white-space: nowrap;width:80px">
-                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?>%<br>
-                                                                            </td>
-
-                                                                            <td class="text-end rotate"
-                                                                                style="white-space: nowrap;width:80px">
-                                                                                <?php echo format_currency($orders->rnp_amount);
-                                                                                $mr_total += $orders->rnp_amount ?><br>
-                                                                            </td>
-
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                </table>
-                                                            </td>
-
-                                                        </tr>
-                                                        <?php $i++;
-                                                    } ?>
-
+                                            <button type="button" data-bs-toggle="modal" id="clear_data"
+                                                data-bs-target="#SalesQuotReport"
+                                                class="btn btn-primary py-1 search-btn">Search</button>
+                                        </div><!-- end card header -->
+                                        <div class="card-body table-responsive divcontainer" style=" overflow:scroll">
+                                            <table style="table-layout:fixed;" id="DataTable"
+                                                class="table table-bordered table-striped delTable display dataTable">
+                                                <thead>
                                                     <tr>
-                                                        <th style="white-space: nowrap;width:40px"></th>
-                                                        <th style="white-space: nowrap;width:70px"></th>
-                                                        <th style="white-space: nowrap;width:100px"></th>
-                                                        <th style="white-space: nowrap;width:300px"></th>
-                                                        <th style="white-space: nowrap;width:100px"></th>
-                                                        <th style="white-space: nowrap;width:100px"></th>
-                                                        <th class="text-end" style="white-space: nowrap;width:100px">
-                                                            <?php echo format_currency($total); ?>
+                                                        <th class="no-sort text-center"
+                                                            style="white-space: nowrap;width:60px">Sl no</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:70px">Date
                                                         </th>
-                                                        <th style="white-space: nowrap;width:400px"></th>
-                                                        <th style="white-space: nowrap;width:70px"></th>
-                                                        <th style="white-space: nowrap;width:70px"></th>
-                                                        <th style="white-space: nowrap;width:70px"></th>
-                                                        <th class="text-end" style="white-space: nowrap;width:100px">
-                                                            <?php echo format_currency($mr_total); ?>
+                                                        <th class="text-center" style="white-space: nowrap;width:100px">MRN
+                                                            Ref</th>
+                                                        <th class="" style="white-space: nowrap;width:300px">
+                                                            Vendor</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:100px">
+                                                            Purchase Order</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:100px">
+                                                            Vendor DN Ref</th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Amount
+                                                        </th>
+                                                        <th style="white-space: nowrap;width:500px">Product</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:80px">
+                                                            Quantity
+                                                        </th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Rate
+                                                        </th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Discount
+                                                        </th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Amount
                                                         </th>
                                                     </tr>
+                                                </thead>
+
+                                                <tbody class="tbody_data">
+                                                    <?php
+                                                    if (!empty($material_requesition)) {
+                                                        $i = 1;
+                                                        $total = $mr_total = 0;
+                                                        foreach ($material_requesition as $material_req) { ?>
+
+                                                            <tr>
+
+                                                                <td class="text-center" style="white-space: nowrap;width:60px">
+                                                                    <?php echo $i; ?>
+                                                                </td>
+                                                                <td class="text-center" style="white-space: nowrap;width:70px">
+                                                                    <?php echo date('d-M-Y', strtotime($material_req->mrn_date)); ?>
+                                                                </td>
+                                                                <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                    <a href="<?php echo base_url() . 'Procurement/MaterialReceivedNote?view_so=' . $material_req->mrn_id; ?>"
+                                                                        target="_blank"><?php echo $material_req->mrn_reffer; ?></a>
+                                                                </td>
+
+                                                                <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
+                                                                                                        echo $material_req->mrn_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
+                                                                                                    } ?>
+                                                                </td>
+
+                                                                <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                    <a href="<?php echo base_url() . 'Procurement/PurchaseOrder?view_so=' . $material_req->po_id; ?>"
+                                                                        target="_blank"> <?php echo $material_req->po_reffer_no; ?>
+                                                                </td>
+
+                                                                <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                    <?php echo $material_req->mrn_delivery_note; ?>
+                                                                </td>
+
+                                                                <td colspan="6" align="left" class="p-0">
+                                                                    <table class="nested-table">
+                                                                        <?php $tot_amt = 0;
+                                                                        $k = 0;
+                                                                        foreach ($material_req->product_orders as $orders) {
+                                                                            $k++; ?>
+
+                                                                            <tr
+                                                                                style="background: unset;border-bottom: hidden !important;">
+                                                                                <td class="text-end rotate"
+                                                                                    style="white-space: nowrap;width:80px; vertical-align: top;">
+                                                                                    <?php if ($k == 1) {
+                                                                                        $tot_amt = 0;
+                                                                                        foreach ($material_req->product_orders as $ord) { ?>
+                                                                                            <?php $tot_amt += $ord->rnp_amount; ?>
+                                                                                    <?php }
+                                                                                        echo format_currency($tot_amt);
+                                                                                        $total += $tot_amt;
+                                                                                    } ?>
+                                                                                </td>
+
+                                                                                <td class="rotate" style="width:500px">
+                                                                                    <?php echo $orders->rnp_product_desc; ?><br>
+                                                                                </td>
+                                                                                <td class="text-center rotate"
+                                                                                    style="white-space: nowrap;width:80px">
+                                                                                    <?php echo format_currency($orders->rnp_current_delivery); ?><br>
+                                                                                </td>
+
+                                                                                <td class="text-end rotate"
+                                                                                    style="white-space: nowrap;width:80px">
+                                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
+                                                                                </td>
+
+                                                                                <td class="text-end rotate"
+                                                                                    style="white-space: nowrap;width:80px">
+                                                                                    <?php echo format_currency($orders->pop_discount ?? 0); ?>%<br>
+                                                                                </td>
+
+                                                                                <td class="text-end rotate"
+                                                                                    style="white-space: nowrap;width:80px">
+                                                                                    <?php echo format_currency($orders->rnp_amount);
+                                                                                    $mr_total += $orders->rnp_amount ?><br>
+                                                                                </td>
+
+                                                                            </tr>
+                                                                        <?php } ?>
+                                                                    </table>
+                                                                </td>
+
+                                                            </tr>
+                                                        <?php $i++;
+                                                        } ?>
+
+                                                        <tr>
+                                                            <th style="white-space: nowrap;width:40px"></th>
+                                                            <th style="white-space: nowrap;width:70px"></th>
+                                                            <th style="white-space: nowrap;width:100px"></th>
+                                                            <th style="white-space: nowrap;width:300px"></th>
+                                                            <th style="white-space: nowrap;width:100px"></th>
+                                                            <th style="white-space: nowrap;width:100px"></th>
+                                                            <th class="text-end" style="white-space: nowrap;width:100px">
+                                                                <?php echo format_currency($total); ?>
+                                                            </th>
+                                                            <th style="white-space: nowrap;width:400px"></th>
+                                                            <th style="white-space: nowrap;width:70px"></th>
+                                                            <th style="white-space: nowrap;width:70px"></th>
+                                                            <th style="white-space: nowrap;width:70px"></th>
+                                                            <th class="text-end" style="white-space: nowrap;width:100px">
+                                                                <?php echo format_currency($mr_total); ?>
+                                                            </th>
+                                                        </tr>
 
                                                     <?php
-                                                } ?>
+                                                    } ?>
 
-                                            </tbody>
+                                                </tbody>
 
-                                        </table>
+                                            </table>
 
+                                        </div>
                                     </div>
                                 </div>
+                                <!--end col-->
                             </div>
-                            <!--end col-->
-                        </div>
-<?php } ?>
+                        <?php } ?>
                         <!---datatable section end-->
 
                     </div>
@@ -515,12 +524,12 @@
 <script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
+    document.addEventListener("DOMContentLoaded", function(event) {
 
         /*modal open start*/
         <?php if (empty($_GET)): ?>
 
-            $(window).on('load', function () {
+            $(window).on('load', function() {
 
                 $('#MaterialReceivedReport').modal('show');
             });
@@ -543,16 +552,16 @@
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.so_id,
                                 text: item.so_reffer_no
@@ -570,7 +579,7 @@
 
         /*fetch  sales executive by  customer*/
 
-        $("body").on('change', '.customer_clz', function () {
+        $("body").on('change', '.customer_clz', function() {
 
 
             var id = $(this).val();
@@ -586,7 +595,7 @@
                     ID: id
                 },
 
-                success: function (data) {
+                success: function(data) {
                     var data = JSON.parse(data);
 
                     //console.log(data.prod_details);
@@ -604,7 +613,7 @@
 
         /*form submit start*/
 
-        $(".submit_btn").on('click', function () {
+        $(".submit_btn").on('click', function() {
 
             /* $('#SalesQuotReport').modal("hide");
 
@@ -623,7 +632,7 @@
         /*#####*/
 
 
-        $(".search-btn").on('click', function () {
+        $(".search-btn").on('click', function() {
 
             $('#MaterialReceivedReport').modal('show');
         });
@@ -631,9 +640,9 @@
 
 
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $(".excel_button").click(
-                function () {
+                function() {
                     tableToExcel('DataTable', 'Material Recieved Note Report', 'Material Recieved Note Report');
                 }
             );
@@ -670,11 +679,11 @@
 
             var uri = 'data:application/vnd.ms-excel;base64,',
                 templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
-                base64Conversion = function (s) {
+                base64Conversion = function(s) {
                     return window.btoa(unescape(encodeURIComponent(s)))
                 },
-                formatExcelData = function (s, c) {
-                    return s.replace(/{(\w+)}/g, function (m, p) {
+                formatExcelData = function(s, c) {
+                    return s.replace(/{(\w+)}/g, function(m, p) {
                         return c[p];
                     })
                 }
@@ -740,19 +749,19 @@
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.cc_id,
-                                text: $.trim(item.cc_customer_name)  // <--- trim whitespace here
+                                text: $.trim(item.cc_customer_name) // <--- trim whitespace here
                             };
                         }),
                         pagination: {
@@ -764,6 +773,46 @@
             }
 
         })
+
+
+        $(".lpo_ref").select2({
+            placeholder: "Select LPO Ref",
+            theme: "default form-control- customer_width",
+            dropdownParent: $('#MaterialReceivedReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/MaterialRecReport/FetchLpoRef",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function(params) {
+                    return {
+                        vendor_id: $('.vendor_dropdown').val(),
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.po_id,
+                                text: $.trim(item.po_reffer_no) // <--- trim whitespace here
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+
+            }
+
+        })
+
+
 
 
         /*product droup drown search*/
@@ -778,20 +827,20 @@
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
-                        vendor_id: $('.customer_clz').val(),
+                        lpo_ref: $('.lpo_ref').val(),
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.so_reffer_no,
-                                text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
+                                text: $.trim(item.so_reffer_no) // <--- trim whitespace here
                             };
                         }),
                         pagination: {
@@ -803,6 +852,7 @@
             }
 
         })
+
 
         /* product dropdown search */
         $(".product_clz").select2({
@@ -817,18 +867,21 @@
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                         salesorder: $('.sales_order').val() // ✅ send inside data function
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
-                            return { id: item.product_id, text: item.product_details };
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.product_id,
+                                text: item.product_details
+                            };
                         }),
                         pagination: {
                             more: (page * 10) <= data.total_count
@@ -845,7 +898,7 @@
 
 <script>
     // Close modal when form is submitted
-    document.getElementById('add_form').addEventListener('submit', function (e) {
+    document.getElementById('add_form').addEventListener('submit', function(e) {
         // Close the modal after the form is submitted
         $('#MaterialReceivedReport').modal('hide');
     });
@@ -853,7 +906,7 @@
 
 
 <script>
-    document.getElementById("email_button").addEventListener("click", function () {
+    document.getElementById("email_button").addEventListener("click", function() {
         // Select the table element
         var range = document.createRange();
         range.selectNode(document.getElementById("DataTable"));

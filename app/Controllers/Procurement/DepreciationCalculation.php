@@ -590,9 +590,7 @@ class DepreciationCalculation extends BaseController
     public function View()
     {
 
-
         $depreciation_calc = $this->common_model->SingleRow('pro_depreciation_calculation', array('dpc_id' => $this->request->getPost('ID')));
-
 
         $data['account_head']   = $depreciation_calc->dpc_account_head;
 
@@ -605,7 +603,6 @@ class DepreciationCalculation extends BaseController
         $data['credit_account'] = $depreciation_calc->dpc_credit_account;
 
         $data['depreciation'] = $depreciation_calc->dpc_depreciation;
-
 
 
         // Fetch account head related charts of accounts

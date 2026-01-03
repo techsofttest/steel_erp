@@ -7,28 +7,28 @@ use App\Controllers\BaseController;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class MaterialRecReport extends BaseController
 {
-    
-    
+
+
 
 
 
     //view page
     public function index()
-    {   
-        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
-        
+    {
+        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation', 'cc_id', 'desc');
+
         $cond = array('so_deliver_flag' => 0);
 
-        $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+        $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
 
-        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-        $data['content'] = view('procurement/material_rec_report',$data);
+        $data['content'] = view('procurement/material_rec_report', $data);
 
-        return view('procurement/report-module',$data);
-
+        return view('procurement/report-module', $data);
     }
 
 
@@ -36,19 +36,18 @@ class MaterialRecReport extends BaseController
     public function FetchTypes()
     {
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-    
-        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders','so_reffer_no','asc',$term,$start,$end);
-    
 
-        $data['total_count'] =count($data['result']);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+
+
+        $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
 
@@ -56,7 +55,7 @@ class MaterialRecReport extends BaseController
     public function FetchData()
     {
         //fetch executive
-        $cond = array('qd_customer'=>$this->request->getPost('ID'));
+        $cond = array('qd_customer' => $this->request->getPost('ID'));
 
         $joins = array(
             array(
@@ -64,31 +63,29 @@ class MaterialRecReport extends BaseController
                 'pk'    => 'se_id',
                 'fk'    => 'qd_sales_executive',
             ),
-           
+
 
         );
 
 
-        $quotation_details = $this->common_model->FetchWhereUniqueJoin('crm_quotation_details',$cond,$joins,'se_id');
-       
+        $quotation_details = $this->common_model->FetchWhereUniqueJoin('crm_quotation_details', $cond, $joins, 'se_id');
 
-        $data['quot_det'] = "<option value='' selected disabled>Select Sales Executive</option>"; 
 
-        foreach($quotation_details as $quot_det)
-        {
-            $data['quot_det'] .='<option value='.$quot_det->se_id.'>'.$quot_det->se_name.'</option>';
-            
+        $data['quot_det'] = "<option value='' selected disabled>Select Sales Executive</option>";
+
+        foreach ($quotation_details as $quot_det) {
+            $data['quot_det'] .= '<option value=' . $quot_det->se_id . '>' . $quot_det->se_name . '</option>';
         }
 
         //fetch product
 
-        $product_data = $this->common_model->FetchProductByCustomer('crm_quotation_details',$this->request->getPost('ID'));
-        
+        $product_data = $this->common_model->FetchProductByCustomer('crm_quotation_details', $this->request->getPost('ID'));
+
         $data['quot_prod'] = "<option value='' selected>Select Product</option>";
         $uniqueProductIds = []; // Array to store unique product IDs
 
 
-        
+
 
         foreach ($product_data as $prod_data) {
             // Check if product_details array is not empty
@@ -110,66 +107,59 @@ class MaterialRecReport extends BaseController
         }
 
         echo json_encode($data);
-
-
     }
 
 
     //fetch data
     public function GetData()
     {
-       
+
         //Filter 
-       
-       
-        if(!empty($_GET['form_date']))
-        {
+
+
+        if (!empty($_GET['form_date'])) {
             $from_date = $_GET['form_date'];
-        }
-        else
-        {
+        } else {
             $from_date = "";
         }
-        
-        
 
-        if(!empty($_GET['to_date']))
-        {
+
+
+        if (!empty($_GET['to_date'])) {
             $to_date = $_GET['to_date'];
-        }
-        else
-        {
+        } else {
             $to_date = "";
         }
 
-        if(!empty($_GET['sales_order']))
-        {
-            $data1 = $_GET['sales_order'];
-        }
-        else
-        {
-            $data1 = "";
+
+        if (!empty($_GET['lpo_ref'])) {
+            $data4 = $_GET['lpo_ref'];
+        } else {
+            $data4 = "";
         }
         
-                
-        if(!empty($_GET['product']))
-        {
-            $data2 = $_GET['product'];
+        if (!empty($_GET['sales_order'])) {
+            $data1 = $_GET['sales_order'];
+        } else {
+            $data1 = "";
         }
-        else
-        {
+
+
+        if (!empty($_GET['product'])) {
+            $data2 = $_GET['product'];
+        } else {
             $data2 = "";
         }
 
 
-                if (!empty($_GET['vendor'])) {
+        if (!empty($_GET['vendor'])) {
             $data3 = $_GET['vendor'];
         } else {
             $data3 = "";
         }
 
-        
-            if (!empty($_GET['pending'])) {
+
+        if (!empty($_GET['pending'])) {
             $data6 = $_GET['pending'];
         } else {
             $data6 = "";
@@ -183,10 +173,10 @@ class MaterialRecReport extends BaseController
             $data7 = "";
         }
 
-       
+
 
         $joins = array(
-            
+
             array(
                 'table' => 'pro_material_received_note',
                 'pk'    => 'mrn_id',
@@ -208,15 +198,15 @@ class MaterialRecReport extends BaseController
                 'pk'    => 'po_id',
                 'fk'    => 'rnp_purchase_id',
             ),
-              array(
+            array(
                 'table' => 'pro_purchase_voucher',
                 'pk'    => 'pv_delivery_note',
                 'fk'    => 'rnp_material_received_note',
             ),
 
-         
-            
-           
+
+
+
 
         );
 
@@ -232,17 +222,17 @@ class MaterialRecReport extends BaseController
                 'pk'    => 'pop_id',
                 'fk'    => 'rnp_purchase_prod_id',
             ),
-           
+
         );
 
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
-        
-        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date,'mrn_date',$to_date,'',$data1,'rnp_sales_order',$data2,'mrn_product_desc',$data3,'mrn_vendor_name','','','steel_pro_material_received_note_prod',$joins,'rnp_material_received_note',$joins1);  
-        
+
+        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'rnp_sales_order', $data2, 'mrn_product_desc', $data3, 'mrn_vendor_name', $data4, 'rnp_purchase_id', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
 
 
-        
+
+
         if ($data6 != "" || $data7 != "") {
 
             if ($data6 != "") {
@@ -273,81 +263,67 @@ class MaterialRecReport extends BaseController
 
         //  echo '<pre>';print_r($data['material_requesition']); exit();
 
-        if(!empty($from_date))
-        {
-            $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+        if (!empty($from_date)) {
+            $data['from_dates'] = date('d-M-Y', strtotime($from_date));
+        } else {
+            $data['from_dates'] = "";
         }
-        else
-        {
-            $data['from_dates'] ="";
-        } 
-        
 
-        if(!empty($to_date))
-        {
-            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
-        }
-        else
-        {
+
+        if (!empty($to_date)) {
+            $data['to_dates'] = date('d-M-Y', strtotime($to_date));
+        } else {
             $data['to_dates'] = "";
         }
 
         $cond = array('so_deliver_flag' => 0);
 
-        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation', 'cc_id', 'desc');
 
-        $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+        $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
 
-        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-        if(!empty($_POST['pdf']))
-        {   
-            $this->Pdf($data['material_requesition'],$data['from_dates'],$data['to_dates']);
+        if (!empty($_POST['pdf'])) {
+            $this->Pdf($data['material_requesition'], $data['from_dates'], $data['to_dates']);
         }
-        
-        if(!empty($_POST['excel']))
-        {
+
+        if (!empty($_POST['excel'])) {
             $this->Excel($data['material_requesition']);
         }
 
-        $data['content'] = view('procurement/material_rec_report',$data);
+        $data['content'] = view('procurement/material_rec_report', $data);
 
-        return view('crm/report-module-search',$data);
-
-      
-        
+        return view('crm/report-module-search', $data);
     }
 
 
-    public function Pdf($purchase_order,$from_date,$to_date)
-    {   
+    public function Pdf($purchase_order, $from_date, $to_date)
+    {
         // echo '<pre>'; print_r($purchase_order);exit;
 
-        if(!empty($purchase_order))
-        {   
+        if (!empty($purchase_order)) {
             $pdf_data = "";
 
             $joins1 = array(
-            
+
                 array(
                     'table' => 'crm_products',
                     'pk'    => 'product_id',
                     'fk'    => 'pop_prod_desc',
                 ),
-               
+
             );
 
             $total_amount =  $mrn_tot = 0;
-            foreach($purchase_order as $order_data)
-            {   
-                $q=1;
-                $border="border-top: 2px solid";
+            foreach ($purchase_order as $order_data) {
+                $q = 1;
+                $border = "border-top: 2px solid";
                 $product_details = $order_data->product_orders;
 
                 $mrn_amount = 0;
 
-                foreach($product_details as $prod_del)
-                {
+                foreach ($product_details as $prod_del) {
                     $mrn_amount += $prod_del->rnp_amount;
                 }
                 $mrn_tot += $mrn_amount;
@@ -355,37 +331,36 @@ class MaterialRecReport extends BaseController
 
                 $vendor = $this->common_model->SingleRow('crm_customer_creation', ['cc_id' => $order_data->mrn_vendor_name]);
 
-                $new_date = date('d-m-Y',strtotime($order_data->po_date));
+                $new_date = date('d-m-Y', strtotime($order_data->po_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->cc_customer_name}</td>";
-                
+
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_delivery_note}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid; text-align:right'>".(format_currency($mrn_amount))."</td>";
-                
-                
-                if($q!=1){
-                     
-                    $pdf_data .="</tr>";
-                }
-                foreach($product_details as $prod_del)
-                {
-                    if($q!=1){
+                $pdf_data .= "<td style='border-top: 2px solid; text-align:right'>" . (format_currency($mrn_amount)) . "</td>";
 
-                        $pdf_data .="<tr>";
+
+                if ($q != 1) {
+
+                    $pdf_data .= "</tr>";
+                }
+                foreach ($product_details as $prod_del) {
+                    if ($q != 1) {
+
+                        $pdf_data .= "<tr>";
 
                         $pdf_data .= "<tr><td style=''></td>";
 
                         $pdf_data .= "<td style=''></td>";
 
                         $pdf_data .= "<td style=''></td>";
-                        
+
                         $pdf_data .= "<td style=''></td>";
 
                         $pdf_data .= "<td style=''></td>";
@@ -393,89 +368,83 @@ class MaterialRecReport extends BaseController
                         $pdf_data .= "<td style=''></td>";
                     }
 
-                    
+
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
-                    
+
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>{$prod_del->rnp_product_desc}</td>";
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
-                    
+
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency($prod_del->rnp_current_delivery)."</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->rnp_current_delivery) . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
-                    
+
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".(format_currency($prod_del->pop_rate))."</td>";
+                    $pdf_data .= "'>" . (format_currency($prod_del->pop_rate)) . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
-                    
+
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".(format_currency($prod_del->rnp_discount))."</td>";       
+                    $pdf_data .= "'>" . (format_currency($prod_del->rnp_discount)) . "</td>";
 
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
-                    
+
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".(format_currency($prod_del->rnp_amount))."</td>";                  
+                    $pdf_data .= "'>" . (format_currency($prod_del->rnp_amount)) . "</td>";
 
-                    if($q!=1)
-                    {
-                        $pdf_data .="</tr>";
+                    if ($q != 1) {
+                        $pdf_data .= "</tr>";
                     }
 
                     $q++;
-
-                }
-                
-                if($q==1)
-                {
-                    $pdf_data .="</tr>";
                 }
 
-               // $pdf_data .="</tr>";
-                 
-                
-               
-                
+                if ($q == 1) {
+                    $pdf_data .= "</tr>";
+                }
+
+                // $pdf_data .="</tr>";
+
+
+
+
             }
 
-            if(empty($from_date) && empty($to_date))
-            {
-             
-               $dates = "";
-            }
-            else
-            {
-               $dates = $from_date . " to " . $to_date;
+            if (empty($from_date) && empty($to_date)) {
+
+                $dates = "";
+            } else {
+                $dates = $from_date . " to " . $to_date;
             }
 
-            
+
 
             $title = "SQR";
 
             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
             $fontDirs = $defaultConfig['fontDir'];
- 
+
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'format' => 'Letter-L', // Custom page size in millimeters
-                'default_font_size' => 9, 
-                'margin_left' => 5, 
+                'default_font_size' => 9,
+                'margin_left' => 5,
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
                 'fontDir' => array_merge($fontDirs, [
@@ -483,19 +452,19 @@ class MaterialRecReport extends BaseController
                 ]),
                 'fontdata' => $fontData + [
                     'bentonsans' => [
-                      
+
                         'R' => 'OpenSans-Regular.ttf',
                         'B' => 'OpenSans-Bold.ttf',
                     ],
                 ],
                 'default_font' => 'bentonsans'
-                
+
             ]);
-         
+
 
             $mpdf->SetTitle('Material Received Note Report'); // Set the title
 
-            $html ='
+            $html = '
         
             <style>
             th, td {
@@ -546,7 +515,7 @@ class MaterialRecReport extends BaseController
             
         
             <tr width="100%">
-            <td>Period : '.$dates.'</td>
+            <td>Period : ' . $dates . '</td>
             <td align="right"><h2>Material Recieved Note Report</h2></td>
         
             </tr>
@@ -588,7 +557,7 @@ class MaterialRecReport extends BaseController
             </tr>
 
                
-            '.$pdf_data.'
+            ' . $pdf_data . '
 
             <tr>
                 <td style="border-top: 2px solid;">Total</td>
@@ -596,12 +565,12 @@ class MaterialRecReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;text-align:right;">'.(format_currency($mrn_tot)).'</td>
+                <td style="border-top: 2px solid;text-align:right;">' . (format_currency($mrn_tot)) . '</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;text-align:right;">'.(format_currency($total_amount)).'</td>
+                <td style="border-top: 2px solid;text-align:right;">' . (format_currency($total_amount)) . '</td>
                 
             </tr>    
            
@@ -611,30 +580,27 @@ class MaterialRecReport extends BaseController
 
         
             ';
-        
+
             $footer = '';
-        
-            
+
+
             $mpdf->WriteHTML($html);
-           
-           // $mpdf->SetFooter($footer);
+
+            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
-        
         }
-
-       
     }
 
 
-   
+
     public function Excel($quotation_data)
     {
         // Create a new PhpSpreadsheet object
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        
+
         // Set table columns
         $table_columns = array(
             "Date",
@@ -718,23 +684,23 @@ class MaterialRecReport extends BaseController
         $sheet->getStyle($cellRange)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER); // Center horizontally
         $sheet->getStyle($cellRange)->getAlignment()->setIndent(1); // Increase the indentation
 
-    
+
         $joins1 = array(
-        
+
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
                 'fk'    => 'qpd_product_description',
             ),
-            
-            
+
+
         );
 
         // Populate quotation data
         foreach ($quotation_data as $order_data) {
 
-            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$order_data->qd_id),$joins1);
-            
+            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details', array('qpd_quotation_details' => $order_data->qd_id), $joins1);
+
             $sheet->setCellValue($column . $excel_row, $order_data->qd_date);
             $sheet->setCellValue(++$column . $excel_row, $order_data->qd_reffer_no);
             $sheet->setCellValue(++$column . $excel_row, $order_data->cc_customer_name);
@@ -751,23 +717,20 @@ class MaterialRecReport extends BaseController
             //echo $column;
 
 
-            $j=1;
-            $k =1; 
+            $j = 1;
+            $k = 1;
             //$excel_row++;
             //echo $excel_row;
 
-            foreach($product_details as $prod_del)
-            {   
+            foreach ($product_details as $prod_del) {
 
-                if($j != 1) 
-                { 
-                //$column++;
+                if ($j != 1) {
+                    //$column++;
                 }
 
                 $sheet->setCellValue($column . $excel_row, $prod_del->product_details);
 
                 $j++;
-
             }
 
             /*
@@ -817,14 +780,14 @@ class MaterialRecReport extends BaseController
 
             */
 
-            
+
 
 
             // Increase row height to add vertical space
             //$sheet->getRowDimension($excel_row)->setRowHeight(30); // Change the height value to adjust the vertical space
-            
+
             //$sheet->getColumnDimension($column)->setWidth(20); // Change 20 to your desired width
-            
+
             // Reset column index for the next row
             $column = 'A';
             //$excel_row++; // Move to the next row 
@@ -849,27 +812,26 @@ class MaterialRecReport extends BaseController
 
         // Save the Excel file to output
         $writer->save('php://output');
-
     }
 
 
-    public function FetchVendors(){
+    public function FetchVendors()
+    {
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation', 'cc_customer_name', 'asc', $term, $start, $end);
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
-    public function FetchSalesOrder()
+    public function FetchLpoRef()
     {
         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
@@ -878,32 +840,85 @@ class MaterialRecReport extends BaseController
             $resultCount = 10;
             $end = ($page - 1) * $resultCount;
             $start = $end + $resultCount;
-            $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+            $data['result'] = $this->common_model->FetchAllLimit('pro_purchase_order', 'po_reffer_no', 'asc', $term, $start, $end);
         } else {
-            $cond = array('so_customer' => $vendor_id);
+            $cond = array('po_vendor_name' => $vendor_id);
             $joins1 = array(
                 /*array(
                     'table' => 'crm_customer_creation',
                     'pk'    => 'cc_id',
                     'fk'    => 'so_customer',
-                ),*/
-            );
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('crm_sales_orders', $cond,'so_reffer_no',$term, $joins1, 'so_reffer_no');
+                ),*/);
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond, 'po_reffer_no', $term, $joins1, 'po_reffer_no');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
     }
 
+    public function FetchSalesOrder()
+    {
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
+        if ($lpo_ref == "") {
+            $resultCount = 10;
+            $end = ($page - 1) * $resultCount;
+            $start = $end + $resultCount;
+            $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+        } else {
+            $cond = array('pop_purchase_order' => $lpo_ref);
+            $joins1 = array(
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'pop_sales_order',
+                ),
+            );
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond, 'so_reffer_no', $term, $joins1, 'pop_sales_order');
+        }
+        $data['total_count'] = count($data['result']);
+        return json_encode($data);
+    }
+
+
+
+
+    // public function FetchSalesOrder()
+    // {
+    //     $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+    //     $term = !empty($_GET['term']) ? $_GET['term'] : "";
+    //     $vendor_id = !empty($_GET['vendor_id']) ? $_GET['vendor_id'] : "";
+    //     if ($vendor_id == "") {
+    //         $resultCount = 10;
+    //         $end = ($page - 1) * $resultCount;
+    //         $start = $end + $resultCount;
+    //         $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+    //     } else {
+    //         $cond = array('so_customer' => $vendor_id);
+    //         $joins1 = array(
+    //             /*array(
+    //                 'table' => 'crm_customer_creation',
+    //                 'pk'    => 'cc_id',
+    //                 'fk'    => 'so_customer',
+    //             ),*/
+    //         );
+    //         $data['result'] = $this->pro_model->FetchLikeJoinBy('crm_sales_orders', $cond,'so_reffer_no',$term, $joins1, 'so_reffer_no');
+    //     }
+    //     $data['total_count'] = count($data['result']);
+    //     return json_encode($data);
+    // }
+
     public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
-       
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_POST['term']) ? $_POST['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
+
         // if($salesorder != ''){
         //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
         //         array(   'table' => 'crm_products',
@@ -912,13 +927,11 @@ class MaterialRecReport extends BaseController
         //         )
         //     ));
         // }else{
-             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
         // }
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
-
 }
