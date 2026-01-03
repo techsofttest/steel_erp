@@ -458,365 +458,255 @@ class LPO_MRNReport extends BaseController
 
 
 
-    public function Pdf($purchase_order, $from_date, $to_date)
-    {
-        // echo '<pre>'; print_r($purchase_order);exit;
-
-        if (!empty($purchase_order)) {
-            $pdf_data = "";
-
-            $joins1 = array(
-
-                array(
-                    'table' => 'crm_products',
-                    'pk'    => 'product_id',
-                    'fk'    => 'pop_prod_desc',
-                ),
-
-            );
-
-            $total_amount =  $po_amt = $pop_amt = $rnp_amt = $diff_amt = 0;
-            foreach ($purchase_order as $order_data) {
-                $q = 1;
-                $border = "border-top: 2px solid";
-                $product_details = $order_data->product_orders;
-
-                // $mrn_amount = 0;
-                // 
-                // foreach ($product_details as $prod_del) {
-                //     $mrn_amount += $prod_del->rnp_amount;
-                // }
-                $po_amt += $order_data->po_amount;
-                // $total_amount = $total_amount + $mrn_amount;
-
-                $vendor = $this->common_model->SingleRow('crm_customer_creation', ['cc_id' => $order_data->po_vendor_name]);
-
-                // print_r($vendor);
-                // exit;
-
-                $new_date = date('d-m-Y', strtotime($order_data->po_date));
-
-                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
-
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
-
-                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->cc_customer_name}</td>";
-
-                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->so_reffer_no}</td>";
-
-                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_amount}</td>";
-
-
-
-                if ($q != 1) {
-
-                    $pdf_data .= "</tr>";
-                }
-                foreach ($product_details as $prod_del) {
-                    if ($q != 1) {
-
-                        $pdf_data .= "<tr>";
-
-                        $pdf_data .= "<tr><td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-                    }
-
-
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->so_reffer_no}</td>";
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency($order_data->po_amount) . "</td>";
-
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->product_details}</td>";
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency($prod_del->pop_qty) . "</td>";
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency($prod_del->pop_rate) . "</td>";
-
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency($prod_del->pop_discount) . "</td>";
-
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency($prod_del->pop_amount) . "</td>";
-                    $pop_amt += $prod_del->pop_amount;
-
-
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                        $pdf_data .= "'>{$order_data->mrn_reffer}</td>";
-                    }
-                    $pdf_data .= "'></td>";
-
-
-                    // $pdf_data .= "<td style='text-align:right;";
-                    // if ($q == 1) {
-
-                    //     $pdf_data .= $border;
-                    // }
-                    // $pdf_data .= "'>" . format_currency(($prod_del->rnp_current_delivery ?? 0)) . "</td>";
-
-
-                    // $pdf_data .= "<td style='text-align:right;";
-                    // if ($q == 1) {
-
-                    //     $pdf_data .= $border;
-                    // }
-                    // $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency(($order_data->rnp_amount ?? 0)) . "</td>";
-                    $rnp_amt += $order_data->rnp_amount ?? 0;
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency(($order_data->pop_amount - $order_data->rnp_amount)) . "</td>";
-                    $diff_amt += $order_data->pop_amount - $order_data->rnp_amount;
-
-                    // 
-
-                    if ($q != 1) {
-                        $pdf_data .= "</tr>";
-                    }
-
-                    $q++;
-                }
-
-                if ($q == 1) {
-                    $pdf_data .= "</tr>";
-                }
-
-                // $pdf_data .="</tr>";
-
-
-
-
-            }
-
-            if (empty($from_date) && empty($to_date)) {
-
-                $dates = "";
-            } else {
-                $dates = $from_date . " to " . $to_date;
-            }
-
-
-
-            $title = "SQR";
-
-            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-            $fontDirs = $defaultConfig['fontDir'];
-
-            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-            $fontData = $defaultFontConfig['fontdata'];
-
-            $mpdf = new \Mpdf\Mpdf([
-                'format' => 'Letter-L', // Custom page size in millimeters
-                'default_font_size' => 9,
-                'margin_left' => 5,
-                'margin_right' => 5,
-                'autoPageBreak' => true,  // Enable automatic page breaks
-                'fontDir' => array_merge($fontDirs, [
-                    __DIR__ . '/fonts'
-                ]),
-                'fontdata' => $fontData + [
-                    'bentonsans' => [
-
-                        'R' => 'OpenSans-Regular.ttf',
-                        'B' => 'OpenSans-Bold.ttf',
-                    ],
-                ],
-                'default_font' => 'bentonsans'
-
-            ]);
-
-
-            $mpdf->SetTitle('Purchase Order to Material Received Note Report'); // Set the title
-
-            $html = '
+   public function Pdf($purchase_order, $from_date, $to_date)
+{
+    if (!empty($purchase_order)) {
         
-            <style>
-            th, td {
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
+        // 1. Initialize Totals
+        $total_po_main_amount = 0;             // Sum of PO Amounts
+        $total_mr_amount = 0;                  // Sum of Product Amounts (pop_amount)
+        $total_po_amount_product_received = 0; // Sum of MRN Amounts (rnp_amount)
+        $total_difference = 0;                 // Sum of Differences
+
+        $pdf_rows = "";
+        $sl_no = 1;
+
+        // 2. Loop through Purchase Orders
+        foreach ($purchase_order as $order_data) {
+            
+            // Get Vendor Name
+            $vendor = $this->common_model->SingleRow('crm_customer_creation', ['cc_id' => $order_data->po_vendor_name]);
+            $vendor_name = $vendor ? $vendor->cc_customer_name : '';
+            $po_date = date('d-m-Y', strtotime($order_data->po_date));
+
+            // Accumulate Main PO Amount
+            $total_po_main_amount += $order_data->po_amount;
+
+            $product_details = $order_data->product_orders;
+            
+            // Safety check if no products exist
+            if (empty($product_details)) {
+                // Add an empty row just to show the PO details
+                $product_details = [new stdClass()]; 
+                // You might need to handle properties to avoid errors if strict, 
+                // but usually there is at least one product.
             }
-            p{
+
+            $row_count = 0;
+            $total_products = count($product_details);
+
+            // 3. Loop through Products within the PO
+            foreach ($product_details as $prod_del) {
+                $row_count++;
                 
-                font-size: 12px;
-
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
-            
-            </style>
-        
-            <table>
-            
-            <tr>
-            
-            
-        
-            <td>
-        
-            <h3>Al Fuzail Engineering Services WLL</h3>
-            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
-            
-            
-            </td>
-            
-            </tr>
-        
-            </table>
-        
-        
-        
-            <table width="100%" style="margin-top:10px;">
-            
-        
-            <tr width="100%">
-            <td>Period : ' . $dates . '</td>
-            <td align="right"><h2>Purchase Order to Material Recieved Note Report</h2></td>
-        
-            </tr>
-        
-            </table>
-            
-          
-
-           
-        
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
-            
-        
-            <tr>
-            
-            <th align="left">Date</th>
-        
-            <th align="left">Purchase Order Ref.</th>
-        
-            <th align="left">Vendor</th>
-        
-            <th align="left">Sales Order Ref</th>
-        
-            <th align="right">Amount</th>
-
-            <th align="left">Product</th>
-
-            <th align="right">Quantity</th>
-
-            <th align="right">Rate</th>
-
-            <th align="right">Discount</th>
-
-            <th align="right">Amount</th>
-
-            <th align="left">MRN Ref</th>
-
-            <th align="right">Quantity</th>
-        
-        
-
-            <th align="right">Difference</th>
-
-            </tr>
-
-               
-            ' . $pdf_data . '
-
-            <tr>
-                <td style="border-top: 2px solid;">Total</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>               
-                <td style="border-top: 2px solid; text-align:right;">' .  format_currency($po_amt) . '</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid; text-align:right;">' . format_currency($pop_amt) . '</td>
-                <td style="border-top: 2px solid;"></td>
-             
-                <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
-                <td style="border-top: 2px solid; text-align:right;">' . format_currency($diff_amt) . '</td>
+                // Determine Borders
+                // Top border is solid for the first item of a PO, hidden/none for subsequent items
+                $top_border_style = ($row_count == 1) ? "border-top: 1px solid #000;" : "border-top: none;";
+                // Bottom border is solid only if it's the last item (handled by next row's top border usually, 
+                // but strictly speaking, mPDF handles collapse well). 
                 
-            </tr>    
-           
-            
-            </table>
+                // Determine content for "Parent" columns (only show on first row)
+                $show_parent_info = ($row_count == 1);
 
+                // Prepare Data variables
+                $so_ref = isset($prod_del->so_reffer_no) ? $prod_del->so_reffer_no : '';
+                $prod_name = isset($prod_del->product_details) ? $prod_del->product_details : '';
+                $qty = isset($prod_del->pop_qty) ? $prod_del->pop_qty : 0;
+                $rate = isset($prod_del->pop_rate) ? $prod_del->pop_rate : 0;
+                $disc = isset($prod_del->pop_discount) ? $prod_del->pop_discount : 0;
+                
+                $pop_amount = isset($prod_del->pop_amount) ? $prod_del->pop_amount : 0;
+                $rnp_amount = isset($prod_del->rnp_amount) ? $prod_del->rnp_amount : 0;
+                $diff = $pop_amount - $rnp_amount;
 
-        
-            ';
+                // Accumulate Sub-totals
+                $total_mr_amount += $pop_amount;
+                $total_po_amount_product_received += $rnp_amount;
+                $total_difference += $diff;
 
-            $footer = '';
+                $pdf_rows .= '<tr>';
 
+                // --- Parent Columns (1-4) ---
+                
+                // 1. Sl No
+                $pdf_rows .= '<td align="center" style="'.$top_border_style.'">' . ($show_parent_info ? $sl_no : '') . '</td>';
+                
+                // 2. Date
+                $pdf_rows .= '<td align="center" style="'.$top_border_style.'">' . ($show_parent_info ? $po_date : '') . '</td>';
+                
+                // 3. PO Ref
+                $pdf_rows .= '<td align="center" style="'.$top_border_style.'">' . ($show_parent_info ? $order_data->po_reffer_no : '') . '</td>';
+                
+                // 4. Vendor
+                $pdf_rows .= '<td align="left" style="'.$top_border_style.'">' . ($show_parent_info ? $vendor_name : '') . '</td>';
 
-            $mpdf->WriteHTML($html);
+                // --- Child/Nested Columns (5-13) ---
+                // Note: These always have a top border to separate product lines, 
+                // UNLESS you want them to look like a block. 
+                // Usually in the reference, the nested table has rows. 
+                // Let's force a light top border for products to distinguish them, 
+                // or keep the main border style if you want them grouped strictly.
+                // Based on reference image, specific product lines have separators.
+                
+                $child_border = "border-top: 1px solid #ccc;"; 
+                if($row_count == 1) $child_border = "border-top: 1px solid #000;"; // Match parent top
 
-            // $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+                // 5. SO Ref
+                $pdf_rows .= '<td align="center" style="'.$child_border.'">' . $so_ref . '</td>';
+
+                // 6. Amount PO (Technically a Parent value, usually shown on first row)
+                $pdf_rows .= '<td align="right" style="'.$top_border_style.'">' . ($show_parent_info ? format_currency($order_data->po_amount) : '') . '</td>';
+
+                // 7. Product
+                $pdf_rows .= '<td align="left" style="'.$child_border.'">' . $prod_name . '</td>';
+
+                // 8. Quantity
+                $pdf_rows .= '<td align="center" style="'.$child_border.'">' . format_currency($qty) . '</td>'; // Assuming integer or float
+
+                // 9. Rate
+                $pdf_rows .= '<td align="right" style="'.$child_border.'">' . format_currency($rate) . '</td>';
+
+                // 10. Discount
+                $pdf_rows .= '<td align="right" style="'.$child_border.'">' . format_currency($disc) . '%</td>';
+
+                // 11. Amount (Product)
+                $pdf_rows .= '<td align="right" style="'.$child_border.'">' . format_currency($pop_amount) . '</td>';
+
+                // 12. Amount (MRN)
+                $pdf_rows .= '<td align="right" style="'.$child_border.'">' . format_currency($rnp_amount) . '</td>';
+
+                // 13. Difference
+                $pdf_rows .= '<td align="right" style="'.$child_border.'">' . format_currency($diff) . '</td>';
+
+                $pdf_rows .= '</tr>';
+            }
+            $sl_no++;
         }
-    }
 
+        // --- Prepare Header & Footer ---
+        if (empty($from_date) && empty($to_date)) {
+            $dates = "";
+        } else {
+            $dates = $from_date . " to " . $to_date;
+        }
+
+        $title = "Purchase_Order_Report";
+
+        // mPDF Configuration
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'format' => 'Letter-L', // Landscape to fit all columns
+            'default_font_size' => 8, // Slightly smaller font for many columns
+            'margin_left' => 5,
+            'margin_right' => 5,
+            'autoPageBreak' => true,
+            'fontDir' => array_merge($fontDirs, [__DIR__ . '/fonts']),
+            'fontdata' => $fontData + [
+                'bentonsans' => [
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf',
+                ],
+            ],
+            'default_font' => 'bentonsans'
+        ]);
+
+        $mpdf->SetTitle('Purchase Order to Material Received Note Report');
+
+        $html = '
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-family: sans-serif;
+            }
+            th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+                padding: 8px 4px;
+                border-top: 2px solid #000;
+                border-bottom: 2px solid #000;
+                font-size: 10px;
+                vertical-align: top;
+            }
+            td {
+                padding: 6px 4px;
+                font-size: 10px;
+                vertical-align: top;
+                color: #333;
+            }
+            .header-info p {
+                margin: 2px 0;
+                font-size: 12px;
+            }
+            .totals-row td {
+                border-top: 2px solid #000;
+                border-bottom: 2px solid #000;
+                font-weight: bold;
+                background-color: #fafafa;
+            }
+        </style>
+
+        <table>
+            <tr>
+                <td>
+                    <h3>Al Fuzail Engineering Services WLL</h3>
+                    <div class="header-info">
+                        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table style="margin-top:10px; margin-bottom:10px;">
+            <tr>
+                <td>Period : ' . $dates . '</td>
+                <td align="right"><h2>Purchase Order to Material Recieved Note Report</h2></td>
+            </tr>
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th align="center" width="4%">Sl</th>
+                    <th align="center" width="7%">Date</th>
+                    <th align="center" width="8%">PO Ref</th>
+                    <th align="left"   width="12%">Vendor</th>
+                    <th align="center" width="7%">SO Ref</th>
+                    <th align="right"  width="7%">Amt<br>(PO)</th>
+                    <th align="left"   width="18%">Product</th>
+                    <th align="center" width="5%">Qty</th>
+                    <th align="right"  width="5%">Rate</th>
+                    <th align="right"  width="5%">Disc</th>
+                    <th align="right"  width="7%">Amt<br>(Prod)</th>
+                    <th align="right"  width="7%">Amt<br>(MRN)</th>
+                    <th align="right"  width="8%">Diff</th>
+                </tr>
+            </thead>
+            <tbody>
+                ' . $pdf_rows . '
+                
+                <tr class="totals-row">
+                    <td colspan="4" align="right">Total</td>
+                    <td></td>
+                    <td align="right">' . format_currency($total_po_main_amount) . '</td>
+                    <td colspan="4"></td>
+                    <td align="right">' . format_currency($total_mr_amount) . '</td>
+                    <td align="right">' . format_currency($total_po_amount_product_received) . '</td>
+                    <td align="right">' . format_currency($total_difference) . '</td>
+                </tr>
+            </tbody>
+        </table>';
+
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output($title . '.pdf', 'I');
+    }
+}
 
     public function Excel($quotation_data)
     {
