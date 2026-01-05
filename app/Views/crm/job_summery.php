@@ -385,19 +385,12 @@
 <!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
 <td class="text-end">
     
-    <?php 
-        $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
+    <?php
+$invoice_revenue = ($single_cash + $single_credit) - $single_returns;
 
-        if (($single_cash + $single_credit) >  0) {
-         
-    $row_revenue = $invoice_revenue;
-    $total_gross_profit = $row_revenue - $expenses;
-
-} else {
-    
-    $row_revenue = 0;
-    $total_gross_profit = 0;
-} ?>
+$row_revenue = $invoice_revenue;
+$total_gross_profit = $row_revenue - $expenses;
+?>
 
 
         

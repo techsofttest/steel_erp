@@ -552,12 +552,22 @@
 
                     // Sum ONLY matching sales order vouchers
                     if ($pur_vouch->pvp_sales_order == $sales_order->so_reffer_no) {
+                        
                         $total_pur_vouch += $pur_vouch->pvp_amount;
                     }
 
                     // if you still need expenses
                     $expenses1 += $pur_vouch->pv_total;
                 }
+            ?>  
+            <?php
+            
+            echo '<pre>';
+            echo 'Voucher Amount: ' . $pur_vouch->pvp_amount . PHP_EOL;
+            echo 'Voucher Sales Order: ' . $pur_vouch->pvp_sales_order . PHP_EOL;
+            echo 'Current Sales Order: ' . $sales_order->so_reffer_no . PHP_EOL;
+            echo '</pre>';
+
             ?>
                 <!-- Show ONLY the total -->
                 <tr style="background: unset; border-bottom: hidden !important;" class="tr_height_eq">

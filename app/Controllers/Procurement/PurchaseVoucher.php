@@ -1266,12 +1266,12 @@ class PurchaseVoucher extends BaseController
                                             <td class="text-center">
                                                <select class="form-control debit_account1" style="" name="debit_account[]" required>
                                                    <option value="" selected disabled>Select Debit</option>';
-                                                   foreach($debit_accounts as $debit_account){
+                                                    foreach($debit_accounts as $debit_account){
 
                                                       $data['product_detail'] .='<option value="'.$debit_account->ca_id .'">'.$debit_account->ca_name.'</option>';
 
-                                                   }
-                        $data['product_detail'] .='</select>
+                                                    }
+                                                $data['product_detail'] .='</select>
                                             </td>
                                             <td class="text-center"><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty text-center"  required readonly></td>
                                             <td class="text-center"><input type="text" name="pvp_unit[]" value="'.$product->rnp_unit.'" class="form-control text-center" required readonly></td>
