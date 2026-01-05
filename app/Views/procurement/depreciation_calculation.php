@@ -1,36 +1,35 @@
 <style>
-     .selectize-input
-    {
+    .selectize-input {
         border: unset;
     }
-    .selectize-input
-    {
+
+    .selectize-input {
         margin-bottom: 5px;
         border: unset;
         border-bottom: 1px solid #0000003b;
         border-radius: 0px;
     }
-    .selectize-control.single .selectize-input
-    {
+
+    .selectize-control.single .selectize-input {
         background-color: unset;
         background-image: unset;
         background-repeat: unset;
     }
-    .zero_padding
-    {
+
+    .zero_padding {
         padding: 0px 0px;
     }
-    
-    .input_length2 
-    {
-            border: 1px solid #434343 !important;
-    margin-bottom: 0px;
-    background: #f5f5f56e;
-    height: 40px;
-    width: 97%;
-    border-radius: 4px;
+
+    .input_length2 {
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        background: #f5f5f56e;
+        height: 40px;
+        width: 97%;
+        border-radius: 4px;
     }
-    .droup_color{
+
+    .droup_color {
 
         /*color: black !important;*/
         width: 100% !important;
@@ -38,21 +37,24 @@
         border: none !important;
         height: 37px !important;
     }
-    .selectize-input{
+
+    .selectize-input {
 
         border: unset !important;
     }
+
     .tecs span {
-    
+
         font-size: 14px;
     }
-    .tecs .add_product3{
+
+    .tecs .add_product3 {
 
         font-size: 18px;
     }
 
     span.select2.customer_width1 {
-        
+
         margin-bottom: 0px;
         width: 100% !important;
         padding: 0px;
@@ -64,11 +66,13 @@
         height: 100% !important;
         overflow: visible;
     }
+
     .content_table tr {
         text-align: unset;
         border: 1px solid black !important;
     }
-    .edit_cost_cal_row td{
+
+    .edit_cost_cal_row td {
 
         padding: 0px;
     }
@@ -78,78 +82,96 @@
         border-collapse: collapse;
         border: 1px solid black;
     }
+
     .content_table {
         padding: 20px 10px;
         padding-top: 25px;
     }
-    .add_table{
+
+    .add_table {
 
         margin-bottom: 0px;
         vertical-align: middle;
     }
+
     .total_table {
-        
+
         width: 27% !important;
     }
-    .cost_data td{
+
+    .cost_data td {
 
         vertical-align: middle !important;
         padding: 10px 10px;
     }
-    .product-more4{
+
+    .product-more4 {
 
         vertical-align: middle !important;
         padding: 10px 10px;
     }
-    .view_prod_det td{
+
+    .view_prod_det td {
 
         vertical-align: middle;
         padding: 10px 10px;
     }
-    .view_cost_cal td{
-       
+
+    .view_cost_cal td {
+
         vertical-align: middle;
         padding: 10px 10px;
     }
-    .total_table td{
-            border: 1px solid black !important;
-            padding: 5px 10px;
+
+    .total_table td {
+        border: 1px solid black !important;
+        padding: 5px 10px;
     }
-.assets-body td{ 
-    padding: 5px 10px;
-}
+
+    .assets-body td {
+        padding: 10px 10px;
+    }
+
     .edit_product-more td {
-        
-        padding: 10px 10px !important;
-    }
-    .edit_cost_cal td{
 
         padding: 10px 10px !important;
     }
 
-table#DataTable th:nth-child(1),
-table#DataTable th:nth-child(3),
-table#DataTable th:nth-child(5),
-table#DataTable td:nth-child(1),
-table#DataTable td:nth-child(3),
-table#DataTable td:nth-child(5) {
-    text-align: center;
-}
+    .edit_cost_cal td {
 
-table#DataTable th:nth-child(4),
-table#DataTable th:nth-child(6),
-table#DataTable td:nth-child(4),
-table#DataTable td:nth-child(6) {
-    text-align: end;
-}
+        padding: 10px 10px !important;
+    }
 
-table#DataTable th:nth-child(2),
-table#DataTable td:nth-child(2) {
-    text-align: start;
-}
-.selection{
-    width:100%
-}
+    table#DataTable th:nth-child(1),
+    table#DataTable th:nth-child(3),
+    table#DataTable th:nth-child(5),
+    table#DataTable td:nth-child(1),
+    table#DataTable td:nth-child(3),
+    table#DataTable td:nth-child(5) {
+        text-align: center;
+    }
+
+    table#DataTable th:nth-child(4),
+    table#DataTable th:nth-child(6),
+    table#DataTable td:nth-child(4),
+    table#DataTable td:nth-child(6) {
+        text-align: end;
+    }
+
+    table#DataTable th:nth-child(2),
+    table#DataTable td:nth-child(2) {
+        text-align: start;
+    }
+
+    .selection {
+        width: 100%
+    }
+
+    .Dashboard-form .selected_table .form-control {
+      
+        height: unset !important;
+        padding:0 !important;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -187,7 +209,7 @@ table#DataTable td:nth-child(2) {
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center ">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Account Head</label>
@@ -210,7 +232,7 @@ table#DataTable td:nth-child(2) {
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center ">
 
                                                                     <div class="col-col-md-3 col-lg-3">
 
@@ -240,7 +262,7 @@ table#DataTable td:nth-child(2) {
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center ">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Current Balance</label>
@@ -278,7 +300,7 @@ table#DataTable td:nth-child(2) {
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center ">
 
                                                                     <div class="col-col-md-3 col-lg-3">
 
@@ -308,7 +330,7 @@ table#DataTable td:nth-child(2) {
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center ">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Account</label>
@@ -339,7 +361,7 @@ table#DataTable td:nth-child(2) {
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center ">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Depreciation</label>
@@ -389,37 +411,37 @@ table#DataTable td:nth-child(2) {
                                                         </table>
                                                     </div> -->
 
-                                                    <div class="mt-4 content_table" >
-                                                    
-                                                    <!-- <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Cost Calculation</h5> -->
-                                                    <table class="table table-bordered table-striped delTable add_table selected_table"  style="display: none;">
-                                                        <thead class="travelerinfo contact_tbody">
-                                                            <tr>
-                                                                <td style="width: 4%;">SI</td>
-                                                                <td>Description</td>
-                                                                <td style="width: 10%;">Date Acquired</td>
-                                                                <td style="width: 10%;">Amount</td>
-                                                                <td style="width: 10%;">Depreciation</td>
-                                                                <td style="width: 10%;">Entitlement</td>
-                                                                <td style="width: 10%;">Depreciation</td>
-                                                            </tr>
-                                                           
-                                                        </thead>
+                                                    <div class="mt-4 content_table">
 
-                                                        
-                                                        <tbody  class="travelerinfo product-more2 assets-body"></tbody>
-                                                        <!--<tbody>-->
-                                                         
-                                                        <!--</tbody>--->
+                                                        <!-- <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Cost Calculation</h5> -->
+                                                        <table class="table table-bordered table-striped delTable add_table selected_table" style="display: none;">
+                                                            <thead class="travelerinfo contact_tbody">
+                                                                <tr>
+                                                                    <td style="width: 4%;">SI</td>
+                                                                    <td>Description</td>
+                                                                    <td style="width: 10%;">Date Acquired</td>
+                                                                    <td style="width: 10%;">Amount</td>
+                                                                    <td style="width: 10%;">Depreciation</td>
+                                                                    <td style="width: 10%;">Entitlement</td>
+                                                                    <td style="width: 10%;">Depreciation</td>
+                                                                </tr>
 
-                                                        
-                                                        
-                                                    </table>
-                                                    <table class="total_table" >
-                                                        
-                                                    </table>
-                                                  
-                                                </div>
+                                                            </thead>
+
+
+                                                            <tbody class="travelerinfo product-more2 assets-body"></tbody>
+                                                            <!--<tbody>-->
+
+                                                            <!--</tbody>--->
+
+
+
+                                                        </table>
+                                                        <table class="total_table">
+
+                                                        </table>
+
+                                                    </div>
 
 
                                                 </div>
@@ -463,7 +485,7 @@ table#DataTable td:nth-child(2) {
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Depreciation Calculation</h4>
-                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -699,7 +721,7 @@ table#DataTable td:nth-child(2) {
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Account Head</label>
@@ -722,7 +744,7 @@ table#DataTable td:nth-child(2) {
 
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
 
@@ -752,7 +774,7 @@ table#DataTable td:nth-child(2) {
 
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Current Balance</label>
@@ -790,7 +812,7 @@ table#DataTable td:nth-child(2) {
 
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
 
@@ -820,7 +842,7 @@ table#DataTable td:nth-child(2) {
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Credit Account</label>
@@ -851,7 +873,7 @@ table#DataTable td:nth-child(2) {
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Depreciation</label>
@@ -938,7 +960,7 @@ table#DataTable td:nth-child(2) {
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Account Head</label>
@@ -961,7 +983,7 @@ table#DataTable td:nth-child(2) {
 
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
 
@@ -991,7 +1013,7 @@ table#DataTable td:nth-child(2) {
 
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Current Balance</label>
@@ -1029,7 +1051,7 @@ table#DataTable td:nth-child(2) {
 
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
 
@@ -1059,7 +1081,7 @@ table#DataTable td:nth-child(2) {
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Credit Account</label>
@@ -1090,7 +1112,7 @@ table#DataTable td:nth-child(2) {
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center ">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Depreciation</label>
@@ -1111,11 +1133,11 @@ table#DataTable td:nth-child(2) {
                             </div>
 
                         </div>
-                        <div class="row">
+                        <div class="row content_table">
 
                             <div class="mt-4">
                                 <table class="table table-bordered table-striped delTable edit_selected_table" style="display: none;">
-                                    <tbody class="travelerinfo">
+                                    <tbody class="travelerinfo contact_tbody">
 
                                         <tr>
                                             <td>Sl</td>
@@ -1188,7 +1210,7 @@ table#DataTable td:nth-child(2) {
 
                                             <div class="col-lg-6">
 
-                                                <div class="row align-items-center mb-2">
+                                                <div class="row align-items-center ">
 
 
                                                     <div class="col-col-md-3 col-lg-3">
@@ -1200,14 +1222,14 @@ table#DataTable td:nth-child(2) {
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" id="uid" class="form-control" >
+                                                        <input type="text" id="uid" class="form-control">
 
                                                     </div>
 
                                                 </div>
 
 
-                                                <div class="row align-items-center mb-2">
+                                                <div class="row align-items-center ">
 
                                                     <div class="col-col-md-3 col-lg-3">
 
@@ -1759,7 +1781,7 @@ table#DataTable td:nth-child(2) {
                             // $('.total_table').css('display', 'block');
                             $('.total_table').html(parsedData.total_Sec);
                         }
-                        
+
 
 
 
@@ -1950,26 +1972,24 @@ table#DataTable td:nth-child(2) {
 
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Procurement/DepreciationCalculation/AddAccess",
+                url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/AddAccess",
 
-                method : "POST",
+                method: "POST",
 
-                success:function(data)
-                {
+                success: function(data) {
 
                     var data = JSON.parse(data);
 
-                    if(data.status === 0){
-                    
+                    if (data.status === 0) {
+
                         alertify.error(data.msg).delay(3).dismissOthers();
 
-                    }
-                    else{
+                    } else {
 
                         $('#AddDepreciationModal').modal('show');
 
                     }
-                    
+
 
                 }
 
@@ -2501,7 +2521,7 @@ table#DataTable td:nth-child(2) {
                             $('.view_currentbalance').val(data.balance_amt);
                             $('.view_debit_account_select').val(data.debit_account).trigger('change');
                             $('.view_credit_account_select').val(data.credit_account).trigger('change');
-                            $('.view_depriciation_input').val(data.depreciation);
+                            $('.view_depriciation_input').val(data.depreciation+"%");
 
                             if (data.depreciation_det != '') {
                                 $('.view-assets-body').html(data.depreciation_det)
@@ -2535,11 +2555,10 @@ table#DataTable td:nth-child(2) {
                 success: function(response) {
                     var data = JSON.parse(response);
 
-                    if(data.status === 0){
+                    if (data.status === 0) {
 
                         alertify.error(data.msg).delay(3).dismissOthers();
-                    }
-                    else{
+                    } else {
 
                         // Fetch the options for Select2 before trying to set the value
                         $.ajax({
@@ -2570,7 +2589,7 @@ table#DataTable td:nth-child(2) {
                                 $('.edit_currentbalance').val(data.balance_amt);
                                 $('.edit_debit_account_select').val(data.debit_account).trigger('change');
                                 $('.edit_credit_account_select').val(data.credit_account).trigger('change');
-                                $('.edit_depriciation_input').val(data.depreciation);
+                                $('.edit_depriciation_input').val(data.depreciation+"%");
 
                                 $('.edit_debit_account_select').prop('disabled', true).trigger('change');
                                 $('.edit_credit_account_select').prop('disabled', true).trigger('change');
@@ -2618,7 +2637,7 @@ table#DataTable td:nth-child(2) {
 
                     var data = JSON.parse(data);
 
-                    if(data.status === 1){
+                    if (data.status === 1) {
 
                         rowToDelete.fadeOut(500, function() {
 
@@ -2631,12 +2650,12 @@ table#DataTable td:nth-child(2) {
                         });
 
 
-                    }else{
+                    } else {
 
                         alertify.error(data.msg).delay(2).dismissOthers();
                     }
 
-                    
+
 
                 }
 

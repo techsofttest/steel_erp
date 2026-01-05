@@ -228,22 +228,57 @@ class MRN_PVReport extends BaseController
 
         $new_order = [];
 
-        foreach ($data['purchase_order'] as $orders) {
+       foreach ($data['purchase_order'] as $orders) {
 
-            // Fetch the MRN record
-            $mrns = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_mrn' => $orders->mrn_id]);
+    $pv_join = [
+        [
+            'table' => 'pro_purchase_voucher',
+            'pk'    => 'pv_id',
+            'fk'    => 'pvp_reffer_id',
+        ],
+    ];
 
+    $mrns = $this->common_model->FetchWhereJoin(
+        'pro_purchase_voucher_prod',
+        ['pvp_mat_rec_id' => $orders->mrn_id],
+        $pv_join
+    );
 
-            if (!empty($mrns)) {
-                $pvps = $this->common_model->FetchWhere('pro_purchase_voucher_prod', ['pvp_reffer_id' => $mrns->pv_id]);
+    // Index PVP rows by MRN product ID for fast lookup
+    $pvpMap = [];
+    foreach ($mrns as $pvp) {
+        $pvpMap[$pvp->pvp_mat_rec_note_prod_id] = $pvp;
+    }
 
-                $mrns->voucher_prod = $pvps;
+    // Merge ONLY matching PVP data
+    if (!empty($orders->product_orders)) {
+        // echo '<pre>';
+        // print_r($orders->product_orders);
+        foreach ($orders->product_orders as $i => $product) {
+
+            $prodId = $product->rnp_id;
+
+            if (isset($pvpMap[$prodId])) {
+                foreach ($pvpMap[$prodId] as $key => $value) {
+                    if (!property_exists($product, $key)) {
+                        $product->$key = $value;
+                    }
+                }
             }
-            // Merge the $orders and $mrns arrays, then cast the result back to an object
-            $new_order[] = (object) array_merge((array)$orders, (array)$mrns);
+
+            $orders->product_orders[$i] = $product;
         }
+    }
+
+    $new_order[] = $orders;
+}
+
+$data['purchase_order'] = $new_order;
+
+
 
         $data['purchase_order'] = $new_order;
+
 
 
         if ($data6 != "" || $data7 != "") {
@@ -271,7 +306,9 @@ class MRN_PVReport extends BaseController
         }
 
         // echo '<pre>';
-        // print_r($data['purchase_order']); exit;
+
+        // print_r($data['purchase_order']);
+        // exit;
 
 
         if (!empty($from_date)) {
@@ -347,7 +384,7 @@ class MRN_PVReport extends BaseController
         );
 
         // Get Sales Order data from the database based on lpo_ref
-        $sales_orders = $this->pro_model->FetchWhereJoinby('pro_purchase_order_product', ['pop_purchase_order' => $pur_order->po_id], $joins1,'pop_sales_order');
+        $sales_orders = $this->pro_model->FetchWhereJoinby('pro_purchase_order_product', ['pop_purchase_order' => $pur_order->po_id], $joins1, 'pop_sales_order');
 
         echo json_encode($sales_orders); // Return data as JSON response
     }
@@ -523,29 +560,7 @@ class MRN_PVReport extends BaseController
                     $rnp_amt += $prod_del->rnp_amount ?? 0;
 
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>". ($order_data->pv_vendor_inv ?? '') ."</td>";
-
-
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency($prod_del->pvp_qty ?? 0) . "</td>";
-
-
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency($prod_del->pvp_rate ?? 0) . "</td>";
+                
 
 
                     $pdf_data .= "<td style='text-align:right;";
@@ -561,7 +576,7 @@ class MRN_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . format_currency( ($prod_del->rnp_amount ?? 0) - ($prod_del->pvp_amount ?? 0) ) . "</td>";
+                    $pdf_data .= "'>" . format_currency(($prod_del->rnp_amount ?? 0) - ($prod_del->pvp_amount ?? 0)) . "</td>";
                     $diff_amt += ($prod_del->rnp_amount ?? 0) - ($prod_del->pvp_amount ?? 0);
 
 
@@ -591,14 +606,14 @@ class MRN_PVReport extends BaseController
 
             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
             $fontDirs = $defaultConfig['fontDir'];
- 
+
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'format' => 'Letter-L', // Custom page size in millimeters
-                'default_font_size' => 9, 
-                'margin_left' => 5, 
+                'default_font_size' => 9,
+                'margin_left' => 5,
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
                 'fontDir' => array_merge($fontDirs, [
@@ -606,13 +621,13 @@ class MRN_PVReport extends BaseController
                 ]),
                 'fontdata' => $fontData + [
                     'bentonsans' => [
-                      
+
                         'R' => 'OpenSans-Regular.ttf',
                         'B' => 'OpenSans-Bold.ttf',
                     ],
                 ],
                 'default_font' => 'bentonsans'
-                
+
             ]);
 
 
@@ -710,12 +725,6 @@ class MRN_PVReport extends BaseController
     
                 <th align="right">Amount</th>
     
-                <th align="left">Vendor Invoice Ref</th>
-    
-                <th align="right">Quantity</th>
-            
-                <th align="right">Rate</th>
-                
                 <th align="right">Amount</th>
     
                 <th align="right">Difference</th>
@@ -738,9 +747,7 @@ class MRN_PVReport extends BaseController
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
-                    <td style="border-top: 2px solid;"></td>
-                    <td style="border-top: 2px solid;"></td>
-                    <td style="border-top: 2px solid;"></td>
+                  
                     <td style="border-top: 2px solid;text-align:right;">' . format_currency($pvp_amt) . '</td>
                     <td style="border-top: 2px solid; text-align:right;">' . format_currency($diff_amt) . '</td>
                     
@@ -984,24 +991,25 @@ class MRN_PVReport extends BaseController
 
 
 
-        public function FetchVendors(){
+    public function FetchVendors()
+    {
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation', 'cc_customer_name', 'asc', $term, $start, $end);
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
 
-        public function FetchLpoRef(){
+    public function FetchLpoRef()
+    {
 
         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
@@ -1018,18 +1026,17 @@ class MRN_PVReport extends BaseController
                     'table' => 'crm_customer_creation',
                     'pk'    => 'cc_id',
                     'fk'    => 'so_customer',
-                ),*/
-            );
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond,'po_reffer_no',$term, $joins1, 'po_reffer_no');
+                ),*/);
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond, 'po_reffer_no', $term, $joins1, 'po_reffer_no');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
-
     }
 
-    public function FetchSalesOrder(){
+    public function FetchSalesOrder()
+    {
 
-         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
         if ($lpo_ref == "") {
@@ -1040,33 +1047,30 @@ class MRN_PVReport extends BaseController
         } else {
             $cond = array('pop_purchase_order' => $lpo_ref);
             $joins1 = array(
-                 array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'pop_sales_order',
+                ),
             );
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond,'so_reffer_no',$term, $joins1, 'pop_sales_order');
-
-        
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond, 'so_reffer_no', $term, $joins1, 'pop_sales_order');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
-
     }
 
-    
+
 
     public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
-       
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
+
         // if($salesorder != ''){
         //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
         //         array(   'table' => 'crm_products',
@@ -1075,15 +1079,11 @@ class MRN_PVReport extends BaseController
         //         )
         //     ));
         // }else{
-             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
         // }
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
-
-
-
 }

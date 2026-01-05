@@ -22,60 +22,66 @@
     #DataTable td {
         line-height: 1.5;
     }
+
     #DataTable {
         table-layout: fixed;
         width: 100%;
     }
-    .modal-dialog{
+
+    .modal-dialog {
         width: 500px;
         margin: auto;
     }
+
     .adjust_width {
-    width: 86%;
-}
+        width: 86%;
+    }
 
     .Dashboard-form .form-select {
-    border: 1px solid #434343 !important;
-    margin-bottom: 0px;
-    background: #f5f5f56e;
-    height: 40px;
-    width: 100%;
-    border-radius: 4px;
-}
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        background: #f5f5f56e;
+        height: 40px;
+        width: 100%;
+        border-radius: 4px;
+    }
 
-.travelerinfo td {
-    color: black;
-    vertical-align: middle;
-}
-/* Custom styles for the table */
-    .delTable th, .delTable td {
+    .travelerinfo td {
+        color: black;
+        vertical-align: middle;
+    }
+
+    /* Custom styles for the table */
+    .delTable th,
+    .delTable td {
         /* Ensure padding doesn't affect fixed width calculation unexpectedly */
-        padding-left: 8px; /* Adjust as needed */
-        padding-right: 8px; /* Adjust as needed */
+        padding-left: 8px;
+        /* Adjust as needed */
+        padding-right: 8px;
+        /* Adjust as needed */
         /* vertical-align: top; */
     }
 
-.nested-table td{
-    vertical-align: middle;
-}
+    .nested-table td {
+        vertical-align: middle;
+    }
 
-.select2.select2-container{   
-    padding-top: 5px !important;
-}
-
-
-.select2-selection__rendered {
-    white-space: wrap !important;  /* prevent weird line breaks */
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-span.select2.customer_width, span.select2{
-    width:100% !important;
-}
+    .select2.select2-container {
+        padding-top: 5px !important;
+    }
 
 
+    .select2-selection__rendered {
+        white-space: wrap !important;
+        /* prevent weird line breaks */
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 
+    span.select2.customer_width,
+    span.select2 {
+        width: 100% !important;
+    }
 </style>
 
 
@@ -152,7 +158,7 @@ span.select2.customer_width, span.select2{
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
-                                                                                
+
                                                                                 <td class="text-center center_padding" style="display: flex;align-items: center;margin-top: 15px;">From</td>
                                                                                 <td><input type="date" style="" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control "></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
@@ -169,7 +175,7 @@ span.select2.customer_width, span.select2{
 
                                                                             <tr>
                                                                                 <td style="width: 30%;" class="center_padding">Vendor</td>
-                                                                                <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select vendor_dropdown" id="vendor" name="vendor">
                                                                                         <option value="" selected disabled>Select Vendor</option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
@@ -180,18 +186,18 @@ span.select2.customer_width, span.select2{
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Lpo Ref</td>
-                                                                            <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref" >
+                                                                                <td style="width: 30%;" class="center_padding">Lpo Ref</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select class="form-select lpo_ref" id="lpo_ref" name="lpo_ref">
                                                                                         <option value="" selected disabled>Select Lpo ref</option>
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
 
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Sales Order</td>
-                                                                            <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select sales_order" id="sales_order" name="sales_order" >
+                                                                                <td style="width: 30%;" class="center_padding">Sales Order</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select class="form-select sales_order" id="sales_order" name="sales_order">
                                                                                         <option value="" selected disabled>Select Sales Order</option>
                                                                                     </select>
                                                                                 </td>
@@ -200,7 +206,7 @@ span.select2.customer_width, span.select2{
 
                                                                             <tr>
                                                                                 <td style="width: 30%;" class="center_padding">Product</td>
-                                                                                <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select product_clz" value="" name="product">
                                                                                         <option value="" selected disabled>Select product</option>
                                                                                         <?php foreach ($products as $product) { ?>
@@ -208,23 +214,23 @@ span.select2.customer_width, span.select2{
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                         
+
                                                                             </tr>
 
                                                                             <tr>
-                                                                               
-                                                                                        <td style="width: 30%;" class="center_padding">Pending</td>
-                                                                                            <td> <input class="" type="checkbox" name="pending">
-                                                                                            </td>
-                                                                         
+
+                                                                                <td style="width: 30%;" class="center_padding">Pending</td>
+                                                                                <td> <input class="" type="checkbox" name="pending">
+                                                                                </td>
+
                                                                             </tr>
 
                                                                             <tr>
-                                                                              
-                                                                                        <td style="width: 30%;" class="center_padding">Linked</td>
-                                                                                            <td> <input class="" type="checkbox" name="linked">
-                                                                                            </td>
-                                                                                     
+
+                                                                                <td style="width: 30%;" class="center_padding">Linked</td>
+                                                                                <td> <input class="" type="checkbox" name="linked">
+                                                                                </td>
+
                                                                             </tr>
 
 
@@ -281,149 +287,120 @@ span.select2.customer_width, span.select2{
 
 
                         <!--datatable section start-->
-<?php if (!empty($_GET)) { ?>   
-                        <div class="row">
-                            <div class="col-lg-12" style="padding: 0px;">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-12%">Material Received Note to Purchase Voucher Analysis </h4>
+                        <?php if (!empty($_GET)) { ?>
+                            <div class="row">
+                                <div class="col-lg-12" style="padding: 0px;">
+                                    <div class="card">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-12%">Material Received Note to Purchase Voucher Analysis </h4>
 
-                                        <form method="POST" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button type="submit" class="pdf_button report_button">PDF</button>
-                                        </form>
-
-
-                                        <button class="excel_button report_button" type="submit">Excel</button>
+                                            <form method="POST" target="_blank">
+                                                <input type="hidden" name="pdf" value="1">
+                                                <button type="submit" class="pdf_button report_button">PDF</button>
+                                            </form>
 
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
+                                            <button class="excel_button report_button" type="submit">Excel</button>
 
-                                        <!-- <form method="POST" action="" target="_blank">
+
+                                            <form method="POST" action="" target="_blank">
+                                                <input type="hidden" name="pdf" value="1">
+                                                <button class="print_button report_button" type="submit">Print</button>
+                                            </form>
+
+                                            <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
-                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
-                                        <!-- </form> -->
+                                            <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                            <!-- </form> -->
 
-                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
-                                    </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style=" overflow-x:scroll;">
-                                    <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                    <thead>
-                                                <tr>
+                                            <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
+                                        </div><!-- end card header -->
+                                        <div class="card-body table-responsive divcontainer" style=" overflow-x:scroll;">
+                                            <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                                <thead>
+                                                    <tr>
 
-                                                    <th class="no-sort text-center" style="width:60px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
-                                                    <th class="" style="white-space: nowrap;width:300px">Vendor</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">SO Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor DN Ref</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th class="" style="white-space: nowrap;width:500px">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Inv Ref</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Quantity</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Balance</th>
+                                                        <th class="no-sort text-center" style="width:60px">Sl no</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
+                                                        <th class="" style="white-space: nowrap;width:300px">Vendor</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:100px">SO Ref</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:100px">Vendor DN Ref</th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
+                                                        <th class="" style="white-space: nowrap;width:500px">Product</th>
+                                                        <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
 
-                                                </tr>
-                                            </thead>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Amount (PV)</th>
+                                                        <th class="text-end" style="white-space: nowrap;width:80px">Balance</th>
 
-                                            <tbody class="tbody_data">
-                                                <?php
-                                                if (!empty($purchase_order)) {
-                                                    $i = 1;
-                                                    $mrn_total = $pvp_total = $total = $balance = 0;
-                                                    foreach ($purchase_order as $pur_order) { 
-                                                        $l_mr_total = $l_pv_total = 0; ?>
-                                                        <tr>
-                                                            <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($pur_order->mrn_date)); ?></td>
+                                                    </tr>
+                                                </thead>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:100px">
-                                                                <a href="<?php echo base_url().'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank"><?php echo $pur_order->mrn_reffer; ?></a>
-                                                                    </td>
+                                                <tbody class="tbody_data">
+                                                    <?php
+                                                    if (!empty($purchase_order)) {
+                                                        $i = 1;
+                                                        $mrn_total = $pvp_total = $total = $balance = 0;
+                                                        foreach ($purchase_order as $pur_order) {
+                                                            $l_mr_total = $l_pv_total = 0; ?>
+                                                            <tr>
+                                                                <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
+                                                                <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($pur_order->mrn_date)); ?></td>
 
-                                                            <td class="" style="white-space: wrap;width:300px"><?php foreach ($vendors as $vendor) {
-                                                                                                                        echo $pur_order->mrn_vendor_name == $vendor->cc_id? $vendor->cc_customer_name : '';
+                                                                <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                    <a href="<?php echo base_url() . 'Procurement/MaterialReceivedNote?view_so=' . $pur_order->mrn_id; ?>" target="_blank"><?php echo $pur_order->mrn_reffer; ?></a>
+                                                                </td>
+
+                                                                <td class="" style="white-space: wrap;width:300px"><?php foreach ($vendors as $vendor) {
+                                                                                                                        echo $pur_order->mrn_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
                                                                                                                     } ?>
-                                                            </td>
+                                                                </td>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"> <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> <?php echo $pur_order->po_reffer_no; ?></a></td>
+                                                                <td class="text-center" style="white-space: nowrap;width:100px"> <a href="<?php echo base_url() . 'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> <?php echo $pur_order->po_reffer_no; ?></a></td>
 
-                                                            <td colspan="9" align="left" class="p-0">
-                                                                <table class="nested-table">
-                                                                    <?php
-                                                                    $k=0;
-                                                                    foreach ($pur_order->product_orders as $orders) { $k++; ?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;">
-
-
-
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px; vertical-align:top;"> <a href="<?php echo base_url().'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
-
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px;vertical-align:top;  " ><?php echo $pur_order->mrn_delivery_note; ?></td>
-
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px; vertical-align:top;">
-                                                                                <?php if($k== 1){ $total_amt = 0;
-                                                                                   foreach ($pur_order->product_orders as $ord) {
-                                                                                    $total_amt += $ord->rnp_amount; 
-                                                                                }
-                                                                                 echo format_currency($total_amt);
-                                                                                 $total += $total_amt; 
-                                                                              } ?></td>
-
-
-                                                                            <td style="width:500px">
-                                                                                <?php echo $orders->rnp_product_desc; ?><br>
-                                                                            </td>
-
-
-                                                                            <td class="text-center" style="white-space: nowrap;width:80px">
-                                                                                <?php echo format_currency($orders->rnp_current_delivery) ?? ''; ?>
-                                                                            </td>
-
-                                                                            <td class="text-end" style="width:80px">
-                                                                                <?php echo format_currency($orders->pop_rate ?? 0); ?></td>
-                                                                                <td class="text-end" style="width:80px">
-                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?>%</td>
-
-                                                                            <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->rnp_amount ?? 0);
-                                                                                                                                        $mrn_total += $orders->rnp_amount ?? 0; 
-                                                                                                                                        $l_mr_total +=  $orders->rnp_amount ?? 0; ?></td>
-
-
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->pv_vendor_inv ?? ''; ?></td>
-
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                </table>
-                                                            </td>
-
-                                                            <?php if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {  ?>
-                                                                <td colspan="4" align="left" class="p-0">
-                                                                    <table>
+                                                                <td colspan="10" align="left" class="p-0">
+                                                                    <table class="nested-table">
                                                                         <?php
-
-                                                                        foreach ($pur_order->product_orders as $orders) { ?>
+                                                                        $k = 0;
+                                                                        foreach ($pur_order->product_orders as $orders) {
+                                                                            $k++; ?>
                                                                             <tr style="background: unset;border-bottom: hidden !important;">
 
-                                                                                <td class="text-end" style="white-space: nowrap;width:80px">
-                                                                                    <?php echo format_currency($orders->pvp_qty) ?? 0; ?> </td>
+                                                                                <td class="text-center" style="white-space: nowrap;width:100px; vertical-align:top;"> <a href="<?php echo base_url() . 'Crm/SalesOrder?view_so=' . $orders->so_id; ?>" target="_blank"><?php echo $orders->so_reffer_no; ?></a></td>
 
-                                                                                <td class="text-end" style="white-space: nowrap;width:80px">
-                                                                                    <?php echo format_currency($orders->pvp_rate ?? 0); ?>
+                                                                                <td class="text-center" style="white-space: nowrap;width:100px;vertical-align:top;  "><?php echo $pur_order->mrn_delivery_note; ?></td>
+
+                                                                                <td class="text-end" style="white-space: nowrap;width:80px; vertical-align:top;">
+                                                                                    <?php if ($k == 1) {
+                                                                                        $total_amt = 0;
+                                                                                        foreach ($pur_order->product_orders as $ord) {
+                                                                                            $total_amt += $ord->rnp_amount;
+                                                                                        }
+                                                                                        echo format_currency($total_amt);
+                                                                                        $total += $total_amt;
+                                                                                    } ?></td>
+
+                                                                                <td style="width:500px">
+                                                                                    <?php echo $orders->rnp_product_desc; ?><br>
                                                                                 </td>
-                                                                                <td class="text-end" style="white-space: nowrap;width:80px">
-                                                                                    <?php echo format_currency($orders->pvp_rate ?? 0); ?>
+
+                                                                                <td class="text-center" style="white-space: nowrap;width:80px">
+                                                                                    <?php echo format_currency($orders->rnp_current_delivery) ?? ''; ?>
                                                                                 </td>
+
+                                                                                <td class="text-end" style="width:80px">
+                                                                                    <?php echo format_currency($orders->pop_rate ?? 0); ?></td>
+
+                                                                                <td class="text-end" style="width:80px">
+                                                                                    <?php echo format_currency($orders->pop_discount ?? 0); ?>%</td>
+
+                                                                                <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->rnp_amount ?? 0);
+                                                                                                                                            $mrn_total += $orders->rnp_amount ?? 0;
+                                                                                                                                            $l_mr_total +=  $orders->rnp_amount ?? 0; ?></td>
 
                                                                                 <td class="text-end" style="white-space: nowrap;width:80px">
                                                                                     <?php
@@ -432,81 +409,57 @@ span.select2.customer_width, span.select2{
                                                                                     $l_pv_total += $orders->pvp_amount ?? 0; ?>
                                                                                 </td>
 
+                                                                                <td class="text-end" style="white-space: nowrap;width:80px">
+                                                                                    <?php
+                                                                                    $rnp_amount = $orders->rnp_amount ?? 0;
+                                                                                    $pvp_amount = $orders->pvp_amount ?? 0;
+
+                                                                                    $difference = $rnp_amount - $pvp_amount;
+
+                                                                                    echo format_currency($difference);
+                                                                                    $balance += $difference;
+                                                                                    ?>
+                                                                                </td>
+
                                                                             </tr>
                                                                         <?php } ?>
                                                                     </table>
                                                                 </td>
-                                                            <?php } else { ?>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                            <?php  } ?>
+                                                            </tr>
+                                                        <?php $i++;
+                                                        } ?>
+                                                        <tr>
+                                                            <th style="width:60px"></th>
+                                                            <th style="white-space: nowrap;width:70px"></th>
+                                                            <th style="white-space: nowrap;width:100px"></th>
+                                                            <th style="white-space: nowrap;width:300px"></th>
+                                                            <th style="white-space: nowrap;width:100px"></th>
+                                                            <th style="white-space: nowrap;width:100px"></th>
+                                                            <th style="white-space: nowrap;width:100px"></th>
+                                                            <th class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($total); ?></th>
+                                                            <th style="white-space: nowrap;width:500px"></th>
+                                                            <th style="white-space: nowrap;width:80px"></th>
+                                                            <th style="white-space: nowrap;width:80px"></th>
+                                                            <th style="white-space: nowrap;width:80px"></th>
+                                                            <th class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($mrn_total); ?></th>
 
-
-                                                            <td class="text-end" style="white-space: nowrap;width:80px;">
-                                                                <?php
-                                                                // Ensure the counts of product_orders and voucher_prod are the same
-                                                                // if (isset($pur_order->product_orders) && is_array($pur_order->product_orders) && isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
-                                                                //     $count = min(count($pur_order->product_orders), count($pur_order->voucher_prod));
-
-                                                                //     for ($i = 0; $i < $count; $i++) {
-                                                                //         $rnp_amount = $pur_order->product_orders[$i]->rnp_amount ?? 0;
-                                                                //         $pvp_amount = $pur_order->voucher_prod[$i]->pvp_amount ?? 0;
-                                                                        $difference = $l_mr_total - $l_pv_total;
-                                                                        echo format_currency($difference) . "<br>";
-                                                                        $balance += $difference;
-                                                                //     }
-                                                                // } else {
-                                                                //     echo format_currency(0); // Handle case when either array is not set
-                                                                // }
-
-                                                                ?>
-                                                            </td>
-
-
-
+                                                            <th class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($pvp_total); ?></th>
+                                                            <th class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($balance); ?></th>
 
                                                         </tr>
-
-
-
-                                                    <?php $i++;
+                                                    <?php
                                                     } ?>
-                                                    <tr>
-                                                        <th style="width:60px"></th>
-                                                        <th style="white-space: nowrap;width:70px"></th>
-                                                        <th style="white-space: nowrap;width:100px"></th>
-                                                        <th style="white-space: nowrap;width:300px"></th>
-                                                        <th style="white-space: nowrap;width:100px"></th>
-                                                        <th style="white-space: nowrap;width:100px"></th>
-                                                        <th style="white-space: nowrap;width:100px"></th>
-                                                        <th class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($total); ?></th>
-                                                        <th style="white-space: nowrap;width:500px"></th>
-                                                        <th style="white-space: nowrap;width:80px"></th>
-                                                        <th style="white-space: nowrap;width:80px"></th>
-                                                        <th style="white-space: nowrap;width:80px"></th>
-                                                        <th class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($mrn_total); ?></th>
-                                                        <th style="white-space: nowrap;width:100px"></th>
-                                                        <th style="white-space: nowrap;width:80px"></th>
-                                                        
-                                                        <th style="white-space: nowrap;width:80px"></th>
-                                                        <th class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($pvp_total); ?></th>
-                                                        <th class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($balance); ?></th>
-                                                        
-                                                    </tr>
-                                                <?php
-                                                } ?>
 
-                                            </tbody>
+                                                </tbody>
 
-                                        </table>
+                                            </table>
 
+                                        </div>
                                     </div>
                                 </div>
+                                <!--end col-->
                             </div>
-                            <!--end col-->
-                        </div>
-   <?php } ?>
+                        <?php } ?>
                         <!---datatable section end-->
 
                     </div>
@@ -532,7 +485,7 @@ span.select2.customer_width, span.select2{
 </div>
 
 
- <script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
+<script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 
 <?php /*
@@ -802,8 +755,8 @@ span.select2.customer_width, span.select2{
 
 
 
-        
-         /*Vendor dropdown search*/
+
+        /*Vendor dropdown search*/
         $(".vendor_dropdown").select2({
             placeholder: "Select Vendor",
             theme: "default form-control- customer_width",
@@ -815,19 +768,19 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.cc_id,
-                                text: $.trim(item.cc_customer_name)  // <--- trim whitespace here
+                                text: $.trim(item.cc_customer_name) // <--- trim whitespace here
                             };
                         }),
                         pagination: {
@@ -841,7 +794,7 @@ span.select2.customer_width, span.select2{
         })
 
 
-              $(".lpo_ref").select2({
+        $(".lpo_ref").select2({
             placeholder: "Select LPO Ref",
             theme: "default form-control- customer_width",
             dropdownParent: $('#MRN_PVReport'),
@@ -852,20 +805,20 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         vendor_id: $('.vendor_dropdown').val(),
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.po_id,
-                                text: $.trim(item.po_reffer_no)  // <--- trim whitespace here
+                                text: $.trim(item.po_reffer_no) // <--- trim whitespace here
                             };
                         }),
                         pagination: {
@@ -893,20 +846,20 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         lpo_ref: $('.lpo_ref').val(),
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
+                        results: $.map(data.result, function(item) {
                             return {
                                 id: item.so_id,
-                                text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
+                                text: $.trim(item.so_reffer_no) // <--- trim whitespace here
                             };
                         }),
                         pagination: {
@@ -931,18 +884,21 @@ span.select2.customer_width, span.select2{
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                         salesorder: $('.sales_order').val() // ✅ send inside data function
                     };
                 },
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) {
-                            return { id: item.product_id, text: item.product_details };
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.product_id,
+                                text: item.product_details
+                            };
                         }),
                         pagination: {
                             more: (page * 10) <= data.total_count

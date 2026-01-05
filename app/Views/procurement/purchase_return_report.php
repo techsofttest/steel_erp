@@ -316,13 +316,13 @@ span.select2.customer_width, span.select2{
                                                             <td class="text-center" style="width:70px"><?php echo date('d-M-Y', strtotime($pur_order->pr_date)); ?></td>
                                                             <td class="text-center" style="width:100px">
                                                                  <a href="<?php echo base_url().'Procurement/PurchaseReturn?view_so=' . $pur_order->pr_id; ?>" target="_blank"> 
-                                                                    <?php echo $pur_order->pr_vendor_ref; ?></a>
+                                                                    <?php echo $pur_order->pr_vendor_reff ?? ''; ?></a>
                                                             </td>
                                                             <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
                                                                                                                         echo $pur_order->pr_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';  } ?>
                                                             </td>
 
-                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pv_reffer_id; ?></td>
+                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pr_reffer_id; ?></td>
                                                             
                                                             <td class="text-center" style="width:100px">
                                                                  <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> 
