@@ -763,7 +763,7 @@
                                                             <tr>
                                                                 <td style="width: 4%;" >SI</td>
                                                                 <td colspan="2">Cost Of Materials / Services</td>
-                                                                <td style="width: 9%;">Vendor</td>
+                                                                <td style="width: 15%;">Vendor</td>
                                                                 <td style="width: 10%;">Date</td>
                                                                 <td style="width:8%">Rate</td>
                                                                 
