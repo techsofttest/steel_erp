@@ -67,6 +67,7 @@ class JobProfitability extends BaseController
         $start = $end + $resultCount;
 
         $joins = array(
+
             /*array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
@@ -76,7 +77,9 @@ class JobProfitability extends BaseController
 
         );
       
-        $data['result'] = $this->common_model->ReportFetchLimit('crm_customer_creation','cc_id','asc',$term,$start,$end,$joins,'cc_customer_name');
+        //$data['result'] = $this->common_model->ReportFetchLimit('crm_customer_creation','cc_id','asc',$term,$start,$end,$joins,'cc_customer_name');
+
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
     
         $data['total_count'] =count($data['result']);
 
