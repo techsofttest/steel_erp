@@ -626,6 +626,7 @@
                     </tr>
 
                 <?php 
+
                     if(!empty($jour_vouch->ji_debit))  $expenses4 += $jour_vouch->ji_debit;
                     if(!empty($jour_vouch->ji_credit)) $expenses5 += $jour_vouch->ji_credit;
                 }
@@ -662,6 +663,7 @@
     
     $row_revenue = 0;
     $total_gross_profit = 0;
+    
 } ?>
 
 
@@ -687,6 +689,8 @@
     $final_gross  +=  $total_gross_profit;
 
     $final_percentage += $total_percentage;
+
+    
 
      
 ?>

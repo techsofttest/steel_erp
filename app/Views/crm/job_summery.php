@@ -425,6 +425,12 @@ $total_gross_profit = $row_revenue - $expenses;
 
     $final_percentage += $total_percentage;
 
+     if ($expenses_total > 0) {
+        $final_percentage1 = ($final_gross / $expenses_total) * 100;
+    } else {
+        $final_percentage1 = 0; 
+    }
+
     /*if (!isset($calculated_so[$sales_order->so_id])) {
 
     $expenses_total += $expenses;
@@ -466,7 +472,7 @@ if ($revenue > 0) {
                                                         <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
                                                         <td class="text-end"><b><?php echo format_currency($expenses_total); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($final_gross); ?></b></td>
-                                                        <td class="text-end"><b><?php echo format_currency($final_percentage); ?>%</b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($final_percentage1); ?>%</b></td>
                                                       
                                                     </tr>
                                                     
