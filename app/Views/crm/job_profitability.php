@@ -667,9 +667,21 @@
 <td class="text-end">
     <?php 
         $total_percentage = 0;
-        if($sales_order->so_amount_total != 0){
-            $total_percentage = ($total_gross_profit / $sales_order->so_amount_total) * 100;
-        }
+
+        /*if($sales_order->so_amount_total != 0){
+
+            //$total_percentage = ($total_gross_profit / $sales_order->so_amount_total) * 100;
+
+            
+        }*/
+
+        if ($row_revenue != 0) {
+
+            $total_percentage = ($total_gross_profit / $row_revenue) * 100;
+        }   
+
+        
+
         echo number_format($total_percentage, 2) . '%';
     ?>
 </td>
