@@ -236,7 +236,7 @@ class JobSummery extends BaseController
         //$data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive','','','crm_sales_orders',$joins,'so_reffer_no');  
         
         
-        $data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive');  
+        $data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_id',$data3,'so_sales_executive');  
 
         
        // print_r($data['sales_orders']); exit();
