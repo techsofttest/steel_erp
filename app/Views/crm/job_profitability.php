@@ -557,7 +557,7 @@
 
                         //$expenses1 += $pur_vouch->pv_total;
 
-                        $expenses1 += $pur_vouch->pv_total;
+                        $expenses1 += $pur_vouch->pvp_amount;
                     }
 
                     // if you still need expenses
