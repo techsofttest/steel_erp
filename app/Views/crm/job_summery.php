@@ -466,7 +466,7 @@ if ($revenue > 0) {
                                                         <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
                                                         <td class="text-end"><b><?php echo format_currency($expenses_total); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($final_gross); ?></b></td>
-                                                        <td class="text-end"><b><?php echo format_currency($final_percentage); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($final_percentage); ?>%</b></td>
                                                       
                                                     </tr>
                                                     
