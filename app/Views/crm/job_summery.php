@@ -425,7 +425,7 @@ $total_gross_profit = $row_revenue - $expenses;
 
     $final_percentage += $total_percentage;
 
-     if ($revenue > 0) {
+    if ($revenue > 0) {
         $final_percentage1 = ($final_gross / $revenue) * 100;
     } else {
         $final_percentage1 = 0; 

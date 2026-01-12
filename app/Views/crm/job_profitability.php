@@ -697,7 +697,11 @@ $total_gross_profit = $row_revenue - $expenses;
 
     $final_percentage += $total_percentage;
 
-    
+    if ($revenue > 0) {
+        $final_percentage1 = ($final_gross / $revenue) * 100;
+    } else {
+        $final_percentage1 = 0; 
+    }
 
      
 ?>
@@ -719,7 +723,7 @@ $total_gross_profit = $row_revenue - $expenses;
                                                         <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
                                                         <td class="text-end"><b><?php echo format_currency($expenses_total); ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($final_gross); ?></b></td>
-                                                        <td class="text-end"><b><?php echo format_currency($final_percentage); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($final_percentage1); ?></b></td>
                                                       
                                                     </tr>
                                                     
