@@ -554,10 +554,12 @@
                     if ($pur_vouch->pvp_sales_order == $sales_order->so_reffer_no) {
                         
                         $total_pur_vouch += $pur_vouch->pvp_amount;
+
+                        $expenses1 += $pur_vouch->pv_total;
                     }
 
                     // if you still need expenses
-                    $expenses1 += $pur_vouch->pv_total;
+                    //$expenses1 += $pur_vouch->pv_total;
                 }
             ?>  
             
