@@ -40,6 +40,9 @@
         
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="SalesQuotReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotReport"role="tab" aria-selected="true">Sales Quot Report </a></li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="SalesQuotAnalysisReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotAnalysisReport" role="tab" aria-selected="false">Sales Quot Analysis Report</a> </li>
+          
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="SalesQuotSummerReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotSummerReport" role="tab" aria-selected="false">Sales Quot Summery Report</a> </li>
+          
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="SalesOrderReport"){echo "active" ;}?>" href="<?= base_url();?>Crm/SalesOrderReport" role="tab" aria-selected="false">Sales Order Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="SalesOrderSummeryReport"){echo "active" ;}?>" href="<?= base_url();?>Crm/SalesOrderSummeryReport" role="tab" aria-selected="false">Sales Order Summery Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(2)=="SalesOrderToDn"){echo "active" ;}?>"  href="<?= base_url();?>Crm/SalesOrderToDn" role="tab" aria-selected="false">Sales Order To DN / Cash In Report</a> </li>

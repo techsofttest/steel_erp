@@ -239,7 +239,7 @@ class JobSummery extends BaseController
         $data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_id',$data3,'so_sales_executive');  
 
         
-       // print_r($data['sales_orders']); exit();
+        //print_r($data['sales_orders']); exit();
 
         if(!empty($from_date))
         {
