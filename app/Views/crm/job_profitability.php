@@ -614,7 +614,8 @@
             
                 <!-- Show ONLY the total -->
                  <?php foreach ($pvTotals as $pvId => $pv_amount) { ?>
-                <tr style="background: unset; border-bottom: hidden !important;" class="tr_height_eq">
+                <tr style="background: unset; border-bottom: hidden !important;white-space: nowrap;
+    width: 100px;" class="tr_height_eq">
                     <td style="width:100px" class="text-end">
                         <?php echo format_currency($pv_amount); ?>
                     </td>
@@ -651,7 +652,8 @@
                    // $expenses2 += $pv_prod->pr_total_amount;
                 } ?>
                 <?php foreach ($pRTotals as $prId => $prp_amount) { ?>
-                <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
+                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
+    width: 100px;" class="tr_height_eq">
                         <td style="width:100px" class="text-end">
                             -<?php echo format_currency($prp_amount); ?>
                         </td>
@@ -665,7 +667,8 @@
             if(!empty($sales_order->petty_cash)){
                 foreach($sales_order->petty_cash as $p_cash){ ?>
 
-                    <tr style="background: unset;border-bottom: hidden !important;" >
+                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
+    width: 100px;" >
                         <td style="width:100px" class="text-end">
                             <?php echo format_currency($p_cash->pci_amount); ?>
                         </td>
@@ -681,7 +684,8 @@
 
                 foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
                     
-                    <tr style="background: unset;border-bottom: hidden !important;">
+                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
+    width: 100px;">
                         <td style="width:100px" class="text-end">
                             <?php 
 
