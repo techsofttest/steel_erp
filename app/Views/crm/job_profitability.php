@@ -549,6 +549,29 @@
 
             <?php }
 
+            /*sales return */
+
+            if(!empty($sales_order->sales_return)){
+
+                $return_count = !empty($sales_order->sales_return) ? count($sales_order->sales_return) : 0;
+
+                for ($j = 0; $j < $return_count-1; $j++) {
+                    
+                    echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td></td></tr>";
+                } ?>
+
+
+                <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
+                    <td style="width:100px" class="text-end">
+                        
+                    </td>
+                </tr>
+
+
+            <?php }
+
+            /**/
+
             /**/
             if (!empty($sales_order->purchase_vouchers)) {
 
