@@ -524,7 +524,8 @@
                 
                 ?>
 
-                <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
+                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
+    width: 100px;" class="tr_height_eq">
                         <td style="width:100px" class="text-end">
                            
                         </td>
@@ -540,7 +541,8 @@
                 } ?>
 
 
-                <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
+                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
+    width: 100px;" class="tr_height_eq">
                     <td style="width:100px" class="text-end">
                         
                     </td>
@@ -561,7 +563,8 @@
                 } ?>
 
 
-                <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
+                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
+    width: 100px;" class="tr_height_eq">
                     <td style="width:100px" class="text-end">
                         
                     </td>
