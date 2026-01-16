@@ -317,7 +317,6 @@
                                                     <th style="white-space: normal;width:300px !important">Customer Name</th>
                                                     <th style="white-space: nowrap;width:100px" class="text-center">Sales Executive</th>
                                                     <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
-                                                   
                                                 </tr>
                                             </thead>
                                             <?php if(!empty($quotation_data)){ ?> 
@@ -340,14 +339,7 @@
                                                             ?>
                                                             <td style="white-space: nowrap;width:100px" class="text-end"><?php echo format_currency($quot_data->qd_sales_amount); ?></td>
 
-
-                                                           
-
-
                                                         </tr>
-
-
-
 
                                                     <?php $i++;
 
@@ -368,7 +360,7 @@
                                                 
                                             </tbody>
 
-                                             <?php }  else{?> 
+                                             <?php }  else{ ?> 
                                                 
                                               <tbody>
                                                    

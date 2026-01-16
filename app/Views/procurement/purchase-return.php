@@ -2188,7 +2188,9 @@ $("body").on('keyup', '.add_prod_qty', function() {
 
                     $('.add_payment_term').val(data.payment_term);
 
-                    $('.lpo_clz').val(data.delivery_note);
+                    //$('.lpo_clz').val(data.delivery_note);
+
+                    $('.lpo_clz').val(data.lpo_reff);
                   
                 }
 
