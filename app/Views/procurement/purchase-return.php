@@ -255,7 +255,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="pr_lpo" class="form-control input_length lpo_clz" value="" required>   
+                                                                        <input type="text" name="pr_lpo" class="form-control input_length lpo_clz" value="" required readonly>   
 
                                                                     </div>
 

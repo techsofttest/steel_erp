@@ -276,32 +276,27 @@
                                                             <table>
 
                                                                <?php if(!empty($sales_order->cash_invoice)){
-
-                                                                
+                                     
                                                                    
                                                                     foreach($sales_order->cash_invoice as $cash_val){  ?>
-                                                                        
-                                                                                                      
+                                                                                                  
                                                                     
                                                                     <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px;" class="text-center tr_height_eq">
                                                                    
-                                                                    <td  style="width:100px" ><?php echo $cash_val->ci_reffer_no; ?> </td>
+                                                                    <td  style="width:100px" ><?php echo $cash_val->ci_reffer_no; ?></td>
                                                                     
                                                                     </tr>
 
                                                                     <?php
 
-                                                                   
+                                                                                        
 
-                                                                       
-
-                                                                  } }
+                                                                } }
                                                                 
                                                                 if(!empty($sales_order->credit_invoice)){
 
                                                                     foreach($sales_order->credit_invoice as $credit_val){ 
-                                                                        
-                                                                        
+                                                                    
                                                                         
                                                                     ?>
 
@@ -356,7 +351,7 @@
                                                                 <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
                                                                      <?php if ($index == 0){ ?>
                                                                     <td  style="width:100px" ><?= $pv->pv_reffer_id ?> </td>
-                                                                      <?php } else{?><td  style="width:100px" >&nbsp </td> <?php } ?>
+                                                                      <?php }  ?>
                                                                 </tr>
 
                                                             <?php } } 
