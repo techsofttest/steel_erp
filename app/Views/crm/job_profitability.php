@@ -343,18 +343,20 @@
 
                                                                 if(!empty($sales_order->purchase_vouchers)){
 
-                                                                     $pvList = $sales_order->purchase_vouchers;
-                                                                     $rowCount = count($pvList);
+                                                                     //$pvList = $sales_order->purchase_vouchers;
+                                                                     //$rowCount = count($pvList);
+
+                                                                     $pv = $sales_order->purchase_vouchers[0]; // take first record only
                                                                 
-                                                                foreach ($pvList as $index => $pv) { ?> 
+                                                                ?> 
                                                                                 
                                                                 <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                     <?php if ($index == 0){ ?>
+                                                                     
                                                                     <td  style="width:100px" ><?= $pv->pv_reffer_id ?> </td>
-                                                                      <?php }  ?>
+                                                                     
                                                                 </tr>
 
-                                                            <?php } } 
+                                                            <?php  } 
                                                                 
                                                                 if(!empty($sales_order->purchase_return_prod)){
 
