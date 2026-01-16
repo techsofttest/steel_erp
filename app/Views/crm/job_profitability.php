@@ -366,7 +366,7 @@
                                                                     <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
                                                                          <?php if ($index == 0){ ?>
                                                                         <td  style="width:100px" ><?php echo $pr->pr_reffer_id; ?> </td>
-                                                                        <?php } else{?><td  style="width:100px" >&nbsp </td> <?php } ?>
+                                                                        <?php }  ?>
                                                                     
                                                                     </tr>
 
@@ -383,7 +383,7 @@
                                                                     <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
                                                                         <?php if ($index == 0){ ?>
                                                                         <td  style="width:100px" ><?php echo $pc->pcv_voucher_no; ?> </td>
-                                                                        <?php } else{?><td  style="width:100px" >&nbsp </td> <?php } ?>
+                                                                        <?php } ?>
                                                                 
                                                                     </tr>  
 
@@ -399,7 +399,7 @@
                                                                     <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
                                                                         <?php if ($index == 0){ ?>
                                                                         <td  style="width:100px" ><?php echo $jv->jv_voucher_no; ?> </td>
-                                                                         <?php } else{?><td  style="width:100px" >&nbsp </td> <?php } ?>
+                                                                         <?php }  ?>
                                                                     </tr>  
                                                                     
                                                                     <?php } }
