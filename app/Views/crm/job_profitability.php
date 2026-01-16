@@ -526,7 +526,7 @@
 
                 <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
     width: 100px;" class="tr_height_eq">
-                        <td style="width:100px" class="text-end">
+                        <td style="width:100px" class="text-end">&nbsp
                            
                         </td>
                     </tr>
@@ -543,7 +543,7 @@
 
                 <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
     width: 100px;" class="tr_height_eq">
-                    <td style="width:100px" class="text-end">
+                    <td style="width:100px" class="text-end">&nbsp
                         
                     </td>
                 </tr>
@@ -565,7 +565,7 @@
 
                 <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
     width: 100px;" class="tr_height_eq">
-                    <td style="width:100px" class="text-end">
+                    <td style="width:100px" class="text-end">&nbsp
                         
                     </td>
                 </tr>
@@ -746,6 +746,7 @@ $total_gross_profit = $row_revenue - $expenses;
 <!-- NOW OUTSIDE EXPENSE TABLE: PERCENTAGE COLUMN -->
 <td class="text-end">
     <?php 
+
         $total_percentage = 0;
 
         /*if($sales_order->so_amount_total != 0){
