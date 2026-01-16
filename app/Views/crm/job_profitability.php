@@ -559,7 +559,7 @@
 
                 for ($j = 0; $j < $return_count-1; $j++) {
                     
-                    echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>hi</td></tr>";
+                    echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
                 } ?>
 
 
