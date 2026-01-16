@@ -340,40 +340,49 @@
 
 
                                                             <?php 
-
+                                                                $printedPV = [];
                                                                 if(!empty($sales_order->purchase_vouchers)){
 
-                                                                     //$pvList = $sales_order->purchase_vouchers;
-                                                                     //$rowCount = count($pvList);
-
-                                                                     $pv = $sales_order->purchase_vouchers[0]; // take first record only
+                                                                     $pvList = $sales_order->purchase_vouchers;
+                                                                     $rowCount = count($pvList);
                                                                 
+                                                                foreach ($pvList as $index => $pv) { 
+                                                                   if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {    
                                                                 ?> 
                                                                                 
                                                                 <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                     
+                                                                    
                                                                     <td  style="width:100px" ><?= $pv->pv_reffer_id ?> </td>
                                                                      
                                                                 </tr>
 
-                                                            <?php  } 
                                                                 
+
+                                                            <?php $printedPV[] = $pv->pv_reffer_id; } }  }
+
+
+                                                                
+                                                                $printedPR = [];
                                                                 if(!empty($sales_order->purchase_return_prod)){
 
-                                                                    $pvList1 = $sales_order->purchase_return_prod;
-                                                                    $rowCount1 = count($pvList1);
+                                                                    //$pvList1 = $sales_order->purchase_return_prod;
+                                                                    //$rowCount1 = count($pvList1);
 
-                                                                    foreach($pvList1 as $index => $pr){ ?> 
-
+                                                                    foreach($sales_order->purchase_return_prod as $pr){ 
+                                                                      if (!empty($pr->pr_reffer_id) && !in_array($pr->pr_reffer_id	, $printedPR)) {        
+                                                                    ?> 
+                                                                       
                                                                     <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                         <?php if ($index == 0){ ?>
+                                                                         
                                                                         <td  style="width:100px" ><?php echo $pr->pr_reffer_id; ?> </td>
-                                                                        <?php }  ?>
+                                                                        
                                                                     
                                                                     </tr>
 
 
-                                                                <?php  }  }
+                                                                <?php $printedPR[] = $pr->pr_reffer_id;  }  } }
+
+
 
                                                                 if(!empty($sales_order->petty_cash)){
 
@@ -543,50 +552,88 @@
             /**/
             if (!empty($sales_order->purchase_vouchers)) {
 
-                $total_pur_vouch = 0;
+                $pvTotals = []; 
+
+                $expenses1 = 0;
+               
 
                 foreach ($sales_order->purchase_vouchers as $pur_vouch) {
 
                     // Sum ONLY matching sales order vouchers
-                    if ($pur_vouch->pvp_sales_order == $sales_order->so_reffer_no) {
+                    //if ($pur_vouch->pvp_sales_order == $sales_order->so_reffer_no) {
+
+                    if (!empty($pur_vouch->pvp_reffer_id)) {
+
+                       if (!isset($pvTotals[$pur_vouch->pvp_reffer_id])) {
+
+                            $pvTotals[$pur_vouch->pvp_reffer_id] = 0;
+                        }
+                        $pvTotals[$pur_vouch->pvp_reffer_id] += $pur_vouch->pvp_amount;
+                        $expenses1 += $pur_vouch->pvp_amount;
+        }
                         
-                        $total_pur_vouch += $pur_vouch->pvp_amount;
+                       // $total_pur_vouch += $pur_vouch->pvp_amount;
 
                         //$expenses1 += $pur_vouch->pv_total;
 
-                        $expenses1 += $pur_vouch->pvp_amount;
-                    }
+                        //$expenses1 += $pur_vouch->pvp_amount;
+                    //}
 
                     // if you still need expenses
                     //$expenses1 += $pur_vouch->pv_total;
+
                 }
+
             ?>  
             
                 <!-- Show ONLY the total -->
+                 <?php foreach ($pvTotals as $pvId => $pv_amount) { ?>
                 <tr style="background: unset; border-bottom: hidden !important;" class="tr_height_eq">
                     <td style="width:100px" class="text-end">
-                        <?php echo format_currency($total_pur_vouch); ?>
+                        <?php echo format_currency($pv_amount); ?>
                     </td>
                 </tr>
+                <?php } ?>
             <?php
             }
             /**/
 
             /* PURCHASE RETURN */
             if(!empty($sales_order->purchase_return_prod)){
-                
-                foreach($sales_order->purchase_return_prod as $pv_prod){ ?> 
 
-                    <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
+                $pRTotals = []; 
+
+                $expenses2 = 0;
+                
+                foreach($sales_order->purchase_return_prod as $pv_prod){ 
+                     
+                   
+                    if (!isset($pRTotals[$pv_prod->prp_purchase_return_id])) {
+
+                        $pRTotals[$pv_prod->prp_purchase_return_id] = 0;
+                    }
+
+                    $pRTotals[$pv_prod->prp_purchase_return_id] += $pv_prod->prp_amount;
+                    $expenses2 += $pv_prod->prp_amount;
+                    
+                    
+                ?> 
+
+                    
+
+                <?php 
+                   // $expenses2 += $pv_prod->pr_total_amount;
+                } ?>
+                <?php foreach ($pRTotals as $prId => $prp_amount) { ?>
+                <tr style="background: unset;border-bottom: hidden !important;" class="tr_height_eq">
                         <td style="width:100px" class="text-end">
-                            -<?php echo format_currency($pv_prod->prp_amount); ?>
+                            -<?php echo format_currency($prp_amount); ?>
                         </td>
                     </tr>
 
-                <?php 
-                    $expenses2 += $pv_prod->pr_total_amount;
-                }
-            }
+
+
+          <?php   } }
 
             /* PETTY CASH */
             if(!empty($sales_order->petty_cash)){
@@ -605,11 +652,13 @@
 
             /* JOURNAL VOUCHER */
             if(!empty($sales_order->journal_voucher)){
+
                 foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
                     
                     <tr style="background: unset;border-bottom: hidden !important;">
                         <td style="width:100px" class="text-end">
                             <?php 
+
                                 if(!empty($jour_vouch->ji_debit))  
                                     echo format_currency($jour_vouch->ji_debit);
                                 elseif(!empty($jour_vouch->ji_credit)) 
@@ -622,6 +671,7 @@
 
                     if(!empty($jour_vouch->ji_debit))  $expenses4 += $jour_vouch->ji_debit;
                     if(!empty($jour_vouch->ji_credit)) $expenses5 += $jour_vouch->ji_credit;
+
                 }
             }
 
