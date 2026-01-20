@@ -56,16 +56,16 @@ class Home extends BaseController
         if($new_year<$current_period->ap_year)
         {
 
-        $this->session->setFlashdata('error','Cannot set year prior to current accounting period');
+        $this->session->setFlashdata('error','Cannot 1set year prior to current accounting period');
         return redirect()->to('Home');
         exit;
         
         }
 
-        if($new_month<$current_period->ap_month)
+        else if($new_year==$current_period->ap_year && $new_month<$current_period->ap_month)
         {
             
-        $this->session->setFlashdata('error','Cannot set year prior to current accounting period');
+        $this->session->setFlashdata('error','Cannot 2set year prior to current accounting period');
         return redirect()->to('Home');
         exit;
 

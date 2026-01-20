@@ -189,6 +189,8 @@ class VacationPay extends BaseController
 
                 $entitlement = number_format($entitlement,2,'.');
 
+                $entitlement = number_format(round($entitlement),2,'.');
+
                 $amount = $emp->emp_basic_salary*12/365*$entitlement; 
 
 
@@ -558,6 +560,8 @@ class VacationPay extends BaseController
         $return['status'] = 1;
 
         $return['insert_id'] = $vp_id;
+
+        $return['journal_id'] = $journal_id;
 
         }
 

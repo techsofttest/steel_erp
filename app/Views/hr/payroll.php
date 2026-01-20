@@ -653,7 +653,7 @@ select.payroll-select
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text"  name="jv_date" class="form-control datepicker_ap journal_datepicker" value="<?= date('d M Y') ?>" required>
+                            <input type="text"  name="jv_date" class="form-control datepicker journal_datepicker" value="<?= date('d M Y') ?>" required>
 
                             </div>
 
@@ -939,7 +939,7 @@ select.payroll-select
                              if(clickedBtn && clickedBtn.hasClass('print_btn'))
                             {
                                 
-                            var pdfWindow = window.open('<?= base_url()?>HR/Payroll/Print/'+data.insert_id, '_blank');
+                            var pdfWindow = window.open('<?= base_url()?>Accounts/JournalVouchers/Print/'+data.journal_id, '_blank');
                             // Automatically print when the PDF is loaded
                             pdfWindow.onload = function() {
                             pdfWindow.print();
@@ -1065,7 +1065,7 @@ select.payroll-select
         success:function(data)
         {
 
-        alert(data);
+        //alert(data);
 
         $('#uid').val(data);
 
