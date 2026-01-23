@@ -1000,7 +1000,9 @@ class Payroll extends BaseController
 
         $return['status'] = 1;
 
-        $return['insert_id'] = $payroll_id; 
+        $return['insert_id'] = $payroll_id;
+        
+        $return['journal_id'] = $journal_id;
 
         }
 

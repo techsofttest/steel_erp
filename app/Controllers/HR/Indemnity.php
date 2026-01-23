@@ -288,6 +288,8 @@ class Indemnity extends BaseController
 
         $return['insert_id'] = $indem_id;
 
+        $return['journal_id'] = $journal_id;
+
         }
 
         echo json_encode($return);
@@ -388,7 +390,7 @@ class Indemnity extends BaseController
 
                    <td class='text-end'>".format_currency($emp->emp_basic_salary)."</td>
 
-                   <td>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
+                   <td class='text-center'>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
 
                    <td class='text-end'>{$entitlement}</td>
 

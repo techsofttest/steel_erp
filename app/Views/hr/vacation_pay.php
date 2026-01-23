@@ -696,7 +696,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text"  name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
+                            <input type="text"  name="jv_date" class="form-control datepicker_ap journal_datepicker" value="<?= date('d M Y') ?>" required>
 
                             </div>
 
@@ -1000,8 +1000,8 @@
 
                             if(clickedBtn && clickedBtn.hasClass('print_btn'))
                             {
-                                
-                            var pdfWindow = window.open('<?= base_url()?>HR/VacationPay/Print/'+data.insert_id, '_blank');
+                            var pdfWindow = window.open('<?= base_url()?>Accounts/JournalVouchers/Print/'+data.journal_id, '_blank');    
+                            //var pdfWindow = window.open('<?= base_url()?>HR/VacationPay/Print/'+data.insert_id, '_blank');
                             // Automatically print when the PDF is loaded
                             pdfWindow.onload = function() {
                                 pdfWindow.print();
@@ -1071,6 +1071,38 @@
 
 
         /*###*/
+
+
+
+
+         $('.journal_datepicker').change(function(){
+
+        var date = $(this).val();
+
+        var year = date.substring(0, 4);   // "2025"
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+date,
+
+        method : "GET",
+
+        success:function(data)
+        {
+
+        //alert(data);
+
+        $('#uid').val(data);
+
+        }
+
+        });
+        
+
+        });
+
+
+
 
 
 

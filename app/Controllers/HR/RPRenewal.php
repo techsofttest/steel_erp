@@ -568,6 +568,8 @@ class RPRenewal extends BaseController
 
         $return['insert_id'] = $rp_id;
 
+        $return['journal_id'] = $journal_id;
+
         }
 
         echo json_encode($return);

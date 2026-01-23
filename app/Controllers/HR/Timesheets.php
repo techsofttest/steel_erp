@@ -1326,37 +1326,37 @@ class TimeSheets extends BaseController
 
 <tr>
 
-<td width="11%" class="no-border-r">Employee ID</td> <td width="2%" class="no-border">:</td> <td width="37%" class="no-border-l">'.$ts->emp_uid.'</td>
+<td width="14%" class="no-border-r">Employee ID</td> <td width="2%" class="no-border">:</td> <td width="34%" class="no-border-l">'.$ts->emp_uid.'</td>
 
-<td width="11%" class="no-border-r">Designation</td> <td width="2%" class="no-border">:</td> <td width="37%" class="no-border-l">'.$ts->emp_designation.'</td>
-
-</tr>
-
-
-<tr>
-
-<td width="11%">Name</td> <td width="2%">:</td> <td width="37%">'.$ts->emp_name.'</td>
-
-<td width="11%">Department</td> <td width="2%">:</td> <td width="37%">'.$ts->div_name.'</td>
-
-</tr>
-
-
-
-<tr>
-
-<td width="11%">QID/VIsa No</td> <td width="2%">:</td> <td width="37%">'.$ts->emp_qatar_id_no.'</td>
-
-<td width="11%">Date Of Joining</td> <td width="2%">:</td> <td width="37%">'.date('d M Y',strtotime($ts->emp_date_of_join)).'</td>
+<td width="14%" class="no-border-r">Designation</td> <td width="2%" class="no-border">:</td> <td width="34%" class="no-border-l">'.$ts->emp_designation.'</td>
 
 </tr>
 
 
 <tr>
 
-<td width="11%">Passport No</td> <td width="2%">:</td> <td width="37%">'.$ts->emp_passport_no.'</td>
+<td width="14%">Name</td> <td width="2%">:</td> <td width="34%">'.$ts->emp_name.'</td>
 
-<td width="11%">Payment Mode</td> <td width="2%">:</td> <td width="37%">'.$ts->mop_title.'</td>
+<td width="14%">Department</td> <td width="2%">:</td> <td width="34%">'.$ts->div_name.'</td>
+
+</tr>
+
+
+
+<tr>
+
+<td width="14%">QID/VIsa No</td> <td width="2%">:</td> <td width="34%">'.$ts->emp_qatar_id_no.'</td>
+
+<td width="14%">Date Of Joining</td> <td width="2%">:</td> <td width="34%">'.date('d M Y',strtotime($ts->emp_date_of_join)).'</td>
+
+</tr>
+
+
+<tr>
+
+<td width="14%">Passport No</td> <td width="2%">:</td> <td width="34%">'.$ts->emp_passport_no.'</td>
+
+<td width="14%">Payment Mode</td> <td width="2%">:</td> <td width="34%">'.$ts->mop_title.'</td>
 
 </tr>
 

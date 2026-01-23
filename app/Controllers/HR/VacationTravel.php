@@ -504,6 +504,8 @@ class VacationTravel extends BaseController
 
         $return['insert_id'] = $vt_id;
 
+        $return['journal_id'] = $journal_id;
+
         }
 
         echo json_encode($return);
