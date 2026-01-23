@@ -2061,11 +2061,11 @@ $("body").on('keyup', '.add_prod_qty', function() {
         var rawPrice = total.toFixed(2);
 
         // Format with commas
-        var formattedPrice = Number(rawPrice).toLocaleString(undefined, { 
-            
-            
-            maximumFractionDigits: 2 });
+        //var formattedPrice = Number(rawPrice).toLocaleString(undefined, { maximumFractionDigits: 2 });
 
+         var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+             
+            console.log(formattedPrice);
 
         // Set formatted value in input
         $(".amount_total").val(formattedPrice);
