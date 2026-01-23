@@ -180,11 +180,7 @@
 <?php
 if (!empty($sales_orders)) {
 
-    $revenue = 0;
-    $cash_invoices = 0;
-    $credit_invoices = 0;
-    $sales_returns = 0;
-
+    $total_revenue = 0;   // ✅ FIXED
     $expenses_total = 0;
     $final_gross = 0;
 
@@ -200,31 +196,28 @@ if (!empty($sales_orders)) {
 
         if (!empty($sales_order->cash_invoice)) {
             foreach ($sales_order->cash_invoice as $cash_inv) {
-                $cash_invoices += $cash_inv->ci_total_amount;
                 $single_cash += $cash_inv->ci_total_amount;
             }
         }
 
         if (!empty($sales_order->credit_invoice)) {
             foreach ($sales_order->credit_invoice as $credit_inv) {
-                $credit_invoices += $credit_inv->cci_total_amount;
                 $single_credit += $credit_inv->cci_total_amount;
             }
         }
 
         if (!empty($sales_order->sales_return)) {
             foreach ($sales_order->sales_return as $sales_rut) {
-                $sales_returns += $sales_rut->sr_total;
                 $single_returns += $sales_rut->sr_total;
             }
         }
 
-        $revenue = ($cash_invoices + $credit_invoices) - $sales_returns;
-        $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
+        // ✅ ROW LEVEL REVENUE
+        $row_revenue = ($single_cash + $single_credit) - $single_returns;
 
-        /* 🔴 HIDE ROW IF REVENUE IS 50% GREATER THAN AMOUNT */
-        if ($invoice_revenue > 0 && $revenue >= ($invoice_revenue * 1.5)) {
-            continue; // skip this row
+        /* 🔴 HIDE ROW IF TOTAL REVENUE IS 50% GREATER THAN ROW */
+        if ($row_revenue > 0 && $total_revenue >= ($row_revenue * 1.5)) {
+            continue;
         }
 
         /* ================= EXPENSE CALCULATION ================= */
@@ -260,8 +253,10 @@ if (!empty($sales_orders)) {
 
         $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
 
-        $total_gross_profit = $invoice_revenue - $expenses;
+        $total_gross_profit = $row_revenue - $expenses;
 
+        // ✅ ADD ONLY VISIBLE ROWS
+        $total_revenue += $row_revenue;
         $expenses_total += $expenses;
         $final_gross += $total_gross_profit;
 ?>
@@ -277,7 +272,7 @@ if (!empty($sales_orders)) {
     <td class="text-center"><?= $sales_order->so_lpo ?></td>
     <td class="text-center"><?= $sales_order->se_name ?></td>
     <td class="text-center"><?= format_currency($sales_order->so_amount_total) ?></td>
-    <td class="text-end"><?= format_currency($invoice_revenue) ?></td>
+    <td class="text-end"><?= format_currency($row_revenue) ?></td>
     <td class="text-end"><?= format_currency($expenses) ?></td>
 </tr>
 <?php
@@ -287,7 +282,7 @@ if (!empty($sales_orders)) {
 <tr>
     <td>Total</td>
     <td colspan="6"></td>
-    <td class="text-end"><b><?= format_currency($revenue) ?></b></td>
+    <td class="text-end"><b><?= format_currency($total_revenue) ?></b></td>
     <td class="text-end"><b><?= format_currency($expenses_total) ?></b></td>
 </tr>
 <?php } ?>
