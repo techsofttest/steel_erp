@@ -177,254 +177,129 @@
                                             </thead>
                                             <?php  if(!empty($sales_orders)){?> 
                                             <tbody class="tbody_data">
-                                            <?php
-                                               
+<?php
+if (!empty($sales_orders)) {
 
-                                               
-                                                if(!empty($sales_orders))
-                                                {   
-                                                    $revenue =0 ;
+    $revenue = 0;
+    $cash_invoices = 0;
+    $credit_invoices = 0;
+    $sales_returns = 0;
 
-                                                    $cash_invoices = 0;
-                                                    $credit_invoices = 0;
-                                                    $sales_returns = 0;
+    $expenses_total = 0;
+    $final_gross = 0;
 
-                                                    $expenses_total =0;
+    $i = 1;
 
-                                                    $final_gross = 0;
+    foreach ($sales_orders as $sales_order) {
 
-                                                    $final_percentage = 0;
+        /* ================= INVOICE CALCULATION ================= */
 
-                                                    /*$expenses1 = 0;
-                                                    $expenses2 = 0;
-                                                    $expenses3 = 0;
-                                                    $expenses4 = 0;
-                                                    $expenses5 = 0;*/
-    
-                                                    $gross_profit1 = 0;
-                                                    $gross_profit2 = 0;
-                                                    $gross_profit3 = 0;
-                                                    $gross_profit4 = 0;
-                                                    $gross_profit5 = 0;
-    
-                                                    $percentage1 = 0;
-                                                    $percentage2 = 0;
-                                                    $percentage3 = 0;
-                                                    $percentage4 = 0;
-                                                    $percentage5 = 0;
+        $single_cash = 0;
+        $single_credit = 0;
+        $single_returns = 0;
 
-                                                    $i=1;
-                                                    $expense_cache = [];
-                                                    $calculated_so = [];
-                                                    foreach($sales_orders as $sales_order){
-                                                         
-                                                    ?> 
-                                                   
-                                                    <tr>
+        if (!empty($sales_order->cash_invoice)) {
+            foreach ($sales_order->cash_invoice as $cash_inv) {
+                $cash_invoices += $cash_inv->ci_total_amount;
+                $single_cash += $cash_inv->ci_total_amount;
+            }
+        }
 
-                                                        <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i;?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
-                                                       
-                                                        <td style="width: 300px; word-wrap: break-word; white-space: normal;"><?php echo $sales_order->cc_customer_name;?></td>
+        if (!empty($sales_order->credit_invoice)) {
+            foreach ($sales_order->credit_invoice as $credit_inv) {
+                $credit_invoices += $credit_inv->cci_total_amount;
+                $single_credit += $credit_inv->cci_total_amount;
+            }
+        }
 
-                                                      
+        if (!empty($sales_order->sales_return)) {
+            foreach ($sales_order->sales_return as $sales_rut) {
+                $sales_returns += $sales_rut->sr_total;
+                $single_returns += $sales_rut->sr_total;
+            }
+        }
 
+        $revenue = ($cash_invoices + $credit_invoices) - $sales_returns;
+        $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
 
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->so_lpo;?></td>
+        /* 🔴 HIDE ROW IF REVENUE IS 50% GREATER THAN AMOUNT */
+        if ($invoice_revenue > 0 && $revenue >= ($invoice_revenue * 1.5)) {
+            continue; // skip this row
+        }
 
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name;?></td>
+        /* ================= EXPENSE CALCULATION ================= */
 
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->so_amount_total;?></td>
-
-                                                        <?php
-
-                                                            $single_cash = 0;
-                                                            $single_credit = 0;
-                                                            $single_returns = 0;
-                                                            
-                                                           if(!empty($sales_order->cash_invoice)){
-                                                            
-                                                                foreach($sales_order->cash_invoice as $cash_inv){
-
-                                                                    $cash_invoices  += $cash_inv->ci_total_amount;
-
-                                                                    $single_cash += $cash_inv->ci_total_amount;
-                                                                }
-                                                            }
-
-
-                                                            if(!empty($sales_order->credit_invoice)){
-
-                                                                foreach($sales_order->credit_invoice as $credit_inv){
-
-                                                                    $credit_invoices += $credit_inv->cci_total_amount;
-
-                                                                    $single_credit += $credit_inv->cci_total_amount;
-                                                                }
-
-                                                            }
-
-
-                                                            if(!empty($sales_order->sales_return)){
-
-                                                                foreach($sales_order->sales_return as $sales_rut){
-
-                                                                   $sales_returns += $sales_rut->sr_total;
-
-                                                                   $single_returns += $sales_rut->sr_total;
- 
-                                                                }
-                                                            }
-
-                                                            $revenue = $cash_invoices + $credit_invoices;
-
-                                                            $revenue = $revenue - $sales_returns;
-                                                        
-                                                        ?>
-
-                                                        <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = ($single_cash + $single_credit) - $single_returns; echo format_currency($cash_credit); ?></td>
-
-
-                                                   <td colspan="1" align="left" class="p-0">
-      <table>
-        <?php
         $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-        /* PURCHASE VOUCHERS (USE SAME FIELD AS JOB PROFITABILITY) */
         if (!empty($sales_order->purchase_vouchers)) {
             foreach ($sales_order->purchase_vouchers as $pur_vouch) {
-                $expenses1 += (float)$pur_vouch->pvp_amount; // ✅ FIX
+                $expenses1 += (float)$pur_vouch->pvp_amount;
             }
         }
 
-        /* PURCHASE RETURN (USE SAME FIELD) */
         if (!empty($sales_order->purchase_return_prod)) {
             foreach ($sales_order->purchase_return_prod as $pv_prod) {
-                $expenses2 += (float)$pv_prod->prp_amount; // ✅ FIX
+                $expenses2 += (float)$pv_prod->prp_amount;
             }
         }
 
-        /* PETTY CASH */
         if (!empty($sales_order->petty_cash)) {
             foreach ($sales_order->petty_cash as $p_cash) {
                 $expenses3 += (float)$p_cash->pci_amount;
             }
         }
 
-        /* JOURNAL VOUCHER */
         if (!empty($sales_order->journal_voucher)) {
             foreach ($sales_order->journal_voucher as $jour_vouch) {
                 if (!empty($jour_vouch->ji_debit))
                     $expenses4 += (float)$jour_vouch->ji_debit;
-
                 if (!empty($jour_vouch->ji_credit))
                     $expenses5 += (float)$jour_vouch->ji_credit;
             }
         }
 
-        /* FINAL TOTAL EXPENSE */
         $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
-        ?>
 
-        <tr>
-            <td style="width:100px" class="text-end">
-                <?= format_currency($expenses); ?>
-            </td>
-        </tr>
-    </table>
-</td>
-<!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
+        $total_gross_profit = $invoice_revenue - $expenses;
 
-    
-    <?php
-$invoice_revenue = ($single_cash + $single_credit) - $single_returns;
-
-$row_revenue = $invoice_revenue;
-$total_gross_profit = $row_revenue - $expenses;
+        $expenses_total += $expenses;
+        $final_gross += $total_gross_profit;
 ?>
-
-
-        
-
-
-
-
-<?php 
-
-    $expenses_total  +=  $expenses; 
-    
-    $final_gross  +=  $total_gross_profit;
-
-   /*$final_percentage += $total_percentage;
-
-    if ($revenue > 0) {
-        $final_percentage1 = ($final_gross / $revenue) * 100;
-    } else {
-        $final_percentage1 = 0; 
-    }*/
-
-    /*if (!isset($calculated_so[$sales_order->so_id])) {
-
-    $expenses_total += $expenses;
-    $final_gross += $total_gross_profit;
-
-    $calculated_so[$sales_order->so_id] = true;
-}
-
-$final_percentage = 0;
-if ($revenue > 0) {
-    $final_percentage = ($final_gross / $revenue) * 100;
-}*/
-
-   /* if (!in_array($sales_order->so_id, $calculated_so)) {
-
-    $expenses_total += $expenses;
-    $final_gross += $total_gross_profit;
-
-    $calculated_so[] = $sales_order->so_id;
-}*/
-
-           
+<tr>
+    <td class="text-center"><?= $i ?></td>
+    <td class="text-center"><?= date('d-M-Y', strtotime($sales_order->so_date)) ?></td>
+    <td class="text-center">
+        <a href="<?= base_url(); ?>Crm/SalesOrder?view_so=<?= $sales_order->so_id ?>" target="_blank">
+            <?= $sales_order->so_reffer_no ?>
+        </a>
+    </td>
+    <td><?= $sales_order->cc_customer_name ?></td>
+    <td class="text-center"><?= $sales_order->so_lpo ?></td>
+    <td class="text-center"><?= $sales_order->se_name ?></td>
+    <td class="text-center"><?= $sales_order->so_amount_total ?></td>
+    <td class="text-end"><?= format_currency($invoice_revenue) ?></td>
+    <td class="text-end"><?= format_currency($expenses) ?></td>
+</tr>
+<?php
+        $i++;
+    }
 ?>
+<tr>
+    <td>Total</td>
+    <td colspan="6"></td>
+    <td class="text-end"><b><?= format_currency($revenue) ?></b></td>
+    <td class="text-end"><b><?= format_currency($expenses_total) ?></b></td>
+</tr>
+<?php } ?>
+</tbody>
 
-                                              
-                                                        
-                                                    </tr>
-                                                        
-                                                    <?php  $i++; } ?> 
-                                                    
-                                                    <tr>
-                                                        <td>Total</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
-                                                        <td class="text-end"><b><?php echo format_currency($expenses_total); ?></b></td>
-                                                       
-                                                      
-                                                    </tr>
-                                                    
-                                                <?php   } ?>
-                                            </tbody>
-
-                                            <?php }  else{ ?>
-
-
-                                                <tbody>
-                                                   
-                                                    <tr>
-                                                        <td colspan="10" class="not_found">No Data Found !!</td>
-                                                    </tr>
-
-                                                </tbody>
-                                                
-                                                
-                                            <?php } ?> 
-
+<?php if (empty($sales_orders)) { ?>
+<tbody>
+<tr>
+    <td colspan="10" class="not_found">No Data Found !!</td>
+</tr>
+</tbody>
+<?php } ?>
                                         </table>
                 
                                     </div>
@@ -434,7 +309,7 @@ if ($revenue > 0) {
                         </div>
 
                         
-                           <?php } ?> 
+                           <?php } }?> 
                             
 
                         <!---datatable section end-->
