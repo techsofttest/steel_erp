@@ -282,12 +282,12 @@ if (!empty($sales_order->purchase_vouchers)) {
 }
                                                         ?>
                                                         <td style="width: 300px; word-wrap: break-word; white-space: normal;">
-                                                            <?php echo $sales_order->cc_customer_name;?>
-                                                             <?php if (!empty($vendor_name)) { ?>
-        <br>
-        <small class="text-muted">
+                                                           <div><?php echo $sales_order->cc_customer_name; ?></div>
+
+    <?php if (!empty($vendor_name)) { ?>
+        <div class="text-muted" style="font-size: 12px;">
             Vendor: <?php echo $vendor_name; ?>
-        </small>
+        </div>
     <?php } ?>
                                                         </td>
 
