@@ -276,7 +276,7 @@ if (!empty($sales_orders)) {
     <td><?= $sales_order->cc_customer_name ?></td>
     <td class="text-center"><?= $sales_order->so_lpo ?></td>
     <td class="text-center"><?= $sales_order->se_name ?></td>
-    <td class="text-center"><?= $sales_order->so_amount_total ?></td>
+    <td class="text-center"><?= format_currency($sales_order->so_amount_total) ?></td>
     <td class="text-end"><?= format_currency($invoice_revenue) ?></td>
     <td class="text-end"><?= format_currency($expenses) ?></td>
 </tr>
