@@ -996,6 +996,8 @@ class CrmReportModel extends Model
 
         $query->join('pro_purchase_voucher','pro_purchase_voucher.pv_id =pro_purchase_voucher_prod.pvp_reffer_id','left');
 
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id = pro_purchase_voucher.pv_vendor_name','left');
+
         //$query->groupBy('pro_purchase_voucher.pv_reffer_id');
 
         $result = $query->get()->getResult();
