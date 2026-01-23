@@ -269,8 +269,27 @@
                                                         <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i;?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
-                                                       
-                                                        <td style="width: 300px; word-wrap: break-word; white-space: normal;"><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <?php
+                                                        $vendor_name = '';
+
+if (!empty($sales_order->purchase_vouchers)) {
+    foreach ($sales_order->purchase_vouchers as $pv) {
+        if (!empty($pv->vendor_name)) {
+            $vendor_name = $pv->vendor_name;
+            break; // take first vendor only
+        }
+    }
+}
+                                                        ?>
+                                                        <td style="width: 300px; word-wrap: break-word; white-space: normal;">
+                                                            <?php echo $sales_order->cc_customer_name;?>
+                                                             <?php if (!empty($vendor_name)) { ?>
+        <br>
+        <small class="text-muted">
+            Vendor: <?php echo $vendor_name; ?>
+        </small>
+    <?php } ?>
+                                                        </td>
 
                                                         <td colspan="1" align="left" class="p-0">
                                                             <table>
