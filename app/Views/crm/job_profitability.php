@@ -276,7 +276,7 @@ if (!empty($sales_order->purchase_vouchers)) {
     foreach ($sales_order->purchase_vouchers as $pv) {
         if (!empty($pv->cc_customer_name)) {
             $vendor_name = $pv->cc_customer_name;
-            break; // take first vendor only
+            //break; // take first vendor only
         }
     }
 }
