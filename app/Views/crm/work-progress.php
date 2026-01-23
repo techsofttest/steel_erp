@@ -168,7 +168,7 @@
                                                    
                                                     <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Value</th>
                                                     <th class="text-end"    style="white-space: nowrap;width:100px">Revenue</th>
                                                     <th class="text-end"    style="white-space: nowrap;width:100px" >Expenses</th>
                                                     
