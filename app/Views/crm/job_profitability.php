@@ -352,7 +352,7 @@
                                                                                 
                                                                 <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
                                                                     
-                                                                    <td  style="width:100px" ><?= $pv->pv_reffer_id ?> </td>
+                                                                    <td  style="width:100px" ><?= $pv->pv_vendor_inv ?> </td>
                                                                      
                                                                 </tr>
 
@@ -393,7 +393,7 @@
 
                                                                     <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
                                                                         <?php if ($index == 0){ ?>
-                                                                        <td  style="width:100px" ><?php echo $pc->pcv_voucher_no; ?> </td>
+                                                                        <td  style="width:100px"><?php echo $pc->pcv_voucher_no; ?></td>
                                                                         <?php } ?>
                                                                 
                                                                     </tr>  
@@ -409,8 +409,8 @@
                                                                       
                                                                     <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
                                                                         <?php if ($index == 0){ ?>
-                                                                        <td  style="width:100px" ><?php echo $jv->jv_voucher_no; ?> </td>
-                                                                         <?php }  ?>
+                                                                        <td  style="width:100px" ><?php echo $jv->jv_voucher_no; ?></td>
+                                                                        <?php }  ?>
                                                                     </tr>  
                                                                     
                                                                     <?php } }
@@ -478,8 +478,6 @@
                                                             <table>
                                                                 <?php if(!empty($sales_order->cash_invoice)){ ?>
                                                                     <?php foreach($sales_order->cash_invoice as $cash_inv){ 
-                                                                        
-                                                                       
                                                                     
                                                                     ?>
                                                                        <tr class="tr_height_eq" style="border-bottom: hidden !important"><td><?php echo format_currency($cash_inv->ci_total_amount); ?></td></tr>
@@ -493,12 +491,12 @@
                                                                     ?>
                                                                         <tr class="tr_height_eq" style="border-bottom: hidden !important"><td><?php echo format_currency($credit_inv->cci_total_amount); ?></td></tr>
 
-                                                                    <?php  }?>
+                                                                    <?php  } ?>
                                                                 <?php } ?>
 
                                                                 <?php if(!empty($sales_order->sales_return)){ ?>
                                                                     <?php foreach($sales_order->sales_return as $sales_rut){ ?>
-                                                                       <tr class="tr_height_eq" style="border-bottom: hidden !important"> <td>-<?php echo format_currency($sales_rut->sr_total); ?></td> </tr>
+                                                                       <tr class="tr_height_eq" style="border-bottom: hidden !important"><td>-<?php echo format_currency($sales_rut->sr_total); ?></td></tr>
                                                                     <?php } ?>
                                                                 <?php } ?>
                                                             </table>
@@ -538,6 +536,7 @@
                 for ($j = 0; $j < $credit_count-1; $j++) {
                     
                     echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
+
                 } ?>
 
 
@@ -590,13 +589,14 @@
 
                     if (!empty($pur_vouch->pvp_reffer_id)) {
 
-                       if (!isset($pvTotals[$pur_vouch->pvp_reffer_id])) {
+                        if (!isset($pvTotals[$pur_vouch->pvp_reffer_id])) {
 
                             $pvTotals[$pur_vouch->pvp_reffer_id] = 0;
                         }
                         $pvTotals[$pur_vouch->pvp_reffer_id] += $pur_vouch->pvp_amount;
                         $expenses1 += $pur_vouch->pvp_amount;
-        }
+
+                    }
                         
                        // $total_pur_vouch += $pur_vouch->pvp_amount;
 
