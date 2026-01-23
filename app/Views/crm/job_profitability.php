@@ -270,13 +270,12 @@
                                                         <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
                                                         <?php
-                                                        $vendor_name = '';
+                                                        $vendor_names = [];
 
 if (!empty($sales_order->purchase_vouchers)) {
     foreach ($sales_order->purchase_vouchers as $pv) {
         if (!empty($pv->cc_customer_name)) {
-            $vendor_name = $pv->cc_customer_name;
-            //break; // take first vendor only
+            $vendor_names[$pv->cc_customer_name] = true; // key avoids duplicates
         }
     }
 }
@@ -285,12 +284,15 @@ if (!empty($sales_order->purchase_vouchers)) {
 
     <span><?php echo $sales_order->cc_customer_name; ?></span>
 
-    <?php if (!empty($vendor_name)) { ?>
+     <?php if (!empty($vendor_names)) { ?>
+       <?php foreach (array_keys($vendor_names) as $vendor) { ?>
         <br>
         <br>
         <span>
-            Vendor: <?php echo $vendor_name; ?>
+            Vendor: <?php echo $vendor; ?>
         </span>
+    <?php } ?>
+
     <?php } ?>
 
 </td>
