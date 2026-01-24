@@ -190,8 +190,9 @@ class WorkProgress extends BaseController
         );
 
         
-        $data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'so_date',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive');  
-
+        //$data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'',$to_date,'so_date',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive');  
+         
+        $data['sales_orders'] = $this->crm_modal->job_summery('','',$to_date,'so_date',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive'); 
         
        // print_r($data['sales_orders']); exit();
 

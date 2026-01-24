@@ -86,7 +86,7 @@
 
                                                                             <tr>
                                                                                 <td>As on</td>
-                                                                                <td><input type="date" name="form_date" id="from_date_id" value="" onclick="this.showPicker();" class="form-control"></td>
+                                                                                <td><input type="date" name="to_date" id="from_date_id" value="" onclick="this.showPicker();" class="form-control"></td>
                                                                                 
                                                                             </tr>
 

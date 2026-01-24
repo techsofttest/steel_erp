@@ -934,6 +934,74 @@ class CrmReportModel extends Model
     }
 
 
+    public function job_summery($from_date,$from_date_col,$to_date,$to_date_col,$data1,$data1_col,$data2,$data2_col,$data3,$data3_col){
+        
+       
+        $query = $this->db->table('crm_sales_orders')
+
+        ->select('*');
+
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id=crm_sales_orders.so_customer','left');
+
+        $query->join('executives_sales_executive','executives_sales_executive.se_id =crm_sales_orders.so_sales_executive','left');
+
+        if (!empty($to_date)) {
+            $dt = \DateTime::createFromFormat('d-m-Y', $to_date);
+            if ($dt) {
+                $formatted_to_date = $dt->format('Y-m-d');
+            } else {
+                $formatted_to_date = $to_date;
+            }
+            $query->where('crm_sales_orders.' . $to_date_col . ' <=', $formatted_to_date);
+        }
+
+        if (!empty($data1)) {
+            $query->like($data1_col, $data1);
+        }
+
+        if (!empty($data2)) {
+            $query->like($data2_col, $data2);
+        }
+
+        if (!empty($data3)) {
+            $query->like($data3_col, $data3);
+        }
+
+       
+
+        $result = $query->get()->getResult();
+          
+
+
+        $i = 0;
+
+        foreach ($result as $res) {
+            
+            $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucher('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
+
+            $result[$i]->purchase_return_prod   = $this->FetchPurchaseReturnProd('pro_purchase_return_prod',array('prp_sales_order' => $res->so_reffer_no));
+
+            $result[$i]->petty_cash             = $this->FetchPettyCash('accounts_petty_cash_debits',array('pci_sales_order' => $res->so_id));
+
+            $result[$i]->journal_voucher        = $this->FetchJournalVoucher('accounts_journal_invoices',array('ji_sales_order_id' => $res->so_id));
+
+            $result[$i]->cash_invoice           = $this->FetchCashInvoice('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
+
+            $result[$i]->credit_invoice         = $this->FetchCreditInvoice('crm_credit_invoice',array('cci_sales_order' => $res->so_id));
+
+            $result[$i]->sales_return           = $this->FetchWhere('crm_sales_return',array('sr_sales_order' => $res->so_id));
+           
+            $i++;
+        }
+
+       
+
+
+        return $result;
+     
+    }
+
+
     public function FetchCreditInvoice($table,$cond){
 
 
