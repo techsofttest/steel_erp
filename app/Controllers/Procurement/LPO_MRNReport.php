@@ -951,25 +951,29 @@ class LPO_MRNReport extends BaseController
         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
+        $lpo_ref_no = !empty($_GET['lpo_ref_no']) ? $_GET['lpo_ref_no'] : "";
         if ($lpo_ref == "") {
             $resultCount = 10;
             $end = ($page - 1) * $resultCount;
             $start = $end + $resultCount;
             $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
         } else {
-            $cond = array('pop_purchase_order' => $lpo_ref);
+            $cond = array('pop_purchase_order' => $lpo_ref_no);
             $joins1 = array(
-                array(
+                array
+                (
                     'table' => 'crm_sales_orders',
                     'pk'    => 'so_id',
                     'fk'    => 'pop_sales_order',
                 ),
+                
             );
             $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond, 'so_reffer_no', $term, $joins1, 'pop_sales_order');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
     }
+    
 
     public function FetchProducts()
     {
