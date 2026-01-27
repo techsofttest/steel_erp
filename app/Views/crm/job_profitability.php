@@ -289,7 +289,7 @@ if (!empty($sales_order->purchase_vouchers)) {
         <br>
         <br>
         <span>
-            Vendor: <?php echo $vendor; ?>
+             <?php echo $vendor; ?>
         </span>
     <?php } ?>
 
