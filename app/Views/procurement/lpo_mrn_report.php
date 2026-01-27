@@ -839,83 +839,96 @@
         })
 
 
-        $(".lpo_ref").select2({
-            placeholder: "Select LPO Ref",
-            theme: "default form-control- customer_width",
-            dropdownParent: $('#LPO_MRNReport'),
-            ajax: {
-                url: "<?= base_url(); ?>Procurement/LPO_MRNReport/FetchLpoRef",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function(params) {
+     /* =========================================
+   1. LPO REF DROPDOWN
+   ========================================= */
+$(".lpo_ref").select2({
+    placeholder: "Select LPO Ref",
+    theme: "default form-control- customer_width",
+    dropdownParent: $('#LPO_MRNReport'),
+    ajax: {
+        url: "<?= base_url(); ?>Procurement/LPO_MRNReport/FetchLpoRef",
+        dataType: 'json',
+        delay: 250,
+        cache: false,
+        minimumInputLength: 1,
+        allowClear: true,
+        data: function(params) {
+            return {
+                vendor_id: $('.vendor_dropdown').val(),
+                term: params.term,
+                page: params.page || 1,
+            };
+        },
+        processResults: function(data, params) {
+            var page = params.page || 1;
+            return {
+                results: $.map(data.result, function(item) {
                     return {
-                        vendor_id: $('.vendor_dropdown').val(),
-                        term: params.term,
-                        page: params.page || 1,
+                        id: item.po_reffer_no, // Value of the option
+                        text: $.trim(item.po_reffer_no), // Display text
+                        
+                        // --- HERE IS THE TRICK ---
+                        // We attach the po_id to a custom property named 'custom_lpo_ref'
+                        // This effectively stores item.po_id inside the DOM for this selection
+                        custom_lpo_ref: item.po_id 
                     };
-                },
-                processResults: function(data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function(item) {
-                            return {
-                                id: item.po_reffer_no,
-                                text: $.trim(item.po_reffer_no) // <--- trim whitespace here
-                            };
-                        }),
-                        pagination: {
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
+                }),
+                pagination: {
+                    more: (page * 10) <= data.total_count
                 }
+            };
+        }
+    }
+});
 
-            }
+/* =========================================
+   2. SALES ORDER DROPDOWN
+   ========================================= */
+$(".sales_order").select2({
+    placeholder: "Select Sales Order",
+    theme: "default form-control- customer_width",
+    dropdownParent: $('#LPO_MRNReport'),
+    ajax: {
+        url: "<?= base_url(); ?>Procurement/LPO_MRNReport/FetchSalesOrder",
+        dataType: 'json',
+        delay: 250,
+        cache: false,
+        minimumInputLength: 1,
+        allowClear: true,
+        data: function(params) {
+            
+            // 1. Get the data object of the currently selected LPO
+            var selectedData = $('.lpo_ref').select2('data');
+            
+            // 2. Extract the 'custom_lpo_ref' (which holds item.po_id)
+            // We check if data exists [0] to avoid errors if nothing is selected
+            var poIdValue = (selectedData && selectedData.length > 0) ? selectedData[0].custom_lpo_ref : '';
 
-        })
-
-
-
-
-        /*product droup drown search*/
-        $(".sales_order").select2({
-            placeholder: "Select Sales Order",
-            theme: "default form-control- customer_width",
-            dropdownParent: $('#LPO_MRNReport'),
-            ajax: {
-                url: "<?= base_url(); ?>Procurement/LPO_MRNReport/FetchSalesOrder",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function(params) {
+            return {
+                // 3. Send it to the backend as 'lpo_ref'
+                lpo_ref: $('.lpo_ref').val(),
+                lpo_ref_no: poIdValue, 
+                term: params.term,
+                page: params.page || 1,
+            };
+        },
+        processResults: function(data, params) {
+            var page = params.page || 1;
+            return {
+                results: $.map(data.result, function(item) {
                     return {
-                        lpo_ref: $('.lpo_ref').val(),
-                        term: params.term,
-                        page: params.page || 1,
+                        id: item.so_id,
+                        text: $.trim(item.so_reffer_no)
                     };
-                },
-                processResults: function(data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function(item) {
-                            return {
-                                id: item.so_id,
-                                text: $.trim(item.so_reffer_no) // <--- trim whitespace here
-                            };
-                        }),
-                        pagination: {
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
+                }),
+                pagination: {
+                    more: (page * 10) <= data.total_count
                 }
-
-            }
-
-        })
+            };
+        }
+    }
+});
 
         /* product dropdown search */
         $(".product_clz").select2({

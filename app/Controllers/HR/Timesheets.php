@@ -1292,32 +1292,26 @@ class TimeSheets extends BaseController
 <body>
 
 
+
+
 <table class="no-border-table">
-
-<tr>
-
-<td rowspan="2" width="15%" style="background-color:white;">
-<!--<img src="'.base_url().'assets/images/logo-sm.png">-->
- <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" 
-         style="display:block; width:80px; height:80px;" alt="">
-</td>
-
-<td width="85%" style="line-height:1.8;" >
-
-<h2 style="text-align:left;" class="logo-text" style="color:white">AL FUZAIL ENGINEERING SERVICES WLL</h2>
-
-<p style="color:white">Tel : +974 4460 4254, Fax : +974 4029 8994</p>
-
-<p style="color:white">Post Box : 201978, Doha - State of Qatar</p>
-
-<p style="color:white">engineering@alfuzailgroup.com, www.alfuzailgroup.com</p>
-
-</td>
+        
+        <tr>
+        
+        <td>
+    
+        <h2>Al Fuzail Engineering Services WLL</h2>
+        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+        
+        
+        </td>
+        
+        </tr>
+    
+        </table>
 
 
-</tr>
-
-</table>
 
 <hr class="seperator"/>
 
@@ -1533,15 +1527,15 @@ class TimeSheets extends BaseController
 
 
 
-<table>
+<table width="100%">
 
   <tr class="head">
   
-  <td style="text-align:center;">Finance Dept</td>
+  <td width="33.33%" style="text-align:center;">Finance Dept</td>
   
-  <td style="text-align:center;">Operations Dept.</td>
+  <td width="33.33%" style="text-align:center;">Operations Dept.</td>
   
-  <td style="text-align:center;">Chief Executive Officer</td>
+  <td width="33.33%" style="text-align:center;">Chief Executive Officer</td>
   
   </tr>
 
