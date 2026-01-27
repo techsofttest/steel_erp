@@ -857,13 +857,32 @@ class JournalVouchers extends BaseController
 
     <td>'.$order->ca_account_id.'</td>
     
-    <td>'.$order->ji_narration.'</td>
+    <td>'.$order->ca_name.'</td>
 
-    <td align="right">'.format_currency((float)$debit).'</td>
+    <td align="right">'.(($debit > 0) ? format_currency((float)$debit) : '').'</td>
 
-    <td align="right">'.format_currency((float)$credit).'</td>
+    <td align="right">'.(($credit > 0) ? format_currency((float)$credit) : '').'</td>
 
     </tr>';
+
+    if(!empty($order->ji_narration))
+    {
+
+    $orders_sec .='<tr>
+    
+    <td></td>
+
+    <td></td>
+    
+    <td>'.$order->ji_narration.'</td>
+
+    <td align="right"></td>
+
+    <td align="right"></td>
+
+    </tr>';
+
+    }
 
 
     }
@@ -902,7 +921,7 @@ class JournalVouchers extends BaseController
         
         <td>
     
-        <h3>Al Fuzail Engineering Services WLL</h3>
+        <h2>Al Fuzail Engineering Services WLL</h2>
         <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
         <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
         
@@ -945,7 +964,7 @@ class JournalVouchers extends BaseController
         
         <td width="50%">
         
-        Date : '.date('d-m-Y',strtotime($jv->jv_date)).'
+        Date : '.date('d M Y',strtotime($jv->jv_date)).'
         
         </td>
         
@@ -953,6 +972,7 @@ class JournalVouchers extends BaseController
         </tr>
     
     
+        <!--
         <tr>
         
         <td width="50%">
@@ -961,8 +981,8 @@ class JournalVouchers extends BaseController
         
         </td>
         
-        
         </tr>
+        -->
     
     
     
@@ -1017,21 +1037,21 @@ class JournalVouchers extends BaseController
         </table>
     
     
-        <table>
-        
-        <tr>
-    
-        <td width="25%" style="padding-right:60px;">Prepared by : (print)</td>
-    
-        <td width="25%" style="padding-right:60px;">Received by:</td>
-    
-        <td width="25%" style="padding-right:60px;">Finance Manager</td>
-    
-        <td width="25%" style="padding-right:60px;">CEO</td>
-    
+        <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+        <td width="33.33%" style="text-align:center;">
+            Prepared by : (print)
+        </td>
+
+        <td width="33.33%" style="text-align:center;">
+            Finance Manager
+        </td>
+
+        <td width="33.33%" style="text-align:center;">
+            CEO
+        </td>
         </tr>
-    
-        </table>
+    </table>
 
         ';
 

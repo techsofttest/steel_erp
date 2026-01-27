@@ -532,7 +532,7 @@ class Payroll extends BaseController
 
                                       <th class="select2_parent" width="35%"> 
                                           
-                                      <input type="text" class="form-control" name="jv_account[]" value="Salaries And Wages" readonly>
+                                      <input type="text" class="form-control" name="jv_account[]" value="Salaries & Wages" readonly>
 
                                       </th>
                                       
