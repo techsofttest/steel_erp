@@ -181,10 +181,9 @@
 
     foreach ($sales_orders as $sales_order) {
 
-        /* ================= INVOICE CALCULATION ================= */
+        /* ================= INVOICE ================= */
 
-        $single_cash   = 0;
-        $single_credit = 0;
+        $single_cash = $single_credit = 0;
 
         if (!empty($sales_order->cash_invoice)) {
             foreach ($sales_order->cash_invoice as $cash_inv) {
@@ -200,7 +199,7 @@
 
         $row_revenue = $single_cash + $single_credit;
 
-        /* ================= EXPENSE CALCULATION ================= */
+        /* ================= EXPENSE ================= */
 
         $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
@@ -233,12 +232,14 @@
 
         $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
 
-        /* 🚫 HIDE ROWS WHERE EXPENSE IS ZERO */
-        if ($expenses <= 0) {
+        $sales_order_value = (float)$sales_order->so_amount_total;
+
+        /* 🚫 HIDE CONDITIONS */
+        if ($expenses <= 0 || $row_revenue > ($sales_order_value * 0.5)) {
             continue;
         }
 
-        /* ✅ TOTALS ONLY FOR DISPLAYED ROWS */
+        /* ✅ TOTALS ONLY FOR VISIBLE ROWS */
         $total_revenue  += $row_revenue;
         $expenses_total += $expenses;
 ?>
@@ -253,9 +254,9 @@
     <td><?= $sales_order->cc_customer_name ?></td>
     <td class="text-center"><?= $sales_order->so_lpo ?></td>
     <td class="text-center"><?= $sales_order->se_name ?></td>
-    <td class="text-center"><?= format_currency((float)$sales_order->so_amount_total) ?></td>
-    <td class="text-end"><?= format_currency((float)$row_revenue) ?></td>
-    <td class="text-end"><?= format_currency((float)$expenses) ?></td>
+    <td class="text-center"><?= format_currency($sales_order_value) ?></td>
+    <td class="text-end"><?= format_currency($row_revenue) ?></td>
+    <td class="text-end"><?= format_currency($expenses) ?></td>
 </tr>
 <?php
         $i++;
@@ -264,8 +265,8 @@
 <tr>
     <td><b>Total</b></td>
     <td colspan="6"></td>
-    <td class="text-end"><b><?= format_currency((float)$total_revenue) ?></b></td>
-    <td class="text-end"><b><?= format_currency((float)$expenses_total) ?></b></td>
+    <td class="text-end"><b><?= format_currency($total_revenue) ?></b></td>
+    <td class="text-end"><b><?= format_currency($expenses_total) ?></b></td>
 </tr>
 </tbody>
 <?php } else { ?>
@@ -282,6 +283,7 @@
     </div>
 </div>
 <?php } ?>
+
 
 
                         <!---datatable section end-->
