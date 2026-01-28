@@ -128,7 +128,7 @@
 
 
                          <!--datatable section start-->
-                        <?php if(!empty($_GET)){?> 
+                          <?php if(!empty($_GET)){?> 
 <div class="row">
     <div class="col-lg-12" style="padding:0px;">
         <div class="card">
@@ -233,6 +233,12 @@
 
         $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
 
+        /* 🚫 HIDE ROWS WHERE EXPENSE IS ZERO */
+        if ($expenses <= 0) {
+            continue;
+        }
+
+        /* ✅ TOTALS ONLY FOR DISPLAYED ROWS */
         $total_revenue  += $row_revenue;
         $expenses_total += $expenses;
 ?>
@@ -248,8 +254,6 @@
     <td class="text-center"><?= $sales_order->so_lpo ?></td>
     <td class="text-center"><?= $sales_order->se_name ?></td>
     <td class="text-center"><?= format_currency((float)$sales_order->so_amount_total) ?></td>
-
-    <!-- ✅ FIXED: 0 WILL NOW DISPLAY -->
     <td class="text-end"><?= format_currency((float)$row_revenue) ?></td>
     <td class="text-end"><?= format_currency((float)$expenses) ?></td>
 </tr>
