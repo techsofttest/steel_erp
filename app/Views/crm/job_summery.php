@@ -331,7 +331,7 @@
                                                         
                                                         ?>
 
-                                                        <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = ($single_cash + $single_credit)  echo format_currency($cash_credit); ?></td>
+                                                        <td class="text-end" style="white-space: nowrap;width:100px"><?php $cash_credit = ($single_cash + $single_credit) ; echo format_currency($cash_credit); ?></td>
 
 
                                                    <td colspan="1" align="left" class="p-0">
