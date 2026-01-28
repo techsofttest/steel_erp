@@ -213,7 +213,7 @@ if (!empty($sales_orders)) {
         }
 
         // ✅ ROW LEVEL REVENUE
-        $row_revenue = ($single_cash + $single_credit) - $single_returns;
+        $row_revenue = ($single_cash + $single_credit) ;
 
         /* 🔴 HIDE ROW IF TOTAL REVENUE IS 50% GREATER THAN ROW */
         if ($row_revenue > 0 && $total_revenue >= ($row_revenue * 1.5)) {
