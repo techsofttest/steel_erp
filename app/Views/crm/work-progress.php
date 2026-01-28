@@ -176,52 +176,50 @@
                                                  
                                                 </tr>
                                             </thead>
-                                            <?php  if(!empty($sales_orders)){?> 
-                                            <tbody class="tbody_data">
+                                         <?php if (!empty($sales_orders)) { ?>
+<tbody class="tbody_data">
 <?php
-if (!empty($sales_orders)) {
-
-    $total_revenue = 0;   // ✅ FIXED
-    $expenses_total = 0;
-    $final_gross = 0;
-
+    $total_revenue   = 0;
+    $expenses_total  = 0;
+    $final_gross     = 0;
     $i = 1;
 
     foreach ($sales_orders as $sales_order) {
 
         /* ================= INVOICE CALCULATION ================= */
 
-        $single_cash = 0;
-        $single_credit = 0;
+        $single_cash    = 0;
+        $single_credit  = 0;
         $single_returns = 0;
-        echo '<pre>';
-print_r($sales_order->cash_invoice);
-echo '</pre>';
+
+        // ✅ CASH INVOICE
         if (!empty($sales_order->cash_invoice)) {
             foreach ($sales_order->cash_invoice as $cash_inv) {
-                $single_cash += $cash_inv->ci_total_amount;
+                $single_cash += (float) $cash_inv->ci_total_amount;
             }
         }
 
+        // ✅ CREDIT INVOICE
         if (!empty($sales_order->credit_invoice)) {
             foreach ($sales_order->credit_invoice as $credit_inv) {
-                $single_credit += $credit_inv->cci_total_amount;
+                $single_credit += (float) $credit_inv->cci_total_amount;
             }
         }
 
+        // ✅ SALES RETURN
         if (!empty($sales_order->sales_return)) {
             foreach ($sales_order->sales_return as $sales_rut) {
-                $single_returns += $sales_rut->sr_total;
+                $single_returns += (float) $sales_rut->sr_total;
             }
         }
 
         // ✅ ROW LEVEL REVENUE
-        $row_revenue = ($single_cash + $single_credit) ;
+        $row_revenue = $single_cash + $single_credit;
 
-        /* 🔴 HIDE ROW IF TOTAL REVENUE IS 50% GREATER THAN ROW */
-        if ($row_revenue > 0 && $total_revenue >= ($row_revenue * 1.5)) {
-            continue;
-        }
+        // ❌ REMOVE WRONG FILTER (THIS WAS THE BUG)
+        // if ($row_revenue > 0 && $total_revenue >= ($row_revenue * 1.5)) {
+        //     continue;
+        // }
 
         /* ================= EXPENSE CALCULATION ================= */
 
@@ -229,28 +227,28 @@ echo '</pre>';
 
         if (!empty($sales_order->purchase_vouchers)) {
             foreach ($sales_order->purchase_vouchers as $pur_vouch) {
-                $expenses1 += (float)$pur_vouch->pvp_amount;
+                $expenses1 += (float) $pur_vouch->pvp_amount;
             }
         }
 
         if (!empty($sales_order->purchase_return_prod)) {
             foreach ($sales_order->purchase_return_prod as $pv_prod) {
-                $expenses2 += (float)$pv_prod->prp_amount;
+                $expenses2 += (float) $pv_prod->prp_amount;
             }
         }
 
         if (!empty($sales_order->petty_cash)) {
             foreach ($sales_order->petty_cash as $p_cash) {
-                $expenses3 += (float)$p_cash->pci_amount;
+                $expenses3 += (float) $p_cash->pci_amount;
             }
         }
 
         if (!empty($sales_order->journal_voucher)) {
             foreach ($sales_order->journal_voucher as $jour_vouch) {
                 if (!empty($jour_vouch->ji_debit))
-                    $expenses4 += (float)$jour_vouch->ji_debit;
+                    $expenses4 += (float) $jour_vouch->ji_debit;
                 if (!empty($jour_vouch->ji_credit))
-                    $expenses5 += (float)$jour_vouch->ji_credit;
+                    $expenses5 += (float) $jour_vouch->ji_credit;
             }
         }
 
@@ -258,10 +256,10 @@ echo '</pre>';
 
         $total_gross_profit = $row_revenue - $expenses;
 
-        // ✅ ADD ONLY VISIBLE ROWS
-        $total_revenue += $row_revenue;
+        // ✅ ADD TOTALS ONLY FOR DISPLAYED ROWS
+        $total_revenue  += $row_revenue;
         $expenses_total += $expenses;
-        $final_gross += $total_gross_profit;
+        $final_gross    += $total_gross_profit;
 ?>
 <tr>
     <td class="text-center"><?= $i ?></td>
@@ -276,7 +274,7 @@ echo '</pre>';
     <td class="text-center"><?= $sales_order->se_name ?></td>
     <td class="text-center"><?= format_currency($sales_order->so_amount_total) ?></td>
     <td class="text-center"><?= format_currency($single_cash) ?></td>
-    <td class="text-end"><?= format_currency($row_revenue) ?>-<?= $single_cash; ?>-<?= $single_credit;?></td>
+    <td class="text-end"><?= format_currency($row_revenue) ?></td>
     <td class="text-end"><?= format_currency($expenses) ?></td>
 </tr>
 <?php
@@ -284,13 +282,14 @@ echo '</pre>';
     }
 ?>
 <tr>
-    <td>Total</td>
+    <td><b>Total</b></td>
     <td colspan="6"></td>
     <td class="text-end"><b><?= format_currency($total_revenue) ?></b></td>
+    <td></td>
     <td class="text-end"><b><?= format_currency($expenses_total) ?></b></td>
 </tr>
-<?php } ?>
 </tbody>
+<?php } ?>
 
 <?php if (empty($sales_orders)) { ?>
 <tbody>
@@ -308,7 +307,7 @@ echo '</pre>';
                         </div>
 
                         
-                           <?php } }?> 
+                           <?php } ?> 
                             
 
                         <!---datatable section end-->
