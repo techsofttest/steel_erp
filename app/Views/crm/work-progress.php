@@ -194,7 +194,9 @@ if (!empty($sales_orders)) {
         $single_cash = 0;
         $single_credit = 0;
         $single_returns = 0;
-
+        echo '<pre>';
+print_r($sales_order->cash_invoice);
+echo '</pre>';
         if (!empty($sales_order->cash_invoice)) {
             foreach ($sales_order->cash_invoice as $cash_inv) {
                 $single_cash += $cash_inv->ci_total_amount;
