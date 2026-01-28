@@ -272,30 +272,33 @@
                                                         <?php
                                                         $vendor_names = [];
 
-if (!empty($sales_order->purchase_vouchers)) {
-    foreach ($sales_order->purchase_vouchers as $pv) {
-        if (!empty($pv->cc_customer_name)) {
-            $vendor_names[$pv->cc_customer_name] = true; // key avoids duplicates
-        }
-    }
-}
+                                                        if (!empty($sales_order->purchase_vouchers)) {
+                                                            foreach ($sales_order->purchase_vouchers as $pv) {
+                                                                if (!empty($pv->cc_customer_name)) {
+                                                                    $vendor_names[$pv->cc_customer_name] = true; 
+                                                                }
+                                                            }
+                                                        }
+
                                                         ?>
+
                                                         <td style="width: 300px; word-wrap: break-word; white-space: normal;">
 
-    <span><?php echo $sales_order->cc_customer_name; ?></span>
+                                                            <span><?php echo $sales_order->cc_customer_name; ?></span>
 
-     <?php if (!empty($vendor_names)) { ?>
-       <?php foreach (array_keys($vendor_names) as $vendor) { ?>
-        <br>
-        <br>
-        <span>
-             <?php echo $vendor; ?>
-        </span>
-    <?php } ?>
+                                                            <?php if (!empty($vendor_names)) { ?>
+                                                            <?php foreach (array_keys($vendor_names) as $vendor) { ?>
+                                                                <br>
+                                                                <br>
+                                                                <span>
+                                                                    <?php echo $vendor; ?>
+                                                                </span>
+                                                            <?php } ?>
 
-    <?php } ?>
+                                                            <?php } ?>
 
-</td>
+                                                        </td>
+
 
                                                         <td colspan="1" align="left" class="p-0">
                                                             <table>
@@ -316,25 +319,23 @@ if (!empty($sales_order->purchase_vouchers)) {
 
                                                                                         
 
-                                                                } }
+                                                                } } 
                                                                 
                                                                 if(!empty($sales_order->credit_invoice)){
 
                                                                     foreach($sales_order->credit_invoice as $credit_val){ 
-                                                                    
+                                                                   
                                                                         
                                                                     ?>
 
                                                                         <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
                                                                     
-                                                                            <td  style="width:100px" ><?php echo $credit_val->cci_reffer_no; ?> </td>
+                                                                            <td  style="width:100px" ><?php echo $credit_val->cci_reffer_no; ?></td>
 
                                                                         </tr>
 
                                                                         <?php
-
-
-                                                                       
+   
 
                                                                   
                                                                   } } ?>
@@ -459,7 +460,7 @@ if (!empty($sales_order->purchase_vouchers)) {
                                                             $single_credit = 0;
                                                             $single_returns = 0;
                                                             
-                                                           if(!empty($sales_order->cash_invoice)){
+                                                            if(!empty($sales_order->cash_invoice)){
                                                             
                                                                 foreach($sales_order->cash_invoice as $cash_inv){
 
