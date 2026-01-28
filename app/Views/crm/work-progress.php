@@ -169,6 +169,7 @@
                                                     <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Value</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Cash Invoice</th>
                                                     <th class="text-end"    style="white-space: nowrap;width:100px">Revenue</th>
                                                     <th class="text-end"    style="white-space: nowrap;width:100px" >Expenses</th>
                                                     
@@ -272,6 +273,7 @@ if (!empty($sales_orders)) {
     <td class="text-center"><?= $sales_order->so_lpo ?></td>
     <td class="text-center"><?= $sales_order->se_name ?></td>
     <td class="text-center"><?= format_currency($sales_order->so_amount_total) ?></td>
+    <td class="text-center"><?= format_currency($single_cash) ?></td>
     <td class="text-end"><?= format_currency($row_revenue) ?>-<?= $single_cash; ?>-<?= $single_credit;?></td>
     <td class="text-end"><?= format_currency($expenses) ?></td>
 </tr>
