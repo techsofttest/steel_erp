@@ -112,243 +112,204 @@ class MRN_PVReport extends BaseController
     }
 
 
-    //fetch data
-    public function GetData()
+public function GetData()
     {
+        // ... [Your existing inputs for dates, vendor, etc stay exactly the same] ...
+        if (!empty($_GET['form_date'])) { $from_date = $_GET['form_date']; } else { $from_date = ""; }
+        if (!empty($_GET['to_date'])) { $to_date = $_GET['to_date']; } else { $to_date = ""; }
+        if (!empty($_GET['vendor'])) { $data1 = $_GET['vendor']; } else { $data1 = ""; }
+        if (!empty($_GET['sales_order'])) { $data2 = $_GET['sales_order']; } else { $data2 = ""; }
+        if (!empty($_GET['lpo_ref'])) { $data3 = $_GET['lpo_ref']; } else { $data3 = ""; }
+        if (!empty($_GET['product'])) { $data5 = $_GET['product']; } else { $data5 = ""; }
+        if (!empty($_GET['pending'])) { $data6 = $_GET['pending']; } else { $data6 = ""; }
+        if (!empty($_GET['linked'])) { $data7 = $_GET['linked']; } else { $data7 = ""; }
 
-        //Filter 
-
-
-        if (!empty($_GET['form_date'])) {
-            $from_date = $_GET['form_date'];
-        } else {
-            $from_date = "";
-        }
-
-
-
-        if (!empty($_GET['to_date'])) {
-            $to_date = $_GET['to_date'];
-        } else {
-            $to_date = "";
-        }
-
-        if (!empty($_GET['vendor'])) {
-            $data1 = $_GET['vendor'];
-        } else {
-            $data1 = "";
-        }
-
-
-
-        if (!empty($_GET['sales_order'])) {
-            $data2 = $_GET['sales_order'];
-        } else {
-            $data2 = "";
-        }
-
-        if (!empty($_GET['lpo_ref'])) {
-            $data3 = $_GET['lpo_ref'];
-        } else {
-            $data3 = "";
-        }
-
-        if (!empty($_GET['product'])) {
-            $data5 = $_GET['product'];
-        } else {
-            $data5 = "";
-        }
-
-
-
-        if (!empty($_GET['pending'])) {
-            $data6 = $_GET['pending'];
-        } else {
-            $data6 = "";
-        }
-
-
-
-        if (!empty($_GET['linked'])) {
-            $data7 = $_GET['linked'];
-        } else {
-            $data7 = "";
-        }
-
-
+        // Standard Joins
         $joins = array(
-
-            array(
-                'table' => 'pro_material_received_note',
-                'pk'    => 'mrn_id',
-                'fk'    => 'rnp_material_received_note',
-            ),
-
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_details',
-                'fk'    => 'rnp_product_desc',
-            ),
-
-            array(
-                'table' => 'pro_purchase_order',
-                'pk'    => 'po_id',
-                'fk'    => 'rnp_purchase_id',
-            ),
-
+            array('table' => 'pro_material_received_note', 'pk' => 'mrn_id', 'fk' => 'rnp_material_received_note'),
+            array('table' => 'crm_products', 'pk' => 'product_details', 'fk' => 'rnp_product_desc'),
+            array('table' => 'pro_purchase_order', 'pk' => 'po_id', 'fk' => 'rnp_purchase_id'),
         );
-
 
         $joins1 = array(
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_details',
-                'fk'    => 'rnp_product_desc',
-            ),
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_reffer_no',
-                'fk'    => 'rnp_sales_order',
-            ),
-
-            array(
-                'table' => 'pro_purchase_order_product',
-                'pk'    => 'pop_id',
-                'fk'    => 'rnp_purchase_prod_id',
-            ),
-
-
+            array('table' => 'crm_products', 'pk' => 'product_details', 'fk' => 'rnp_product_desc'),
+            array('table' => 'crm_sales_orders', 'pk' => 'so_reffer_no', 'fk' => 'rnp_sales_order'),
+            array('table' => 'pro_purchase_order_product', 'pk' => 'pop_id', 'fk' => 'rnp_purchase_prod_id'),
         );
 
-        //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
-
-        // $data['purchase_order'] = $this->pro_model->CheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec',$data3,'pv_purchase_order','steel_pro_purchase_voucher_prod',$joins,'pvp_id',$joins1);  
-
+        // Fetch Data
         $data['purchase_order'] = $this->pro_model->MRN_PVCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'mrn_vendor_name', $data2, 'rnp_sales_order', $data5, 'rnp_product_desc', $data3, 'mrn_purchase_order', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
 
         $new_order = [];
 
-       foreach ($data['purchase_order'] as $orders) {
+        foreach ($data['purchase_order'] as $orders) {
 
-    $pv_join = [
-        [
-            'table' => 'pro_purchase_voucher',
-            'pk'    => 'pv_id',
-            'fk'    => 'pvp_reffer_id',
-        ],
-    ];
+            // 1. Fetch ALL Vouchers (PVPs) for this MRN
+            // We do this once per MRN to be efficient and get the join data (pv_reffer_no etc)
+            $pv_join = [
+                [
+                    'table' => 'pro_purchase_voucher',
+                    'pk'    => 'pv_id',
+                    'fk'    => 'pvp_reffer_id',
+                ],
+            ];
 
-    $mrns = $this->common_model->FetchWhereJoin(
-        'pro_purchase_voucher_prod',
-        ['pvp_mat_rec_id' => $orders->mrn_id],
-        $pv_join
-    );
+            $all_pvps = $this->common_model->FetchWhereJoin(
+                'pro_purchase_voucher_prod',
+                ['pvp_mat_rec_id' => $orders->mrn_id],
+                $pv_join
+            );
 
-    // Index PVP rows by MRN product ID for fast lookup
-    $pvpMap = [];
-    foreach ($mrns as $pvp) {
-        $pvpMap[$pvp->pvp_mat_rec_note_prod_id] = $pvp;
-    }
-
-    // Merge ONLY matching PVP data
-    if (!empty($orders->product_orders)) {
-        // echo '<pre>';
-        // print_r($orders->product_orders);
-        foreach ($orders->product_orders as $i => $product) {
-
-            $prodId = $product->rnp_id;
-
-            if (isset($pvpMap[$prodId])) {
-                foreach ($pvpMap[$prodId] as $key => $value) {
-                    if (!property_exists($product, $key)) {
-                        $product->$key = $value;
+            // 2. Map PVPs by RNP ID so we can match them to products easily
+            $pvpMap = [];    // For merging properties (last one wins if multiple)
+            $pvpTotals = []; // For calculating total paid amount per RNP
+            
+            if (!empty($all_pvps)) {
+                foreach ($all_pvps as $pvp) {
+                    $rnp_id = $pvp->pvp_mat_rec_note_prod_id;
+                    
+                    // Store object for merging later
+                    $pvpMap[$rnp_id] = $pvp;
+                    
+                    // Sum up the amount
+                    if (!isset($pvpTotals[$rnp_id])) {
+                        $pvpTotals[$rnp_id] = 0;
                     }
+                    $pvpTotals[$rnp_id] += (float)$pvp->pvp_amount;
                 }
             }
 
-            $orders->product_orders[$i] = $product;
+            // 3. Process Products
+            $mrn_is_fully_linked = true; 
+            $mrn_has_pending_items = false;
+            $processed_products = [];
+
+            if (!empty($orders->product_orders)) {
+
+                foreach ($orders->product_orders as $product) {
+                    
+                    $rnp_id = $product->rnp_id;
+
+                    // --- A. MERGE PVP DATA INTO PRODUCT ---
+                    // This puts pv_reffer_no, pvp_id, etc into the product object for the View
+                    if (isset($pvpMap[$rnp_id])) {
+                        $matching_pvp = $pvpMap[$rnp_id];
+                        foreach ($matching_pvp as $key => $value) {
+                            // Don't overwrite existing RNP fields
+                            if (!property_exists($product, $key)) {
+                                $product->$key = $value;
+                            }
+                        }
+                    }
+
+                    // --- B. CALCULATE LINKED/PENDING STATUS ---
+                    $total_vouchered = isset($pvpTotals[$rnp_id]) ? $pvpTotals[$rnp_id] : 0;
+                    $rnp_amount      = (float)$product->rnp_amount; 
+
+                    // Precision rounding to avoid floating point errors
+                    $balance = round($rnp_amount - $total_vouchered, 2);
+
+                    if ($balance > 0) {
+                        // It is Pending
+                        $product->is_line_pending = true;
+                        $product->is_line_linked  = false;
+                        
+                        $mrn_has_pending_items = true;
+                        $mrn_is_fully_linked   = false;
+                    } else {
+                        // It is Linked (Fully Paid)
+                        $product->is_line_pending = false;
+                        $product->is_line_linked  = true;
+                    }
+
+                    $product->balance_amount = $balance;
+                    
+                    $processed_products[] = $product;
+                }
+            }
+
+            $orders->product_orders = $processed_products;
+            $orders->is_fully_linked = $mrn_is_fully_linked;
+            $orders->has_pending = $mrn_has_pending_items;
+
+            $new_order[] = $orders;
         }
-    }
-
-    $new_order[] = $orders;
-}
-
-$data['purchase_order'] = $new_order;
-
-
 
         $data['purchase_order'] = $new_order;
 
 
+        // ---------------------------------------------------------
+        // FILTERING LOGIC
+        // ---------------------------------------------------------
 
         if ($data6 != "" || $data7 != "") {
+            
+            $filteredData = [];
 
-            if ($data6 != "") {
-                // Filter the array to remove instances where 'mrn_id' is empty
-                $filterdata = array_filter($data['purchase_order'], function ($item) {
-                    return empty($item->pv_id);
-                });
+            foreach ($data['purchase_order'] as $mrn) {
+
+                if (empty($mrn->product_orders)) continue;
+
+                $include_mrn = false;
+                $final_products = [];
+
+                // CASE 1: Show Everything
+                if ($data6 != "" && $data7 != "") {
+                    $include_mrn = true;
+                    $final_products = $mrn->product_orders;
+                }
+                
+                // CASE 2: Pending Selected ($data6)
+                // RULE: Show MRN if it has pending items. REMOVE linked items from the display.
+                elseif ($data6 != "") {
+                    if ($mrn->has_pending) {
+                        foreach($mrn->product_orders as $prod) {
+                            if ($prod->is_line_pending) {
+                                $final_products[] = $prod;
+                            }
+                        }
+                        if (count($final_products) > 0) {
+                            $include_mrn = true;
+                        }
+                    }
+                }
+
+                // CASE 3: Linked Selected ($data7)
+                // RULE: Only display MRNs where ALL RNPs are linked.
+                elseif ($data7 != "") {
+                    if ($mrn->is_fully_linked) {
+                        $include_mrn = true;
+                        $final_products = $mrn->product_orders;
+                    }
+                }
+
+                if ($include_mrn) {
+                    $mrn->product_orders = $final_products;
+                    $filteredData[] = $mrn;
+                }
             }
 
-            if ($data7 != "") {
-                // Filter the array to remove instances where 'mrn_id' is empty
-                $filterdata = array_filter($data['purchase_order'], function ($item) {
-                    return !empty($item->pv_id);
-                });
-            }
-
-            if ($data7 != "" && $data6 != "") {
-                // Filter the array to remove instances where 'mrn_id' is empty
-                $filterdata = $data['purchase_order'];
-            }
-
-            $data['purchase_order'] = $filterdata;
-        }
-
-        // echo '<pre>';
-
-        // print_r($data['purchase_order']);
-        // exit;
-
-
-        if (!empty($from_date)) {
-            $data['from_dates'] = date('d-M-Y', strtotime($from_date));
-        } else {
-            $data['from_dates'] = "";
+            $data['purchase_order'] = $filteredData;
         }
 
 
-        if (!empty($to_date)) {
-            $data['to_dates'] = date('d-M-Y', strtotime($to_date));
-        } else {
-            $data['to_dates'] = "";
-        }
+        
+        // ... [Rest of your view loading code] ...
+        if (!empty($from_date)) { $data['from_dates'] = date('d-M-Y', strtotime($from_date)); } else { $data['from_dates'] = ""; }
+        if (!empty($to_date)) { $data['to_dates'] = date('d-M-Y', strtotime($to_date)); } else { $data['to_dates'] = ""; }
 
         $cond = array('so_deliver_flag' => 0);
-
         $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation', 'cc_id', 'desc');
-
-        $cond = array('so_deliver_flag' => 0);
-
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
-
         $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
-
         $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-        if (!empty($_POST['pdf'])) {
-            $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']);
-        }
-
-        if (!empty($_POST['excel'])) {
-            $this->Excel($data['purchase_order']);
-        }
+        if (!empty($_POST['pdf'])) { $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']); }
+        if (!empty($_POST['excel'])) { $this->Excel($data['purchase_order']); }
 
         $data['content'] = view('procurement/mrn_pv_report', $data);
-
         return view('crm/report-module-search', $data);
     }
-
 
     // Fetch Lpo Ref based on Vendor ID
     public function fetch_lpo_ref()
@@ -560,7 +521,7 @@ $data['purchase_order'] = $new_order;
                     $rnp_amt += $prod_del->rnp_amount ?? 0;
 
 
-                
+
 
 
                     $pdf_data .= "<td style='text-align:right;";
