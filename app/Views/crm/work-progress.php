@@ -285,7 +285,7 @@
     <td><b>Total</b></td>
     <td colspan="6"></td>
     <td class="text-end"><b><?= format_currency($total_revenue) ?></b></td>
-    <td></td>
+    
     <td class="text-end"><b><?= format_currency($expenses_total) ?></b></td>
 </tr>
 </tbody>
