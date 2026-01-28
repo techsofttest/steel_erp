@@ -128,98 +128,77 @@
 
 
                          <!--datatable section start-->
-                           <?php if(!empty($_GET)){?> 
-                        <div class="row">
-                            <div class="col-lg-12" style="padding:0px;">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View  Work In Progress <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
-                                        
-                                        <form method="POST" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button type="submit" class="pdf_button report_button">PDF</button>
-                                        </form>
+                        <?php if(!empty($_GET)){?> 
+<div class="row">
+    <div class="col-lg-12" style="padding:0px;">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">
+                    View Work In Progress
+                    <?php if(!empty($from_dates) && !empty($to_dates)){?>
+                        (<?php echo $from_dates;?> To <?php echo $to_dates;?>)
+                    <?php } ?>
+                </h4>
 
-                                        <!-- <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1"> -->
-                                        <button class="excel_button report_button" type="submit">Excel</button>
-                                        <!-- </form> -->
+                <form method="POST" target="_blank">
+                    <input type="hidden" name="pdf" value="1">
+                    <button type="submit" class="pdf_button report_button">PDF</button>
+                </form>
 
-                                        <!--<form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">-->
-                                            <button class="print_button report_button" type="submit">Print</button>
-                                        <!--</form>-->
+                <button class="excel_button report_button" type="submit">Excel</button>
+                <button class="print_button report_button" type="submit">Print</button>
+                <button class="email_button report_button" type="submit" id="email_button">Email</button>
 
-                                        <!-- <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1"> -->
-                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
-                                        
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#JobProfitability" class="btn btn-primary py-1">Search</button>
-                                    </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
-                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                            <thead>
-                                                <tr>
-                                                    
-                                                    <th class="no-sort"  class="no-sort text-center" style="white-space: nowrap;width:40px;text-align: center;">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:300px">Customer Name</th>
-                                                   
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Value</th>
-                                                    
-                                                    <th class="text-end"    style="white-space: nowrap;width:100px">Revenue</th>
-                                                    <th class="text-end"    style="white-space: nowrap;width:100px" >Expenses</th>
-                                                    
-                                                 
-                                                </tr>
-                                            </thead>
-                                         <?php if (!empty($sales_orders)) { ?>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#JobProfitability"
+                        class="btn btn-primary py-1">Search</button>
+            </div>
+
+            <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
+                <table id="DataTable"
+                       class="table table-bordered table-striped delTable display dataTable"
+                       style="table-layout:fixed;">
+
+                    <thead>
+                        <tr>
+                            <th style="width:40px;text-align:center;">Sl no</th>
+                            <th class="text-center" style="width:70px">Date</th>
+                            <th class="text-center" style="width:100px">Sales Order Ref</th>
+                            <th class="text-center" style="width:300px">Customer Name</th>
+                            <th class="text-center" style="width:100px">LPO Ref</th>
+                            <th class="text-center" style="width:100px">Sales Executive</th>
+                            <th class="text-center" style="width:100px">Sales Order Value</th>
+                            <th class="text-end" style="width:100px">Revenue</th>
+                            <th class="text-end" style="width:100px">Expenses</th>
+                        </tr>
+                    </thead>
+
+<?php if (!empty($sales_orders)) { ?>
 <tbody class="tbody_data">
 <?php
-    $total_revenue   = 0;
-    $expenses_total  = 0;
-    $final_gross     = 0;
+    $total_revenue  = 0;
+    $expenses_total = 0;
     $i = 1;
 
     foreach ($sales_orders as $sales_order) {
 
         /* ================= INVOICE CALCULATION ================= */
 
-        $single_cash    = 0;
-        $single_credit  = 0;
-        $single_returns = 0;
+        $single_cash   = 0;
+        $single_credit = 0;
 
-        // ✅ CASH INVOICE
         if (!empty($sales_order->cash_invoice)) {
             foreach ($sales_order->cash_invoice as $cash_inv) {
-                $single_cash += (float) $cash_inv->ci_total_amount;
+                $single_cash += (float)$cash_inv->ci_total_amount;
             }
         }
 
-        // ✅ CREDIT INVOICE
         if (!empty($sales_order->credit_invoice)) {
             foreach ($sales_order->credit_invoice as $credit_inv) {
-                $single_credit += (float) $credit_inv->cci_total_amount;
+                $single_credit += (float)$credit_inv->cci_total_amount;
             }
         }
 
-        // ✅ SALES RETURN
-        if (!empty($sales_order->sales_return)) {
-            foreach ($sales_order->sales_return as $sales_rut) {
-                $single_returns += (float) $sales_rut->sr_total;
-            }
-        }
-
-        // ✅ ROW LEVEL REVENUE
         $row_revenue = $single_cash + $single_credit;
-
-        // ❌ REMOVE WRONG FILTER (THIS WAS THE BUG)
-        // if ($row_revenue > 0 && $total_revenue >= ($row_revenue * 1.5)) {
-        //     continue;
-        // }
 
         /* ================= EXPENSE CALCULATION ================= */
 
@@ -227,39 +206,35 @@
 
         if (!empty($sales_order->purchase_vouchers)) {
             foreach ($sales_order->purchase_vouchers as $pur_vouch) {
-                $expenses1 += (float) $pur_vouch->pvp_amount;
+                $expenses1 += (float)$pur_vouch->pvp_amount;
             }
         }
 
         if (!empty($sales_order->purchase_return_prod)) {
             foreach ($sales_order->purchase_return_prod as $pv_prod) {
-                $expenses2 += (float) $pv_prod->prp_amount;
+                $expenses2 += (float)$pv_prod->prp_amount;
             }
         }
 
         if (!empty($sales_order->petty_cash)) {
             foreach ($sales_order->petty_cash as $p_cash) {
-                $expenses3 += (float) $p_cash->pci_amount;
+                $expenses3 += (float)$p_cash->pci_amount;
             }
         }
 
         if (!empty($sales_order->journal_voucher)) {
             foreach ($sales_order->journal_voucher as $jour_vouch) {
                 if (!empty($jour_vouch->ji_debit))
-                    $expenses4 += (float) $jour_vouch->ji_debit;
+                    $expenses4 += (float)$jour_vouch->ji_debit;
                 if (!empty($jour_vouch->ji_credit))
-                    $expenses5 += (float) $jour_vouch->ji_credit;
+                    $expenses5 += (float)$jour_vouch->ji_credit;
             }
         }
 
         $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
 
-        $total_gross_profit = $row_revenue - $expenses;
-
-        // ✅ ADD TOTALS ONLY FOR DISPLAYED ROWS
         $total_revenue  += $row_revenue;
         $expenses_total += $expenses;
-        $final_gross    += $total_gross_profit;
 ?>
 <tr>
     <td class="text-center"><?= $i ?></td>
@@ -272,10 +247,11 @@
     <td><?= $sales_order->cc_customer_name ?></td>
     <td class="text-center"><?= $sales_order->so_lpo ?></td>
     <td class="text-center"><?= $sales_order->se_name ?></td>
-    <td class="text-center"><?= format_currency($sales_order->so_amount_total) ?></td>
-    
-    <td class="text-end"><?= format_currency($row_revenue) ?></td>
-    <td class="text-end"><?= format_currency($expenses) ?></td>
+    <td class="text-center"><?= format_currency((float)$sales_order->so_amount_total) ?></td>
+
+    <!-- ✅ FIXED: 0 WILL NOW DISPLAY -->
+    <td class="text-end"><?= format_currency((float)$row_revenue) ?></td>
+    <td class="text-end"><?= format_currency((float)$expenses) ?></td>
 </tr>
 <?php
         $i++;
@@ -284,31 +260,25 @@
 <tr>
     <td><b>Total</b></td>
     <td colspan="6"></td>
-    <td class="text-end"><b><?= format_currency($total_revenue) ?></b></td>
-    
-    <td class="text-end"><b><?= format_currency($expenses_total) ?></b></td>
+    <td class="text-end"><b><?= format_currency((float)$total_revenue) ?></b></td>
+    <td class="text-end"><b><?= format_currency((float)$expenses_total) ?></b></td>
 </tr>
 </tbody>
-<?php } ?>
-
-<?php if (empty($sales_orders)) { ?>
+<?php } else { ?>
 <tbody>
 <tr>
-    <td colspan="10" class="not_found">No Data Found !!</td>
+    <td colspan="9" class="not_found">No Data Found !!</td>
 </tr>
 </tbody>
 <?php } ?>
-                                        </table>
-                
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end col-->
-                        </div>
 
-                        
-                           <?php } ?> 
-                            
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
 
                         <!---datatable section end-->
                             
