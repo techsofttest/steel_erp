@@ -319,7 +319,9 @@
 
                                                                                         
 
-                                                                } } 
+                                                                } }
+                                                                
+                                                                
                                                                 
                                                                 if(!empty($sales_order->credit_invoice)){
 
@@ -338,8 +340,26 @@
    
 
                                                                   
-                                                                  } } ?>
+                                                                } }  
+                                                                
+                                                                if(empty($sales_order->credit_invoice && $sales_order->cash_invoice)){
+                                                                  ?>
 
+                                                                  <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                                                    
+                                                                            <td  style="width:100px" >&nbsp</td>
+
+                                                                        </tr>
+
+
+                                                                <?php }
+
+                                                                
+                                                                ?>
+
+
+                                                                 
+                                                            
 
                                                                  <!---->
 

@@ -172,117 +172,117 @@
                         </tr>
                     </thead>
 
-<?php if (!empty($sales_orders)) { ?>
-<tbody class="tbody_data">
-<?php
-    $total_revenue  = 0;
-    $expenses_total = 0;
-    $i = 1;
+                    <?php if (!empty($sales_orders)) { ?>
+                    <tbody class="tbody_data">
+                    <?php
+                        $total_revenue  = 0;
+                        $expenses_total = 0;
+                        $i = 1;
 
-    foreach ($sales_orders as $sales_order) {
+                        foreach ($sales_orders as $sales_order) {
 
-        /* ================= INVOICE ================= */
+                            /* ================= INVOICE ================= */
 
-        $single_cash = $single_credit = 0;
+                            $single_cash = $single_credit = 0;
 
-        if (!empty($sales_order->cash_invoice)) {
-            foreach ($sales_order->cash_invoice as $cash_inv) {
-                $single_cash += (float)$cash_inv->ci_total_amount;
-            }
-        }
+                            if (!empty($sales_order->cash_invoice)) {
+                                foreach ($sales_order->cash_invoice as $cash_inv) {
+                                    $single_cash += (float)$cash_inv->ci_total_amount;
+                                }
+                            }
 
-        if (!empty($sales_order->credit_invoice)) {
-            foreach ($sales_order->credit_invoice as $credit_inv) {
-                $single_credit += (float)$credit_inv->cci_total_amount;
-            }
-        }
+                            if (!empty($sales_order->credit_invoice)) {
+                                foreach ($sales_order->credit_invoice as $credit_inv) {
+                                    $single_credit += (float)$credit_inv->cci_total_amount;
+                                }
+                            }
 
-        $row_revenue = $single_cash + $single_credit;
+                            $row_revenue = $single_cash + $single_credit;
 
-        /* ================= EXPENSE ================= */
+                            /* ================= EXPENSE ================= */
 
-        $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
+                            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-        if (!empty($sales_order->purchase_vouchers)) {
-            foreach ($sales_order->purchase_vouchers as $pur_vouch) {
-                $expenses1 += (float)$pur_vouch->pvp_amount;
-            }
-        }
+                            if (!empty($sales_order->purchase_vouchers)) {
+                                foreach ($sales_order->purchase_vouchers as $pur_vouch) {
+                                    $expenses1 += (float)$pur_vouch->pvp_amount;
+                                }
+                            }
 
-        if (!empty($sales_order->purchase_return_prod)) {
-            foreach ($sales_order->purchase_return_prod as $pv_prod) {
-                $expenses2 += (float)$pv_prod->prp_amount;
-            }
-        }
+                            if (!empty($sales_order->purchase_return_prod)) {
+                                foreach ($sales_order->purchase_return_prod as $pv_prod) {
+                                    $expenses2 += (float)$pv_prod->prp_amount;
+                                }
+                            }
 
-        if (!empty($sales_order->petty_cash)) {
-            foreach ($sales_order->petty_cash as $p_cash) {
-                $expenses3 += (float)$p_cash->pci_amount;
-            }
-        }
+                            if (!empty($sales_order->petty_cash)) {
+                                foreach ($sales_order->petty_cash as $p_cash) {
+                                    $expenses3 += (float)$p_cash->pci_amount;
+                                }
+                            }
 
-        if (!empty($sales_order->journal_voucher)) {
-            foreach ($sales_order->journal_voucher as $jour_vouch) {
-                if (!empty($jour_vouch->ji_debit))
-                    $expenses4 += (float)$jour_vouch->ji_debit;
-                if (!empty($jour_vouch->ji_credit))
-                    $expenses5 += (float)$jour_vouch->ji_credit;
-            }
-        }
+                            if (!empty($sales_order->journal_voucher)) {
+                                foreach ($sales_order->journal_voucher as $jour_vouch) {
+                                    if (!empty($jour_vouch->ji_debit))
+                                        $expenses4 += (float)$jour_vouch->ji_debit;
+                                    if (!empty($jour_vouch->ji_credit))
+                                        $expenses5 += (float)$jour_vouch->ji_credit;
+                                }
+                            }
 
-        $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
+                            $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
 
-        $sales_order_value = (float)$sales_order->so_amount_total;
+                            $sales_order_value = (float)$sales_order->so_amount_total;
 
-        /* 🚫 HIDE CONDITIONS */
-        if ($expenses <= 0 || $row_revenue > ($sales_order_value * 0.5)) {
-            continue;
-        }
+                            /* 🚫 HIDE CONDITIONS */
+                            if ($expenses <= 0 || $row_revenue > ($sales_order_value * 0.5)) {
+                                continue;
+                            }
 
-        /* ✅ TOTALS ONLY FOR VISIBLE ROWS */
-        $total_revenue  += $row_revenue;
-        $expenses_total += $expenses;
-?>
-<tr>
-    <td class="text-center"><?= $i ?></td>
-    <td class="text-center"><?= date('d-M-Y', strtotime($sales_order->so_date)) ?></td>
-    <td class="text-center">
-        <a href="<?= base_url(); ?>Crm/SalesOrder?view_so=<?= $sales_order->so_id ?>" target="_blank">
-            <?= $sales_order->so_reffer_no ?>
-        </a>
-    </td>
-    <td><?= $sales_order->cc_customer_name ?></td>
-    <td class="text-center"><?= $sales_order->so_lpo ?></td>
-    <td class="text-center"><?= $sales_order->se_name ?></td>
-    <td class="text-center"><?= format_currency($sales_order_value) ?></td>
-    <td class="text-end"><?= format_currency($row_revenue) ?></td>
-    <td class="text-end"><?= format_currency($expenses) ?></td>
-</tr>
-<?php
-        $i++;
-    }
-?>
-<tr>
-    <td><b>Total</b></td>
-    <td colspan="6"></td>
-    <td class="text-end"><b><?= format_currency($total_revenue) ?></b></td>
-    <td class="text-end"><b><?= format_currency($expenses_total) ?></b></td>
-</tr>
-</tbody>
-<?php } else { ?>
-<tbody>
-<tr>
-    <td colspan="9" class="not_found">No Data Found !!</td>
-</tr>
-</tbody>
-<?php } ?>
+                            /* ✅ TOTALS ONLY FOR VISIBLE ROWS */
+                            $total_revenue  += $row_revenue;
+                            $expenses_total += $expenses;
+                    ?>
+                    <tr>
+                        <td class="text-center"><?= $i ?></td>
+                        <td class="text-center"><?= date('d-M-Y', strtotime($sales_order->so_date)) ?></td>
+                        <td class="text-center">
+                            <a href="<?= base_url(); ?>Crm/SalesOrder?view_so=<?= $sales_order->so_id ?>" target="_blank">
+                                <?= $sales_order->so_reffer_no ?>
+                            </a>
+                        </td>
+                        <td><?= $sales_order->cc_customer_name ?></td>
+                        <td class="text-center"><?= $sales_order->so_lpo ?></td>
+                        <td class="text-center"><?= $sales_order->se_name ?></td>
+                        <td class="text-center"><?= format_currency($sales_order_value) ?></td>
+                        <td class="text-end"><?= format_currency($row_revenue) ?></td>
+                        <td class="text-end"><?= format_currency($expenses) ?></td>
+                    </tr>
+                    <?php
+                            $i++;
+                        }
+                    ?>
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td colspan="6"></td>
+                        <td class="text-end"><b><?= format_currency($total_revenue) ?></b></td>
+                        <td class="text-end"><b><?= format_currency($expenses_total) ?></b></td>
+                    </tr>
+                    </tbody>
+                    <?php } else { ?>
+                    <tbody>
+                    <tr>
+                        <td colspan="9" class="not_found">No Data Found !!</td>
+                    </tr>
+                    </tbody>
+                    <?php } ?>
 
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<?php } ?>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
 
 
 
