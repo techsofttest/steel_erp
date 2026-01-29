@@ -143,8 +143,6 @@
                                                                     $customer = "";
                                                                 }
 
-
-
                                                                 if (!empty($_GET['product'])) {
                                                                     $product =  $_GET['product'];
                                                                 } else {
@@ -222,7 +220,7 @@
                                                                             <tr>
 
                                                                                 <td style="width: 30%;" class="center_padding">Pending</td>
-                                                                                <td> <input class="" type="checkbox" name="pending">
+                                                                                <td> <input class="" value="pending" type="checkbox" name="pending">
                                                                                 </td>
 
                                                                             </tr>
@@ -230,7 +228,7 @@
                                                                             <tr>
 
                                                                                 <td style="width: 30%;" class="center_padding">Linked </td>
-                                                                                <td> <input class="" type="checkbox" name="linked">
+                                                                                <td> <input class="" value="linked" type="checkbox" name="linked">
                                                                                 </td>
 
 
