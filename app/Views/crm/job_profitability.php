@@ -272,50 +272,31 @@
                                                        
 
                                                         <!----->
-                                                        <?php 
-$cash_count = 0;
-if (!empty($sales_order->cash_invoice)) {
-    foreach ($sales_order->cash_invoice as $cash_val) {
-        if (!empty($cash_val->ci_reffer_no)) {
-            $cash_count++;
+                                                         <?php
+                                                         
+                                                         function countValidRefs($array, $field) {
+    $count = 0;
+    if (!empty($array)) {
+        foreach ($array as $item) {
+            if (isset($item->$field) && strlen(trim($item->$field)) > 0 && trim($item->$field) !== '0') {
+                $count++;
+            }
         }
     }
+    return $count;
 }
 
-$credit_count = 0;
-if (!empty($sales_order->credit_invoice)) {
-    foreach ($sales_order->credit_invoice as $credit_val) {
-        if (!empty($credit_val->cci_reffer_no)) {
-            $credit_count++;
-        }
-    }
-}
-
-$sales_return_count = 0;
-if (!empty($sales_order->sales_return)) {
-    foreach ($sales_order->sales_return as $sales_ret) {
-        if (!empty($sales_ret->sr_reffer_no)) {
-            $sales_return_count++;
-        }
-    }
-}
+$cash_count = countValidRefs($sales_order->cash_invoice ?? [], 'ci_reffer_no');
+$credit_count = countValidRefs($sales_order->credit_invoice ?? [], 'cci_reffer_no');
+$sales_return_count = countValidRefs($sales_order->sales_return ?? [], 'sr_reffer_no');
 
 $total_ref_count = $cash_count + $credit_count + $sales_return_count;
-?>
-<?php
-$vendor_names = [];
-if (!empty($sales_order->purchase_vouchers)) {
-    foreach ($sales_order->purchase_vouchers as $pv) {
-        if (!empty($pv->cc_customer_name)) {
-            $vendor_names[$pv->cc_customer_name] = true; // using associative array to avoid duplicates
-        }
-    }
-}
-?>
 
- <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $total_ref_count;?></td>
+
+                                                         
+                                                         ?>
                                                        
-
+ <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $total_ref_count;?></td>
 
                                                         <!----->
 
