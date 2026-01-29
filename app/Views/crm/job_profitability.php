@@ -222,627 +222,366 @@
                                                 </tr>
                                             </thead>
                                              <?php  if(!empty($sales_orders)){?> 
-                                            <tbody class="tbody_data">
-                                            <?php
-                                               
-
-
-                                                if(!empty($sales_orders))
-                                                {   
-                                                    $revenue =0 ;
-
-                                                    $cash_invoices = 0;
-                                                    $credit_invoices = 0;
-                                                    $sales_returns = 0;
-
-                                                    $expenses_total =0;
-
-                                                    $final_gross = 0;
-
-                                                    $final_percentage = 0;
-
-                                                    $expenses1 = 0;
-                                                    $expenses2 = 0;
-                                                    $expenses3 = 0;
-                                                    $expenses4 = 0;
-                                                    $expenses5 = 0;
-    
-                                                    $gross_profit1 = 0;
-                                                    $gross_profit2 = 0;
-                                                    $gross_profit3 = 0;
-                                                    $gross_profit4 = 0;
-                                                    $gross_profit5 = 0;
-    
-                                                    $percentage1 = 0;
-                                                    $percentage2 = 0;
-                                                    $percentage3 = 0;
-                                                    $percentage4 = 0;
-                                                    $percentage5 = 0;
-
-                                                    $i=1;
-                                                    foreach($sales_orders as $sales_order){
-                                                         
-                                                    ?> 
-                                                   
-                                                    <tr>
-
-                                                        <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i;?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
-                                                        <?php
-                                                        $vendor_names = [];
-
-                                                        if (!empty($sales_order->purchase_vouchers)) {
-                                                            foreach ($sales_order->purchase_vouchers as $pv) {
-                                                                if (!empty($pv->cc_customer_name)) {
-                                                                    $vendor_names[$pv->cc_customer_name] = true; 
-                                                                }
-                                                            }
-                                                        }
-
-                                                        ?>
-
-                                                        <td style="width: 300px; word-wrap: break-word; white-space: normal;">
-
-                                                            <span><?php echo $sales_order->cc_customer_name; ?></span>
-
-                                                            <?php if (!empty($vendor_names)) { ?>
-                                                            <?php foreach (array_keys($vendor_names) as $vendor) { ?>
-                                                                <br>
-                                                                <br>
-                                                                <span>
-                                                                    <?php echo $vendor; ?>
-                                                                </span>
-                                                            <?php } ?>
-
-                                                            <?php } ?>
-
-                                                        </td>
-
-
-                                                        <td colspan="1" align="left" class="p-0">
-                                                            <table>
-
-                                                               <?php if(!empty($sales_order->cash_invoice)){
-                                     
-                                                                   
-                                                                    foreach($sales_order->cash_invoice as $cash_val){  ?>
-                                                                                                  
-                                                                    
-                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px;" class="text-center tr_height_eq">
-                                                                   
-                                                                    <td  style="width:100px" ><?php echo $cash_val->ci_reffer_no; ?></td>
-                                                                    
-                                                                    </tr>
-
-                                                                    <?php
-
-                                                                                        
-
-                                                                } }
-                                                                
-                                                                
-                                                                
-                                                                if(!empty($sales_order->credit_invoice)){
-
-                                                                    foreach($sales_order->credit_invoice as $credit_val){ 
-                                                                   
-                                                                        
-                                                                    ?>
-
-                                                                        <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                    
-                                                                            <td  style="width:100px" ><?php echo $credit_val->cci_reffer_no; ?></td>
-
-                                                                        </tr>
-
-                                                                        <?php
-   
-
-                                                                  
-                                                                } }  
-                                                                
-                                                                
-
-                                                                
-                                                                ?>
-
-
-                                                                 
-                                                            
-
-                                                                 <!---->
-
-                                                                <?php
-                                                                   
-                                                                    if(!empty($sales_order->sales_return)){
-
-                                                                        foreach($sales_order->sales_return as $sales_ret){  ?>
-
-                                                                        <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                    
-                                                                            <td  style="width:100px" ><?php echo $sales_ret->sr_reffer_no; ?></td>
-
-                                                                        </tr>
-
-
-                                                                <?php    }
-
-                                                                    }
-                                                                
-                                                                ?>
-
-                                                                <!---->
-
-
-                                                            <?php 
-                                                                $printedPV = [];
-                                                                if(!empty($sales_order->purchase_vouchers)){
-
-                                                                     $pvList = $sales_order->purchase_vouchers;
-                                                                     $rowCount = count($pvList);
-                                                                
-                                                                foreach ($pvList as $index => $pv) { 
-                                                                   if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {    
-                                                                ?> 
-                                                                                
-                                                                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                    
-                                                                    <td  style="width:100px" ><?= $pv->pv_vendor_inv ?> </td>
-                                                                     
-                                                                </tr>
-
-                                                                
-
-                                                            <?php $printedPV[] = $pv->pv_reffer_id; } }  }
-
-
-                                                                
-                                                                $printedPR = [];
-                                                                if(!empty($sales_order->purchase_return_prod)){
-
-                                                                    //$pvList1 = $sales_order->purchase_return_prod;
-                                                                    //$rowCount1 = count($pvList1);
-
-                                                                    foreach($sales_order->purchase_return_prod as $pr){ 
-                                                                      if (!empty($pr->pr_reffer_id) && !in_array($pr->pr_reffer_id	, $printedPR)) {        
-                                                                    ?> 
-                                                                       
-                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                         
-                                                                        <td  style="width:100px" ><?php echo $pr->pr_reffer_id; ?> </td>
-                                                                        
-                                                                    
-                                                                    </tr>
-
-
-                                                                <?php $printedPR[] = $pr->pr_reffer_id;  }  } }
-
-
-
-                                                                if(!empty($sales_order->petty_cash)){
-
-                                                                    $pvList5 = $sales_order->petty_cash;
-                                                                    $rowCount5 = count($pvList5);
-                                                                
-                                                                    foreach($pvList5 as $index => $pc){ ?>
-
-                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                        <?php if ($index == 0){ ?>
-                                                                        <td  style="width:100px"><?php echo $pc->pcv_voucher_no; ?></td>
-                                                                        <?php } ?>
-                                                                
-                                                                    </tr>  
-
-                                                                <?php  } }
-
-                                                                if(!empty($sales_order->journal_voucher)){
-
-                                                                    $pvList2 = $sales_order->journal_voucher;
-                                                                    $rowCount2 = count($pvList2);
-                                                                    
-                                                                    foreach($pvList2 as $index => $jv){ ?> 
-                                                                      
-                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                        <?php if ($index == 0){ ?>
-                                                                        <td  style="width:100px" ><?php echo $jv->jv_voucher_no; ?></td>
-                                                                        <?php }  ?>
-                                                                    </tr>  
-                                                                    
-                                                                    <?php } }
-                                                                
-                                                                
-                                                                ?>    
-                                                                
-                                                               
-                                                                                            
-                                                            </table>
-                                                        </td>
-
-
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->so_lpo;?></td>
-
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name;?></td>
-
-                                                        <?php
-
-                                                            $single_cash = 0;
-                                                            $single_credit = 0;
-                                                            $single_returns = 0;
-                                                            
-                                                            if(!empty($sales_order->cash_invoice)){
-                                                            
-                                                                foreach($sales_order->cash_invoice as $cash_inv){
-
-                                                                    $cash_invoices  += $cash_inv->ci_total_amount;
-
-                                                                    $single_cash += $cash_inv->ci_total_amount;
-                                                                }
-                                                            }
-
-
-                                                            if(!empty($sales_order->credit_invoice)){
-
-                                                                foreach($sales_order->credit_invoice as $credit_inv){
-
-                                                                    $credit_invoices += $credit_inv->cci_total_amount;
-
-                                                                    $single_credit += $credit_inv->cci_total_amount;
-                                                                }
-
-                                                            }
-
-
-                                                            if(!empty($sales_order->sales_return)){
-
-                                                                foreach($sales_order->sales_return as $sales_rut){
-
-                                                                   $sales_returns += $sales_rut->sr_total;
-
-                                                                   $single_returns += $sales_rut->sr_total;
- 
-                                                                }
-                                                            }
-
-                                                            $revenue = $cash_invoices + $credit_invoices;
-
-                                                            $revenue = $revenue - $sales_returns;
-                                                        
-                                                        ?>
-
-                                                        <td class="text-end p-0" style="white-space: nowrap;width:100px">
-                                                            <table>
-                                                                <?php if(!empty($sales_order->cash_invoice)){ ?>
-                                                                    <?php foreach($sales_order->cash_invoice as $cash_inv){ 
-                                                                    
-                                                                    ?>
-                                                                       <tr class="tr_height_eq" style="border-bottom: hidden !important"><td><?php echo format_currency($cash_inv->ci_total_amount); ?></td></tr>
-                                                                    <?php  } ?>
-                                                                <?php } ?>
-
-                                                                <?php if(!empty($sales_order->credit_invoice)){ ?>
-                                                                    <?php foreach($sales_order->credit_invoice as $credit_inv){ 
-                                                                          
-                                                                        
-                                                                    ?>
-                                                                        <tr class="tr_height_eq" style="border-bottom: hidden !important"><td><?php echo format_currency($credit_inv->cci_total_amount); ?></td></tr>
-
-                                                                    <?php  } ?>
-                                                                <?php } ?>
-
-                                                                <?php if(!empty($sales_order->sales_return)){ ?>
-                                                                    <?php foreach($sales_order->sales_return as $sales_rut){ ?>
-                                                                       <tr class="tr_height_eq" style="border-bottom: hidden !important"><td>-<?php echo format_currency($sales_rut->sr_total); ?></td></tr>
-                                                                    <?php } ?>
-                                                                <?php } ?>
-                                                            </table>
-                                                        </td>
-
-                                                        <?php $cash_credit = $single_cash + $single_credit; //echo format_currency($cash_credit); ?>
-
-                                                        <td colspan="1" align="left" class="p-0">
-    <table>
-        <?php 
-            // initialize
-            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
-
-            /* PURCHASE VOUCHERS */
-            if(!empty($sales_order->cash_invoice)){ 
-                
-                $cash_count = !empty($sales_order->cash_invoice) ? count($sales_order->cash_invoice) : 0;
-
-                for ($j = 0; $j < $cash_count-1; $j++) {
-                    
-                    echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
-                }
-                
-                ?>
-
-                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
-    width: 100px;" class="tr_height_eq">
-                        <td style="width:100px" class="text-end">&nbsp
-                           
-                        </td>
-                    </tr>
-            <?php } 
-            if(!empty($sales_order->credit_invoice)){
-
-                $credit_count = !empty($sales_order->credit_invoice) ? count($sales_order->credit_invoice) : 0;
-
-                for ($j = 0; $j < $credit_count-1; $j++) {
-                    
-                    echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
-
-                } ?>
-
-
-                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
-    width: 100px;" class="tr_height_eq">
-                    <td style="width:100px" class="text-end">&nbsp
-                        
-                    </td>
-                </tr>
-
-
-            <?php }
-
-            /*sales return */
-
-            if(!empty($sales_order->sales_return)){
-
-                $return_count = !empty($sales_order->sales_return) ? count($sales_order->sales_return) : 0;
-
-                for ($j = 0; $j < $return_count-1; $j++) {
-                    
-                    echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
-                } ?>
-
-
-                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
-    width: 100px;" class="tr_height_eq">
-                    <td style="width:100px" class="text-end">&nbsp
-                        
-                    </td>
-                </tr>
-
-
-            <?php }
-
-            /**/
-
-            /**/
-            if (!empty($sales_order->purchase_vouchers)) {
-
-                $pvTotals = []; 
-
-                $expenses1 = 0;
-               
-
-                foreach ($sales_order->purchase_vouchers as $pur_vouch) {
-
-                    // Sum ONLY matching sales order vouchers
-                    //if ($pur_vouch->pvp_sales_order == $sales_order->so_reffer_no) {
-
-                    if (!empty($pur_vouch->pvp_reffer_id)) {
-
-                        if (!isset($pvTotals[$pur_vouch->pvp_reffer_id])) {
-
-                            $pvTotals[$pur_vouch->pvp_reffer_id] = 0;
-                        }
-                        $pvTotals[$pur_vouch->pvp_reffer_id] += $pur_vouch->pvp_amount;
-                        $expenses1 += $pur_vouch->pvp_amount;
-
-                    }
-                        
-                       // $total_pur_vouch += $pur_vouch->pvp_amount;
-
-                        //$expenses1 += $pur_vouch->pv_total;
-
-                        //$expenses1 += $pur_vouch->pvp_amount;
-                    //}
-
-                    // if you still need expenses
-                    //$expenses1 += $pur_vouch->pv_total;
-
-                }
-
-            ?>  
-            
-                <!-- Show ONLY the total -->
-                 <?php foreach ($pvTotals as $pvId => $pv_amount) { ?>
-                <tr style="background: unset; border-bottom: hidden !important;white-space: nowrap;
-    width: 100px;" class="tr_height_eq">
-                    <td style="width:100px" class="text-end">
-                        <?php echo format_currency($pv_amount); ?>
-                    </td>
-                </tr>
-                <?php } ?>
-            <?php
-            }
-            /**/
-
-            /* PURCHASE RETURN */
-            if(!empty($sales_order->purchase_return_prod)){
-
-                $pRTotals = []; 
-
-                $expenses2 = 0;
-                
-                foreach($sales_order->purchase_return_prod as $pv_prod){ 
-                     
-                   
-                    if (!isset($pRTotals[$pv_prod->prp_purchase_return_id])) {
-
-                        $pRTotals[$pv_prod->prp_purchase_return_id] = 0;
-                    }
-
-                    $pRTotals[$pv_prod->prp_purchase_return_id] += $pv_prod->prp_amount;
-                    $expenses2 += $pv_prod->prp_amount;
-                    
-                    
-                ?> 
-
-                    
-
-                <?php 
-                   // $expenses2 += $pv_prod->pr_total_amount;
-                } ?>
-                <?php foreach ($pRTotals as $prId => $prp_amount) { ?>
-                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
-    width: 100px;" class="tr_height_eq">
-                        <td style="width:100px" class="text-end">
-                            -<?php echo format_currency($prp_amount); ?>
-                        </td>
-                    </tr>
-
-
-
-          <?php   } }
-
-            /* PETTY CASH */
-            if(!empty($sales_order->petty_cash)){
-                foreach($sales_order->petty_cash as $p_cash){ ?>
-
-                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
-    width: 100px;" >
-                        <td style="width:100px" class="text-end">
-                            <?php echo format_currency($p_cash->pci_amount); ?>
-                        </td>
-                    </tr>
-
-                <?php 
-                    $expenses3 += $p_cash->pci_amount;
-                }
-            }
-
-            /* JOURNAL VOUCHER */
-            if(!empty($sales_order->journal_voucher)){
-
-                foreach($sales_order->journal_voucher as $jour_vouch){ ?> 
-                    
-                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;
-    width: 100px;">
-                        <td style="width:100px" class="text-end">
-                            <?php 
-
-                                if(!empty($jour_vouch->ji_debit))  
-                                    echo format_currency($jour_vouch->ji_debit);
-                                elseif(!empty($jour_vouch->ji_credit)) 
-                                    echo format_currency($jour_vouch->ji_credit);
-                            ?>
-                        </td>
-                    </tr>
-
-                <?php 
-
-                    if(!empty($jour_vouch->ji_debit))  $expenses4 += $jour_vouch->ji_debit;
-                    if(!empty($jour_vouch->ji_credit)) $expenses5 += $jour_vouch->ji_credit;
-
-                }
-            }
-
-            /* FINAL TOTAL EXPENSES */
-            $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
-        ?>
-
-        <!-- TOTAL EXPENSES -->
-        <!--<tr style="background: #f2f2f2; font-weight:bold;">
-            <td style="width:100px" class="text-end">
-                <?php echo format_currency($expenses); ?>
-            </td>
-        </tr>-->
-
-    </table>
-</td>
-
-<!-- NOW OUTSIDE EXPENSE TABLE: GROSS PROFIT COLUMN -->
-
-<!---->
-
-
-<!---->
-
-<td class="text-end">
-    
+                                               <tbody class="tbody_data">
 <?php
-$invoice_revenue = ($single_cash + $single_credit) - $single_returns;
+if (!empty($sales_orders)) {
+    $revenue = 0;
+    $cash_invoices = 0;
+    $credit_invoices = 0;
+    $sales_returns = 0;
+    $expenses_total = 0;
+    $final_gross = 0;
+    $final_percentage = 0;
 
-$row_revenue = $invoice_revenue;
-$total_gross_profit = $row_revenue - $expenses;
-?>
+    $i = 1;
+    foreach ($sales_orders as $sales_order) {
 
+        // Reset per row values
+        $single_cash = 0;
+        $single_credit = 0;
+        $single_returns = 0;
 
-        
-<?php echo format_currency($total_gross_profit); ?>
-</td>
+        // Calculate totals for cash, credit, returns
+        if (!empty($sales_order->cash_invoice)) {
+            foreach ($sales_order->cash_invoice as $cash_inv) {
+                $cash_invoices += $cash_inv->ci_total_amount;
+                $single_cash += $cash_inv->ci_total_amount;
+            }
+        }
+        if (!empty($sales_order->credit_invoice)) {
+            foreach ($sales_order->credit_invoice as $credit_inv) {
+                $credit_invoices += $credit_inv->cci_total_amount;
+                $single_credit += $credit_inv->cci_total_amount;
+            }
+        }
+        if (!empty($sales_order->sales_return)) {
+            foreach ($sales_order->sales_return as $sales_rut) {
+                $sales_returns += $sales_rut->sr_total;
+                $single_returns += $sales_rut->sr_total;
+            }
+        }
 
+        $revenue = $cash_invoices + $credit_invoices;
+        $revenue = $revenue - $sales_returns;
 
-<!---->
+        // Calculate expenses (same as your existing code)
+        $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-<!-- NOW OUTSIDE EXPENSE TABLE: PERCENTAGE COLUMN -->
-<td class="text-end">
-    <?php 
+        // Purchase vouchers expenses1
+        if (!empty($sales_order->purchase_vouchers)) {
+            foreach ($sales_order->purchase_vouchers as $pur_vouch) {
+                if (!empty($pur_vouch->pvp_reffer_id)) {
+                    $expenses1 += $pur_vouch->pvp_amount;
+                }
+            }
+        }
+        // Purchase return expenses2
+        if (!empty($sales_order->purchase_return_prod)) {
+            foreach ($sales_order->purchase_return_prod as $pv_prod) {
+                $expenses2 += $pv_prod->prp_amount;
+            }
+        }
+        // Petty cash expenses3
+        if (!empty($sales_order->petty_cash)) {
+            foreach ($sales_order->petty_cash as $p_cash) {
+                $expenses3 += $p_cash->pci_amount;
+            }
+        }
+        // Journal voucher expenses4 and expenses5
+        if (!empty($sales_order->journal_voucher)) {
+            foreach ($sales_order->journal_voucher as $jour_vouch) {
+                if (!empty($jour_vouch->ji_debit)) $expenses4 += $jour_vouch->ji_debit;
+                if (!empty($jour_vouch->ji_credit)) $expenses5 += $jour_vouch->ji_credit;
+            }
+        }
+
+        $expenses = ($expenses1 + $expenses3 + $expenses4 + $expenses5) - $expenses2;
+
+        // Calculate gross profit and percentage for this row
+        $invoice_revenue = ($single_cash + $single_credit) - $single_returns;
+        $row_revenue = $invoice_revenue;
+        $total_gross_profit = $row_revenue - $expenses;
 
         $total_percentage = 0;
-
-        /*if($sales_order->so_amount_total != 0){
-
-            //$total_percentage = ($total_gross_profit / $sales_order->so_amount_total) * 100;
-
-            
-        }*/
-
         if ($row_revenue != 0) {
-
             $total_percentage = ($total_gross_profit / $row_revenue) * 100;
-        }   
+        }
 
-        
+        // === DEBUG: uncomment to see percentage values in page source
+        // echo "<!-- SO ID: {$sales_order->so_id} - Percentage: {$total_percentage} -->";
 
-        echo number_format($total_percentage, 2) . '%';
-    ?>
-</td>
+        // SKIP row if percentage <= 50 AND revenue positive (adjust condition here)
+        if ($total_percentage <= 50 && $row_revenue > 0) {
+            $i++;
+            continue;
+        }
+?>
 
-<?php 
+        <tr>
 
-    $expenses_total  +=  $expenses; 
-    
-    $final_gross  +=  $total_gross_profit;
+            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($sales_order->so_date)); ?></td>
+            <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id; ?>" target="_blank"><?php echo $sales_order->so_reffer_no; ?></a></td>
 
-    $final_percentage += $total_percentage;
+            <?php
+            $vendor_names = [];
+            if (!empty($sales_order->purchase_vouchers)) {
+                foreach ($sales_order->purchase_vouchers as $pv) {
+                    if (!empty($pv->cc_customer_name)) {
+                        $vendor_names[$pv->cc_customer_name] = true;
+                    }
+                }
+            }
+            ?>
+
+            <td style="width: 300px; word-wrap: break-word; white-space: normal;">
+                <span><?php echo $sales_order->cc_customer_name; ?></span>
+                <?php if (!empty($vendor_names)) { ?>
+                    <?php foreach (array_keys($vendor_names) as $vendor) { ?>
+                        <br><br>
+                        <span><?php echo $vendor; ?></span>
+                    <?php } ?>
+                <?php } ?>
+            </td>
+
+            <td colspan="1" align="left" class="p-0">
+                <table>
+                    <?php if (!empty($sales_order->cash_invoice)) {
+                        foreach ($sales_order->cash_invoice as $cash_val) { ?>
+                            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px;" class="text-center tr_height_eq">
+                                <td style="width:100px"><?php echo $cash_val->ci_reffer_no; ?></td>
+                            </tr>
+                        <?php }
+                    }
+                    if (!empty($sales_order->credit_invoice)) {
+                        foreach ($sales_order->credit_invoice as $credit_val) { ?>
+                            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                <td style="width:100px"><?php echo $credit_val->cci_reffer_no; ?></td>
+                            </tr>
+                    <?php }
+                    } ?>
+                    <?php if (!empty($sales_order->sales_return)) {
+                        foreach ($sales_order->sales_return as $sales_ret) { ?>
+                            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                <td style="width:100px"><?php echo $sales_ret->sr_reffer_no; ?></td>
+                            </tr>
+                    <?php }
+                    } ?>
+
+                    <?php
+                    $printedPV = [];
+                    if (!empty($sales_order->purchase_vouchers)) {
+                        foreach ($sales_order->purchase_vouchers as $pv) {
+                            if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
+                    ?>
+                                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                    <td style="width:100px"><?= $pv->pv_vendor_inv ?></td>
+                                </tr>
+                    <?php
+                                $printedPV[] = $pv->pv_reffer_id;
+                            }
+                        }
+                    }
+
+                    $printedPR = [];
+                    if (!empty($sales_order->purchase_return_prod)) {
+                        foreach ($sales_order->purchase_return_prod as $pr) {
+                            if (!empty($pr->pr_reffer_id) && !in_array($pr->pr_reffer_id, $printedPR)) {
+                    ?>
+                                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                    <td style="width:100px"><?php echo $pr->pr_reffer_id; ?></td>
+                                </tr>
+                    <?php
+                                $printedPR[] = $pr->pr_reffer_id;
+                            }
+                        }
+                    }
+
+                    if (!empty($sales_order->petty_cash)) {
+                        foreach ($sales_order->petty_cash as $index => $pc) { ?>
+                            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                <?php if ($index == 0) { ?>
+                                    <td style="width:100px"><?php echo $pc->pcv_voucher_no; ?></td>
+                                <?php } ?>
+                            </tr>
+                    <?php }
+                    }
+
+                    if (!empty($sales_order->journal_voucher)) {
+                        foreach ($sales_order->journal_voucher as $index => $jv) { ?>
+                            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                <?php if ($index == 0) { ?>
+                                    <td style="width:100px"><?php echo $jv->jv_voucher_no; ?></td>
+                                <?php } ?>
+                            </tr>
+                    <?php }
+                    }
+                    ?>
+                </table>
+            </td>
+
+            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->so_lpo; ?></td>
+
+            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name; ?></td>
+
+            <td class="text-end p-0" style="white-space: nowrap;width:100px">
+                <table>
+                    <?php if (!empty($sales_order->cash_invoice)) {
+                        foreach ($sales_order->cash_invoice as $cash_inv) { ?>
+                            <tr class="tr_height_eq" style="border-bottom: hidden !important">
+                                <td><?php echo format_currency($cash_inv->ci_total_amount); ?></td>
+                            </tr>
+                        <?php }
+                    }
+                    if (!empty($sales_order->credit_invoice)) {
+                        foreach ($sales_order->credit_invoice as $credit_inv) { ?>
+                            <tr class="tr_height_eq" style="border-bottom: hidden !important">
+                                <td><?php echo format_currency($credit_inv->cci_total_amount); ?></td>
+                            </tr>
+                    <?php }
+                    }
+                    if (!empty($sales_order->sales_return)) {
+                        foreach ($sales_order->sales_return as $sales_rut) { ?>
+                            <tr class="tr_height_eq" style="border-bottom: hidden !important">
+                                <td>-<?php echo format_currency($sales_rut->sr_total); ?></td>
+                            </tr>
+                    <?php }
+                    } ?>
+                </table>
+            </td>
+
+            <td colspan="1" align="left" class="p-0">
+                <table>
+                    <?php
+                    // Show blank rows for alignment (same as your original code)
+                    if (!empty($sales_order->cash_invoice)) {
+                        $cash_count = count($sales_order->cash_invoice);
+                        for ($j = 0; $j < $cash_count - 1; $j++) {
+                            echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
+                        }
+                        echo '<tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width: 100px;" class="tr_height_eq"><td style="width:100px" class="text-end">&nbsp;</td></tr>';
+                    }
+                    if (!empty($sales_order->credit_invoice)) {
+                        $credit_count = count($sales_order->credit_invoice);
+                        for ($j = 0; $j < $credit_count - 1; $j++) {
+                            echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
+                        }
+                        echo '<tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width: 100px;" class="tr_height_eq"><td style="width:100px" class="text-end">&nbsp;</td></tr>';
+                    }
+                    if (!empty($sales_order->sales_return)) {
+                        $return_count = count($sales_order->sales_return);
+                        for ($j = 0; $j < $return_count - 1; $j++) {
+                            echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
+                        }
+                        echo '<tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width: 100px;" class="tr_height_eq"><td style="width:100px" class="text-end">&nbsp;</td></tr>';
+                    }
+
+                    // Display purchase vouchers totals
+                    if (!empty($sales_order->purchase_vouchers)) {
+                        $pvTotals = [];
+                        foreach ($sales_order->purchase_vouchers as $pur_vouch) {
+                            if (!empty($pur_vouch->pvp_reffer_id)) {
+                                if (!isset($pvTotals[$pur_vouch->pvp_reffer_id])) {
+                                    $pvTotals[$pur_vouch->pvp_reffer_id] = 0;
+                                }
+                                $pvTotals[$pur_vouch->pvp_reffer_id] += $pur_vouch->pvp_amount;
+                            }
+                        }
+                        foreach ($pvTotals as $pv_amount) { ?>
+                            <tr style="background: unset; border-bottom: hidden !important;white-space: nowrap;width: 100px;" class="tr_height_eq">
+                                <td style="width:100px" class="text-end"><?php echo format_currency($pv_amount); ?></td>
+                            </tr>
+                    <?php }
+                    }
+
+                    // Purchase return totals
+                    if (!empty($sales_order->purchase_return_prod)) {
+                        $pRTotals = [];
+                        foreach ($sales_order->purchase_return_prod as $pv_prod) {
+                            if (!isset($pRTotals[$pv_prod->prp_purchase_return_id])) {
+                                $pRTotals[$pv_prod->prp_purchase_return_id] = 0;
+                            }
+                            $pRTotals[$pv_prod->prp_purchase_return_id] += $pv_prod->prp_amount;
+                        }
+                        foreach ($pRTotals as $prp_amount) { ?>
+                            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width: 100px;" class="tr_height_eq">
+                                <td style="width:100px" class="text-end">-<?php echo format_currency($prp_amount); ?></td>
+                            </tr>
+                    <?php }
+                    }
+
+                    // Petty cash amounts
+                    if (!empty($sales_order->petty_cash)) {
+                        foreach ($sales_order->petty_cash as $p_cash) { ?>
+                            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width: 100px;">
+                                <td style="width:100px" class="text-end"><?php echo format_currency($p_cash->pci_amount); ?></td>
+                            </tr>
+                    <?php }
+                    }
+
+                    // Journal voucher amounts
+                    if (!empty($sales_order->journal_voucher)) {
+                        foreach ($sales_order->journal_voucher as $jour_vouch) { ?>
+                            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width: 100px;">
+                                <td style="width:100px" class="text-end">
+                                    <?php
+                                    if (!empty($jour_vouch->ji_debit))
+                                        echo format_currency($jour_vouch->ji_debit);
+                                    elseif (!empty($jour_vouch->ji_credit))
+                                        echo format_currency($jour_vouch->ji_credit);
+                                    ?>
+                                </td>
+                            </tr>
+                    <?php }
+                    } ?>
+                </table>
+            </td>
+
+            <!-- Gross Profit -->
+            <td class="text-end">
+                <?php echo format_currency($total_gross_profit); ?>
+            </td>
+
+            <!-- Percentage -->
+            <td class="text-end">
+                <?php echo number_format($total_percentage, 2) . '%'; ?>
+            </td>
+
+        </tr>
+
+<?php
+        // Aggregate totals
+        $expenses_total += $expenses;
+        $final_gross += $total_gross_profit;
+        $final_percentage += $total_percentage;
+
+        $i++;
+    } // end foreach sales_orders
 
     if ($revenue > 0) {
         $final_percentage1 = ($final_gross / $revenue) * 100;
     } else {
-        $final_percentage1 = 0; 
+        $final_percentage1 = 0;
     }
-
-     
 ?>
 
-                                              
-                                                        
-                                                    </tr>
-                                                        
-                                                    <?php  $i++; } ?> 
-                                                    
-                                                    <tr>
-                                                        <td>Total</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br> </td>
-                                                        <td class="text-end"><b><?php echo format_currency($expenses_total); ?></b></td>
-                                                        <td class="text-end"><b><?php echo format_currency($final_gross); ?></b></td>
-                                                        <td class="text-end"><b><?php echo format_currency($final_percentage1); ?>%</b></td>
-                                                      
-                                                    </tr>
-                                                    
-                                                <?php   } ?>
-                                            </tbody>
+    <tr>
+        <td>Total</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="text-end"><b><?php echo format_currency($revenue); ?></b><br></td>
+        <td class="text-end"><b><?php echo format_currency($expenses_total); ?></b></td>
+        <td class="text-end"><b><?php echo format_currency($final_gross); ?></b></td>
+        <td class="text-end"><b><?php echo number_format($final_percentage1, 2); ?>%</b></td>
+    </tr>
+
+<?php } // end if sales_orders ?>
+</tbody>
+
 
                                             <?php }  else{ ?>
                                               
