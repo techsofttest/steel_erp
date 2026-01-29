@@ -553,6 +553,15 @@
             // initialize
             $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
+            /*empty of cash and credit invice*/
+            if(empty($sales_order->cash_invoice && $sales_order->credit_invoice)){
+
+                echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
+
+            }
+            
+            /**/
+
             /* PURCHASE VOUCHERS */
             if(!empty($sales_order->cash_invoice)){ 
                 
