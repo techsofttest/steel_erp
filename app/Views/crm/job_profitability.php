@@ -269,35 +269,55 @@
                                                         <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i;?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
-                                                        <?php
-                                                        $vendor_names = [];
+                                                       
 
-                                                        if (!empty($sales_order->purchase_vouchers)) {
-                                                            foreach ($sales_order->purchase_vouchers as $pv) {
-                                                                if (!empty($pv->cc_customer_name)) {
-                                                                    $vendor_names[$pv->cc_customer_name] = true; 
-                                                                }
-                                                            }
-                                                        }
+                                                        <!----->
+                                                        <?php 
+$cash_count = 0;
+if (!empty($sales_order->cash_invoice)) {
+    foreach ($sales_order->cash_invoice as $cash_val) {
+        if (!empty($cash_val->ci_reffer_no)) {
+            $cash_count++;
+        }
+    }
+}
 
-                                                        ?>
+$credit_count = 0;
+if (!empty($sales_order->credit_invoice)) {
+    foreach ($sales_order->credit_invoice as $credit_val) {
+        if (!empty($credit_val->cci_reffer_no)) {
+            $credit_count++;
+        }
+    }
+}
 
-                                                        <td style="width: 300px; word-wrap: break-word; white-space: normal;">
+$sales_return_count = 0;
+if (!empty($sales_order->sales_return)) {
+    foreach ($sales_order->sales_return as $sales_ret) {
+        if (!empty($sales_ret->sr_reffer_no)) {
+            $sales_return_count++;
+        }
+    }
+}
 
-                                                            <span><?php echo $sales_order->cc_customer_name; ?></span>
+$total_ref_count = $cash_count + $credit_count + $sales_return_count;
+?>
+<?php
+$vendor_names = [];
+if (!empty($sales_order->purchase_vouchers)) {
+    foreach ($sales_order->purchase_vouchers as $pv) {
+        if (!empty($pv->cc_customer_name)) {
+            $vendor_names[$pv->cc_customer_name] = true; // using associative array to avoid duplicates
+        }
+    }
+}
+?>
 
-                                                            <?php if (!empty($vendor_names)) { ?>
-                                                            <?php foreach (array_keys($vendor_names) as $vendor) { ?>
-                                                                <br>
-                                                                <br>
-                                                                <span>
-                                                                    <?php echo $vendor; ?>
-                                                                </span>
-                                                            <?php } ?>
+ <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $total_ref_count;?></td>
+                                                       
 
-                                                            <?php } ?>
 
-                                                        </td>
+                                                        <!----->
 
 
                                                         <td colspan="1" align="left" class="p-0">
@@ -568,12 +588,12 @@
                                                         <?php $cash_credit = $single_cash + $single_credit; //echo format_currency($cash_credit); ?>
 
                                                         <td colspan="1" align="left" class="p-0">
-    <table>
-        <?php 
-            // initialize
-            $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
+                                                            <table>
+                                                                <?php 
+                                                                    // initialize
+                                                                    $expenses1 = $expenses2 = $expenses3 = $expenses4 = $expenses5 = 0;
 
-            /*empty of cash and credit invice*/
+                                                                    /*empty of cash and credit invice*/
            
                                                                     $show_row = true; // assume row should show unless we find a ref no
 
