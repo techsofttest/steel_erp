@@ -274,24 +274,10 @@
                                                         <!----->
                                                          <?php
                                                          
-                                                         function countValidRefs($array, $field) {
-    $count = 0;
-    if (!empty($array)) {
-        foreach ($array as $item) {
-            if (isset($item->$field) && strlen(trim($item->$field)) > 0 && trim($item->$field) !== '0') {
-                $count++;
-            }
-        }
-    }
-    return $count;
-}
-
-$cash_count = countValidRefs($sales_order->cash_invoice ?? [], 'ci_reffer_no');
-$credit_count = countValidRefs($sales_order->credit_invoice ?? [], 'cci_reffer_no');
-$sales_return_count = countValidRefs($sales_order->sales_return ?? [], 'sr_reffer_no');
-
+                                                         $cash_count = !empty($sales_order->cash_invoice) ? count($sales_order->cash_invoice) : 0;
+$credit_count = !empty($sales_order->credit_invoice) ? count($sales_order->credit_invoice) : 0;
+$sales_return_count = !empty($sales_order->sales_return) ? count($sales_order->sales_return) : 0;
 $total_ref_count = $cash_count + $credit_count + $sales_return_count;
-
 
                                                          
                                                          ?>
