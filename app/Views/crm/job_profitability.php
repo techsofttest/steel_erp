@@ -306,36 +306,36 @@
                                                                 <!------>
 
                                                                 <?php
-$show_row = true; // assume row should show unless we find a ref no
+                                                                    $show_row = true; // assume row should show unless we find a ref no
 
-// Check cash invoices
-if (!empty($sales_order->cash_invoice)) {
-    foreach ($sales_order->cash_invoice as $cash_val) {
-        if (!empty($cash_val->ci_reffer_no)) {
-            $show_row = false; // found a non-empty ref no, no need to show row
-            break; // stop checking more cash invoices
-        }
-    }
-}
+                                                                    // Check cash invoices
+                                                                    if (!empty($sales_order->cash_invoice)) {
+                                                                        foreach ($sales_order->cash_invoice as $cash_val) {
+                                                                            if (!empty($cash_val->ci_reffer_no)) {
+                                                                                $show_row = false; // found a non-empty ref no, no need to show row
+                                                                                break; // stop checking more cash invoices
+                                                                            }
+                                                                        }
+                                                                    }
 
-// Check credit invoices (only if $show_row still true)
-if ($show_row && !empty($sales_order->credit_invoice)) {
-    foreach ($sales_order->credit_invoice as $credit_val) {
-        if (!empty($credit_val->cci_reffer_no)) {
-            $show_row = false; // found a non-empty ref no, no need to show row
-            break; // stop checking more credit invoices
-        }
-    }
-}
+                                                                    // Check credit invoices (only if $show_row still true)
+                                                                    if ($show_row && !empty($sales_order->credit_invoice)) {
+                                                                        foreach ($sales_order->credit_invoice as $credit_val) {
+                                                                            if (!empty($credit_val->cci_reffer_no)) {
+                                                                                $show_row = false; // found a non-empty ref no, no need to show row
+                                                                                break; // stop checking more credit invoices
+                                                                            }
+                                                                        }
+                                                                    }
 
-if ($show_row) {
-    ?>
-    <tr style="background: unset; border-bottom: hidden !important; white-space: nowrap; width:100px;" class="text-center tr_height_eq">
-        <td style="width:100px">&nbsp;</td>
-    </tr>
-    <?php
-}
-?>
+                                                                    if ($show_row) {
+                                                                        ?>
+                                                                        <tr style="background: unset; border-bottom: hidden !important; white-space: nowrap; width:100px;" class="text-center tr_height_eq">
+                                                                            <td style="width:100px">&nbsp;</td>
+                                                                        </tr>
+                                                                        <?php
+                                                                    }
+                                                                    ?>
 
 
                                                                 <!------>
@@ -575,6 +575,33 @@ if ($show_row) {
 
             /*empty of cash and credit invice*/
            
+                                                                    $show_row = true; // assume row should show unless we find a ref no
+
+                                                                    // Check cash invoices
+                                                                    if (!empty($sales_order->cash_invoice)) {
+                                                                        foreach ($sales_order->cash_invoice as $cash_val) {
+                                                                            if (!empty($cash_val->ci_reffer_no)) {
+                                                                                $show_row = false; // found a non-empty ref no, no need to show row
+                                                                                break; // stop checking more cash invoices
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                    // Check credit invoices (only if $show_row still true)
+                                                                    if ($show_row && !empty($sales_order->credit_invoice)) {
+                                                                        foreach ($sales_order->credit_invoice as $credit_val) {
+                                                                            if (!empty($credit_val->cci_reffer_no)) {
+                                                                                $show_row = false; // found a non-empty ref no, no need to show row
+                                                                                break; // stop checking more credit invoices
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                    if ($show_row) {
+                                                                        
+                                                                       echo "<tr class='tr_height_eq' style='border-bottom: hidden !important'><td>&nbsp;</td></tr>";
+                                                                    }
+                                                                
             
             /**/
 
