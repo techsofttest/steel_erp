@@ -298,7 +298,7 @@ if (!empty($sales_order->purchase_vouchers)) {
 
     <span><?= $sales_order->cc_customer_name; ?>-<?php echo $total_ref_count; ?></span>
 
-    
+    <?php if (empty($sales_order->purchase_vouchers)) { ?>
         <?php for ($i = 1; $i < $total_ref_count; $i++) { ?>
             <br><br>
             <span>&nbsp;</span>
@@ -310,7 +310,7 @@ if (!empty($sales_order->purchase_vouchers)) {
             <br><br>
             <span><?= $vendor; ?></span>
         <?php } ?>
-   
+    <?php } ?>
 
 </td>                  
 
