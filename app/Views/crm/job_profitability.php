@@ -285,7 +285,7 @@ $printedPV = [];
 if (!empty($sales_order->purchase_vouchers)) {
     foreach ($sales_order->purchase_vouchers as $pv) {
         if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
-            $vendor_names[$pv->pv_vendor_inv] = true; // key-based to avoid duplicate
+            $vendor_names[$pv->cc_customer_name] = true; // key-based to avoid duplicate
             $printedPV[] = $pv->pv_reffer_id;
         }
     }
@@ -299,7 +299,7 @@ if (!empty($sales_order->purchase_vouchers)) {
     <span><?= $sales_order->cc_customer_name; ?>-<?php echo $total_ref_count; ?></span>
 
     <?php if (!empty($sales_order->purchase_vouchers)) { ?>
-        <?php for ($i = 1; $i < $total_ref_count; $i++) { ?>
+        <?php for ($k = 1; $k < $total_ref_count; $k++) { ?>
             <br><br>
             <span>&nbsp;</span>
         <?php } ?>
