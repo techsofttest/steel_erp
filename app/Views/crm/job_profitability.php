@@ -296,7 +296,7 @@ if (!empty($sales_order->purchase_vouchers)) {
 
                                          <td style="width:300px; word-wrap: break-word; white-space: normal;">
 
-    <span><?= $sales_order->cc_customer_name; ?>-<?php echo $total_ref_count; ?></span>
+    <span><?= $sales_order->cc_customer_name; ?></span>
 
     <?php if (!empty($sales_order->purchase_vouchers)) { ?>
         <?php for ($k = 1; $k < $total_ref_count; $k++) { ?>
@@ -308,7 +308,7 @@ if (!empty($sales_order->purchase_vouchers)) {
     <?php if (!empty($vendor_names)) { ?>
         <?php foreach (array_keys($vendor_names) as $vendor) { ?>
             <br><br>
-            <span style="padding: 8px 0px;"><?= $vendor; ?></span>
+            <span ><?= $vendor; ?></span>
         <?php } ?>
     <?php } ?>
 
