@@ -279,44 +279,40 @@
                                                             $sales_return_count = !empty($sales_order->sales_return) ? count($sales_order->sales_return) : 0;
                                                             $total_ref_count = $cash_count + $credit_count + $sales_return_count;
 
-                                                            $printedPV = [];
-$hasPurchaseVoucher = !empty($sales_order->purchase_vouchers);
-                                                         
+                                                          $vendor_names = [];
+$printedPV = [];
+
+if (!empty($sales_order->purchase_vouchers)) {
+    foreach ($sales_order->purchase_vouchers as $pv) {
+        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
+            $vendor_names[$pv->pv_vendor_inv] = true; // key-based to avoid duplicate
+            $printedPV[] = $pv->pv_reffer_id;
+        }
+    }
+}
                                                         ?>
 
 
 
                                          <td style="width:300px; word-wrap: break-word; white-space: normal;">
 
-    <!-- Customer Name -->
     <span><?= $sales_order->cc_customer_name; ?></span>
 
-    <?php
-    $hasPurchaseVoucher = !empty($sales_order->purchase_vouchers);
-    ?>
-
-    <?php if (!$hasPurchaseVoucher) { ?>
-
-        <!-- 🔴 Purchase voucher EMPTY → add spacing -->
+    <?php if (empty($sales_order->purchase_vouchers)) { ?>
         <?php for ($i = 0; $i < $total_ref_count; $i++) { ?>
             <br><br>
             <span>&nbsp;</span>
         <?php } ?>
-
     <?php } ?>
 
-    <?php
-    if (!empty($vendor_names)) {
-        foreach (array_keys($vendor_names) as $vendor) {
-            ?>
+    <?php if (!empty($vendor_names)) { ?>
+        <?php foreach (array_keys($vendor_names) as $vendor) { ?>
             <br><br>
             <span><?= $vendor; ?></span>
-            <?php
-        }
-    }
-    ?>
+        <?php } ?>
+    <?php } ?>
 
-</td>                                  
+</td>                  
 
                                                         <!----->
 
