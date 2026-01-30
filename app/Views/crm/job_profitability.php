@@ -279,57 +279,44 @@
                                                             $sales_return_count = !empty($sales_order->sales_return) ? count($sales_order->sales_return) : 0;
                                                             $total_ref_count = $cash_count + $credit_count + $sales_return_count;
 
-
-                                                            $vendor_names = [];
-$printedPV = [];
-
-if (!empty($sales_order->purchase_vouchers)) {
-    foreach ($sales_order->purchase_vouchers as $pv) {
-        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
-            $vendor_names[] = $pv->pv_vendor_inv; // store vendor name
-            $printedPV[] = $pv->pv_reffer_id;
-        }
-    }
-}
-
+                                                            $printedPV = [];
+$hasPurchaseVoucher = !empty($sales_order->purchase_vouchers);
                                                          
                                                         ?>
 
 
 
-                                                       
-                                                    <td style="width:300px; word-wrap: break-word; white-space: normal;">
+                                         <td style="width:300px; word-wrap: break-word; white-space: normal;">
 
     <!-- Customer Name -->
     <span><?= $sales_order->cc_customer_name; ?></span>
 
-    <?php if (empty($sales_order->purchase_vouchers)) { ?>
+    <?php
+    $hasPurchaseVoucher = !empty($sales_order->purchase_vouchers);
+    ?>
 
-        <!-- FIRST: Purchase voucher EMPTY -->
+    <?php if (!$hasPurchaseVoucher) { ?>
+
+        <!-- 🔴 Purchase voucher EMPTY → add spacing -->
         <?php for ($i = 0; $i < $total_ref_count; $i++) { ?>
             <br><br>
             <span>&nbsp;</span>
         <?php } ?>
 
-    <?php } else { ?>
-
-        <!-- ELSE: Purchase voucher EXISTS -->
-        <?php
-        $printedPV = [];
-        foreach ($sales_order->purchase_vouchers as $pv) {
-            if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
-                $printedPV[] = $pv->pv_reffer_id;
-        ?>
-                <br><br>
-                <span><?= $pv->pv_vendor_inv; ?></span>
-        <?php
-            }
-        }
-        ?>
-
     <?php } ?>
 
-</td>
+    <?php
+    if (!empty($vendor_names)) {
+        foreach (array_keys($vendor_names) as $vendor) {
+            ?>
+            <br><br>
+            <span><?= $vendor; ?></span>
+            <?php
+        }
+    }
+    ?>
+
+</td>                                  
 
                                                         <!----->
 
