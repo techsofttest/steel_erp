@@ -298,26 +298,34 @@ if (!empty($sales_order->purchase_vouchers)) {
 
 
                                                        
-                                                        <td style="width:300px; word-wrap: break-word; white-space: normal;">
+                                                    <td style="width:300px; word-wrap: break-word; white-space: normal;">
 
     <!-- Customer Name -->
     <span><?= $sales_order->cc_customer_name; ?></span>
 
-    <?php if (!empty($vendor_names)) { ?>
+    <?php if (empty($sales_order->purchase_vouchers)) { ?>
 
-        <!-- Purchase Voucher Vendors -->
-        <?php foreach ($vendor_names as $vendor) { ?>
-            <br><br>
-            <span><?= $vendor; ?></span>
-        <?php } ?>
-
-    <?php } else { ?>
-
-        <!-- Purchase voucher empty → open empty rows based on total_ref_count -->
+        <!-- FIRST: Purchase voucher EMPTY -->
         <?php for ($i = 0; $i < $total_ref_count; $i++) { ?>
             <br><br>
             <span>&nbsp;</span>
         <?php } ?>
+
+    <?php } else { ?>
+
+        <!-- ELSE: Purchase voucher EXISTS -->
+        <?php
+        $printedPV = [];
+        foreach ($sales_order->purchase_vouchers as $pv) {
+            if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
+                $printedPV[] = $pv->pv_reffer_id;
+        ?>
+                <br><br>
+                <span><?= $pv->pv_vendor_inv; ?></span>
+        <?php
+            }
+        }
+        ?>
 
     <?php } ?>
 
