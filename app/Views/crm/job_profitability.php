@@ -308,7 +308,7 @@ if (!empty($sales_order->purchase_vouchers)) {
     <?php if (!empty($vendor_names)) { ?>
         <?php foreach (array_keys($vendor_names) as $vendor) { ?>
             <br><br>
-            <span padding: 0px 10px;><?= $vendor; ?></span>
+            <span stylle="padding: 0px 10px;"><?= $vendor; ?></span>
         <?php } ?>
     <?php } ?>
 
