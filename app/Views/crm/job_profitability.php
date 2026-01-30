@@ -272,17 +272,56 @@
                                                        
 
                                                         <!----->
-                                                         <?php
+                                                        <?php
                                                          
-                                                         $cash_count = !empty($sales_order->cash_invoice) ? count($sales_order->cash_invoice) : 0;
-$credit_count = !empty($sales_order->credit_invoice) ? count($sales_order->credit_invoice) : 0;
-$sales_return_count = !empty($sales_order->sales_return) ? count($sales_order->sales_return) : 0;
-$total_ref_count = $cash_count + $credit_count + $sales_return_count;
+                                                            $cash_count = !empty($sales_order->cash_invoice) ? count($sales_order->cash_invoice) : 0;
+                                                            $credit_count = !empty($sales_order->credit_invoice) ? count($sales_order->credit_invoice) : 0;
+                                                            $sales_return_count = !empty($sales_order->sales_return) ? count($sales_order->sales_return) : 0;
+                                                            $total_ref_count = $cash_count + $credit_count + $sales_return_count;
+
+
+                                                            $vendor_names = [];
+$printedPV = [];
+
+if (!empty($sales_order->purchase_vouchers)) {
+    foreach ($sales_order->purchase_vouchers as $pv) {
+        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
+            $vendor_names[] = $pv->pv_vendor_inv; // store vendor name
+            $printedPV[] = $pv->pv_reffer_id;
+        }
+    }
+}
 
                                                          
-                                                         ?>
+                                                        ?>
+
+
+
                                                        
- <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $total_ref_count;?></td>
+                                                        <td style="width:300px; word-wrap: break-word; white-space: normal;">
+
+    <!-- Customer Name -->
+    <span><?= $sales_order->cc_customer_name; ?></span>
+
+    <?php if (!empty($vendor_names)) { ?>
+
+        <!-- Purchase Voucher Vendors -->
+        <?php foreach ($vendor_names as $vendor) { ?>
+            <br><br>
+            <span><?= $vendor; ?></span>
+        <?php } ?>
+
+    <?php } else { ?>
+
+        <!-- Purchase voucher empty → open empty rows based on total_ref_count -->
+        <?php for ($i = 0; $i < $total_ref_count; $i++) { ?>
+            <br><br>
+            <span>&nbsp;</span>
+        <?php } ?>
+
+    <?php } ?>
+
+</td>
 
                                                         <!----->
 
