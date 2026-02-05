@@ -301,7 +301,7 @@ if (!empty($sales_order->purchase_vouchers)) {
     <?php if (!empty($sales_order->purchase_vouchers)) { ?>
         <?php for ($k = 1; $k < $total_ref_count; $k++) { ?>
            <br>
-            <span style="display: inline-block;height: 35px;">tesst</span>
+            <span style="display: inline-block;height: 35px;">&nbsp</span>
         <?php } ?>
     <?php } ?>
 
