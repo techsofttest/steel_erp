@@ -296,7 +296,7 @@ if (!empty($sales_order->purchase_vouchers)) {
 
                                          <td style="width:300px; word-wrap: break-word; white-space: normal;">
 
-    <span style="display: inline-block;height: 30x;"><?= $sales_order->cc_customer_name; ?></span>
+    <span style="display: inline-block;height: 30px;"><?= $sales_order->cc_customer_name; ?></span>
 
     <?php if (!empty($sales_order->purchase_vouchers)) { ?>
         <?php for ($k = 1; $k < $total_ref_count; $k++) { ?>
