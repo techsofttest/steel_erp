@@ -296,19 +296,19 @@ if (!empty($sales_order->purchase_vouchers)) {
 
                                          <td style="width:300px; word-wrap: break-word; white-space: normal;">
 
-    <span style="display: inline-block;height: 33px;"><?= $sales_order->cc_customer_name; ?></span>
+    <span ><?= $sales_order->cc_customer_name; ?></span>
 
     <?php if (!empty($sales_order->purchase_vouchers)) { ?>
         <?php for ($k = 1; $k < $total_ref_count; $k++) { ?>
            <br>
-            <span style="display: inline-block;height: 33px;">&nbsp;</span>
+            <span >&nbsp;</span>
         <?php } ?>
     <?php } ?>
 
     <?php if (!empty($vendor_names)) { ?>
         <?php foreach (array_keys($vendor_names) as $vendor) { ?>
             <br>
-            <span style="display: inline-block;height: 33px;"><?= $vendor; ?></span>
+            <span ><?= $vendor; ?></span>
         <?php } ?>
     <?php } ?>
 
