@@ -300,14 +300,14 @@ if (!empty($sales_order->purchase_vouchers)) {
 
     <?php if (!empty($sales_order->purchase_vouchers)) { ?>
         <?php for ($k = 1; $k < $total_ref_count; $k++) { ?>
-           <br><br>
+           <br>
             <span style="display: inline-block;height: 33px;">tesst</span>
         <?php } ?>
     <?php } ?>
 
     <?php if (!empty($vendor_names)) { ?>
         <?php foreach (array_keys($vendor_names) as $vendor) { ?>
-            <br><br>
+            <br>
             <span style="display: inline-block;height: 33px;"><?= $vendor; ?></span>
         <?php } ?>
     <?php } ?>
