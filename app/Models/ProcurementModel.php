@@ -13,7 +13,7 @@ class ProcurementModel extends Model
 
     protected $db;
     // public $report_model;
-    
+
     // public function __construct() {
 
     //     $this->report_model = new \App\Models\ReportModel();
@@ -57,7 +57,7 @@ class ProcurementModel extends Model
 
             ->get();
 
-           /// echo $this->db->getLastQuery();
+        /// echo $this->db->getLastQuery();
 
         //exit();
 
@@ -65,7 +65,7 @@ class ProcurementModel extends Model
     }
 
 
-    public function FetchWhereNotIn3($table, $cond, $id_coloum, $id,$cond2)
+    public function FetchWhereNotIn3($table, $cond, $id_coloum, $id, $cond2)
     {
         $query = $this->db->table($table)
 
@@ -79,7 +79,7 @@ class ProcurementModel extends Model
 
             ->get();
 
-            //echo $this->db->getLastQuery();
+        //echo $this->db->getLastQuery();
 
         //exit();
 
@@ -252,45 +252,43 @@ class ProcurementModel extends Model
         return $result;
     }
 
-public function FetchDistinctProductsBySalesOrder($sales_order, $term = '', $limit = 10, $offset = 0)
-{
-    $builder = $this->db->table('crm_sales_product_details spd');
+    public function FetchDistinctProductsBySalesOrder($sales_order, $term = '', $limit = 10, $offset = 0)
+    {
+        $builder = $this->db->table('crm_sales_product_details spd');
 
-    $builder->select('p.product_id, p.product_details')
-        ->join(
-            'crm_products p',
-            'p.product_id = spd.spd_product_details',
-            'inner'
-        ) ->join(
+        $builder->select('p.product_id, p.product_details')
+            ->join(
+                'crm_products p',
+                'p.product_id = spd.spd_product_details',
+                'inner'
+            )->join(
                 'crm_sales_orders so',
                 'so.so_id = spd.spd_sales_order',
                 'inner'
             );
 
-        $builder->groupStart();// ✅ Start grouping for OR condition
-            $builder->where('spd.spd_sales_order', $sales_order)            
+        $builder->groupStart(); // ✅ Start grouping for OR condition
+        $builder->where('spd.spd_sales_order', $sales_order)
             ->orwhere('so.so_reffer_no', $sales_order);
-            $builder->groupEnd(); // ✅ End grouping for OR condition
+        $builder->groupEnd(); // ✅ End grouping for OR condition
 
-        
+        if (!empty($term)) {
+            $builder->like('p.product_details', $term);
+        }
 
-    if (!empty($term)) {
-        $builder->like('p.product_details', $term);
-    }
-
-    $builder->groupBy('p.product_id')
+        $builder->groupBy('p.product_id')
             ->limit($limit, $offset); // ✅ CRITICAL
 
-    return $builder->get()->getResult();
-}
+        return $builder->get()->getResult();
+    }
 
 
 
-public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = '')
-{
-    $builder = $this->db->table('pro_purchase_order_product pop');
+    public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = '')
+    {
+        $builder = $this->db->table('pro_purchase_order_product pop');
 
-    $builder->select('p.product_id, p.product_details')
+        $builder->select('p.product_id, p.product_details')
             ->join(
                 'crm_products p',
                 'p.product_id = pop.pop_prod_desc',
@@ -302,20 +300,20 @@ public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = ''
                 'inner'
             );
 
-            $builder->groupStart();// ✅ Start grouping for OR condition
-            $builder->where('po.po_id', $purchase_order)
+        $builder->groupStart(); // ✅ Start grouping for OR condition
+        $builder->where('po.po_id', $purchase_order)
             ->orwhere('po.po_reffer_no', $purchase_order);
-            $builder->groupEnd(); // ✅ End grouping for OR condition
+        $builder->groupEnd(); // ✅ End grouping for OR condition
 
 
-    if (!empty($term)) {
-        $builder->like('p.product_details', $term);
+        if (!empty($term)) {
+            $builder->like('p.product_details', $term);
+        }
+
+        $builder->groupBy('p.product_id'); // ✅ ensures DISTINCT products
+
+        return $builder->get()->getResult();
     }
-
-    $builder->groupBy('p.product_id'); // ✅ ensures DISTINCT products
-
-    return $builder->get()->getResult();
-}
 
 
     public function CheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)
@@ -580,13 +578,22 @@ public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = ''
         $result = $query->get()->getResult();
 
         // Get the last executed query
-        //echo $this->db->getLastQuery();
+        // echo $data3.'<pre>'.$this->db->getLastQuery();
+        // print_r($result);
 
         //return $result;
 
         $i = 0;
         foreach ($result as $res) {
             $cond_user = ['pvp_reffer_id' => $res->pvp_reffer_id];
+
+            if (!empty($data2)) {
+                $cond_user['pvp_sales_order'] = $data2;
+            }
+
+            if (!empty($data3)) {
+                $cond_user['pvp_prod_dec'] = $data3;
+            }
 
             // Create the query using the Query Builder
             $query = $this->db->table($table)->where($cond_user);
@@ -982,7 +989,7 @@ public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = ''
     }
 
     public function CreditBalance($id, $date_from = '', $date_to = '')
-    {        
+    {
         // Fetch the transactions using the provided parameters
         $transactions = $this->FetchGLTransactions(
             $date_from,
@@ -994,22 +1001,22 @@ public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = ''
             $range_from = "",
             $range_to = ""
         );
-    
+
         // echo '<pre>';
         // print_r($transactions);
         // echo '------------'; 
-        
+
         // Initialize beginning balance
         $begining_balance = 0;
-    
+
         // Calculate totals
         $total_credit = array_sum(array_column($transactions, 'credit_amount'));
         $total_debit = array_sum(array_column($transactions, 'debit_amount'));
         $net_change = $total_debit - $total_credit;
-    
+
         // Calculate ending balance
         $ending_balance = $begining_balance + $net_change;
-    
+
         // Prepare result as an object (using stdClass)
         $result = new \stdClass();
         $result->transactions = $transactions;
@@ -1018,16 +1025,16 @@ public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = ''
         $result->total_debit = $total_debit;
         $result->net_change = $net_change;
         $result->ending_balance = $ending_balance;
-    
+
         // Return the result object
         return $result;
     }
-    
+
 
 
     public function FetchGLTransactions($date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
     {
-        
+
         $receipt_table = "{$this->db->getPrefix()}accounts_receipts";
         $payment_table = "{$this->db->getPrefix()}accounts_payments";
         $cash_invoice_table = "{$this->db->getPrefix()}crm_cash_invoice";
@@ -2638,69 +2645,61 @@ public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = ''
 
 
 
-        //Fetch where Join
-        public function FetchWhereJoinBy($table,$cond,$joins,$group=null)
-        {
-            $query = $this->db->table($table);
-    
-    
-            if(!empty($joins))
-    
-            foreach($joins as $join)
-            {
+    //Fetch where Join
+    public function FetchWhereJoinBy($table, $cond, $joins, $group = null)
+    {
+        $query = $this->db->table($table);
+
+
+        if (!empty($joins))
+
+            foreach ($joins as $join) {
                 $table2 = $table;
-                if(!empty($join['table2']))
-                {
-                $table2 = $join['table2'];
+                if (!empty($join['table2'])) {
+                    $table2 = $join['table2'];
                 }
-                $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
+                $query->join($join['table'], '' . $join['table'] . '.' . $join['pk'] . ' = ' . $table2 . '.' . $join['fk'] . '', 'left');
             }
-    
-
-            $query->where($cond);
-           
-            if($group != null )
-                $query->groupBy($group);
-
-            $result = $query->get()->getResult();
-            //echo $this->db->getLastQuery(); exit();
-    
-            return $result;
-    
-        }
 
 
-        public function FetchLikeJoinBy($table,$cond,$order_key,$term,$joins,$group=null)
-        {
-            $query = $this->db->table($table);
-    
-    
-            if(!empty($joins))
-    
-            foreach($joins as $join)
-            {
+        $query->where($cond);
+
+        if ($group != null)
+            $query->groupBy($group);
+
+        $result = $query->get()->getResult();
+        //echo $this->db->getLastQuery(); exit();
+
+        return $result;
+    }
+
+
+    public function FetchLikeJoinBy($table, $cond, $order_key, $term, $joins, $group = null)
+    {
+        $query = $this->db->table($table);
+
+
+        if (!empty($joins))
+
+            foreach ($joins as $join) {
                 $table2 = $table;
-                if(!empty($join['table2']))
-                {
-                $table2 = $join['table2'];
+                if (!empty($join['table2'])) {
+                    $table2 = $join['table2'];
                 }
-                $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
+                $query->join($join['table'], '' . $join['table'] . '.' . $join['pk'] . ' = ' . $table2 . '.' . $join['fk'] . '', 'left');
             }
-    
-
-            $query->where($cond)
-                ->like($order_key,$term);
-            
-           
-            if($group != null )
-                $query->groupBy($group);
-
-            $result = $query->get()->getResult();
-            //echo $this->db->getLastQuery(); exit();
-    
-            return $result;
-    
-        }
 
 
+        $query->where($cond)
+            ->like($order_key, $term);
+
+
+        if ($group != null)
+            $query->groupBy($group);
+
+        $result = $query->get()->getResult();
+        //echo $this->db->getLastQuery(); exit();
+
+        return $result;
+    }
 }

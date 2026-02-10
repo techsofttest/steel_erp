@@ -20,10 +20,14 @@
     }
 
     #DataTable td {
-        line-height: 1.5;
+        line-height: 1.0;
 
     }
 
+     #DataTable .nested-table td{
+        line-height: 1.5;
+    }
+    
     #DataTable {
         table-layout: fixed;
         width: auto;
@@ -97,6 +101,11 @@
     span.select2 {
         width: 100% !important;
     }
+
+
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 8px 10px;
+}
 </style>
 <div class="tab-content text-muted">
 
@@ -370,10 +379,10 @@
                                                             <tr>
                                                                 <th colspan="1">Total</th>
                                                                 <td colspan="4" class="p-0">
-                                                                
+
                                                                 <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
 
-                                                                      
+
                                                                 </td>
                                                             </tr>
 

@@ -112,17 +112,49 @@ class MRN_PVReport extends BaseController
     }
 
 
-public function GetData()
+    public function GetData()
     {
         // ... [Your existing inputs for dates, vendor, etc stay exactly the same] ...
-        if (!empty($_GET['form_date'])) { $from_date = $_GET['form_date']; } else { $from_date = ""; }
-        if (!empty($_GET['to_date'])) { $to_date = $_GET['to_date']; } else { $to_date = ""; }
-        if (!empty($_GET['vendor'])) { $data1 = $_GET['vendor']; } else { $data1 = ""; }
-        if (!empty($_GET['sales_order'])) { $data2 = $_GET['sales_order']; } else { $data2 = ""; }
-        if (!empty($_GET['lpo_ref'])) { $data3 = $_GET['lpo_ref']; } else { $data3 = ""; }
-        if (!empty($_GET['product'])) { $data5 = $_GET['product']; } else { $data5 = ""; }
-        if (!empty($_GET['pending'])) { $data6 = $_GET['pending']; } else { $data6 = ""; }
-        if (!empty($_GET['linked'])) { $data7 = $_GET['linked']; } else { $data7 = ""; }
+        if (!empty($_GET['form_date'])) {
+            $from_date = $_GET['form_date'];
+        } else {
+            $from_date = "";
+        }
+        if (!empty($_GET['to_date'])) {
+            $to_date = $_GET['to_date'];
+        } else {
+            $to_date = "";
+        }
+        if (!empty($_GET['vendor'])) {
+            $data1 = $_GET['vendor'];
+        } else {
+            $data1 = "";
+        }
+        if (!empty($_GET['sales_order'])) {
+            $data2 = $_GET['sales_order'];
+        } else {
+            $data2 = "";
+        }
+        if (!empty($_GET['lpo_ref'])) {
+            $data3 = $_GET['lpo_ref'];
+        } else {
+            $data3 = "";
+        }
+        if (!empty($_GET['product'])) {
+            $data5 = $_GET['product'];
+        } else {
+            $data5 = "";
+        }
+        if (!empty($_GET['pending'])) {
+            $data6 = $_GET['pending'];
+        } else {
+            $data6 = "";
+        }
+        if (!empty($_GET['linked'])) {
+            $data7 = $_GET['linked'];
+        } else {
+            $data7 = "";
+        }
 
         // Standard Joins
         $joins = array(
@@ -163,14 +195,14 @@ public function GetData()
             // 2. Map PVPs by RNP ID so we can match them to products easily
             $pvpMap = [];    // For merging properties (last one wins if multiple)
             $pvpTotals = []; // For calculating total paid amount per RNP
-            
+
             if (!empty($all_pvps)) {
                 foreach ($all_pvps as $pvp) {
                     $rnp_id = $pvp->pvp_mat_rec_note_prod_id;
-                    
+
                     // Store object for merging later
                     $pvpMap[$rnp_id] = $pvp;
-                    
+
                     // Sum up the amount
                     if (!isset($pvpTotals[$rnp_id])) {
                         $pvpTotals[$rnp_id] = 0;
@@ -180,14 +212,14 @@ public function GetData()
             }
 
             // 3. Process Products
-            $mrn_is_fully_linked = true; 
+            $mrn_is_fully_linked = true;
             $mrn_has_pending_items = false;
             $processed_products = [];
 
             if (!empty($orders->product_orders)) {
 
                 foreach ($orders->product_orders as $product) {
-                    
+
                     $rnp_id = $product->rnp_id;
 
                     // --- A. MERGE PVP DATA INTO PRODUCT ---
@@ -204,7 +236,7 @@ public function GetData()
 
                     // --- B. CALCULATE LINKED/PENDING STATUS ---
                     $total_vouchered = isset($pvpTotals[$rnp_id]) ? $pvpTotals[$rnp_id] : 0;
-                    $rnp_amount      = (float)$product->rnp_amount; 
+                    $rnp_amount      = (float)$product->rnp_amount;
 
                     // Precision rounding to avoid floating point errors
                     $balance = round($rnp_amount - $total_vouchered, 2);
@@ -213,7 +245,7 @@ public function GetData()
                         // It is Pending
                         $product->is_line_pending = true;
                         $product->is_line_linked  = false;
-                        
+
                         $mrn_has_pending_items = true;
                         $mrn_is_fully_linked   = false;
                     } else {
@@ -223,7 +255,7 @@ public function GetData()
                     }
 
                     $product->balance_amount = $balance;
-                    
+
                     $processed_products[] = $product;
                 }
             }
@@ -243,7 +275,7 @@ public function GetData()
         // ---------------------------------------------------------
 
         if ($data6 != "" || $data7 != "") {
-            
+
             $filteredData = [];
 
             foreach ($data['purchase_order'] as $mrn) {
@@ -258,12 +290,12 @@ public function GetData()
                     $include_mrn = true;
                     $final_products = $mrn->product_orders;
                 }
-                
+
                 // CASE 2: Pending Selected ($data6)
                 // RULE: Show MRN if it has pending items. REMOVE linked items from the display.
                 elseif ($data6 != "") {
                     if ($mrn->has_pending) {
-                        foreach($mrn->product_orders as $prod) {
+                        foreach ($mrn->product_orders as $prod) {
                             if ($prod->is_line_pending) {
                                 $final_products[] = $prod;
                             }
@@ -293,10 +325,18 @@ public function GetData()
         }
 
 
-        
+
         // ... [Rest of your view loading code] ...
-        if (!empty($from_date)) { $data['from_dates'] = date('d-M-Y', strtotime($from_date)); } else { $data['from_dates'] = ""; }
-        if (!empty($to_date)) { $data['to_dates'] = date('d-M-Y', strtotime($to_date)); } else { $data['to_dates'] = ""; }
+        if (!empty($from_date)) {
+            $data['from_dates'] = date('d-M-Y', strtotime($from_date));
+        } else {
+            $data['from_dates'] = "";
+        }
+        if (!empty($to_date)) {
+            $data['to_dates'] = date('d-M-Y', strtotime($to_date));
+        } else {
+            $data['to_dates'] = "";
+        }
 
         $cond = array('so_deliver_flag' => 0);
         $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation', 'cc_id', 'desc');
@@ -304,8 +344,12 @@ public function GetData()
         $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
         $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-        if (!empty($_POST['pdf'])) { $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']); }
-        if (!empty($_POST['excel'])) { $this->Excel($data['purchase_order']); }
+        if (!empty($_POST['pdf'])) {
+            $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']);
+        }
+        if (!empty($_POST['excel'])) {
+            $this->Excel($data['purchase_order']);
+        }
 
         $data['content'] = view('procurement/mrn_pv_report', $data);
         return view('crm/report-module-search', $data);
@@ -1022,7 +1066,7 @@ public function GetData()
 
 
 
-     public function FetchProducts()
+    public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
         $purchaseorder = $this->request->getPost('purchaseorder');
@@ -1056,6 +1100,4 @@ public function GetData()
 
         return json_encode($data);
     }
-
-    
 }

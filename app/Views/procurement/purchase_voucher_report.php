@@ -20,8 +20,11 @@
     }
 
     #DataTable td {
-        line-height: 1.5;
+        line-height: 1.0;
 
+    }
+     #DataTable .nested-table td{
+        line-height: 1.5;
     }
 
     #DataTable {
@@ -314,7 +317,7 @@
                                                     <col style="width:100px;">
                                                     <col style="width:300px;">
                                                     <col style="width:100px;">
-                                                    <col style="width:100px;">
+                                                    <col style="width:120px;">
                                                     <col style="width:80px;">
                                                     <col style="width:500px;">
                                                     <col style="width:80px;">
@@ -366,7 +369,7 @@
                                                                     <table class="nested-table" style="width:100%; table-layout:fixed;">
                                                                         <!-- 🔹 Added nested colgroup matching parent widths -->
                                                                         <colgroup>
-                                                                            <col style="width:100px;"> <!-- MRN Ref -->
+                                                                            <col style="width:120px;"> <!-- MRN Ref -->
                                                                             <col style="width:80px;"> <!-- Amount -->
                                                                             <col style="width:500px;"> <!-- Product -->
                                                                             <col style="width:80px;"> <!-- Quantity -->
@@ -379,7 +382,7 @@
                                                                         foreach ($pur_vouc->product_orders as $orders) {
                                                                             $k++; ?>
                                                                             <tr style="background: unset;border-bottom: hidden !important;">
-                                                                                <td style="white-space: nowrap;vertical-align: top;">
+                                                                                <td class="text-center" style="white-space: nowrap;vertical-align: top;">
                                                                                     <a href="<?php echo base_url() . 'Procurement/MaterialReceivedNote?view_so=' . ($pur_vouc->mrn_id ?? ''); ?>" target="_blank">
                                                                                         <?php echo $orders->mrn_reffer; ?>
                                                                                     </a>
@@ -411,7 +414,7 @@
                                                             <td colspan="7" class="p-0">
                                                                 <table style="width:100%; table-layout:fixed;">
                                                                     <colgroup>
-                                                                        <col style="width:100px;">
+                                                                        <col style="width:120px;">
                                                                         <col style="width:80px;">
                                                                         <col style="width:500px;">
                                                                         <col style="width:80px;">
@@ -476,57 +479,6 @@
 
 <script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
-<?php /*
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-        $(document).ready(function() {
-            // When the 'Vendor' dropdown is changed
-            $('#vendor').change(function() {
-                var vendorId = $(this).val();
-
-                // Send AJAX request to get Lpo Ref based on Vendor
-                $.ajax({
-                    url: '<?php echo base_url(); ?>Procurement/LPO_MRNReport/fetch_lpo_ref', // URL to fetch Lpo Ref (e.g., controller function)
-                    method: 'POST',
-                    data: {
-                        vendor_id: vendorId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        $('#lpo_ref').prop('disabled', false); // Enable Lpo Ref dropdown
-                        $('#lpo_ref').html('<option value="" selected disabled>Select Lpo ref</option>'); // Reset Lpo Ref dropdown
-                        $.each(response, function(index, lpoRef) {
-                            $('#lpo_ref').append('<option value="' + lpoRef.po_id + '">' + lpoRef.po_reffer_no + '</option>');
-                        });
-                    }
-                });
-            });
-
-            // When the 'Lpo Ref' dropdown is changed
-            $('#lpo_ref').change(function() {
-                var lpoRef = $(this).val();
-
-                // Send AJAX request to get Sales Orders based on Lpo Ref
-                $.ajax({
-                    url: '<?php echo base_url(); ?>Procurement/LPO_MRNReport/fetch_sales_order', // URL to fetch Sales Orders (e.g., controller function)
-                    method: 'POST',
-                    data: {
-                        lpo_ref: lpoRef
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        $('#sales_order').prop('disabled', false); // Enable Sales Order dropdown
-                        $('#sales_order').html('<option value="" selected disabled>Select Sales Order</option>'); // Reset Sales Order dropdown
-                        $.each(response, function(index, salesOrder) {
-                            $('#sales_order').append('<option value="' + salesOrder.so_id + '">' + salesOrder.so_reffer_no + '</option>');
-                        });
-                    }
-                });
-            });
-        });
-    });
-</script>
-*/ ?>
 
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
@@ -856,7 +808,7 @@
                     return {
                         results: $.map(data.result, function(item) {
                             return {
-                                id: item.product_id,
+                                id: item.product_details,
                                 text: item.product_details
                             };
                         }),

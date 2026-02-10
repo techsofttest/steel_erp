@@ -203,16 +203,16 @@ class PurchaseVoucherReport extends BaseController
                 'pk'    => 'pv_id',
                 'fk'    => 'pvp_reffer_id',
             ),
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_reffer_no',
-                'fk'    => 'pvp_sales_order',
-            ),
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_details',
-                'fk'    => 'pvp_prod_dec',
-            ),
+            // array(
+            //     'table' => 'crm_sales_orders',
+            //     'pk'    => 'so_reffer_no',
+            //     'fk'    => 'pvp_sales_order',
+            // ),
+            // array(
+            //     'table' => 'crm_products',
+            //     'pk'    => 'product_details',
+            //     'fk'    => 'pvp_prod_dec',
+            // ),
             // array(
             //     'table' => 'pro_material_received_note',
             //     'pk'    => 'mrn_id',
@@ -237,7 +237,7 @@ class PurchaseVoucherReport extends BaseController
         );
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
-        
+        // echo $data5;
         $data['purchase_order'] = $this->pro_model->VoucherCheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec',$data4,'pv_vendor_name',$data3,'pv_purchase_order','steel_pro_purchase_voucher_prod',$joins,'pvp_reffer_id',$joins1);  
         
 

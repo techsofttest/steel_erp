@@ -22,6 +22,10 @@
     #DataTable td {
         line-height: 1.0
     }
+     #DataTable .nested-table td{
+        line-height: 1.5;
+    }
+    
     #DataTable {
         table-layout: fixed;
         width:100%;       
@@ -413,58 +417,6 @@ span.select2.customer_width, span.select2{
 
 <script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
-<?php /*
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-        $(document).ready(function() {
-            // When the 'Vendor' dropdown is changed
-            $('#vendor').change(function() {
-                var vendorId = $(this).val();
-
-                // Send AJAX request to get Lpo Ref based on Vendor
-                $.ajax({
-                    url: '<?php echo base_url(); ?>Procurement/LPO_MRNReport/fetch_lpo_ref', // URL to fetch Lpo Ref (e.g., controller function)
-                    method: 'POST',
-                    data: {
-                        vendor_id: vendorId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        $('#lpo_ref').prop('disabled', false); // Enable Lpo Ref dropdown
-                        $('#lpo_ref').html('<option value="" selected disabled>Select Lpo ref</option>'); // Reset Lpo Ref dropdown
-                        $.each(response, function(index, lpoRef) {
-                            $('#lpo_ref').append('<option value="' + lpoRef.po_id + '">' + lpoRef.po_reffer_no + '</option>');
-                        });
-                    }
-                });
-            });
-
-            // When the 'Lpo Ref' dropdown is changed
-            $('#lpo_ref').change(function() {
-                var lpoRef = $(this).val();
-
-                // Send AJAX request to get Sales Orders based on Lpo Ref
-                $.ajax({
-                    url: '<?php echo base_url(); ?>Procurement/LPO_MRNReport/fetch_sales_order', // URL to fetch Sales Orders (e.g., controller function)
-                    method: 'POST',
-                    data: {
-                        lpo_ref: lpoRef
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        $('#sales_order').prop('disabled', false); // Enable Sales Order dropdown
-                        $('#sales_order').html('<option value="" selected disabled>Select Sales Order</option>'); // Reset Sales Order dropdown
-                        $.each(response, function(index, salesOrder) {
-                            $('#sales_order').append('<option value="' + salesOrder.so_reffer_no + '">' + salesOrder.so_reffer_no + '</option>');
-                        });
-                    }
-                });
-            });
-        });
-    });
-</script>
-*/?>
-
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
 
@@ -802,7 +754,8 @@ span.select2.customer_width, span.select2{
                     return {
                         term: params.term,
                         page: params.page || 1,
-                        salesorder: $('.sales_order').val() // ✅ send inside data function
+                        salesorder: $('.sales_order').val(), // ✅ send inside data function
+                        purchaseorder: $('.lpo_ref').val()
                     };
                 },
                 processResults: function (data, params) {
