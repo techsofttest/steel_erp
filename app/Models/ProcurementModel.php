@@ -904,6 +904,7 @@ class ProcurementModel extends Model
         return $result;
     }
 
+    // $this->pro_model->PendingVoucherCheckData($from_date, 'po_date', $to_date, '', $data1, 'po_vendor_name', $data3, 'po_id', $data4, 'po_vendor_name', '', '', 'steel_pro_purchase_order', $joins, 'po_id', '');
     public function PendingVoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)
     {
         $query = $this->db->table($table)->select('*');
@@ -962,6 +963,8 @@ class ProcurementModel extends Model
 
         $result = $query->get()->getResult();
 
+        // echo $this->db->getLastQuery(); exit();
+        
         // Loop through results to fetch related data if necessary
         // foreach ($result as $index => $res) {
         //     $cond_user = ['pvp_reffer_id' => $res->pvp_reffer_id];

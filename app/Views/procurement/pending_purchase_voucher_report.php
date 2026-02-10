@@ -348,7 +348,7 @@ span.select2.customer_width, span.select2{
 
                                                             <td class="rotate text-end" style="width:80px"><?php $paid_voucher = 0;
                                                              foreach ($pur_vouc->vouchers_booked as $voc) {
-                                                                                        $paid_voucher += $voc->pv_paid;
+                                                                                        $paid_voucher += $voc->pv_total;
                                                                                         //   print_r($notes);
                                                                                     }
                                                             
