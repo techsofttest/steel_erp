@@ -111,19 +111,51 @@ class LPO_MRNReport extends BaseController
 
 
     //fetch data
- public function GetData()
+    public function GetData()
     {
         // ... (Your existing variable setup for $data1, $data2 etc. remains the same) ...
-        
+
         // [Existing variable setup code omitted for brevity]
-        if (!empty($_GET['form_date'])) { $from_date = $_GET['form_date']; } else { $from_date = ""; }
-        if (!empty($_GET['to_date'])) { $to_date = $_GET['to_date']; } else { $to_date = ""; }
-        if (!empty($_GET['vendor'])) { $data1 = $_GET['vendor']; } else { $data1 = ""; }
-        if (!empty($_GET['sales_order'])) { $data2 = $_GET['sales_order']; } else { $data2 = ""; }
-        if (!empty($_GET['lpo_ref'])) { $data3 = $_GET['lpo_ref']; } else { $data3 = ""; }
-        if (!empty($_GET['product'])) { $data5 = $_GET['product']; } else { $data5 = ""; }
-        if (!empty($_GET['pending'])) { $data6 = $_GET['pending']; } else { $data6 = ""; }
-        if (!empty($_GET['linked'])) { $data7 = $_GET['linked']; } else { $data7 = ""; }
+        if (!empty($_GET['form_date'])) {
+            $from_date = $_GET['form_date'];
+        } else {
+            $from_date = "";
+        }
+        if (!empty($_GET['to_date'])) {
+            $to_date = $_GET['to_date'];
+        } else {
+            $to_date = "";
+        }
+        if (!empty($_GET['vendor'])) {
+            $data1 = $_GET['vendor'];
+        } else {
+            $data1 = "";
+        }
+        if (!empty($_GET['sales_order'])) {
+            $data2 = $_GET['sales_order'];
+        } else {
+            $data2 = "";
+        }
+        if (!empty($_GET['lpo_ref'])) {
+            $data3 = $_GET['lpo_ref'];
+        } else {
+            $data3 = "";
+        }
+        if (!empty($_GET['product'])) {
+            $data5 = $_GET['product'];
+        } else {
+            $data5 = "";
+        }
+        if (!empty($_GET['pending'])) {
+            $data6 = $_GET['pending'];
+        } else {
+            $data6 = "";
+        }
+        if (!empty($_GET['linked'])) {
+            $data7 = $_GET['linked'];
+        } else {
+            $data7 = "";
+        }
 
         // ... (Your existing $joins and $joins1 arrays remain the same) ...
         $joins = array(
@@ -158,7 +190,7 @@ class LPO_MRNReport extends BaseController
                 );
 
                 // --- KEY CHANGE HERE ---
-                
+
                 // 1. Define the base condition (match the PO ID)
                 $product_condition = ['pop_purchase_order' => $pvs->po_id];
 
@@ -179,7 +211,7 @@ class LPO_MRNReport extends BaseController
 
                 if ($pvps) {
                     $orders->product_orders = $pvps;
-                    
+
                     // Only add the PO to the final list if it actually has products matching the filter
                     $new_order[] = $orders;
                 } else {
@@ -187,74 +219,95 @@ class LPO_MRNReport extends BaseController
                     // You might want to skip adding to $new_order if empty, depending on your requirement
                     // $new_order[] = $orders; 
                 }
-            } 
+            }
         }
 
         $data['purchase_order'] = $new_order;
 
 
         // ... (The rest of your existing logic for $lpo_ref, $data6, $data7, view rendering etc.) ...
-        
+
         $lpo_ref = $this->request->getPost('lpo_ref');
 
         if ($data6 != "" || $data7 != "") {
-             // ... [Rest of your pending/linked logic remains unchanged] ...
-             // Be careful: since we filtered $new_order above, this loop processes the cleaner data
-             $filteredPO = [];
-             foreach ($data['purchase_order'] as $po) {
-                 // ... copy your existing logic here ...
-                  if (empty($po->product_orders)) { continue; }
-                  
-                  $productMap = [];
-                  foreach ($po->product_orders as $prod) {
-                      // ... existing calculation ...
-                      $pid = $prod->pop_id;
-                      if (!isset($productMap[$pid])) {
+            // ... [Rest of your pending/linked logic remains unchanged] ...
+            // Be careful: since we filtered $new_order above, this loop processes the cleaner data
+            $filteredPO = [];
+            foreach ($data['purchase_order'] as $po) {
+                // ... copy your existing logic here ...
+                if (empty($po->product_orders)) {
+                    continue;
+                }
+
+                $productMap = [];
+                foreach ($po->product_orders as $prod) {
+                    // ... existing calculation ...
+                    $pid = $prod->pop_id;
+                    if (!isset($productMap[$pid])) {
                         $productMap[$pid] = [
                             'product' => $prod,
                             'po_qty'  => (float) $prod->pop_qty,
                             'mrn_qty' => 0,
                         ];
-                      }
-                      if (isset($prod->rnp_current_delivery)) {
+                    }
+                    if (isset($prod->rnp_current_delivery)) {
                         $productMap[$pid]['mrn_qty'] += (float) $prod->rnp_current_delivery;
-                      }
-                  }
-                  
-                  $finalProducts = [];
-                  foreach ($productMap as $item) {
-                       // ... existing logic ...
-                       $poQty  = $item['po_qty'];
-                       $mrnQty = $item['mrn_qty'];
-                       $isLinked = ($mrnQty >= $poQty);
-                       $isPending = ($mrnQty < $poQty);
-    
-                       if ($data6 != "" && $data7 != "") { $finalProducts[] = $item['product']; continue; }
-                       if ($data6 != "" && $isPending) { $finalProducts[] = $item['product']; }
-                       if ($data7 != "" && $isLinked) { $finalProducts[] = $item['product']; }
-                  }
-                  
-                  if (!empty($finalProducts)) {
+                    }
+                }
+
+                $finalProducts = [];
+                foreach ($productMap as $item) {
+                    // ... existing logic ...
+                    $poQty  = $item['po_qty'];
+                    $mrnQty = $item['mrn_qty'];
+                    $isLinked = ($mrnQty >= $poQty);
+                    $isPending = ($mrnQty < $poQty);
+
+                    if ($data6 != "" && $data7 != "") {
+                        $finalProducts[] = $item['product'];
+                        continue;
+                    }
+                    if ($data6 != "" && $isPending) {
+                        $finalProducts[] = $item['product'];
+                    }
+                    if ($data7 != "" && $isLinked) {
+                        $finalProducts[] = $item['product'];
+                    }
+                }
+
+                if (!empty($finalProducts)) {
                     $po->product_orders = array_values($finalProducts);
                     $filteredPO[] = $po;
-                  }
-             }
-             $data['purchase_order'] = array_values($filteredPO);
+                }
+            }
+            $data['purchase_order'] = array_values($filteredPO);
         }
 
         // ... [Rest of your date formatting and view loading] ...
-        
-        if (!empty($from_date)) { $data['from_dates'] = date('d-M-Y', strtotime($from_date)); } else { $data['from_dates'] = ""; }
-        if (!empty($to_date)) { $data['to_dates'] = date('d-M-Y', strtotime($to_date)); } else { $data['to_dates'] = ""; }
-        
+
+        if (!empty($from_date)) {
+            $data['from_dates'] = date('d-M-Y', strtotime($from_date));
+        } else {
+            $data['from_dates'] = "";
+        }
+        if (!empty($to_date)) {
+            $data['to_dates'] = date('d-M-Y', strtotime($to_date));
+        } else {
+            $data['to_dates'] = "";
+        }
+
         $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation', 'cc_id', 'desc');
         $cond = array('so_deliver_flag' => 0);
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
         $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
         $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-        if (!empty($_POST['pdf'])) { $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']); }
-        if (!empty($_POST['excel'])) { $this->Excel($data['purchase_order']); }
+        if (!empty($_POST['pdf'])) {
+            $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']);
+        }
+        if (!empty($_POST['excel'])) {
+            $this->Excel($data['purchase_order']);
+        }
 
         $data['content'] = view('procurement/lpo_mrn_report', $data);
         return view('crm/report-module-search', $data);
@@ -815,23 +868,32 @@ class LPO_MRNReport extends BaseController
     public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
+        $purchaseorder = $this->request->getPost('purchaseorder');
 
-        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $term = !empty($this->request->getVar('term')) ? $this->request->getVar('term') : "";
+        $page = !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 0;
+
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
 
-        // if($salesorder != ''){
-        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-        //         array(   'table' => 'crm_products',
-        //             'pk'    => 'product_id',
-        //             'fk'    => 'spd_product_details',
-        //         )
-        //     ));
-        // }else{
-        $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
-        // }
+
+
+        if ($salesorder != '') {
+            $page  = max(1, (int) $this->request->getVar('page'));
+            $limit = 10;
+            $offset = ($page - 1) * $limit;
+
+            $data['result'] = $this->pro_model
+                ->FetchDistinctProductsBySalesOrder($salesorder, $term, $limit, $offset);
+
+            $data['total_count'] = 10; // or real count query
+
+        } elseif ($purchaseorder != '') {
+            $data['result'] = $this->pro_model->FetchDistinctProductsByPurchaseOrder($purchaseorder, $term);
+        } else {
+            $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
+        }
 
         $data['total_count'] = count($data['result']);
 

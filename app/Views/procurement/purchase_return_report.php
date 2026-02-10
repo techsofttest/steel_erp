@@ -322,7 +322,7 @@ span.select2.customer_width, span.select2{
                                                                                                                         echo $pur_order->pr_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';  } ?>
                                                             </td>
 
-                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pr_reffer_id; ?></td>
+                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pr_vendor_reff; ?></td>
                                                             
                                                             <td class="text-center" style="width:100px">
                                                                  <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_order->po_id; ?>" target="_blank"> 

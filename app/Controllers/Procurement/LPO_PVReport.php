@@ -795,23 +795,32 @@ class LPO_PVReport extends BaseController
     public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
+        $purchaseorder = $this->request->getPost('purchaseorder');
 
-        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $term = !empty($this->request->getVar('term')) ? $this->request->getVar('term') : "";
+        $page = !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 0;
+
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
 
-        // if($salesorder != ''){
-        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-        //         array(   'table' => 'crm_products',
-        //             'pk'    => 'product_id',
-        //             'fk'    => 'spd_product_details',
-        //         )
-        //     ));
-        // }else{
-        $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
-        // }
+
+
+        if ($salesorder != '') {
+            $page  = max(1, (int) $this->request->getVar('page'));
+            $limit = 10;
+            $offset = ($page - 1) * $limit;
+
+            $data['result'] = $this->pro_model
+                ->FetchDistinctProductsBySalesOrder($salesorder, $term, $limit, $offset);
+
+            $data['total_count'] = 10; // or real count query
+
+        } elseif ($purchaseorder != '') {
+            $data['result'] = $this->pro_model->FetchDistinctProductsByPurchaseOrder($purchaseorder, $term);
+        } else {
+            $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
+        }
 
         $data['total_count'] = count($data['result']);
 

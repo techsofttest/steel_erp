@@ -252,6 +252,70 @@ class ProcurementModel extends Model
         return $result;
     }
 
+public function FetchDistinctProductsBySalesOrder($sales_order, $term = '', $limit = 10, $offset = 0)
+{
+    $builder = $this->db->table('crm_sales_product_details spd');
+
+    $builder->select('p.product_id, p.product_details')
+        ->join(
+            'crm_products p',
+            'p.product_id = spd.spd_product_details',
+            'inner'
+        ) ->join(
+                'crm_sales_orders so',
+                'so.so_id = spd.spd_sales_order',
+                'inner'
+            );
+
+        $builder->groupStart();// ✅ Start grouping for OR condition
+            $builder->where('spd.spd_sales_order', $sales_order)            
+            ->orwhere('so.so_reffer_no', $sales_order);
+            $builder->groupEnd(); // ✅ End grouping for OR condition
+
+        
+
+    if (!empty($term)) {
+        $builder->like('p.product_details', $term);
+    }
+
+    $builder->groupBy('p.product_id')
+            ->limit($limit, $offset); // ✅ CRITICAL
+
+    return $builder->get()->getResult();
+}
+
+
+
+public function FetchDistinctProductsByPurchaseOrder($purchase_order, $term = '')
+{
+    $builder = $this->db->table('pro_purchase_order_product pop');
+
+    $builder->select('p.product_id, p.product_details')
+            ->join(
+                'crm_products p',
+                'p.product_id = pop.pop_prod_desc',
+                'inner'
+            )
+            ->join(
+                'pro_purchase_order po',
+                'po.po_id = pop.pop_purchase_order',
+                'inner'
+            );
+
+            $builder->groupStart();// ✅ Start grouping for OR condition
+            $builder->where('po.po_id', $purchase_order)
+            ->orwhere('po.po_reffer_no', $purchase_order);
+            $builder->groupEnd(); // ✅ End grouping for OR condition
+
+
+    if (!empty($term)) {
+        $builder->like('p.product_details', $term);
+    }
+
+    $builder->groupBy('p.product_id'); // ✅ ensures DISTINCT products
+
+    return $builder->get()->getResult();
+}
 
 
     public function CheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)

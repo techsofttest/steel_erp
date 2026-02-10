@@ -846,7 +846,9 @@
                     return {
                         term: params.term,
                         page: params.page || 1,
-                        salesorder: $('.sales_order').val() // ✅ send inside data function
+                        
+                        salesorder: $('.sales_order').val(), // ✅ send inside data function
+                         purchaseorder: $('.lpo_ref').val()
                     };
                 },
                 processResults: function(data, params) {
