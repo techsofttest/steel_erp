@@ -361,9 +361,9 @@
                                                                 </td>
                                                              
 
-                                                                <td colspan="8" align="left" class="p-0">
+                                                                <td colspan="10" align="left" class="p-0">
                                                                     <table class="nested-table">
-                                                                        <?php $po_amt = 0;
+                                                                        <?php $po_amt = 0; $voc_sum = 0;
                                                                         $k = 0;
                                                                         $l_po_total = $l_pv_total = 0;
                                                                         foreach ($pur_order->product_orders as $orders) {
@@ -386,17 +386,32 @@
                                                                                 <td class="text-end" style="width:80px"> <?php echo format_currency($orders->pop_rate); ?> </td>
 
                                                                                 <td class="text-end" style="width:80px"> <?php echo format_currency($orders->pop_discount); ?>%</td>
-                                                                                <td class="text-end" style="width:80px">
+                                                                                <td class="text-end" style="width:80px"> 
                                                                                     <?php echo format_currency(($orders->pop_amount ?? 0));
                                                                                     $po_amount += $orders->pop_amount;
                                                                                     $po_amt = $orders->pop_amount;
                                                                                     $l_po_total += $orders->pop_amount; ?><br>
                                                                                 </td>
+
+                                                                                <td class="text-end" style="width:80px"> 
+                                                                                    <?php echo format_currency(($orders->po_pvp_amount ?? 0));
+                                                                                    $pv_amount += $orders->po_pvp_amount;
+                                                                                    $voc_sum = $orders->po_pvp_amount;
+                                                                                    $l_pv_total += $orders->po_pvp_amount; ?><br>
+                                                                                </td>
+
+
+                                                                                <td class="text-end" style="width:80px"> 
+                                                                                    <?php echo format_currency((($orders->pop_amount ?? 0) - ($orders->po_pvp_amount ?? 0)));
+                                                                                    $difference = ($orders->pop_amount ?? 0) - ($orders->po_pvp_amount ?? 0);
+                                                                                    $balance += $difference; ?><br>
+                                                                                </td>
+
                                                                             </tr>
                                                                         <?php   } ?>
                                                                     </table>
                                                                 </td>
-                                                                <?php if (isset($pur_order->vouchers) && is_array($pur_order->vouchers)) {  ?>
+                                                                <?php /* if (isset($pur_order->vouchers) && is_array($pur_order->vouchers)) {  ?>
                                                                     <td colspan="1" align="left" class="p-0">
                                                                         <table>
                                                                             <tr style="background: unset;border-bottom: hidden !important;">
@@ -429,7 +444,7 @@
                                                                 <?php 
                                                                 if (isset($pur_order->vouchers) || isset($pur_order->product_orders)) { ?>
 
-                                                                    <td colspan="1" align="left" class="p-0" style="">
+                                                                    <td colspan="1" align="left" class="p-0" style="">~
                                                                         <table>
                                                                             <?php if (isset($pur_order->vouchers)) {
                                                                                 $voc_count = count($pur_order->vouchers);
@@ -462,7 +477,7 @@
                                                                 }
 
                                                                 ?>
-                                                                </td>
+                                                                </td>*/ ?>
 
 
                                                             </tr>
@@ -478,15 +493,15 @@
                                                             <th></th>
                                                             <th></th>
                                                             <th></th>
-                                                            <th class="text-end"><?php echo format_currency($tot_amount); ?></th>
+                                                            <th class="text-end"><?php echo format_currency($tot_amount ?? 0); ?></th>
                                                             <th></th>
                                                             <th></th>
                                                             <th></th>
                                                             <th></th>
-                                                            <th class="text-end"><?php echo format_currency($po_amount); ?></th>
+                                                            <th class="text-end"><?php echo format_currency($po_amount ?? 0); ?></th>
                                                          
-                                                            <th class="text-end"><?php echo format_currency($pv_amount); ?></th>
-                                                            <th class="text-end"><?php echo format_currency($balance); ?></th>
+                                                            <th class="text-end"><?php echo format_currency($pv_amount ?? 0); ?></th>
+                                                            <th class="text-end"><?php echo format_currency($balance ?? 0); ?></th>
                                                         </tr>
                                                     <?php } ?>
 
