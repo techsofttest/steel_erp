@@ -373,7 +373,7 @@
                                                                                 <td class="text-center" style="width:100px;vertical-align:top;">
                                                                                     <?php echo $orders->so_reffer_no; ?><br> </td>
 
-                                                                                <td class="text-center" style="width:100px;vertical-align:top;"><?php echo $pur_order->po_vendor_ref; ?></td>
+                                                                                <td class="text-center" style="width:100px;vertical-align:top;"><?php echo $pur_order->pv_vendor_inv; ?></td>
 
                                                                                 <td class="text-end" style="width:80px;vertical-align:top;"><?php if ($k == 1) {
                                                                                                                                                 echo format_currency($pur_order->po_amount);

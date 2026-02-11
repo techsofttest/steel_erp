@@ -318,6 +318,8 @@ if ($data6 != "" || $data7 != "") {
     });
 }
 
+// echo '<pre>';
+//  print_r($data['purchase_order']); exit;
 
 
         if (!empty($from_date)) {
