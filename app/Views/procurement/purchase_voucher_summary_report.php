@@ -20,10 +20,14 @@
     }
 
     #DataTable td {
-        line-height: 1.5;
+        line-height: 1.0;
 
     }
 
+     #DataTable .nested-table td{
+        line-height: 1.5;
+    }
+    
     #DataTable {
         table-layout: fixed;
         width: auto;
@@ -97,6 +101,11 @@
     span.select2 {
         width: 100% !important;
     }
+
+
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 8px 10px;
+}
 </style>
 <div class="tab-content text-muted">
 
@@ -354,47 +363,26 @@
                                                                             <?php echo $pur_vouc->po_reffer_no ?? ''; ?></a>
                                                                     </td>
 
-                                                                    <td class="p-0">
-                                                                        <table class="nested-table" style="width:100%; table-layout:fixed;">
-                                                                            <!-- 🔹 Added nested colgroup matching parent widths -->
-                                                                            <colgroup>
 
-                                                                                <col style="width:80px;"> <!-- Amount -->
-
-                                                                            </colgroup>
-
-
-                                                                            <tr style="background: unset;border-bottom: hidden !important;">
-
-                                                                                <td class="text-end " style="white-space: nowrap;vertical-align: top;">
-                                                                                    <?php
-                                                                                    echo format_currency($pur_vouc->pv_total);
-                                                                                    $total += $pur_vouc->pv_total;
-                                                                                    ?>
-                                                                                </td>
-
-                                                                            </tr>
-
-                                                                        </table>
+                                                                    <td class="text-end " style="white-space: nowrap;vertical-align: top;">
+                                                                        <?php
+                                                                        echo format_currency($pur_vouc->pv_total);
+                                                                        $total += $pur_vouc->pv_total;
+                                                                        ?>
                                                                     </td>
+
+
                                                                 </tr>
                                                             <?php $i++;
                                                             } ?>
 
                                                             <tr>
-                                                                <th colspan="5">Total</th>
-                                                                <td colspan="1" class="p-0">
-                                                                    <table style="width:100%; table-layout:fixed;">
-                                                                        <colgroup>
-                                                                            <col style="width:80px;">
-                                                                        </colgroup>
-                                                                        <tr>
-                                                                            <th></th>
-                                                                            <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
-                                                                            <th></th>
+                                                                <th colspan="1">Total</th>
+                                                                <td colspan="4" class="p-0">
 
-                                                                        </tr>
-                                                                    </table>
+                                                                <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
+
+
                                                                 </td>
                                                             </tr>
 

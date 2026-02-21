@@ -20,6 +20,10 @@
     }
 
     #DataTable td {
+        line-height: 1.0;
+    }
+
+    #DataTable .nested-table td{
         line-height: 1.5;
     }
 

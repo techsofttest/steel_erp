@@ -196,18 +196,18 @@ class PendingPurchaseVoucherReport extends BaseController
             ),
         );
 
-        $data['purchase_order'] = $this->pro_model->PendingVoucherCheckData($from_date, 'po_date', $to_date, '', $data1, 'po_vendor_name', $data3, 'po_id', $data4, 'po_vendor_name', '', '', 'steel_pro_purchase_order', $joins, 'po_id', '');
+        $data['purchase_order'] = $this->pro_model->PendingVoucherCheckData($from_date, 'po_date', $to_date, 'po_date', $data1, 'po_vendor_name', $data3, 'po_id', $data4, 'po_vendor_name', '', '', 'steel_pro_purchase_order', $joins, 'po_id', '');
 
         $new_order = [];
 
         foreach ($data['purchase_order'] as $orders) {
-        
+
             // Fetch the associated MRN products
             $nrps = $this->common_model->FetchWhere('pro_material_received_note_prod', ['rnp_purchase_id' => $orders->po_id]);
-        
+
             // Create a copy of the $orders object
             $merged_order = $orders;
-        
+
             // Check if $nrps contains any products
             if (!empty($nrps)) {
                 // Append the fetched products as a sub-array called 'received_products'
@@ -216,14 +216,14 @@ class PendingPurchaseVoucherReport extends BaseController
                 // If no products are found, set 'received_products' as an empty array to avoid errors
                 $merged_order->received_products = [];
             }
-        
+
 
             // Fetch the associated MRN products
             $pvs = $this->common_model->FetchWhere('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_id]);
-        
+
             // Create a copy of the $orders object
             $merged_order = $orders;
-        
+
             // Check if $nrps contains any products
             if (!empty($nrps)) {
                 // Append the fetched products as a sub-array called 'received_products'
@@ -237,41 +237,68 @@ class PendingPurchaseVoucherReport extends BaseController
             // Append the merged order data to the $new_order array
             $new_order[] = $merged_order;
         }
-        
+
         // Update the data array with the merged orders
         $data['purchase_order'] = $new_order;
-        
+
         if ($data5 != "" || $data2 != "") {
             $filterdata = [];
-        
+
             foreach ($data['purchase_order'] as $order) {
                 // Filter 'received_products' within each order based on $data5 or $data2
                 $filtered_received_products = $order->received_products;
-        
+
                 if ($data5 != "") {
                     $filtered_received_products = array_filter($filtered_received_products, function ($item) use ($data5) {
                         return $item->rnp_product_desc == $data5;
                     });
                 }
-        
+
                 if ($data2 != "") {
                     $filtered_received_products = array_filter($filtered_received_products, function ($item) use ($data2) {
                         return $item->rnp_sales_order == $data2;
                     });
                 }
-        
+
                 // If there are matching received products, update the order with them
                 if (!empty($filtered_received_products)) {
                     $order->received_products = $filtered_received_products;
                     $filterdata[] = $order;
                 }
             }
-        
+
             // Update the data array with the filtered orders
             $data['purchase_order'] = $filterdata;
         }
-        
 
+
+        $filteredOrders = [];
+
+        foreach ($data['purchase_order'] as $po) {
+
+            $totalRnpAmount = 0;
+
+            if (!empty($po->received_products)) {
+                foreach ($po->received_products as $product) {
+                    $totalRnpAmount += (float) $product->rnp_amount;
+                }
+            }
+
+            // Calculate balance
+            $balance = (float) $po->po_amount - $totalRnpAmount;
+
+            // Keep only POs where balance is NOT zero
+            if ($balance != 0) {
+                $po->received_amount_total = $totalRnpAmount;
+                $po->pending_amount = $balance;
+                $filteredOrders[] = $po;
+            }
+        }
+
+        // Update final array
+        $data['purchase_order'] = $filteredOrders;
+
+   
 
         // echo '<pre>';
         // print_r($data['purchase_order']);
@@ -343,20 +370,21 @@ class PendingPurchaseVoucherReport extends BaseController
 
                 $total_amount = $total_amount + $order_data->po_amount;
 
-              
 
-                $booked_note = 0; foreach ($order_data->received_products as $notes) {
-                    $booked_note += $notes->rnp_amount ;
-                 //   print_r($notes);
-                 } 
+
+                $booked_note = 0;
+                foreach ($order_data->received_products as $notes) {
+                    $booked_note += $notes->rnp_amount;
+                    //   print_r($notes);
+                }
                 $total_booked += $booked_note;
 
 
-                 $paid_voucher = 0;  
-                 foreach ($order_data->vouchers_booked as $voc) {
-                      $paid_voucher += $voc->pv_paid;                                                                                       
-                 }
-                $total_recieved += $paid_voucher ?? 0; 
+                $paid_voucher = 0;
+                foreach ($order_data->vouchers_booked as $voc) {
+                    $paid_voucher += $voc->pv_paid;
+                }
+                $total_recieved += $paid_voucher ?? 0;
 
                 // $total_recieved += $order_data->pv_paid;
 
@@ -374,12 +402,12 @@ class PendingPurchaseVoucherReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->cc_customer_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->po_amount)."</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>" . format_currency($order_data->po_amount) . "</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($booked_note)."</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>" . format_currency($booked_note) . "</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($paid_voucher ?? 0)."</td>";
-                
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>" . format_currency($paid_voucher ?? 0) . "</td>";
+
 
                 $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>" . (format_currency($order_data->po_amount - $paid_voucher)) . "</td>";
 
@@ -441,14 +469,14 @@ class PendingPurchaseVoucherReport extends BaseController
 
             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
             $fontDirs = $defaultConfig['fontDir'];
- 
+
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'format' => 'Letter-L', // Custom page size in millimeters
-                'default_font_size' => 9, 
-                'margin_left' => 5, 
+                'default_font_size' => 9,
+                'margin_left' => 5,
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
                 'fontDir' => array_merge($fontDirs, [
@@ -456,13 +484,13 @@ class PendingPurchaseVoucherReport extends BaseController
                 ]),
                 'fontdata' => $fontData + [
                     'bentonsans' => [
-                      
+
                         'R' => 'OpenSans-Regular.ttf',
                         'B' => 'OpenSans-Bold.ttf',
                     ],
                 ],
                 'default_font' => 'bentonsans'
-                
+
             ]);
 
 
@@ -561,7 +589,7 @@ class PendingPurchaseVoucherReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_amount) . '</td>
-                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_booked). '</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_booked) . '</td>
                 <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_recieved) . '</td>
                 <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_balance) . '</td>
                 
@@ -808,54 +836,54 @@ class PendingPurchaseVoucherReport extends BaseController
         $writer->save('php://output');
     }
 
-    
-     public function FetchVendors(){
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+    public function FetchVendors()
+    {
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation', 'cc_customer_name', 'asc', $term, $start, $end);
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
 
-      public function FetchLpoRef(){
+    public function FetchLpoRef()
+    {
 
-            $page = !empty($_GET['page']) ? $_GET['page'] : 0;
-            $term = !empty($_GET['term']) ? $_GET['term'] : "";
-            $vendor_id = !empty($_GET['vendor_id']) ? $_GET['vendor_id'] : "";
-            if ($vendor_id == "") {
-                $resultCount = 10;
-                $end = ($page - 1) * $resultCount;
-                $start = $end + $resultCount;
-                $data['result'] = $this->common_model->FetchAllLimit('pro_purchase_order', 'po_reffer_no', 'asc', $term, $start, $end);
-            } else {
-                $cond = array('po_vendor_name' => $vendor_id);
-                $joins1 = array(
-                    /*array(
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $vendor_id = !empty($_GET['vendor_id']) ? $_GET['vendor_id'] : "";
+        if ($vendor_id == "") {
+            $resultCount = 10;
+            $end = ($page - 1) * $resultCount;
+            $start = $end + $resultCount;
+            $data['result'] = $this->common_model->FetchAllLimit('pro_purchase_order', 'po_reffer_no', 'asc', $term, $start, $end);
+        } else {
+            $cond = array('po_vendor_name' => $vendor_id);
+            $joins1 = array(
+                /*array(
                         'table' => 'crm_customer_creation',
                         'pk'    => 'cc_id',
                         'fk'    => 'so_customer',
-                    ),*/
-                );
-                $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond,'po_reffer_no',$term, $joins1, 'po_reffer_no');
-            }
-            $data['total_count'] = count($data['result']);
-            return json_encode($data);
-
+                    ),*/);
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order', $cond, 'po_reffer_no', $term, $joins1, 'po_reffer_no');
         }
+        $data['total_count'] = count($data['result']);
+        return json_encode($data);
+    }
 
 
-   public function FetchSalesOrder(){
+    public function FetchSalesOrder()
+    {
 
-         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
         if ($lpo_ref == "") {
@@ -866,65 +894,67 @@ class PendingPurchaseVoucherReport extends BaseController
         } else {
             $cond = array('pop_purchase_order' => $lpo_ref);
             $joins1 = array(
-                 array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'pop_sales_order',
+                ),
             );
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond,'so_reffer_no',$term, $joins1, 'pop_sales_order');
-
-        
+            $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond, 'so_reffer_no', $term, $joins1, 'pop_sales_order');
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
-
     }
 
-        public function FetchProducts()
+    public function FetchProducts()
+    {
+        $salesorder = $this->request->getPost('salesorder');
+        $purchaseorder = $this->request->getPost('purchaseorder');
+
+        $term = !empty($this->request->getVar('term')) ? $this->request->getVar('term') : "";
+        $page = !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 0;
+
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;
+        $start = $end + $resultCount;
+
+
+
+        if ($salesorder != '') {
+            $page  = max(1, (int) $this->request->getVar('page'));
+            $limit = 10;
+            $offset = ($page - 1) * $limit;
+
+            $data['result'] = $this->pro_model
+                ->FetchDistinctProductsBySalesOrder($salesorder, $term, $limit, $offset);
+
+            $data['total_count'] = 10; // or real count query
+
+        } elseif ($purchaseorder != '') {
+            $data['result'] = $this->pro_model->FetchDistinctProductsByPurchaseOrder($purchaseorder, $term);
+        } else {
+            $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
+        }
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+    }
+
+
+    public function FetchGLAccounts()
     {
 
-         $salesorder = $this->request->getPost('salesorder');
-       
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_POST['term']) ? $_POST['term'] : "";
-        $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
-        $start = $end + $resultCount;
-      
-        // if($salesorder != ''){
-        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-        //         array(   'table' => 'crm_products',
-        //             'pk'    => 'product_id',
-        //             'fk'    => 'spd_product_details',
-        //         )
-        //     ));
-        // }else{
-             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
-        // }
-
-        $data['total_count'] = count($data['result']);
-
-        return json_encode($data);
-
-    }
-
-
-    public function FetchGLAccounts(){
-
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts', 'ca_name', 'asc', $term, $start, $end);
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
-
-
 }

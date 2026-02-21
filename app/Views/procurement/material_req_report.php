@@ -20,7 +20,10 @@
     }
 
     #DataTable td {
-        line-height: 1.5
+        line-height: 1.0;
+    }
+     #DataTable .nested-table td{
+        line-height: 1.5;
     }
 
     #DataTable {
@@ -661,6 +664,7 @@ span.select2.customer_width, span.select2{
                     return {
                         term: params.term,
                         page: params.page || 1,
+                        salesorder: $('.sales_order').val(),
                     };
                 },
               processResults: function(data, params) {

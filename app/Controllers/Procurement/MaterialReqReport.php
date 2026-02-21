@@ -265,15 +265,15 @@ class MaterialReqReport extends BaseController
 
                 // Print vendor for debugging
                 // print_r($vendor);
-                
+
                 $new_date = date('d-m-Y', strtotime($order_data->mr_date));
-                
+
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mr_reffer_no}</td>";
-                
+
                 // Fix: null coalescing operator should be outside the curly braces
-                $pdf_data .= "<td style='border-top: 2px solid'>" . ($vendor->cc_customer_name?? '') . "</td>";
-                
+                $pdf_data .= "<td style='border-top: 2px solid'>" . ($vendor->cc_customer_name ?? '') . "</td>";
+
 
 
 
@@ -294,7 +294,7 @@ class MaterialReqReport extends BaseController
                     }
 
 
-                    
+
 
 
 
@@ -319,7 +319,7 @@ class MaterialReqReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".format_currency($prod_del->mrp_qty)."</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->mrp_qty) . "</td>";
 
 
 
@@ -350,14 +350,14 @@ class MaterialReqReport extends BaseController
 
             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
             $fontDirs = $defaultConfig['fontDir'];
- 
+
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'format' => 'Letter-L', // Custom page size in millimeters
-                'default_font_size' => 9, 
-                'margin_left' => 5, 
+                'default_font_size' => 9,
+                'margin_left' => 5,
                 'margin_right' => 5,
                 'autoPageBreak' => true,  // Enable automatic page breaks
                 'fontDir' => array_merge($fontDirs, [
@@ -365,13 +365,13 @@ class MaterialReqReport extends BaseController
                 ]),
                 'fontdata' => $fontData + [
                     'bentonsans' => [
-                      
+
                         'R' => 'OpenSans-Regular.ttf',
                         'B' => 'OpenSans-Bold.ttf',
                     ],
                 ],
                 'default_font' => 'bentonsans'
-                
+
             ]);
 
 
@@ -702,48 +702,54 @@ class MaterialReqReport extends BaseController
     }
 
 
-       public function FetchSalesOrder(){
-
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
-        $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
-        $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders','so_reffer_no','asc',$term,$start,$end);
-
-        $data['total_count'] = count($data['result']);
-
-        return json_encode($data);
-
-    }
-
-        public function FetchProducts()
+    public function FetchSalesOrder()
     {
 
-         $salesorder = $this->request->getPost('salesorder');
-       
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_POST['term']) ? $_POST['term'] : "";
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        // if($salesorder != ''){
-        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-        //         array(   'table' => 'crm_products',
-        //             'pk'    => 'product_id',
-        //             'fk'    => 'spd_product_details',
-        //         )
-        //     ));
-        // }else{
-             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
-        // }
+
+        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
+    public function FetchProducts()
+    {
+        $salesorder = $this->request->getPost('salesorder');
+        $purchaseorder = $this->request->getPost('purchaseorder');
+
+        $term = !empty($this->request->getVar('term')) ? $this->request->getVar('term') : "";
+        $page = !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 0;
+
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;
+        $start = $end + $resultCount;
+
+
+
+        if ($salesorder != '') {
+            $page  = max(1, (int) $this->request->getVar('page'));
+            $limit = 10;
+            $offset = ($page - 1) * $limit;
+
+            $data['result'] = $this->pro_model
+                ->FetchDistinctProductsBySalesOrder($salesorder, $term, $limit, $offset);
+
+            $data['total_count'] = 10; // or real count query
+
+        } elseif ($purchaseorder != '') {
+            $data['result'] = $this->pro_model->FetchDistinctProductsByPurchaseOrder($purchaseorder, $term);
+        } else {
+            $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
+        }
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+    }
 }

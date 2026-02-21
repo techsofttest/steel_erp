@@ -203,16 +203,16 @@ class PurchaseVoucherReport extends BaseController
                 'pk'    => 'pv_id',
                 'fk'    => 'pvp_reffer_id',
             ),
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_reffer_no',
-                'fk'    => 'pvp_sales_order',
-            ),
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_details',
-                'fk'    => 'pvp_prod_dec',
-            ),
+            // array(
+            //     'table' => 'crm_sales_orders',
+            //     'pk'    => 'so_reffer_no',
+            //     'fk'    => 'pvp_sales_order',
+            // ),
+            // array(
+            //     'table' => 'crm_products',
+            //     'pk'    => 'product_details',
+            //     'fk'    => 'pvp_prod_dec',
+            // ),
             // array(
             //     'table' => 'pro_material_received_note',
             //     'pk'    => 'mrn_id',
@@ -237,7 +237,7 @@ class PurchaseVoucherReport extends BaseController
         );
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
-        
+        // echo $data5;
         $data['purchase_order'] = $this->pro_model->VoucherCheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec',$data4,'pv_vendor_name',$data3,'pv_purchase_order','steel_pro_purchase_voucher_prod',$joins,'pvp_reffer_id',$joins1);  
         
 
@@ -942,32 +942,39 @@ class PurchaseVoucherReport extends BaseController
 
     }
 
-        public function FetchProducts()
+  public function FetchProducts()
     {
+        $salesorder = $this->request->getPost('salesorder');
+        $purchaseorder = $this->request->getPost('purchaseorder');
 
-         $salesorder = $this->request->getPost('salesorder');
-       
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_POST['term']) ? $_POST['term'] : "";
+        $term = !empty($this->request->getVar('term')) ? $this->request->getVar('term') : "";
+        $page = !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 0;
+
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        // if($salesorder != ''){
-        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-        //         array(   'table' => 'crm_products',
-        //             'pk'    => 'product_id',
-        //             'fk'    => 'spd_product_details',
-        //         )
-        //     ));
-        // }else{
-             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
-        // }
+
+
+
+        if ($salesorder != '') {
+            $page  = max(1, (int) $this->request->getVar('page'));
+            $limit = 10;
+            $offset = ($page - 1) * $limit;
+
+            $data['result'] = $this->pro_model
+                ->FetchDistinctProductsBySalesOrder($salesorder, $term, $limit, $offset);
+
+            $data['total_count'] = 10; // or real count query
+
+        } elseif ($purchaseorder != '') {
+            $data['result'] = $this->pro_model->FetchDistinctProductsByPurchaseOrder($purchaseorder, $term);
+        } else {
+            $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
+        }
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
  
