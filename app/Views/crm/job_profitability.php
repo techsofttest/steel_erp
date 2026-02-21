@@ -280,14 +280,14 @@
                                                             $total_ref_count = $cash_count + $credit_count + $sales_return_count;
 
                                                             $vendor_names = [];
-$printedPVO = [];
+$printedPV = [];
+
 
 if (!empty($sales_order->purchase_vouchers)) {
     foreach ($sales_order->purchase_vouchers as $pv) {
-        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPVO)) {
-           // $vendor_names[$pv->cc_customer_name] = true; 
-           $vendor_names[$pv->cc_id] = $pv->cc_customer_name;
-            $printedPVO[] = $pv->pv_reffer_id;
+        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
+            $vendor_names[$pv->cc_customer_name] = true; 
+            $printedPV[] = $pv->pv_reffer_id;
         }
     }
 }
@@ -309,7 +309,7 @@ if (!empty($sales_order->purchase_vouchers)) {
     
 
     <?php if (!empty($vendor_names)) { ?>
-        <?php foreach ($vendor_names as $vendor) { ?>
+        <?php foreach (array_keys($vendor_names) as $vendor) { ?>
             <br>
             <span style="display: inline-block;height: 35px;"><?= $vendor; ?></span>
         <?php } ?>
