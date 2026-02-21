@@ -284,7 +284,8 @@ $printedPVO = [];
 if (!empty($sales_order->purchase_vouchers)) {
     foreach ($sales_order->purchase_vouchers as $pv) {
         if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPVO)) {
-            $vendor_names[$pv->cc_customer_name] = true; 
+           // $vendor_names[$pv->cc_customer_name] = true; 
+           $vendor_names[$pv->pv_vendor_inv] = true; 
             $printedPVO[] = $pv->pv_reffer_id;
         }
     }
