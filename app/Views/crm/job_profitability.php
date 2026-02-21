@@ -282,6 +282,7 @@
                                                             $vendor_names = [];
 $printedPV = [];
 
+
 if (!empty($sales_order->purchase_vouchers)) {
     foreach ($sales_order->purchase_vouchers as $pv) {
         if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
@@ -304,6 +305,8 @@ if (!empty($sales_order->purchase_vouchers)) {
             <span style="display: inline-block;height: 35px;">&nbsp</span>
         <?php } ?>
     <?php } ?>
+     
+    <?php print_r($vendor_names);?>
 
     <?php if (!empty($vendor_names)) { ?>
         <?php foreach (array_keys($vendor_names) as $vendor) { ?>
