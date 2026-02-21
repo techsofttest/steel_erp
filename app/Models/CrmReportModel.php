@@ -912,7 +912,7 @@ class CrmReportModel extends Model
 
         foreach ($result as $res) {
             
-            $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucher('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
+            $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucherData('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
 
             $result[$i]->purchase_return_prod   = $this->FetchPurchaseReturnProd('pro_purchase_return_prod',array('prp_sales_order' => $res->so_reffer_no));
 
@@ -931,6 +931,29 @@ class CrmReportModel extends Model
 
         return $result;
      
+    }
+
+    public function FetchPurchaseVoucherData($table,$cond){
+ 
+         $query = $this->db->table($table)
+
+        ->select('*')
+    
+        ->where($cond);
+
+        $query->join('pro_purchase_voucher','pro_purchase_voucher.pv_id =pro_purchase_voucher_prod.pvp_reffer_id','left');
+
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id = pro_purchase_voucher.pv_vendor_name','left');
+
+        //$query->groupBy('pro_purchase_voucher.pv_reffer_id');
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+
+        //return $result;
+
     }
 
 
@@ -1056,7 +1079,7 @@ class CrmReportModel extends Model
 
     public function FetchPurchaseVoucher($table,$cond){
  
-        $query = $this->db->table($table)
+         $query = $this->db->table($table)
 
         ->select('*')
     
@@ -1073,9 +1096,7 @@ class CrmReportModel extends Model
         return $result;
 
 
-        
-
-    return $result;
+        //return $result;
 
     }
 
