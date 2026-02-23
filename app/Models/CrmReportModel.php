@@ -912,7 +912,9 @@ class CrmReportModel extends Model
 
         foreach ($result as $res) {
             
-            $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucher('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
+           // $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucher('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
+
+            $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucherData('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
 
             $result[$i]->purchase_return_prod   = $this->FetchPurchaseReturnProd('pro_purchase_return_prod',array('prp_sales_order' => $res->so_reffer_no));
 
@@ -933,7 +935,7 @@ class CrmReportModel extends Model
      
     }
 
-    /*public function FetchPurchaseVoucherData($table,$cond){
+    public function FetchPurchaseVoucherData($table,$cond){
  
          $query = $this->db->table($table)
 
@@ -954,7 +956,7 @@ class CrmReportModel extends Model
 
         
 
-    }*/
+    }
 
 
     public function job_summery($from_date,$from_date_col,$to_date,$to_date_col,$data1,$data1_col,$data2,$data2_col,$data3,$data3_col){
@@ -1079,7 +1081,7 @@ class CrmReportModel extends Model
 
     public function FetchPurchaseVoucher($table,$cond){
  
-         $query = $this->db->table($table)
+        $query = $this->db->table($table)
 
         ->select('*')
     
