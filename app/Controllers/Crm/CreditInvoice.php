@@ -1450,9 +1450,9 @@ class CreditInvoice extends BaseController
 
         foreach ($product_details as $prod_det) {
             // Add page break before 6th row
-            if ($k == 6) {
+            /*if ($k == 6) {
                 $pdf_data .= '<tr style="page-break-before: always;"><td colspan="7" style="border:none;"></td></tr>';
-            }
+            }*/
 
             $rate = format_currency($prod_det->ipd_rate);
             $amount = format_currency($prod_det->ipd_amount);
