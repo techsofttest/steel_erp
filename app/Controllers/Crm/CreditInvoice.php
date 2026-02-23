@@ -1444,8 +1444,9 @@ class CreditInvoice extends BaseController
 
         $pdf_data = "";
         $k = 1;
-        $max_chars_per_line = 55;
-
+        //$max_chars_per_line = 55;
+        
+        $max_chars_per_line = 54;
 
         foreach ($product_details as $prod_det) {
             // Add page break before 6th row
