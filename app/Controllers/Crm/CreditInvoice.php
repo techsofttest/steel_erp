@@ -1718,30 +1718,7 @@ class CreditInvoice extends BaseController
 
                         $mpdf->SetHTMLHeader($header_html);
 
-                        // ===== HTML DEBUG MODE =====
-
-
-    echo '
-    <html>
-    <head>
-        <title>'.$title.'</title>
-        <style>
-            body { font-family: Arial; font-size:12px; }
-            table { border-collapse: collapse; width:100%; }
-            th, td { padding:4px; font-size:12px; }
-        </style>
-    </head>
-    <body>
-
-    '.$header_html.'
-    '.$main_table.'
-    '.$summary_html.'
-    '.$footer_common.'
-
-    </body>
-    </html>';
-
-    exit;
+                     
 
 
                         $mpdf->SetHTMLFooter($footer_common);
