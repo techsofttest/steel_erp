@@ -760,13 +760,13 @@
                                                 <div class="mt-4 content_table">
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
+
                                                             <tr>
                                                                 <td style="width: 4%;" >SI</td>
                                                                 <td colspan="2">Cost Of Materials / Services</td>
                                                                 <td style="width: 15%;">Vendor</td>
                                                                 <td style="width: 10%;">Date</td>
                                                                 <td style="width:8%">Rate</td>
-                                                                
                                                             </tr>
                                                            
 
@@ -3377,7 +3377,8 @@
 
 
         /* Product detail calculation */
-        $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+        //$("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+        $("body").on("input", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
             var $this = $(this);
 
             var discount = parseFloat($this.closest(".prod_row").find(".discount_clz_id").val()) || 0;
@@ -3385,7 +3386,8 @@
             var quantityElement = $this.closest(".prod_row").find(".qtn_clz_id");
 
             // Remove commas before performing calculations
-            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+           // var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+           var rate = parseFloat((rateElement.val() || "0").replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
 
             var multipliedTotal = rate * quantity;
@@ -3399,6 +3401,7 @@
             amountElement.val(formattedPrice);
 
             TotalAmount();
+            
         });
 
 
