@@ -585,7 +585,7 @@ class CreditInvoice extends BaseController
             </tr><tr>
                
                 <td align="right" class="total_label">Advance Amount</td>
-                <td class=""><input type="text" value="'.format_currency($credit_invoice->cci_paid_amount).'" class="form-control text-end" readonly></td>
+                <td class=""><input type="text" value="'.format_currency($credit_invoice->cci_advance_amount).'" class="form-control text-end" readonly></td>
                 
             </tr>';
 
@@ -1080,7 +1080,7 @@ class CreditInvoice extends BaseController
             <tr>
                 
                 <td align="right" class="total_label">Advance Amount</td>
-                <td><input type="text" value="'.format_currency($credit_invoice->cci_paid_amount).'" class="form-control text-end" readonly></td>
+                <td><input type="text" value="'.format_currency($credit_invoice->cci_advance_amount).'" class="form-control text-end" readonly></td>
                 
             </tr>
             ';

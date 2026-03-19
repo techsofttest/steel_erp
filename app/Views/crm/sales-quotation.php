@@ -2490,8 +2490,6 @@
 
             $('#customer_id').val('').trigger('change');
 
-           
-
             //return false;
 
         });
@@ -2505,8 +2503,6 @@
         $("body").on('click', '.contact_more_modal', function(){ 
 	        
             var customer_id = $('#customer_id').val();
-
-           
 
             if(customer_id === null)
             {
@@ -3091,7 +3087,6 @@
 
                 $(this).find('.cost_amount_clz').attr("name", "qc_amount["+cp+"]");
 
-                
                 cc++;
 
                 cp++;
@@ -3379,6 +3374,7 @@
         /* Product detail calculation */
         //$("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
         $("body").on("input", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+
             var $this = $(this);
 
             var discount = parseFloat($this.closest(".prod_row").find(".discount_clz_id").val()) || 0;
@@ -3388,7 +3384,7 @@
             // Remove commas before performing calculations
            // var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
            var rate = parseFloat((rateElement.val() || "0").replace(/,/g, "")) || 0;
-            var quantity = parseFloat(quantityElement.val()) || 0;
+           var quantity = parseFloat(quantityElement.val()) || 0;
 
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;

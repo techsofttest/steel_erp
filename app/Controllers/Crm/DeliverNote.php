@@ -341,12 +341,9 @@ class DeliverNote extends BaseController
                                 
                             );
 
-                        
-                            
 
                             $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
 
-                        
 
                             $cond = array('spd_id' => $_POST['sales_prod_id'][$j]); 
 
