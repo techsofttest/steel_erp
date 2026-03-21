@@ -623,14 +623,12 @@ class CreditInvoice extends BaseController
                                                 <td class="text-end">'.format_currency($delivery_prod->ipd_amount).'</td>
                                               
                                             </tr>';
-                                                    $i++;
+                                            
+                                                $i++;
 
-                                                    }
+                                            }
 
           
-
-           
-
             //image section start
             
             /*$data['image_table']="";

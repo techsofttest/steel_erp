@@ -2151,11 +2151,46 @@
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                rawValue = parts[0] + "." + parts[1];
+            }
+
             $this.val(rawValue); // Keep raw value while typing
         });
 
-        // Format number with commas on blur (after user finishes typing)
+        /**/
+        
         $("body").on("blur", ".add_discount", function () {
+    var $this = $(this);
+    var rawValue = $this.val().replace(/,/g, "");
+
+    if (rawValue !== "") {
+        var formattedValue = formatNumberWithCommas4(rawValue);
+        $this.val(formattedValue);
+    }
+});
+
+function formatNumberWithCommas4(value) {
+    let num = parseFloat(value.replace(/,/g, ""));
+    if (isNaN(num)) return "";
+    
+    return num.toLocaleString("en-US", {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4
+    });
+}
+
+
+
+
+        /**/
+
+        // Format number with commas on blur (after user finishes typing)
+
+        /*$("body").on("blur", ".add_discount", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
 
@@ -2165,7 +2200,11 @@
                 console.log("Formatted Output:", formattedValue); // Debugging
             }
 
-        });
+            
+        });*/
+
+        
+
         
         /*$("body").on("input", ".add_prod_qty", function () {
             var $this = $(this);
@@ -2282,10 +2321,13 @@
             var originalPrice = multipliedTotal - per_amount;
 
             // Ensure two decimal places and format with commas
+         
             var formattedPrice = Number(originalPrice.toFixed(2)).toLocaleString("en-US", { 
                 minimumFractionDigits: 2, 
                 maximumFractionDigits: 2 
             });
+
+
 
             var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
             $amountElement.val(formattedPrice);

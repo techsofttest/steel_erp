@@ -2276,6 +2276,7 @@
 
 
         $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+
             var $this = $(this);
 
             var discount = parseFloat($this.closest(".prod_row2").find(".discount_clz_id").val()) || 0;
@@ -2295,12 +2296,18 @@
             // Format calculated price with commas
             var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             
+
+
+
+
+            
             //console.log(formattedPrice);
 
             var amountElement = $this.closest(".prod_row2").find(".amount_clz_id");
             amountElement.val(formattedPrice);
 
             TotalAmount();
+
         });
 
         

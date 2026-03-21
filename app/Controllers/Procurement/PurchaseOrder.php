@@ -551,7 +551,7 @@ class PurchaseOrder extends BaseController
                                             <td><input type="text" name="pop_unit[]" value="'.$product->mrp_unit.'" class="form-control text-center" readonly></td>
                                             <td><input type="text" name="pop_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center"   step="0.01"></td>
                                             <td><input type="text" name="pop_rate[]" value=""  class="form-control add_prod_rate text-end" required></td>
-                                            <td><input type="text" name="pop_discount[]" value="" step="0.01" class="form-control add_discount text-center" min="0" max="100" onkeyup="MinMax(this)" required></td>
+                                            <td><input type="text" name="pop_discount[]" value="" step="0.0001" class="form-control add_discount text-center" min="0" max="100" onkeyup="MinMax(this)" required></td>
                                             <td><input type="text" name="pop_amount[]" value=""  class="form-control add_prod_amount text-end" readonly></td>
                                             <input type="hidden" name="pop_sales_order[]" value="'.$product->so_id.'" class="form-control" readonly>
                                             <input type="hidden" name="pop_prod_desc[]" value="'.$product->mrp_product_desc.'">
