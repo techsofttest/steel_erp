@@ -881,7 +881,9 @@ select.timesheet-selectbox
                     <select class="form-select timesheet-selectbox" name="year"  required>
 
 
-                    <?php for($m=date('Y');$m<=date('Y');$m++){ ?>
+                    <?php //for($m=date('Y');$m<=date('Y');$m++){ ?>
+
+                    <?php for($m=$accounting_year;$m<=$accounting_year+1;$m++){ ?>
 
                     <option value="<?= $m ?>" <?php if($m==date('Y')) { echo "selected"; }  ?>><?= $m ?></option>
 

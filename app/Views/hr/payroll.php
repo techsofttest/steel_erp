@@ -236,7 +236,9 @@ select.payroll-select
                     <select class="form-select payroll-select" name="year"  required>
 
 
-                    <?php for($m=2000;$m<=date('Y');$m++){ ?>
+                    <?php //for($m=2000;$m<=date('Y');$m++){ ?>
+
+                    <?php for($m=$accounting_year;$m<=$accounting_year+1;$m++){ ?>
 
                     <option value="<?= $m ?>" <?php if($m==date('Y')) { echo "selected"; }  ?>><?= $m ?></option>
 
