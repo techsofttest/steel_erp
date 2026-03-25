@@ -619,7 +619,7 @@ class CreditInvoice extends BaseController
                                                 <td class="text-center">'.$delivery_prod->ipd_unit.'</td>
                                                 <td class="text-center">'.format_currency($delivery_prod->ipd_quantity).'</td>
                                                 <td class="text-end">'.format_currency($delivery_prod->ipd_rate).'</td>
-                                                <td class="text-center">'.format_currency($delivery_prod->ipd_discount).'</td>
+                                                <td class="text-center">'.$delivery_prod->ipd_discount.'</td>
                                                 <td class="text-end">'.format_currency($delivery_prod->ipd_amount).'</td>
                                               
                                             </tr>';
@@ -1179,7 +1179,7 @@ class CreditInvoice extends BaseController
                                                 <td class"text-center">'.$delivery_prod->ipd_unit.'</td>
                                                 <td class="text-center">'.format_currency($delivery_prod->ipd_quantity).'</td>
                                                 <td class="text-end">'.format_currency($delivery_prod->ipd_rate).'</td>
-                                                <td class="text-center">'.format_currency($delivery_prod->ipd_discount).'</td>
+                                                <td class="text-center">'.$delivery_prod->ipd_discount.'</td>
                                                 <td class="text-end">'.format_currency($delivery_prod->ipd_amount).'</td>
                                                 
                                             </tr>';
@@ -1297,7 +1297,7 @@ class CreditInvoice extends BaseController
                                                     <td><input type="text" name="ipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control  text-center" readonly></td>
                                                     <td><input type="number" name="ipd_quantity[]" value="'.$sales_det->dpd_current_qty.'"  class="form-control order_qty  text-center" readonly></td>
                                                     <td><input type="text" name="ipd_rate[]" value="'.format_currency($sales_det->spd_rate).'"  class="form-control delivery_qty  text-end" readonly ></td>
-                                                    <td><input type="number" name="ipd_discount[]"  value="'.format_currency($sales_det->spd_discount).'" class="form-control current_delivery  text-center" readonly></td>
+                                                    <td><input type="text" name="ipd_discount[]"  value="'.$sales_det->spd_discount.'" class="form-control current_delivery  text-center" readonly></td>
                                                     <td><input type="text" name="ipd_amount[]"  value="'.format_currency($amount).'" class="form-control amount_clz_id  text-end" readonly></td>
                                                     <input type ="hidden" name="delivery_prod_id[]" value="'.$sales_det->dpd_id.'">
                                                     <input type ="hidden" name="delivery_id[]" value="'.$sales_det->dpd_delivery_id.'">
