@@ -930,7 +930,7 @@
                                                                 <td><input type="text"   name="spd_unit" class="form-control text-center" required></td>
                                                                 <td><input type="text" name="spd_quantity" class="form-control edit_add_qty text-center" required></td>
                                                                 <td><input type="text" name="spd_rate" class="form-control edit_add_rate text-end" required></td>
-                                                                <td><input type="number" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount text-center" required></td>
+                                                                <td><input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount text-center" required></td>
                                                                 <td><input type="text" name="spd_amount" class="form-control edit_add_amount text-end" ></td>
                                                                 <input type="hidden" name="spd_sales_order" class="edit_hidden_sales_id">
 
@@ -2065,7 +2065,7 @@
                 
                // $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                
-               $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td class='open-select2'><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]'   class='form-control unit_clz_id text-center' required=''></td><td><input type='text' name='spd_quantity["+so+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' step='0.01' class='form-control discount_clz_id text-center' required=''></td><td><input type='text' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+               $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td class='open-select2'><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]'   class='form-control unit_clz_id text-center' required=''></td><td><input type='text' name='spd_quantity["+so+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' step='0.0001' class='form-control discount_clz_id text-center' required=''></td><td><input type='text' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
 			}
 
@@ -2218,7 +2218,32 @@
         });
 
 
+        /*$("body").on("input", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); 
+        });
+
+
+        $("body").on("blur", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); 
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); 
+            }
+        });*/
+
         $("body").on("input", ".discount_clz_id", function () {
+
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -2227,20 +2252,38 @@
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
-            $this.val(rawValue); // Keep raw value while typing
-        });
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                rawValue = parts[0] + "." + parts[1];
+            }
 
+            $this.val(rawValue); // Keep raw value while typing
+
+        });
 
         $("body").on("blur", ".discount_clz_id", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, "");
 
             if (rawValue !== "") {
-                var formattedValue = formatNumberWithCommas(rawValue);
+                var formattedValue = formatNumberWithCommas4(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
             }
+
         });
+
+        function formatNumberWithCommas4(value) {
+            let num = parseFloat(value.replace(/,/g, ""));
+            if (isNaN(num)) return "";
+            
+            return num.toLocaleString("en-US", {
+                minimumFractionDigits: 4,
+                maximumFractionDigits: 4
+            });
+        }
+
 
 
         /*$("body").on("input", ".qtn_clz_id", function () {
@@ -2706,28 +2749,67 @@
         });
 
 
-        $("body").on("input", ".edit_add_discount", function () {
+        /*$("body").on("input", ".edit_add_discount", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
 
-            // Ensure only one decimal point
+            
             if ((rawValue.match(/\./g) || []).length > 1) {
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
-            $this.val(rawValue); // Keep raw value while typing
+            $this.val(rawValue); 
         });
 
         $("body").on("blur", ".edit_add_discount", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, ""); 
 
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+                console.log("Formatted Output:", formattedValue); 
             }
+        });*/
+
+        $("body").on("input", ".edit_add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); 
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue); 
         });
+
+        $("body").on("blur", ".edit_add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, "");
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas4(rawValue);
+                $this.val(formattedValue);
+            }
+        })
+
+        function formatNumberWithCommas4(value) {
+            let num = parseFloat(value.replace(/,/g, ""));
+            if (isNaN(num)) return "";
+            
+            return num.toLocaleString("en-US", {
+                minimumFractionDigits: 4,
+                maximumFractionDigits: 4
+            });
+        }
 
 
         /*$("body").on("input", ".edit_add_qty", function () {
@@ -3115,29 +3197,69 @@
             }
         });
 
-        $("body").on("input", ".edit_prod_discount", function () {
+        /*$("body").on("input", ".edit_prod_discount", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
 
-            // Ensure only one decimal point
+            
             if ((rawValue.match(/\./g) || []).length > 1) {
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
-            $this.val(rawValue); // Keep raw value while typing
+            $this.val(rawValue); 
         });
 
 
         $("body").on("blur", ".edit_prod_discount", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, ""); 
 
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+                console.log("Formatted Output:", formattedValue); 
+            }
+        });*/
+
+
+        $("body").on("input", ".edit_prod_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); 
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_prod_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, "");
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas4(rawValue);
+                $this.val(formattedValue);
             }
         });
+
+        function formatNumberWithCommas4(value) {
+            let num = parseFloat(value.replace(/,/g, ""));
+            if (isNaN(num)) return "";
+            
+            return num.toLocaleString("en-US", {
+                minimumFractionDigits: 4,
+                maximumFractionDigits: 4
+            });
+        }
 
         /*$("body").on("input", ".edit_prod_qty", function () {
             var $this = $(this);

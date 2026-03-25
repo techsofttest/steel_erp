@@ -1521,7 +1521,7 @@
                                                                 <td><input type="text" name="qpd_unit"  class="form-control text-center" required></td>
                                                                 <td><input type="number" name="qpd_quantity" class="form-control edit_add_prod_qty text-center" required></td>
                                                                 <td><input type="text" name="qpd_rate" class="form-control edit_add_prod_rate text-end" required></td>
-                                                                <td><input type="number" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis text-center" required></td>
+                                                                <td><input type="text" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis text-center" required></td>
                                                                 
                                                                 <td><input type="text" name="qpd_amount" class="form-control edit_add_prod_amount text-end" readonly></td>
                                                                
@@ -4474,7 +4474,7 @@
                 var formattedValue = formatNumberWithCommas4(rawValue);
                 $this.val(formattedValue);
             }
-            
+
         });
 
 
@@ -4717,7 +4717,32 @@
             }
         });
         
+        /*$("body").on("input", ".edit_add_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); 
+        });
+
+        $("body").on("blur", ".edit_add_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); 
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                
+            }
+        });*/
+
+
         $("body").on("input", ".edit_add_prod_dis", function () {
+            
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -4726,17 +4751,25 @@
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                rawValue = parts[0] + "." + parts[1];
+            }
+
             $this.val(rawValue); // Keep raw value while typing
+
         });
+
 
         $("body").on("blur", ".edit_add_prod_dis", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, "");
 
             if (rawValue !== "") {
-                var formattedValue = formatNumberWithCommas(rawValue);
+                var formattedValue = formatNumberWithCommas4(rawValue);
                 $this.val(formattedValue);
-                
             }
         });
 
