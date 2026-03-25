@@ -1249,10 +1249,10 @@
                                             </div>
 
 
-                                            <div class="col-col-md-12 col-lg-12">
+                                            <div class="col-col-md-12 col-lg-12 add_more_container">
 
 
-                                                <table class="table table-bordered add_more_container" style="overflow-y:scroll;">
+                                                <table class="table table-bordered" style="overflow-y:scroll;">
 
                                                     <thead>
                                                         <tr>
