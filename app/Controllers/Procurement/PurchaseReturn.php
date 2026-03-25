@@ -561,7 +561,7 @@ class PurchaseReturn extends BaseController
                                             <td><input type="number" name="prp_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center"  required></td>
                                             <td><input type="text" name="prp_unit[]" value="'.$product->pvp_unit.'" class="form-control text-center" required readonly></td>
                                             <td><input type="text" name="prp_rate[]" value="'.format_currency($product->pvp_rate).'"  class="form-control add_prod_rate text-end" required readonly></td>
-                                            <td><input type="text" name="prp_discount[]" value="'.format_currency($product->pvp_discount).'"  class="form-control add_discount text-center" required readonly></td>
+                                            <td><input type="text" name="prp_discount[]" value="'.$product->pvp_discount.'"  class="form-control add_discount text-center" required readonly></td>
                                             <td><input type="text" name="prp_amount[]" value="'.format_currency($originalPrice).'"  class="form-control add_prod_amount text-end" required readonly></td>
                                             <input type="hidden" name="prp_id[]" value="'.$product->pvp_id.'">
                                             <input type="hidden" name="prp_voucher_id[]" value="'.$product->pvp_reffer_id.'">
@@ -864,7 +864,7 @@ class PurchaseReturn extends BaseController
             <td>'.format_currency($pur_return_prod->prp_qty).'</td>
             <td>'.$pur_return_prod->prp_unit.'</td>
             <td>'.format_currency($pur_return_prod->prp_rate).'</td>
-            <td>'.format_currency($pur_return_prod->prp_discount).'</td>
+            <td>'.$pur_return_prod->prp_discount.'</td>
             <td class="text-end">'.format_currency($pur_return_prod->prp_amount).'</td>
             </tr>
             ';
@@ -981,7 +981,7 @@ class PurchaseReturn extends BaseController
             <td>'.format_currency($pur_return_prod->prp_qty).'</td>
             <td>'.$pur_return_prod->prp_unit.'</td>
             <td>'.format_currency($pur_return_prod->prp_rate).'</td>
-            <td>'.format_currency($pur_return_prod->prp_discount).'</td>
+            <td>'.$pur_return_prod->prp_discount.'</td>
             <td class="text-end">'.format_currency($pur_return_prod->prp_amount).'</td>
             </tr>
             ';
