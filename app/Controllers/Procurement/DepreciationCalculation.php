@@ -776,9 +776,10 @@ class DepreciationCalculation extends BaseController
                                   <th class="select2_parent" width="35%"> 
                                   <input type="text" class="form-control" name="jv_account[]" value="' .  $debit_acc->ca_name . '" readonly>
                                   </th>
-                                  <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
                                   <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="' . $dep_amount  . '" readonly></th>
                                   <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                  <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+                                  
       </tr>
       ';
       
@@ -801,13 +802,14 @@ class DepreciationCalculation extends BaseController
                                 <input type="text" class="form-control" name="jv_account[]" value="' . $credit_acc->ca_name . '" readonly>
 
                                 </th>
-                                
-                                <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
                                 <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount"  readonly></th>
 
                                 <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="' . $dep_amount . '" readonly></th>
+                                
+                                <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
+                                
     </tr>
     
     ';
@@ -815,18 +817,21 @@ class DepreciationCalculation extends BaseController
     $data['total_credit'] = $dep_amount;
 
         $data['jv_rows'] .= '
-    <tr>
-        <td colspan="3" align="right">Total</td>
-        <th id="total_amount_debit_disp">' . htmlspecialchars($dep_amount) . '</th>
-        <th id="total_amount_credit_disp">' . htmlspecialchars($dep_amount) . '</th>
+    <tr class="no-border">
+
+        <td colspan="" align="right" class="no-border"></td>
+
+        <td colspan="" align="right">Total</td>
+                                   
+        <th id="total_amount_debit_disp" class="text-end">'.htmlspecialchars($dep_amount).'</th>
+
+        <th  id="total_amount_credit_disp" class="text-end">'.htmlspecialchars($dep_amount).'</th>
         
         <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $dep_amount . '">
         <input type="hidden" id="total_amount_debit" name="total_debit" value="">
         <input type="hidden" id="total_amount_credit" name="total_credit" value="">
     </tr>
 ';
-
-
 
         //Employee Credit Journal
 

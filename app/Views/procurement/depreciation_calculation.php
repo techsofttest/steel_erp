@@ -1258,9 +1258,10 @@
                                                         <tr>
                                                             <th>Sl No</th>
                                                             <th>Account</th>
-                                                            <th>Narration</th>
                                                             <th width="10%">Debit</th>
                                                             <th width="10%">Credit</th>
+                                                            <th>Narration</th>
+                                                            
                                                         </tr>
                                                     </thead>
 
