@@ -2336,7 +2336,11 @@ span.select2.customer_width, span.select2 {
         });
 
 
-         /*###*/
+        /*###*/
+
+
+
+      
 
 
          /*product detail calculation*/
@@ -2364,9 +2368,11 @@ span.select2.customer_width, span.select2 {
 
            var multipliedTotal = parsedRate * parsedQuantity;
 
-           //console.log(multipliedTotal);
+           
 
            var per_amount = (discount/100)*multipliedTotal;
+
+           console.log(discount);
           
            var orginalPrice = multipliedTotal - per_amount;
 
