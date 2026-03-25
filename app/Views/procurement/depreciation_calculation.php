@@ -1239,7 +1239,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
+                                                        <input type="text" id="jvdate" name="jv_date" class="form-control jounral_datepicker datepicker_ap" value="<?= date('d M Y') ?>" required>
 
                                                     </div>
 
@@ -1252,15 +1252,15 @@
                                             <div class="col-col-md-12 col-lg-12">
 
 
-                                                <table class="table table-bordered" style="overflow-y:scroll;">
+                                                <table class="table table-bordered add_more_container" style="overflow-y:scroll;">
 
                                                     <thead>
                                                         <tr>
                                                             <th>Sl No</th>
                                                             <th>Account</th>
                                                             <th>Narration</th>
-                                                            <th>Debit</th>
-                                                            <th>Credit</th>
+                                                            <th width="10%">Debit</th>
+                                                            <th width="10%">Credit</th>
                                                         </tr>
                                                     </thead>
 
@@ -2466,6 +2466,35 @@
 
 
         /*#####*/
+
+
+
+
+        $('.journal_datepicker').change(function(){
+
+        var date = $(this).val();
+
+        var year = date.substring(0, 4);   // "2025"
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+date,
+
+        method : "GET",
+
+        success:function(data)
+        {
+
+        //alert(data);
+
+        $('#uid').val(data);
+
+        }
+
+        });
+        
+
+        });
 
 
 
