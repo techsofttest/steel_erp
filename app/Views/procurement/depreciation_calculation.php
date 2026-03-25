@@ -1239,7 +1239,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" id="jvdate" name="jv_date" class="form-control jounral_datepicker datepicker_ap" value="<?= date('d M Y') ?>" required>
+                                                        <input type="text" id="jvdate" name="jv_date" class="form-control journal_datepicker datepicker_ap" value="<?= date('d M Y') ?>" required>
 
                                                     </div>
 
