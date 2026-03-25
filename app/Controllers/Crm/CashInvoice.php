@@ -622,7 +622,7 @@ class CashInvoice extends BaseController
         {   
             $rate = format_currency($prod_det->cipd_rate);
 
-            $discount = format_currency($prod_det->cipd_discount);
+            $discount = $prod_det->cipd_discount;
 
             $amount  = format_currency($prod_det->cipd_amount);
 
@@ -1211,7 +1211,7 @@ class CashInvoice extends BaseController
                                                         <td><input type="text" name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
                                                         <td><input type="number" name="cipd_qtn[]" value="'.$current_qty.'"  class="form-control qtn_clz_id text-center" ></td>
                                                         <td><input type="text" name="cipd_rate[]" value="'.format_currency($sales_det->spd_rate).'"  class="form-control rate_clz_id text-end"  readonly></td>
-                                                        <td><input type="number" name="cipd_discount[]" value="'.format_currency($sales_det->spd_discount).'" class="form-control discount_clz_id text-center" readonly></td>
+                                                        <td><input type="text" name="cipd_discount[]" value="'.$sales_det->spd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
                                                         <td><input type="text" name="cipd_amount[]" value="'.format_currency($amount).'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="cipd_prod_det[]" value="'.$sales_det->product_id.'">
                                                         <input type="hidden" class="selected_sales_prod" name="cipd_sales_prod[]" value="'.$sales_det->spd_id.'">
@@ -1473,7 +1473,7 @@ class CashInvoice extends BaseController
             {   
                 $rate = format_currency($prod_det->cipd_rate);
 
-                $discount = format_currency($prod_det->cipd_discount);
+                $discount = $prod_det->cipd_discount;
 
                 $amount = format_currency($prod_det->cipd_amount);
 
