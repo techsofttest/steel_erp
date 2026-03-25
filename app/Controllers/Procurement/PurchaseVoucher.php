@@ -659,7 +659,7 @@ class PurchaseVoucher extends BaseController
             <td>'.format_currency($pur_vou_prod->pvp_qty).'</td>
             <td>'.$pur_vou_prod->pvp_unit.'</td>
             <td class="text-end">'.format_currency($pur_vou_prod->pvp_rate).'</td>
-            <td>'.format_currency($pur_vou_prod->pvp_discount).'</td>
+            <td>'.$pur_vou_prod->pvp_discount.'</td>
             <td class="text-end">'.format_currency($pur_vou_prod->pvp_amount).'</td>
             </tr>
             ';
@@ -837,7 +837,7 @@ class PurchaseVoucher extends BaseController
             <td>'.format_currency($pur_vou_prod->pvp_qty).'</td>
             <td>'.$pur_vou_prod->pvp_unit.'</td>
             <td class="text-end">'.format_currency($pur_vou_prod->pvp_rate).'</td>
-            <td>'.format_currency($pur_vou_prod->pvp_discount).'</td>
+            <td>'.$pur_vou_prod->pvp_discount.'</td>
             <td class="text-end">'.format_currency($pur_vou_prod->pvp_amount).'</td>
             ';
 
@@ -1276,7 +1276,7 @@ class PurchaseVoucher extends BaseController
                                             <td class="text-center"><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty text-center"  required readonly></td>
                                             <td class="text-center"><input type="text" name="pvp_unit[]" value="'.$product->rnp_unit.'" class="form-control text-center" required readonly></td>
                                             <td class="text-center"><input type="text" name="pvp_rate[]" value="'.format_currency($product->rnp_rate).'"  class="form-control add_prod_rate text-end" required ></td>
-                                            <td class="text-center"><input type="number" name="pvp_discount[]" value="'.format_currency($product->rnp_discount).'"  class="form-control add_discount text-center" required ></td>
+                                            <td class="text-center"><input type="text" step="0.0001" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount text-center" required ></td>
                                             <td class="text-center"><input type="text" name="pvp_amount[]" value="'.format_currency($product->rnp_amount).'"  class="form-control add_prod_amount text-end" required readonly></td>
                                             <input type="hidden" name="rnp_id[]" value="'.$product->rnp_id.'">
                                             <input type="hidden" name="material_received_id[]" value="'.$product->rnp_material_received_note.'">

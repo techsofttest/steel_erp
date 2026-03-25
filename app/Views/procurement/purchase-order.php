@@ -2701,30 +2701,69 @@ function formatNumberWithCommas4(value) {
             }
         });*/
 
-         // Allow typing without formatting while user is entering the value
-         $("body").on("input", ".edit_prod_discount", function () {
+         
+         /*$("body").on("input", ".edit_prod_discount", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
 
-            // Ensure only one decimal point
+            
             if ((rawValue.match(/\./g) || []).length > 1) {
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
-            $this.val(rawValue); // Keep raw value while typing
+            $this.val(rawValue); 
+        });*/
+
+        $("body").on("input", ".edit_prod_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); 
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue); 
         });
 
-        // Format number with commas on blur (after user finishes typing)
-        $("body").on("blur", ".edit_prod_discount", function () {
+        
+        /*$("body").on("blur", ".edit_prod_discount", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, ""); 
 
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+                console.log("Formatted Output:", formattedValue); 
+            }
+        });*/
+
+        $("body").on("blur", ".edit_prod_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, "");
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas4(rawValue);
+                $this.val(formattedValue);
             }
         });
+
+        function formatNumberWithCommas4(value) {
+            let num = parseFloat(value.replace(/,/g, ""));
+            if (isNaN(num)) return "";
+            
+            return num.toLocaleString("en-US", {
+                minimumFractionDigits: 4,
+                maximumFractionDigits: 4
+            });
+        }
 
         $("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function() { 
             var $discountSelect = $(this);
