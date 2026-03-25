@@ -1303,7 +1303,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td><input type="text"   name="pp_unit" class="form-control text-center" required></td>
                                                                 <td><input type="number" name="pp_quantity" class="form-control edit_add_qty text-center" required></td>
                                                                 <td><input type="text" name="pp_rate" class="form-control edit_add_rate text-end" required></td>
-                                                                <td><input type="number" name="pp_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount text-center" required></td>
+                                                                <td><input type="text" name="pp_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount text-center" required></td>
                                                                 <td><input type="text" name="pp_amount" class="form-control edit_add_amount text-end" readonly></td>
                                                                 
                                                                 <input type="hidden" name="pp_proforma" class="edit_hidden_performa_id">
@@ -1387,7 +1387,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td><input type="text" name="pp_unit"  class="form-control forma_edit_unit text-center" required></td>
                                                                 <td><input type="number" name="pp_quantity" class="form-control forma_edit_qty text-center" required></td>
                                                                 <td><input type="text" name="pp_rate" class="form-control forma_edit_rate text-end" required></td>
-                                                                <td><input type="number" name="pp_discount"  min="0" max="100"  onkeyup="MinMax(this)" class="form-control forma_edit_discount text-center" required></td>
+                                                                <td><input type="text" name="pp_discount"  min="0" max="100"  onkeyup="MinMax(this)" class="form-control forma_edit_discount text-center" required></td>
                                                                 
                                                                 <td><input type="text" name="pp_amount" class="form-control forma_edit_amount text-end" readonly></td>
                                                                
@@ -2153,7 +2153,7 @@ InitProductSelectEdit();
             }
         });
 
-        $("body").on("input", ".discount_clz_id", function () {
+        /*$("body").on("input", ".discount_clz_id", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -2175,7 +2175,51 @@ InitProductSelectEdit();
                 $this.val(formattedValue);
                 //console.log("Formatted Output:", formattedValue); // Debugging
             }
+        });*/
+
+        $("body").on("input", ".discount_clz_id", function () {
+            
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); 
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue); 
         });
+
+
+        $("body").on("blur", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, "");
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas4(rawValue);
+                $this.val(formattedValue);
+            }
+        });
+
+
+        function formatNumberWithCommas4(value) {
+            let num = parseFloat(value.replace(/,/g, ""));
+            if (isNaN(num)) return "";
+            
+            return num.toLocaleString("en-US", {
+                minimumFractionDigits: 4,
+                maximumFractionDigits: 4
+            });
+        }
+
+
 
         /*$("body").on("input", ".qtn_clz_id", function () {
             var $this = $(this);
@@ -2966,7 +3010,32 @@ InitProductSelectEdit();
             }
         });
 
+        /*$("body").on("input", ".edit_add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); 
+        });
+
+        $("body").on("blur", ".edit_add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); 
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                
+            }
+        });*/
+
+        
         $("body").on("input", ".edit_add_discount", function () {
+
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -2975,19 +3044,28 @@ InitProductSelectEdit();
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                rawValue = parts[0] + "." + parts[1];
+            }
+
             $this.val(rawValue); // Keep raw value while typing
+
         });
 
         $("body").on("blur", ".edit_add_discount", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, "");
 
             if (rawValue !== "") {
-                var formattedValue = formatNumberWithCommas(rawValue);
+                var formattedValue = formatNumberWithCommas4(rawValue);
                 $this.val(formattedValue);
-                //console.log("Formatted Output:", formattedValue); // Debugging
             }
         });
+
+
 
         $("body").on("keyup", ".edit_add_discount, .edit_add_qty, .edit_add_rate", function () {
             var $this = $(this);
@@ -3177,7 +3255,32 @@ InitProductSelectEdit();
             }
         });
 
+        /*$("body").on("input", ".forma_edit_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); 
+        });
+
+        $("body").on("blur", ".forma_edit_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); 
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); 
+            }
+        });*/
+
+
         $("body").on("input", ".forma_edit_discount", function () {
+            
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -3186,19 +3289,30 @@ InitProductSelectEdit();
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                rawValue = parts[0] + "." + parts[1];
+            }
+
             $this.val(rawValue); // Keep raw value while typing
         });
 
+
         $("body").on("blur", ".forma_edit_discount", function () {
+               
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, "");
 
             if (rawValue !== "") {
-                var formattedValue = formatNumberWithCommas(rawValue);
+                var formattedValue = formatNumberWithCommas4(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
             }
         });
+
+
+
 
 
         $("body").on("keyup", ".forma_edit_discount, .forma_edit_qty, .forma_edit_rate", function () {

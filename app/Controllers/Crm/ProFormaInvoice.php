@@ -470,7 +470,7 @@ class ProFormaInvoice extends BaseController
             <td class="text-center">'.$prod_det->pp_unit.'</td>
             <td class="text-center">'.round($prod_det->pp_quantity).'</td>
             <td class="text-end">'.format_currency($prod_det->pp_rate).'</td>
-            <td class="text-center">'.format_currency($prod_det->pp_discount).'</td>
+            <td class="text-center">'.$prod_det->pp_discount.'</td>
             <td class="text-end">'.format_currency($prod_det->pp_amount).'</td>
             </tr>'; 
 
@@ -754,7 +754,7 @@ class ProFormaInvoice extends BaseController
                                             <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_quantity['.$j.']" value="'.$avaliable_qty.'" class="form-control qtn_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_rate['.$j.']" value="'.format_currency($prod_det->spd_rate).'" class="form-control rate_clz_id text-end" required></td>
-                                            <td><input type="number" name="pp_discount['.$j.']" value="'.format_currency($prod_det->spd_discount).'" class="form-control discount_clz_id text-center" required></td>
+                                            <td><input type="text" name="pp_discount['.$j.']" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_amount['.$j.']" value="'.format_currency($prod_det->spd_amount).'" class="form-control amount_clz_id text-end" readonly></td>
                                             <td class="row_remove remove-btnpp text-center" data-id="'.$prod_det->spd_id .'" style="padding: 10px 10px;"><i class="ri-close-line"></i></td>
                                             <input type="hidden" value="'.$avaliable_qty.'"   class="hidden_sales_qty">
@@ -972,7 +972,7 @@ class ProFormaInvoice extends BaseController
                 <td class="text-center">'.$prod_det->pp_unit.'</td>
                 <td class="text-center">'.round($prod_det->pp_quantity).'</td>
                 <td class="text-end">'.format_currency($prod_det->pp_rate).'</td>
-                <td class="text-center">'.format_currency($prod_det->pp_discount).'</td>
+                <td class="text-center">'.$prod_det->pp_discount.'</td>
                 <td class="text-end edit_total_amount">'.format_currency($prod_det->pp_amount).'</td>
                 <td class="text-center">
                     <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
@@ -1144,7 +1144,7 @@ class ProFormaInvoice extends BaseController
     
             $data['rate']     = format_currency($proforma_prod->pp_rate);
     
-            $data['discount'] = format_currency($proforma_prod->pp_discount);
+            $data['discount'] = $proforma_prod->pp_discount;
 
             $data['amount']   = format_currency($proforma_prod->pp_amount);
 

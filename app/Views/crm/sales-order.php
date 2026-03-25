@@ -3242,6 +3242,7 @@
         });
 
         $("body").on("blur", ".edit_prod_discount", function () {
+            
             var $this = $(this);
             var rawValue = $this.val().replace(/,/g, "");
 
@@ -3249,9 +3250,11 @@
                 var formattedValue = formatNumberWithCommas4(rawValue);
                 $this.val(formattedValue);
             }
+
         });
 
         function formatNumberWithCommas4(value) {
+
             let num = parseFloat(value.replace(/,/g, ""));
             if (isNaN(num)) return "";
             
@@ -3259,6 +3262,7 @@
                 minimumFractionDigits: 4,
                 maximumFractionDigits: 4
             });
+
         }
 
         /*$("body").on("input", ".edit_prod_qty", function () {
