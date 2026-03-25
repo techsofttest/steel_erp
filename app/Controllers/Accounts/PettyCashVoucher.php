@@ -225,10 +225,12 @@ class PettyCashVoucher extends BaseController
                     $insert_inv_data['pci_sales_order'] = $_POST['p_sales_order'][$i] ?? null;
 
 
+                    $pay_debit_id = $this->common_model->InsertData('accounts_petty_cash_debits', $insert_inv_data);
+
                     if (empty($check_debit)) {
-                       $pay_debit_id = $this->common_model->InsertData('accounts_petty_cash_debits', $insert_inv_data);
+                       //$pay_debit_id = $this->common_model->InsertData('accounts_petty_cash_debits', $insert_inv_data);
                     } else {
-                       $pay_debit_id =  $this->common_model->EditData($insert_inv_data, array('pd_id' => $check_debit->pd_id), 'accounts_payment_debit');
+                       //$pay_debit_id =  $this->common_model->EditData($insert_inv_data, array('pd_id' => $check_debit->pd_id), 'accounts_payment_debit');
                     }
 
 

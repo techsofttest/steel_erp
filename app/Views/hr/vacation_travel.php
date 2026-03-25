@@ -345,7 +345,7 @@
 
                     <div class="col-col-md-4 col-lg-4">
 
-                    <input id="date" type="text" name="date" class="form-control datepicker" readonly required>
+                    <input id="date" type="text" name="date" class="form-control datepicker_ap" readonly required>
 
                     </div>
 
