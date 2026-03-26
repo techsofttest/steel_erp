@@ -1079,15 +1079,190 @@ class Payroll extends BaseController
 
         $id = $this->request->getPost('pr_id');
 
-        $payroll = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
+        //$payroll = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
 
-        $payroll->pr_month = date("F", mktime(0, 0, 0, $payroll->pr_month, 10)); // e.g., "1" -> "January"
+        //$payroll->pr_month = date("F", mktime(0, 0, 0, $payroll->pr_month, 10)); // e.g., "1" -> "January"
 
-        $payroll->pr_added_date = date('d M Y', strtotime($payroll->pr_added_date));
-        
-        echo json_encode($payroll);
+       //$payroll->pr_added_date = date('d M Y', strtotime($payroll->pr_added_date));
+
+
+    $this->hr_model = new \App\Models\HRModel();
+
+    $pr = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
+    $month = $pr->pr_month;        
+    $year = $pr->pr_year;
+
+    $joins = array(
+
+        array(
+            'table' => 'hr_employees',
+            'pk' => 'emp_id',
+            'fk' => 'ts_emp_id',
+            ), 
+
+        array(
+            'table' => 'hr_divisions',
+            'pk' => 'div_id',
+            'fk' => 'emp_division',
+            'table2' => 'hr_employees',
+            ), 
+
+    );
+
+    $timesheets = $this->hr_model->FetchTimesheets($month,$year,$joins);
+
+
+    $timesheet_rows = "";
+
+
+    $ts_sl = 1;
+
+    foreach($timesheets as $ts)
+    {
+
+    $timesheet_rows .= '
     
-        }
+    <tr>
+    
+
+    <td align="center">'.$ts_sl.'</td>
+
+    <td align="center">'.$ts->emp_uid.'</td>
+
+    <td align="left">'.$ts->emp_name.'</td>
+
+    <td align="center">'.$ts->emp_qatar_id_no.'</td>
+
+    <td align="center">'.$ts->emp_passport_no.'</td>
+
+    <td align="center">'.$ts->emp_designation.'</td>
+
+    <td align="center">'.date('d-M-Y', strtotime($ts->emp_date_of_join)).'</td>
+
+    <td align="center">'.$ts->div_name.'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_basic_salary).'</td>
+
+
+
+
+    <td class="text-end">'.$ts->ts_leave+$ts->ts_unpaid_leave+$ts->ts_vacation+$ts->ts_medical_leave.'</td>
+
+    <td class="text-end">'.$ts->ts_medical_leave.'</td>
+
+    <td class="text-end">'.$ts->ts_leave+$ts->ts_unpaid_leave.'</td>
+
+    <td class="text-end">'.$ts->ts_vacation.'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation).'</td>
+
+
+
+    <td class="text-end">'.$ts->ts_normal_ot.'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_normal_ot).'</td>
+
+
+     <td class="text-end">'.$ts->ts_friday_ot.'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_friday_ot).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_house_rent_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_transportation_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_telephone_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_food_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_other_allowance).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
+
+    <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
+
+
+    </tr>
+
+    ';
+
+    $ts_sl++;
+
+    }
+
+
+
+
+    $timesheet_rows .= '
+    
+    <tr class="no-border-table">
+    
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    <td class="text-end">'.format_currency($pr->pr_basic_salary).'</td>
+
+
+
+
+    <td class="text-end"></td>
+
+    <td class="text-end"></td>
+
+    <td class="text-end"></td>
+
+    <td class="text-end"></td>
+
+    <td class="text-end">'.format_currency($pr->pr_leave).'</td>
+
+
+
+    <td class="text-end"></td>
+
+    <td class="text-end">'.format_currency($pr->pr_overtime).'</td>
+
+
+     <td class="text-end"></td>
+
+    <td class="text-end">'.format_currency($pr->pr_overtime).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_hra).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_transport_allow).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_telephone_allow).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_food_allow).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_other_allow).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_total_salary).'</td>
+
+    <td class="text-end">'.format_currency($pr->pr_total_salary).'</td>
+
+
+    </tr>
+
+    ';
+
+        
+    return $timesheet_rows;
+    
+    }
 
     }
 
