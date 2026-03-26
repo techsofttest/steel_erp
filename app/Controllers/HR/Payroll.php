@@ -920,7 +920,7 @@ class Payroll extends BaseController
 
                     //$other_allow+=$ts->ts_other_allowance;
 
-                    $total_salary+=$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
+                    $total_salary+=$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave;
 
                     }
         }
@@ -1336,7 +1336,7 @@ class Payroll extends BaseController
         'margin_left' => 5, 
         'margin_right' => 5,
         'margin_top' => 2,
-        'fontDir' => array_merge($fontDirs, [
+        /*'fontDir' => array_merge($fontDirs, [
             __DIR__ . '/fonts'
         ]),
         'fontdata' => $fontData + [
@@ -1345,7 +1345,7 @@ class Payroll extends BaseController
                 'B' => 'FreeSerifBold.ttf',
             ],
         ],
-        'default_font' => 'bentonsans'
+        'default_font' => 'bentonsans'*/
         
     ]);
 
@@ -1357,7 +1357,6 @@ class Payroll extends BaseController
   
     <style>
     body {
-      font-family: bentonsans, sans-serif;
       margin: 40px;
       font-size:6px;
     }

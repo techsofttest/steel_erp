@@ -834,7 +834,7 @@ class JournalVouchers extends BaseController
 
     $credit="";
 
-    $sales_order ="None";
+    $sales_order =" ";
 
     if($order->ji_sales_order_id!=0)
     {
@@ -853,15 +853,15 @@ class JournalVouchers extends BaseController
 
     $orders_sec .='<tr>
     
-    <td>'.$sales_order.'</td>
+    <td width="20%" align="center">'.$sales_order.'</td>
 
-    <td>'.$order->ca_account_id.'</td>
+    <td width="20%" align="center">'.$order->ca_account_id.'</td>
     
-    <td>'.$order->ca_name.'</td>
+    <td width="20%">'.$order->ca_name.'</td>
 
-    <td align="right">'.(($debit > 0) ? format_currency((float)$debit) : '').'</td>
+    <td align="right" width="20%">'.(($debit > 0) ? format_currency((float)$debit) : '').'</td>
 
-    <td align="right">'.(($credit > 0) ? format_currency((float)$credit) : '').'</td>
+    <td align="right" width="20%">'.(($credit > 0) ? format_currency((float)$credit) : '').'</td>
 
     </tr>';
 
@@ -894,17 +894,23 @@ class JournalVouchers extends BaseController
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5, 
+            'margin_top' => 7,
         ]);
     
         $html ='
     
         <style>
-        th, td {
-            padding-top: 5px;
-            padding-bottom: 5px;
-            padding-left: 5px;
-            padding-right: 5px;
+        td {
+            padding-top: 4px;
+            padding-bottom: 4px;
+            padding-left: 4px;
+            padding-right: 4px;
+            font-size:12px;
           }
+        p
+        {
+        font-size:12px;
+        }
 
         table.border-bottom td
         {
@@ -939,14 +945,14 @@ class JournalVouchers extends BaseController
     
         <tr width="100%">
         
-        <td align="right"><h3>Journal Voucher</h3></td>
+        <td align="right"><h2>Journal Voucher</h2></td>
     
         </tr>
     
         </table>
     
     
-        <table  width="100%" style="margin-top:1px;border-top:2px solid;border-bottom:1px solid;">
+        <table  width="100%" style="margin-top:1px;border-top:1px solid;border-bottom:1px solid;">
     
         <tr>
         
@@ -992,33 +998,37 @@ class JournalVouchers extends BaseController
     
     
     
-        <table  width="100%" style="margin-top:2px;">
+        <table  width="100%" style="margin-top:2px;border-bottom:1px solid;">
         
     
         <tr class="border-bottom">
         
-        <td align="left" style="border-bottom:1px solid !important;">Sales Order No</td>
+        <th align="center" width="20%" >Sales Order No</th>
     
-        <td align="left" style="border-bottom:1px solid !important;">Account No</td>
+        <th align="center" width="20%">Account No</th>
     
-        <td align="left" style="border-bottom:1px solid !important;">Account Description</td>
+        <th align="center" width="20%">Account Description</th>
     
-        <td align="left" style="border-bottom:1px solid !important;">Debit</td>
+        <th align="right" width="20%">Debit</th>
     
-        <td align="left" style="border-bottom:1px solid !important;">Credit</td>
+        <th align="right" width="20%">Credit</th>
     
         </tr>
-    
-    
-    
+
+        </table>
+
+
+        <table  width="100%">
 
         '.$orders_sec.'
-        
 
         
         </table>
-    
+
         ';
+
+
+        
     
        
        

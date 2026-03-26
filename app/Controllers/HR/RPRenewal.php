@@ -766,7 +766,7 @@ class RPRenewal extends BaseController
         'margin_left' => 5, 
         'margin_right' => 5,
         'margin_top' => 2,
-        'fontDir' => array_merge($fontDirs, [
+       /* 'fontDir' => array_merge($fontDirs, [
             __DIR__ . '/fonts'
         ]),
         'fontdata' => $fontData + [
@@ -775,7 +775,7 @@ class RPRenewal extends BaseController
                 'B' => 'FreeSerifBold.ttf',
             ],
         ],
-        'default_font' => 'bentonsans'
+        'default_font' => 'bentonsans' */
         
     ]);
 
@@ -790,7 +790,6 @@ class RPRenewal extends BaseController
     <style>
 
     body {
-      font-family: bentonsans, sans-serif;
       margin: 40px;
       font-size:9px;
     }
