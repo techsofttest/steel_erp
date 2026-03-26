@@ -295,7 +295,7 @@ if (!empty($sales_order->purchase_vouchers)) {
 
 
 
-                                         <td style="width:300px; word-wrap: break-word; white-space: normal;">
+<td style="width:300px; word-wrap: break-word; white-space: normal;">
 
     <span style="display: inline-block;height: 38px;"><?= $sales_order->cc_customer_name; ?></span>
 
@@ -308,17 +308,29 @@ if (!empty($sales_order->purchase_vouchers)) {
      
     
 
-    <?php if (!empty($vendor_names)) { ?>
-        <?php foreach (array_keys($vendor_names) as $vendor) { ?>
-            <br>
-            <span style="display: inline-block;height: 35px;"><?= $vendor; ?></span>
-        <?php } ?>
-    <?php }  else{ ?>
+    <!---->
 
-        
-           <br>
-            <span style="display: inline-block;height: 35px;">&nbsp</span>
+    <?php 
+$printedVendorNames = [];
+?>
+
+<?php if (!empty($vendor_names)) { ?>
+    <?php foreach (array_keys($vendor_names) as $vendor) { ?>
+        <br>
+
+        <?php if (!in_array($vendor, $printedVendorNames)) { ?>
+            <span style="display: inline-block;height: 35px;">
+                <?= $vendor; ?>
+            </span>
+            <?php $printedVendorNames[] = $vendor; ?>
+        <?php } else { ?>
+            <span style="display: inline-block;height: 35px;">&nbsp;</span>
+        <?php } ?>
+
     <?php } ?>
+<?php } ?>
+
+    <!---->
 
 </td>                  
 
