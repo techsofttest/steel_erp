@@ -311,7 +311,7 @@ if (!empty($sales_order->purchase_vouchers)) {
     <?php if (!empty($vendor_names)) { ?>
         <?php foreach (array_keys($vendor_names) as $vendor) { ?>
             <br>
-            <span style="display: inline-block;height: 35px;"><?= $vendor; ?></span>
+            <span style="display: inline-block;height: 35px;"><?= $vendor; ?> <?php echo $k;?></span>
         <?php } ?>
     <?php } ?>
 

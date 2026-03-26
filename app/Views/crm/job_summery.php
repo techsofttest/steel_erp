@@ -211,11 +211,10 @@
                                             <thead>
                                                 <tr>
                                                     
-                                                    <th class="no-sort"  class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:300px">Customer Name</th>
-                                                   
                                                     <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
                                                     <th class="text-end"    style="white-space: nowrap;width:100px">Revenue</th>
