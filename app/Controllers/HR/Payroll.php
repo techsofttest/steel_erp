@@ -866,10 +866,10 @@ class Payroll extends BaseController
 
             $emp_journal ="";
 
-            foreach($timesheets as $ts)
-            {
+           
 
-                //Salary And Deductions
+                    //Salary And Deductions
+                    /*
                     $basic_salary=0;
                     $total_leave=0;
                     $total_ot=0;
@@ -904,7 +904,7 @@ class Payroll extends BaseController
 
                     $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
 
-                    $basic_salary+=$ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
+                    $basic_salary+=$ts->ts_cur_month_basic_salary+$ts->ts_food_allowance+$ts->ts_other_allowance-$leave;
 
                     $total_ot+=$ot;
 
@@ -923,7 +923,61 @@ class Payroll extends BaseController
                     $total_salary+=$ts->ts_cur_month_salary+$ts->ts_food_allowance+$ts->ts_other_allowance;
 
                     }
-        }
+                    */
+
+
+                    $basic_salary=0;
+                    $total_leave=0;
+                    $total_ot=0;
+
+                    $house_rent_allow=0;
+                    $transport_allow=0;
+                    $telephone_allow=0;
+
+                    $total_salary=0;
+
+                    $staff_salary=0;
+                    $salaries_wages=0;
+
+                    foreach($timesheets as $ts)
+                    {
+
+                        $ot = $ts->ts_cur_month_normal_ot + $ts->ts_cur_month_friday_ot;
+
+                        $leave = $ts->ts_cur_month_leave
+                                + $ts->ts_cur_month_unpaid_leave
+                                + $ts->ts_current_month_vacation;
+
+                        $ts_basic_salary = $ts->ts_cur_month_basic_salary
+                                        + $ts->ts_food_allowance
+                                        + $ts->ts_other_allowance
+                                        - $leave;
+
+                        if($ts->emp_division==2)
+                        {
+                            $staff_salary += $ts_basic_salary;
+                        }
+
+                        if($ts->emp_division==1)
+                        {
+                            $salaries_wages += $ts_basic_salary;
+                        }
+
+                        $basic_salary += $ts_basic_salary;
+
+                        $total_ot += $ot;
+
+                        $total_leave += $leave;
+
+                        $house_rent_allow += $ts->ts_house_rent_allowance;
+
+                        $transport_allow += $ts->ts_transportation_allowance;
+
+                        $telephone_allow += $ts->ts_telephone_allowance;
+
+                        $total_salary += $ts->ts_cur_month_salary;
+                    }
+       
 
         $insert_payroll['pr_month'] = $month;
         $insert_payroll['pr_year'] = $year;
@@ -1336,7 +1390,7 @@ class Payroll extends BaseController
         'margin_left' => 5, 
         'margin_right' => 5,
         'margin_top' => 2,
-        'fontDir' => array_merge($fontDirs, [
+        /*'fontDir' => array_merge($fontDirs, [
             __DIR__ . '/fonts'
         ]),
         'fontdata' => $fontData + [
@@ -1345,7 +1399,7 @@ class Payroll extends BaseController
                 'B' => 'FreeSerifBold.ttf',
             ],
         ],
-        'default_font' => 'bentonsans'
+        'default_font' => 'bentonsans'*/
         
     ]);
 
@@ -1357,7 +1411,6 @@ class Payroll extends BaseController
   
     <style>
     body {
-      font-family: bentonsans, sans-serif;
       margin: 40px;
       font-size:6px;
     }
