@@ -1693,7 +1693,7 @@ class SalesReturn extends BaseController
                 $data['prod_details'] .='<tr class="delete_cash_invoice">
                 <td class="text-center">'.$i.'</td>
                 <td style="text-align: left;">'.$prod_det->product_details.'</td>
-                <td><input type="text"  value="'.$prod_det->srp_unit.'" class="form-control text-center" readonly></td>
+                <td><input type="text" value="'.$prod_det->srp_unit.'" class="form-control text-center" readonly></td>
                 <td><input type="text" value="'.format_currency($prod_det->srp_quantity).'" class="form-control text-center" readonly></td>
                 <td><input type="text" value="'.format_currency($prod_det->srp_rate).'" class="form-control text-end" readonly></td>
                 <td><input type="text" value="'.$prod_det->srp_discount.'" class="form-control text-center" readonly></td>
