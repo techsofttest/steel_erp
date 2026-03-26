@@ -53,6 +53,92 @@ select.payroll-select
         padding: 5px !important;
     }
 
+
+
+    .pr-table
+    {
+    table-layout: auto;
+    width: 100%;
+    }
+    .pr-table tr
+    {
+    white-space: nowrap;
+    }
+    
+    .pr-table td
+    {
+    white-space: nowrap;
+    }
+
+    .pr-table th, .pr-table td {
+      padding: 2px;
+      text-align: left;
+    }
+
+    .pr-table .basic-info th, .pr-table .basic-info td{
+      padding: 2px;
+      text-align: left;
+    }
+
+
+    .pr-table .no-border-r
+    {
+    border-right: 0px solid #999;
+    }
+
+    .pr-table .no-border-l
+    {
+    border-left: 0px solid #999;
+    }
+
+    .pr-table .no-border-y
+    {
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    }
+
+    .pr-table .no-border
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    }
+
+    .pr-table .no-border-table
+    {
+    border:0px;
+    }
+
+
+    .pr-table .no-border-table tr,.pr-table .no-border-table td,.pr-table .no-border-table th
+    {
+    border-right: 0px solid #999;
+    border-left: 0px solid #999;
+    border-top: 0px solid #999;
+    border-bottom: 0px solid #999;
+    border:0px;
+    }
+    
+    .pr-table .head
+    {
+    background:#a8a8a8;
+    }
+
+    .pr-table .head th
+    {
+    border-right: 1px solid #999;
+    text-align:center;
+    }
+
+    .pr-table .header_tr th
+    {
+    padding:3px 4px;
+    text-align:center;
+    }
+
+
+
+
+
     </style>
     
 
@@ -126,9 +212,70 @@ select.payroll-select
                     <div class="row ">
 
 
-                        <div class="col-lg-12">
+                        <div class="col-lg-12" style="overflow:scroll;">
 
 
+           <table id="view_payroll_table" class="pr-table table table-bordered">
+
+          <tr class="header_tr">
+            <th rowspan="2" style="padding:7px">Sl</th>
+            <th rowspan="2" style="">Employee ID</th>
+            <th rowspan="2" style="">Name</th>
+            <th rowspan="2">QID/Visa</th>
+            <th rowspan="2">Passport</th>
+            <th rowspan="2">Position</th>
+            <th rowspan="2">DOJ</th>
+            <th rowspan="2">Department</th>
+            <th rowspan="2">Basic Salary</th>
+
+            <!-- Leave group -->
+            <th colspan="5">Leave</th>
+
+            <!-- Overtime group -->
+            <th colspan="2">Overtime</th>
+
+            <!-- Friday OT group -->
+            <th colspan="2">OT Friday</th>
+
+            <th rowspan="2">HRA</th>
+            <th rowspan="2">Transp Allowance</th>
+            <th rowspan="2">Tel Allowance</th>
+            <th rowspan="2">Food Allowance</th>
+            <th rowspan="2">Other Allowance</th>
+            <th rowspan="2">Total Salary (Qr)</th>
+            <th rowspan="2">Net Salary (Qr)</th>
+        </tr>
+
+        <tr class="header_tr">
+
+            <!-- Leave subcolumns -->
+            <th>Days</th>
+            <th>ML</th>
+            <th>NL</th>
+            <th>Vac</th>
+            <th>Amount</th>
+
+            <!-- Overtime subcolumns -->
+            <th>Hours</th>
+            <th>Amount</th>
+
+            <!-- Friday OT subcolumns -->
+            <th>Hours</th>
+            <th>Amount</th>
+
+        </tr>
+
+
+        <tbody id="view_payroll_body">
+
+                                
+        </tbody>
+
+
+        </table>
+
+
+                            <!--
                             <table id="view_payroll_table" class="table table-bordered">
 
                                 <tbody id="view_payroll_body">
@@ -138,6 +285,7 @@ select.payroll-select
                                 </tbody>
 
                             </table>
+                            -->
 
 
                         </div>
@@ -970,27 +1118,13 @@ select.payroll-select
         data: { pr_id: id },
         success: function (data) {
             try {
-                var payroll = JSON.parse(data);
+
+                //var payroll = JSON.parse(data);
 
                 // Generate table rows
-                var rows = `
-                    <tr><td class="text-center">Added Date</td> <td class="text-end">${payroll.pr_added_date}</td></tr>
-                    <tr><td class="text-center">Journal ID</td> <td class="text-end">${payroll.pr_journal_id || "N/A"}</td></tr>
-                    <tr><td class="text-center">Month</td> <td class="text-end">${payroll.pr_month}</td></tr>
-                    <tr><td class="text-center">Year</td> <td class="text-end">${payroll.pr_year}</td></tr>
-                    <tr><td class="text-center">Basic Salary</td> <td class="text-end">${payroll.pr_basic_salary}</td></tr>
-                    <tr><td class="text-center">Leave</td> <td class="text-end">${payroll.pr_leave}</td></tr>
-                    <tr><td class="text-center">Overtime</td> <td class="text-end">${payroll.pr_overtime}</td></tr>
-                    <tr><td class="text-center">HRA</td> <td class="text-end">${payroll.pr_hra}</td></tr>
-                    <tr><td class="text-center">Transport Allowance</td> <td class="text-end">${payroll.pr_transport_allow}</td></tr>
-                    <tr><td class="text-center">Telephone Allowance</td> <td class="text-end">${payroll.pr_telephone_allow}</td></tr>
-                    <tr><td class="text-center">Food Allowance</td> <td class="text-end">${payroll.pr_food_allow}</td></tr>
-                    <tr><td class="text-center">Other Allowance</td> <td class="text-end">${payroll.pr_other_allow}</td></tr>
-                    <tr><td class="text-center">Total Salary</td> <td class="text-end">${payroll.pr_total_salary}</td></tr>
-                `;
 
                 // Insert rows into the table
-                $('#view_payroll_body').html(rows);
+                $('#view_payroll_body').html(data);
 
                 $('#ViewModal').modal('show');
 
