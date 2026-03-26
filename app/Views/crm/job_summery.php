@@ -221,7 +221,7 @@
                                                     <th class="text-end"    style="white-space: nowrap;width:100px">Revenue</th>
                                                     <th class="text-end"    style="white-space: nowrap;width:100px" >Expenses</th>
                                                     <th class="text-end"    style="white-space: nowrap;width:100px" >Gross Profit</th>
-                                                    <th class="text-end"    style="white-space: nowrap;width:50px" >%</th>
+                                                    <th class="text-end"    style="white-space: nowrap;width:57px" >%</th>
                                                  
                                                 </tr>
                                             </thead>
