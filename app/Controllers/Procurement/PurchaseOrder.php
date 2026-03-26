@@ -685,7 +685,7 @@ class PurchaseOrder extends BaseController
             <td class="text-center"><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control text-center" readonly></td>
             <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_qty).'" class="form-control text-center" readonly></td>
             <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_rate).'" class="form-control text-end" readonly></td>
-            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_discount).'" class="form-control text-center" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.number_format($pur_order_prod->pop_discount,4).'" class="form-control text-center" readonly></td>
             <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'"  class="form-control text-end" readonly></td>
             </tr>
             ';
@@ -851,10 +851,10 @@ class PurchaseOrder extends BaseController
             <td class="text-center"><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control text-center" readonly></td>
             <td style="text-align: left;padding:10px 10px;">'.$pur_order_prod->product_details.'</td>
             <td class="text-center"><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control text-center" readonly></td>
-            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_qty).'" class="form-control text-center" readonly></td>
-            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_rate).'" class="form-control text-end" readonly></td>
-            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_discount).'" class="form-control text-center" readonly></td>
-            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'" class="form-control edit_amount text-end" style="text-align: right;" readonly></td>
+            <td class="text-center"><input type="text" name="" value="'.format_currency($pur_order_prod->pop_qty).'" class="form-control text-center" readonly></td>
+            <td class="text-center"><input type="text" name="" value="'.format_currency($pur_order_prod->pop_rate).'" class="form-control text-end" readonly></td>
+            <td class="text-center"><input type="text" name="" value="'.number_format($pur_order_prod->pop_discount,4).'" class="form-control text-center" readonly></td>
+            <td class="text-center"><input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'" class="form-control edit_amount text-end" style="text-align: right;" readonly></td>
             <td  class="text-center">
                <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$pur_order_prod->pop_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
             </td>

@@ -764,7 +764,7 @@
                                                             <tr>
                                                                 <td style="width: 4%;" >SI</td>
                                                                 <td colspan="2">Cost Of Materials / Services</td>
-                                                                <td style="width: 15%;">Vendor</td>
+                                                                <td style="width: 27%;">Vendor</td>
                                                                 <td style="width: 10%;">Date</td>
                                                                 <td style="width:8%">Rate</td>
                                                             </tr>
@@ -1521,7 +1521,7 @@
                                                                 <td><input type="text" name="qpd_unit"  class="form-control text-center" required></td>
                                                                 <td><input type="number" name="qpd_quantity" class="form-control edit_add_prod_qty text-center" required></td>
                                                                 <td><input type="text" name="qpd_rate" class="form-control edit_add_prod_rate text-end" required></td>
-                                                                <td><input type="number" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis text-center" required></td>
+                                                                <td><input type="text" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis text-center" required></td>
                                                                 
                                                                 <td><input type="text" name="qpd_amount" class="form-control edit_add_prod_amount text-end" readonly></td>
                                                                
@@ -3345,7 +3345,32 @@
             }
         });
 
+        /*$("body").on("input", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); 
+        });
+
+        $("body").on("blur", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); 
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                
+            }
+        });*/
+
+
         $("body").on("input", ".discount_clz_id", function () {
+            
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -3354,19 +3379,37 @@
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                rawValue = parts[0] + "." + parts[1];
+            }
+
             $this.val(rawValue); // Keep raw value while typing
         });
 
+
         $("body").on("blur", ".discount_clz_id", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, "");
 
             if (rawValue !== "") {
-                var formattedValue = formatNumberWithCommas(rawValue);
+                var formattedValue = formatNumberWithCommas4(rawValue);
                 $this.val(formattedValue);
-                
             }
         });
+
+
+        function formatNumberWithCommas4(value) {
+            let num = parseFloat(value.replace(/,/g, ""));
+            if (isNaN(num)) return "";
+            
+            return num.toLocaleString("en-US", {
+                minimumFractionDigits: 4,
+                maximumFractionDigits: 4
+            });
+        }
 
 
 
@@ -4376,28 +4419,62 @@
         });
 
 
-        $("body").on("input", ".edit_prod_dis", function () {
+        /*$("body").on("input", ".edit_prod_dis", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
 
-            // Ensure only one decimal point
+            
             if ((rawValue.match(/\./g) || []).length > 1) {
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
-            $this.val(rawValue); // Keep raw value while typing
+            $this.val(rawValue); 
         });
 
 
         $("body").on("blur", ".edit_prod_dis", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, ""); 
 
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
                
             }
+        });*/
+
+        $("body").on("input", ".edit_prod_dis", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); 
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue); 
+
+        });
+
+
+        $("body").on("blur", ".edit_prod_dis", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, "");
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas4(rawValue);
+                $this.val(formattedValue);
+            }
+
         });
 
 
@@ -4640,7 +4717,32 @@
             }
         });
         
+        /*$("body").on("input", ".edit_add_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
+
+            
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); 
+        });
+
+        $("body").on("blur", ".edit_add_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); 
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                
+            }
+        });*/
+
+
         $("body").on("input", ".edit_add_prod_dis", function () {
+            
             var $this = $(this);
             var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
 
@@ -4649,17 +4751,25 @@
                 rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
             }
 
+            // Limit to 4 decimal places
+            if (rawValue.indexOf(".") !== -1) {
+                var parts = rawValue.split(".");
+                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                rawValue = parts[0] + "." + parts[1];
+            }
+
             $this.val(rawValue); // Keep raw value while typing
+
         });
+
 
         $("body").on("blur", ".edit_add_prod_dis", function () {
             var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+            var rawValue = $this.val().replace(/,/g, "");
 
             if (rawValue !== "") {
-                var formattedValue = formatNumberWithCommas(rawValue);
+                var formattedValue = formatNumberWithCommas4(rawValue);
                 $this.val(formattedValue);
-                
             }
         });
 

@@ -477,7 +477,7 @@ class SalesOrder extends BaseController
             <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id text-center" required></td>
             <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'"   class="form-control qtn_clz_id text-center"  required></td>
             <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id text-end"   required></td>
-            <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"  class="form-control discount_clz_id text-center" required></td>
+            <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.0001"  class="form-control discount_clz_id text-center" required></td>
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id text-end" readonly></td>
             <input type="hidden" name="quot_prod_id['.$si.']" class="quot_prod_id_clz" value="'.$prod_det->qpd_id.'">
             <input type="hidden" name="quotation_id['.$si.']" class="quotation_id_clz" value="'.$prod_det->qpd_quotation_details.'">
@@ -1004,7 +1004,7 @@ class SalesOrder extends BaseController
             <td class="text-center">'.$prod_det->spd_unit.'</td>
             <td class="text-center">'.format_currency($prod_det->spd_quantity).'</td>
             <td class="text-end"> '.format_currency($prod_det->spd_rate).'</td>
-            <td class="text-center">'.format_currency($prod_det->spd_discount).'</td>
+            <td class="text-center">'.$prod_det->spd_discount.'</td>
             <td class="text-end edit_product_amount">'.format_currency($prod_det->spd_amount).'</td>
             <td class="text-center">
                 <a href="javascript:void(0)" class="edit edit-color product_edit"  data-id="'.$prod_det->spd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
@@ -1150,7 +1150,7 @@ class SalesOrder extends BaseController
             <td class="text-center">'.$prod_det->spd_unit.'</td>
             <td class="text-center">'.format_currency($prod_det->spd_quantity).'</td>
             <td class="text-end">'.format_currency($prod_det->spd_rate).'</td>
-            <td class="text-center">'.format_currency($prod_det->spd_discount).'</td>
+            <td class="text-center">'.$prod_det->spd_discount.'</td>
             <td class="text-end">'.format_currency($prod_det->spd_amount).'</td>
           
             </tr>'; 

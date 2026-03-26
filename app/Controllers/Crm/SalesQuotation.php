@@ -478,7 +478,7 @@ class SalesQuotation extends BaseController
                     <td class="text-center">'.$prod_det->qpd_unit.'</td>
                     <td class="text-center">'.$prod_det->qpd_quantity.'</td>
                     <td class="text-end" style="padding: 0px 10px;">'.format_currency($prod_det->qpd_rate).'</td>
-                    <td class="text-center">'.format_currency($prod_det->qpd_discount).'</td>
+                    <td class="text-center">'.$prod_det->qpd_discount.'</td>
                     <td class="text-end" style="padding: 0px 10px;">'.format_currency($prod_det->qpd_amount).'</td>
                     
                 </tr>';
@@ -730,7 +730,7 @@ class SalesQuotation extends BaseController
             <td class="text-center">'.$prod_det->qpd_unit.'</td>
             <td class="text-center"> '.format_currency($prod_det->qpd_quantity).'</td>
             <td class="text-end"> '.format_currency($prod_det->qpd_rate).'</td>
-            <td class="text-center"> '.format_currency($prod_det->qpd_discount).'</td>
+            <td class="text-center"> '.$prod_det->qpd_discount.'</td>
             <td class="text-end"> '.format_currency($prod_det->qpd_amount).'</td>
             </tr>'; 
             
@@ -1278,7 +1278,7 @@ class SalesQuotation extends BaseController
             <td class="text-center">'.$prod_det->qpd_unit.'</td>
             <td class="text-center">'.format_currency($prod_det->qpd_quantity).'</td>
             <td class="text-end">'.format_currency($prod_det->qpd_rate).'</td>
-            <td class="text-center">'.format_currency($prod_det->qpd_discount).'</td>
+            <td class="text-center">'.$prod_det->qpd_discount.'</td>
             <td class="text-end edit_prod_total_amount">'.format_currency($prod_det->qpd_amount).'</td>
             <td>
                 <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->qpd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
@@ -1718,7 +1718,7 @@ class SalesQuotation extends BaseController
         $options_product = '<option value="'.$prod_det->product_id.'" selected>'.$prod_det->product_details.'</option>';
        
         $rate = format_currency($prod_det->qpd_rate);
-        $discount = format_currency($prod_det->qpd_discount);
+        $discount = $prod_det->qpd_discount;
         $amount = format_currency($prod_det->qpd_amount);
         
         $data['prod_details'] ="";
