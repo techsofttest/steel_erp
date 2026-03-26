@@ -316,7 +316,7 @@ $printedVendorNames = [];
 ?>
 
 <?php if (!empty($vendor_names)) { ?>
-    <?php foreach (array_keys($vendor_names) as $vendor) { ?>
+    <?php foreach ($vendor_names as $vendor) { ?>
         <br>
 
         <?php if (!in_array($vendor, $printedVendorNames)) { ?>
