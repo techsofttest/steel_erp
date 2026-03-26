@@ -2351,9 +2351,7 @@ span.select2.customer_width, span.select2 {
 
            var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
            
-          // var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
 
-           //var rate = $discountSelectElement.val();
            var rateElement = $discountSelect.closest(".prod_row").find(".rate_clz_id");
 
            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
@@ -2368,11 +2366,10 @@ span.select2.customer_width, span.select2 {
 
            var multipliedTotal = parsedRate * parsedQuantity;
 
-           
 
            var per_amount = (discount/100)*multipliedTotal;
 
-           console.log(discount);
+           //console.log(discount);
           
            var orginalPrice = multipliedTotal - per_amount;
 
@@ -2388,7 +2385,7 @@ span.select2.customer_width, span.select2 {
 
            TotalAmount();
 
-       });
+        });
 
        
      
