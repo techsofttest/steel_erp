@@ -1025,6 +1025,27 @@ class JournalVouchers extends BaseController
         
         </table>
 
+
+        <table width="100%" style="margin-top:2px;border-top:1px solid;">
+        
+        <tr class="">
+        
+        <th align="center" width="20%" ></th>
+    
+        <th align="center" width="20%"></th>
+    
+        <th align="center" width="20%"></th>
+    
+        <th align="right" width="20%">'.$jv->jv_debit_total.'</th>
+    
+        <th align="right" width="20%">'.$jv->jv_credit_total.'</th>
+    
+        </tr>
+    
+        </table>
+
+
+
         ';
 
 
