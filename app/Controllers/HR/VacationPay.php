@@ -180,7 +180,7 @@ class VacationPay extends BaseController
                 
                 $entitlement = $diff + 1;
 
-                $entitlement = round($diff + 1, 2);
+                //$entitlement = round($diff + 1, 2);
 
                 //Entitlement Calc
                 //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
@@ -189,9 +189,11 @@ class VacationPay extends BaseController
 
                 $entitlement = number_format($entitlement,2,'.');
 
-                $entitlement = number_format(round($entitlement),2,'.');
+                //$entitlement = number_format(round($entitlement),2,'.');
 
                 $amount = $emp->emp_basic_salary*12/365*$entitlement; 
+
+                $amount = round($amount);
 
 
                 $data['emp_row'] .="
@@ -461,6 +463,8 @@ class VacationPay extends BaseController
                 $entitlement = number_format($entitlement,2,'.');
 
                 $amount = $emp->emp_basic_salary*12/365*$entitlement; 
+
+                $amount = round($amount);
 
 
                 $data['total_amount']+=$amount;

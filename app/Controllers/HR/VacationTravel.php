@@ -188,7 +188,7 @@ class VacationTravel extends BaseController
 
                 $amount = $amount/365;
 
-                //$amount = round($amount);
+                $amount = round($amount);
                                 
 
                 $data['emp_row'] .="
@@ -402,6 +402,8 @@ class VacationTravel extends BaseController
 
                 $amount = $amount/365;
 
+                $amount = round($amount);
+
 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
 
@@ -534,6 +536,8 @@ class VacationTravel extends BaseController
         $vacation_travel->vt_date = date('d M Y',strtotime($vacation_travel->vt_date));
 
         $vacation_travel->vt_employees = "";
+
+        $vacation_travel->vt_total = format_currency($vacation_travel->vt_total);
 
         $io = 1;
 

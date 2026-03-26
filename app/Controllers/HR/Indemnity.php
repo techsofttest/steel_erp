@@ -180,6 +180,8 @@ class Indemnity extends BaseController
 
                $amount = $indemnity-$emp->emp_indemnity_advance;
 
+               $amount = round($amount);
+
                 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
 
@@ -252,7 +254,7 @@ class Indemnity extends BaseController
             $insert_emp_data['ide_entitlement'] = $insert_emp_arr['ide_entitlement'][$emp_id];
             $insert_emp_data['ide_indemnity'] = $insert_emp_arr['ide_indemnity'][$emp_id];
             $insert_emp_data['ide_advance'] = $insert_emp_arr['ide_advance'][$emp_id];
-            $insert_emp_data['ide_amount'] = $insert_emp_arr['ide_amount'][$emp_id];
+            $insert_emp_data['ide_amount'] = round($insert_emp_arr['ide_amount'][$emp_id]);
             $insert_emp_data['ide_main_id'] = $indem_id;
         
             $this->common_model->InsertData('hr_indemnity_employees',$insert_emp_data);
@@ -377,6 +379,7 @@ class Indemnity extends BaseController
 
                $amount = $indemnity-$emp->emp_indemnity_advance;
 
+               $amount = round($amount);
 
                $data['emp_row'] .="
                
@@ -546,7 +549,7 @@ class Indemnity extends BaseController
     
             <td class="text-end">'.format_currency($emp->ide_advance).'</td>
     
-            <td class="text-end">'.format_currency($emp->ide_indemnity-$emp->ide_advance).'</td>
+            <td class="text-end">'.format_currency($emp->ide_amount).'</td>
             
             </tr>'
             ;

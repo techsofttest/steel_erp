@@ -188,6 +188,8 @@ class RPRenewal extends BaseController
                     $amount = ($defaultAmount / 365) * $entitlement;
                 }
 
+                $amount = round($amount);
+
 
                 //Entitlement Calc
                 $diff = abs(strtotime($date) - strtotime($expiry_date));
@@ -456,6 +458,8 @@ class RPRenewal extends BaseController
                 } else {
                     $amount = ($defaultAmount / 365) * $entitlement;
                 }
+
+                $amount = round($amount);
 
 
                 //Entitlement Calc

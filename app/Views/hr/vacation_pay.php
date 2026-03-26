@@ -202,7 +202,7 @@
 
                             <th class="text-center"><b>Total</b></th>
 
-                            <th class="text-end" id="total_vp_view"></th>
+                            <th class="text-end" style="padding:.55rem 6px !important" id="total_vp_view"></th>
 
                             </tr>
 
@@ -696,7 +696,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text"  name="jv_date" class="form-control datepicker_ap journal_datepicker" value="<?= date('d M Y') ?>" required>
+                            <input type="text"  name="jv_date" class="form-control datepicker_ap journal_datepicker" value="" required>
 
                             </div>
 
@@ -1125,7 +1125,7 @@
 
             $.ajax({
 
-            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+date+"",
+            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+dateText+"",
 
             method : "GET",
 
@@ -1133,6 +1133,8 @@
             {
 
             $('#uid').val(data);
+
+            $('input[name=jv_date]').val(dateText);
 
             }
 

@@ -1466,7 +1466,7 @@ class TimeSheets extends BaseController
 
   <tr>  
     <td colspan="2" class="no-border" style="text-align:center">Total Earnings</td>
-    <td class="no-border" style="text-align:right;"><b>'.format_currency($ts->ts_cur_month_salary).'</b></td>
+    <td class="no-border" style="text-align:right;"><b>'.format_currency($ts->ts_cur_month_salary+$ts->ts_current_month_vacation+$ts->ts_current_month_vacation+$ts->ts_cur_month_leave).'</b></td>
 
     <td colspan="2" class="no-border" style="text-align:center">Total Deductions</td>
     <td class="no-border" style="text-align:right;">'.format_currency($total_deductions).'</td>
