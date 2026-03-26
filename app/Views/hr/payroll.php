@@ -55,15 +55,19 @@ select.payroll-select
 
 
 
-
+    .pr-table
+    {
+    table-layout: auto;
+    width: 100%;
+    }
     .pr-table tr
     {
-    
+    white-space: nowrap;
     }
     
     .pr-table td
     {
-    
+    white-space: nowrap;
     }
 
     .pr-table th, .pr-table td {
