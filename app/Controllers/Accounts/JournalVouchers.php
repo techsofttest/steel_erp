@@ -1036,9 +1036,9 @@ class JournalVouchers extends BaseController
     
         <th align="center" width="20%"></th>
     
-        <th align="right" width="20%">'.$jv->jv_debit_total.'</th>
+        <th align="right" width="20%">'.format_currency($jv->jv_debit_total).'</th>
     
-        <th align="right" width="20%">'.$jv->jv_credit_total.'</th>
+        <th align="right" width="20%">'.format_currency($jv->jv_credit_total).'</th>
     
         </tr>
     
