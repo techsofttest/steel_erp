@@ -1343,7 +1343,6 @@ class SalesQuotation extends BaseController
     {
         $cond = array('contact_customer_creation' => $this->request->getPost('ID'));
         
-        
        
         $enquiry_cust = $this->common_model->FetchEnquiryInQuot($this->request->getPost('ID'));
 

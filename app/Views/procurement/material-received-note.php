@@ -616,6 +616,7 @@
                             <table class="table table-bordered table-striped delTable add_table">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
+                                        
                                         <td style="width:4%">SI</td>
                                         <td style="width:10%">Sales Order</td>
                                         <td>Product Description</td>
@@ -623,11 +624,7 @@
                                         <td style="width:8%">Order Qty</td>
                                         <td style="width:10%">Delivered Qty</td>
 
-
-
                                     </tr>
-
-
                                 </thead>
 
                                 <tbody class="travelerinfo view_prod_data"></tbody>

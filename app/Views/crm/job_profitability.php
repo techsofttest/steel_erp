@@ -292,7 +292,8 @@ if (!empty($sales_order->purchase_vouchers)) {
         }
     }
 }
-                                                        ?>
+
+?>
 
 
 

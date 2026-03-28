@@ -391,14 +391,15 @@ class ProcurementModel extends Model
     {
         $query = $this->db->table($table)
             ->select('*');
+        //->where($table . '.mrp_sales_order', $data1);
         // Join additional tables if specified
         if (!empty($joins)) {
-            foreach ($joins as $join) {
+            foreach ($joins as $join){
                 $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
             }
         }
 
-        if (!empty($from_date)) {
+        if(!empty($from_date)) {
 
             $query->where($from_date_col . ' >=', $from_date);
         }
@@ -409,6 +410,7 @@ class ProcurementModel extends Model
         }
 
         if (!empty($data1)) {
+           
             $query->where($data1_col, $data1);
         }
 
@@ -438,10 +440,21 @@ class ProcurementModel extends Model
 
         $i = 0;
         foreach ($result as $res) {
-            $cond_user = ['mrp_mr_id' => $res->mrp_mr_id];
+            //$cond_user = ['mrp_mr_id' => $res->mrp_mr_id];
+            
+            $cond_user = [
+                'mrp_mr_id' => $res->mrp_mr_id
+            ];
+
+            if (!empty($data1)) {
+                $cond_user[$data1_col] = $data1;
+            }
 
             // Create the query using the Query Builder
             $query = $this->db->table($table)->where($cond_user);
+
+           
+       
 
             // Echo the compiled select query without executing it
 
@@ -456,6 +469,8 @@ class ProcurementModel extends Model
 
         return $result;
     }
+
+
 
 
     public function MaterialRecCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)
