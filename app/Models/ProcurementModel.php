@@ -367,7 +367,16 @@ class ProcurementModel extends Model
 
         $i = 0;
         foreach ($result as $res) {
-            $cond_user = ['pop_purchase_order' => $res->pop_purchase_order];
+
+            //$cond_user = ['pop_purchase_order' => $res->pop_purchase_order];
+
+            $cond_user = [
+                'pop_purchase_order' => $res->pop_purchase_order
+            ];
+
+            if (!empty($data2)) {
+                $cond_user[$data2_col] = $data2;
+            }
 
             // Create the query using the Query Builder
             $query = $this->db->table($table)->where($cond_user);
@@ -524,6 +533,7 @@ class ProcurementModel extends Model
 
         $i = 0;
         foreach ($result as $res) {
+
             $cond_user = ['rnp_material_received_note' => $res->rnp_material_received_note];
 
             // Create the query using the Query Builder
@@ -537,6 +547,7 @@ class ProcurementModel extends Model
             // exit;
 
             $i++;
+
         }
 
 
