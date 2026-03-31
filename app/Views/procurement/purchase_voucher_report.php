@@ -313,7 +313,7 @@
                                                 <!-- 🔹 Added this colgroup so widths are consistent -->
                                                 <colgroup>
                                                     <col style="width:60px;">
-                                                    <col style="width:70px;">
+                                                    <col style="width:80px;">
                                                     <col style="width:100px;">
                                                     <col style="width:300px;">
                                                     <col style="width:100px;">
