@@ -765,7 +765,7 @@ class ProcurementModel extends Model
         $result = $query->get()->getResult();
 
         // Get the last executed query
-        echo $this->db->getLastQuery(); exit();
+        //echo $this->db->getLastQuery(); exit();
 
         //return $result;
 
