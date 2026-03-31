@@ -757,7 +757,7 @@ class ProcurementModel extends Model
         }
 
         if (!empty($join)) {
-            $query->groupBy($table . '.' . $group_by_col);
+            //$query->groupBy($table . '.' . $group_by_col);
         }
 
         //$query->groupBy('crm_sales_orders.so_id');
