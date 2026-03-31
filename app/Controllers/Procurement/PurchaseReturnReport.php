@@ -281,6 +281,8 @@ class PurchaseReturnReport extends BaseController
     }
 
 
+   
+
     public function Pdf($purchase_order,$from_date,$to_date)
     {   
         
@@ -922,7 +924,7 @@ class PurchaseReturnReport extends BaseController
 
  
 
-        public function FetchGLAccounts(){
+    public function FetchGLAccounts(){
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
@@ -937,6 +939,40 @@ class PurchaseReturnReport extends BaseController
         return json_encode($data);
 
     }
+
+
+    public function Fetchsales()
+{
+    $purchase__return = $this->common_model->SingleRow(
+        'pro_purchase_return',
+        array('pr_vendor_name' => $this->request->getPost('ID'))
+    );
+
+    $data['sales_html'] = "";
+
+    if (!empty($purchase__return)) {
+
+        $purchase_return_prod = $this->common_model->FetchWhere(
+            'pro_purchase_return_prod',
+            array('prp_purchase_return_id' => $purchase__return->pr_id)
+        );
+
+        $data['sales_html'] .= "<select class='form-select sales_order' id='sales_order' name='sales_order'>
+                        <option value='' selected disabled>Select Sales Order</option>";
+
+        foreach ($purchase_return_prod as $pur_ret) {
+            $data['sales_html'] .= "<option value='".$pur_ret->prp_sales_order."'>".$pur_ret->prp_sales_order."</option>";
+        }
+
+        $data['sales_html'] .= "</select>";
+    } else {
+        $data['sales_html'] = "<select class='form-select'><option>No Data Found</option></select>";
+    }
+
+    return json_encode($data);
+    
+    //return $sales_html; // OR echo $sales_html;
+}
 
 
 

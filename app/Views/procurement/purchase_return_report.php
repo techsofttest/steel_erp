@@ -168,9 +168,9 @@ span.select2.customer_width, span.select2{
 
                                                                         <tbody class="travelerinfo">
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Vendor</td>
-                                                                            <td style="width: 70%;"  colspan="4">
-                                                                                    <select class="form-select vendor_dropdown" id="vendor" name="vendor">
+                                                                                <td style="width: 30%;" class="center_padding">Vendor</td>
+                                                                                <td style="width: 70%;"  colspan="4">
+                                                                                    <select class="form-select vendor_dropdown vendor_data"  id="vendor" name="vendor">
                                                                                         <option value="" selected disabled>Select Vendor</option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
                                                                                             <option value="<?php echo $vendor->cc_id; ?>"><?php echo $vendor->cc_customer_name; ?></option>
@@ -188,7 +188,7 @@ span.select2.customer_width, span.select2{
                                                                             </tr> -->
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Sales Order</td>
-                                                                            <td style="width: 70%;"  colspan="4">
+                                                                            <td style="width: 70%;"  colspan="4" class="sales_order_html">
                                                                                     <select class="form-select sales_order" id="sales_order" name="sales_order" >
                                                                                         <option value="" selected disabled>Select Sales Order</option>
                                                                                     </select>
@@ -524,6 +524,41 @@ span.select2.customer_width, span.select2{
                     $('.executive_clz').html(data.quot_det);
 
                     $('.product_clz').html(data.quot_prod);
+
+                }
+
+
+            });
+        });
+
+        /*####*/
+
+
+        /*fetch sales order*/
+
+        $("body").on('change', '.vendor_data', function() {
+
+
+            var id = $(this).val();
+
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Procurement/PurchaseReturnReport/Fetchsales",
+
+                method: "POST",
+
+                data: {
+                    ID: id
+                },
+
+                success: function(data) {
+                    var data = JSON.parse(data);
+
+                    //console.log(data.prod_details);
+                    $('.sales_order_html').html(data.sales_html);
+
+                   // $('.product_clz').html(data.quot_prod);
 
                 }
 
