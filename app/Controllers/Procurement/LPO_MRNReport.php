@@ -205,8 +205,8 @@ class LPO_MRNReport extends BaseController
                 }
 
                 // 4. Pass the specific $product_condition instead of just the PO ID
-                $pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', $product_condition, $joins2, 'pop_id');
-                //$pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', $product_condition, $joins2, 'pop_purchase_order');
+               // $pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', $product_condition, $joins2, 'pop_id');
+                $pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', $product_condition, $joins2, '');
                 // -----------------------
 
                 if ($pvps) {
