@@ -173,7 +173,7 @@ class LPO_MRNReport extends BaseController
 
         // 1. Fetch the relevant Purchase Orders
         $data['purchase_order'] = $this->pro_model->LPO_MRNCheckData($from_date, 'po_date', $to_date, '', $data1, 'po_vendor_name', $data2, 'pop_sales_order', $data5, 'pop_prod_desc', $data3, 'po_reffer_no', 'steel_pro_purchase_order_product', $joins, 'pop_purchase_order', $joins1);
-
+       
         $new_order = [];
 
         foreach ($data['purchase_order'] as $orders) {

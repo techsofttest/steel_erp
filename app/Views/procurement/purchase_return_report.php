@@ -187,16 +187,17 @@ span.select2.customer_width, span.select2{
                                                                                 </td>
                                                                             </tr> -->
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Sales Order</td>
-                                                                            <td style="width: 70%;"  colspan="4" class="sales_order_html">
+                                                                                <td style="width: 30%;" class="center_padding">Sales Order</td>
+                                                                                <td style="width: 70%;"  colspan="4" class="sales_order_html">
                                                                                     <select class="form-select sales_order" id="sales_order" name="sales_order" >
                                                                                         <option value="" selected disabled>Select Sales Order</option>
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
+
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">GL Account</td>
-                                                                            <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;" class="center_padding">GL Account</td>
+                                                                                <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select gl_acc_clz" name="gl_account">
                                                                                         <option value="" selected disabled>Select GL Account</option>
                                                                                         <?php foreach ($chart_acc as $charts) { ?>
@@ -205,9 +206,10 @@ span.select2.customer_width, span.select2{
                                                                                     </select>
                                                                                 </td>                                                                               
                                                                             </tr>
+
                                                                             <tr>
-                                                                            <td style="width: 30%;" class="center_padding">Product</td>
-                                                                            <td style="width: 70%;"  colspan="4">
+                                                                                <td style="width: 30%;" class="center_padding">Product</td>
+                                                                                <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select product_clz" value="" name="product">
                                                                                         <option value="" selected disabled>Select product</option>
                                                                                         <?php foreach ($products as $product) { ?>
