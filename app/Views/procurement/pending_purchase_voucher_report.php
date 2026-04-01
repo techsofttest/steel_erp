@@ -386,7 +386,7 @@ $grand_total += $po_total;
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th class="text-end"><?php echo format_currency($po_total); ?></th>
+                                                        <th class="text-end"><?php echo format_currency($grand_total); ?></th>
                                                         <th class="text-end"><?php echo format_currency($pv_booked); ?></th>
                                                         <th class="text-end"><?php echo format_currency($pv_paid); ?></th>
                                                         <th class="text-end"><?php echo format_currency($balance); ?></th>
