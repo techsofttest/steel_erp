@@ -214,17 +214,22 @@ class PendingPurchaseVoucherReport extends BaseController
             if (!empty($data2)) {
 
                 $sales_order = $this->common_model->SingleRow('crm_sales_orders', ['so_reffer_no' => $data2]); 
+
+                if (!empty($sales_order)) {
+                    $cond_user_amount['pop_sales_order'] = $sales_order->so_id;
+                }
                 
-                $cond_user_amount['pop_sales_order'] = $sales_order->so_id;
+                
 
             }
           
-            //$products = $this->common_model->FetchWhere('pro_purchase_order_product', $cond_user_amount);
+           
+            $products = $this->common_model->FetchWhere('pro_purchase_order_product', $cond_user_amount);
 
-            //$data['purchase_order_products'] = $this->common_model->FetchWhere('pro_purchase_order_product',['pop_purchase_order' => $orders->po_id]);
+            
+            $orders->purchase_order_products = $products;
 
-            $data['purchase_order_products'] = $this->common_model->FetchWhere('pro_purchase_order_product',$cond_user_amount);
-
+            //$merged_order->purchase_order_products = $products;
           
             /*amount section end*/
 
@@ -267,6 +272,8 @@ class PendingPurchaseVoucherReport extends BaseController
 
         // Update the data array with the merged orders
         $data['purchase_order'] = $new_order;
+
+       
 
         if ($data5 != "" || $data2 != "") {
             $filterdata = [];
