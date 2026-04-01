@@ -209,7 +209,7 @@ class LPO_MRNReport extends BaseController
                 $pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', $product_condition, $joins2, '');
                 // -----------------------
 
-                if ($pvps) {
+                if($pvps) {
                     $orders->product_orders = $pvps;
 
                     // Only add the PO to the final list if it actually has products matching the filter
