@@ -849,6 +849,11 @@ class ProcurementModel extends Model
         foreach ($result as $res) {
             $cond_user = ['rnp_material_received_note' => $res->rnp_material_received_note];
 
+            if (!empty($data2)) {
+                $cond_user[$data2_col] = $data2;
+            }
+
+
             // Create the query using the Query Builder
             $query = $this->db->table($table)->where($cond_user);
 
