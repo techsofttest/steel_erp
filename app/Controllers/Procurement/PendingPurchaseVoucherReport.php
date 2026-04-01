@@ -199,11 +199,34 @@ class PendingPurchaseVoucherReport extends BaseController
         $data['purchase_order'] = $this->pro_model->PendingVoucherCheckData($from_date, 'po_date', $to_date, 'po_date', $data1, 'po_vendor_name', $data3, 'po_id', $data4, 'po_vendor_name', '', '', 'steel_pro_purchase_order', $joins, 'po_id', '');
 
         $new_order = [];
-
+        
         foreach ($data['purchase_order'] as $orders) {
 
             // Fetch the associated MRN products
             $nrps = $this->common_model->FetchWhere('pro_material_received_note_prod', ['rnp_purchase_id' => $orders->po_id]);
+
+            /*amount section start*/
+
+            $cond_user_amount = [
+                'pop_purchase_order' =>  $orders->po_id
+            ];
+
+            if (!empty($data2)) {
+
+                $sales_order = $this->common_model->SingleRow('crm_sales_orders', ['so_reffer_no' => $data2]); 
+                
+                $cond_user_amount['pop_sales_order'] = $sales_order->so_id;
+
+            }
+          
+            //$products = $this->common_model->FetchWhere('pro_purchase_order_product', $cond_user_amount);
+
+            //$data['purchase_order_products'] = $this->common_model->FetchWhere('pro_purchase_order_product',['pop_purchase_order' => $orders->po_id]);
+
+            $data['purchase_order_products'] = $this->common_model->FetchWhere('pro_purchase_order_product',$cond_user_amount);
+
+          
+            /*amount section end*/
 
             // Create a copy of the $orders object
             $merged_order = $orders;
@@ -237,6 +260,10 @@ class PendingPurchaseVoucherReport extends BaseController
             // Append the merged order data to the $new_order array
             $new_order[] = $merged_order;
         }
+
+        
+
+        //$data['purchase_order'] = $new_purchase_prod_amount;
 
         // Update the data array with the merged orders
         $data['purchase_order'] = $new_order;

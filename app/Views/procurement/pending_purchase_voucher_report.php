@@ -327,16 +327,29 @@ span.select2.customer_width, span.select2{
 
                                                             <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($pur_vouc->po_date)); ?></td>
-                                                            <td class="text-center">  <a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_vouc->po_id; ?>" target="_blank"> 
-                                                                <?php echo $pur_vouc->po_reffer_no; ?></a> </td>
+                                                            <td class="text-center"><a href="<?php echo base_url().'Procurement/PurchaseOrder?view_so=' . $pur_vouc->po_id; ?>" target="_blank"> 
+                                                                <?php echo $pur_vouc->po_reffer_no; ?></a></td>
 
                                                             <td class="rotate" style="width:300px"><?php foreach ($vendors as $vendor) {
                                                                     echo $pur_vouc->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
                                                                 } ?>
                                                             </td>
 
-                                                            <td class="rotate text-end" style="width:80px"><?php echo format_currency($pur_vouc->po_amount);
-                                                                                    $po_total += $pur_vouc->po_amount; ?></td>
+                                                            <!--<td class="rotate text-end" style="width:80px"><?php //echo format_currency($pur_vouc->po_amount);
+                                                                                   // $po_total += $pur_vouc->po_amount; ?></td>-->
+                                                            <?php
+                                                               
+                                                               $po_total = 0;
+                                                                if (!empty($purchase_order_products)) {
+                                                                    foreach ($purchase_order_products as $prod) {
+                                                                        $po_total += (float)$prod->pop_amount;
+                                                                    }
+                                                                }
+                                                            
+                                                            ?>
+                                                            
+                                                            <td class="rotate text-end" style="width:80px"><?php echo format_currency($po_total);
+                                                                                    ?></td>
 
                                                             <td class="rotate text-end" style="width:80px"><?php $booked_note = 0;
                                                                                     foreach ($pur_vouc->received_products as $notes) {
