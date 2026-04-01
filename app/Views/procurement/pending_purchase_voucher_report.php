@@ -322,6 +322,7 @@ span.select2.customer_width, span.select2{
                                                 if (!empty($purchase_order)) {
                                                     $i = 1;
                                                     $balance = $po_total = $pv_paid = $pv_booked = 0;
+                                                    $grand_total =0;
                                                     foreach ($purchase_order as $pur_vouc) { ?>
                                                         <tr>
 
@@ -345,6 +346,7 @@ if (!empty($pur_vouc->purchase_order_products)) {
         $po_total += (float)$prod->pop_amount;
     }
 }
+$grand_total += $po_total;
 ?>
 
 <td class="rotate text-end" style="width:80px">
