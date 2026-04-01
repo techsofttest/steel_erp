@@ -168,9 +168,9 @@
     }
 
     .Dashboard-form .selected_table .form-control {
-      
+
         height: unset !important;
-        padding:0 !important;
+        padding: 0 !important;
     }
 </style>
 
@@ -241,7 +241,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dpc_acquired_date" class="form-control mr_date datepicker" required>
+                                                                        <input type="text" name="dpc_acquired_date" class="form-control mr_date datepicker dpc_acquired_date" required>
                                                                     </div>
 
 
@@ -894,29 +894,27 @@
                             </div>
 
                         </div>
+                        <!-- Inside ViewModal -> modal-body -> row -->
                         <div class="row">
-
-                            <div class="mt-4">
+                            <div class="mt-4 content_table">
                                 <table class="table table-bordered table-striped delTable view_selected_table" style="display: none;">
-                                    <tbody class="travelerinfo">
-
+                                    <thead class="travelerinfo contact_tbody">
                                         <tr>
-                                            <td>Sl</td>
+                                            <td style="width: 4%;">SI</td>
                                             <td>Description</td>
-                                            <td>Date Acquired</td>
-                                            <td>Amount</td>
-                                            <td>Depreciation</td>
-                                            <td>Entitlement</td>
-                                            <td>Depreciation</td>
+                                            <td style="width: 10%;">Date Acquired</td>
+                                            <td style="width: 10%;">Amount</td>
+                                            <td style="width: 10%;">Depreciation</td>
+                                            <td style="width: 10%;">Entitlement</td>
+                                            <td style="width: 10%;">Depreciation</td>
                                         </tr>
-
-                                    </tbody>
-
+                                    </thead>
                                     <tbody class="travelerinfo product-more2 view-assets-body"></tbody>
-
                                 </table>
-                            </div>
 
+                                <!-- This matches the Add Modal's total table style -->
+                                <table class="total_table view_total_table"></table>
+                            </div>
                         </div>
 
 
@@ -1239,7 +1237,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" id="jvdate" name="jv_date" class="form-control journal_datepicker datepicker_ap" value="<?= date('d M Y') ?>" required>
+                                                        <input type="text" id="jvdate" name="jv_date" class="form-control journal_datepicker datepicker_ap" value="" readonly required>
 
                                                     </div>
 
@@ -1261,17 +1259,12 @@
                                                             <th width="10%">Debit</th>
                                                             <th width="10%">Credit</th>
                                                             <th>Narration</th>
-                                                            
                                                         </tr>
                                                     </thead>
 
                                                     <tbody id="jv_rows">
 
                                                     </tbody>
-
-
-
-
 
                                                 </table>
 
@@ -1307,8 +1300,6 @@
 
 
                                             </div>
-
-
 
 
                                         </div>
@@ -1373,8 +1364,9 @@
                     var formData = new FormData(currentForm);
                     var creditAccount = $('#credit_account_select').val();
                     var debitAccount = $('#debit_account_select').val();
-                    var depreciation = $('.edit_total_prod ').val();
-                    var current_balance = $('.currentbalance ').val();
+                    var depreciation = $('.edit_total_prod').val();
+                    var current_balance = $('.currentbalance').val();
+                    var depDate = $('#dpc_acquired_date').val()
 
                     $.ajax({
                         url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Add",
@@ -1407,6 +1399,7 @@
                                         depreciation: depreciation,
                                         current_balance: current_balance,
                                         ID: insertedId,
+                                        dep_date: depDate,
                                     },
                                     success: function(response) {
                                         $('#AddToJournalModal').modal('show');
@@ -1414,6 +1407,7 @@
                                         if (response) {
                                             var data = JSON.parse(response);
                                             $('#jv_rows').html(data.jv_rows);
+                                            $('#jvdate').val(data.dep_date);
                                             $('#total_amount_debit').val(data.total_debit);
                                             $('#total_amount_credit').val(data.total_credit);
                                         }
@@ -1732,6 +1726,17 @@
             // Get the selected date
             var accountHead = $('.account_head_select').val(); // Get the selected account head
 
+
+            // Display the table by selecting the correct class for the table
+            $('.selected_table').css('display', 'none');
+
+            // Populate the table's body with the data received from `fixed_asset`
+            $('.assets-body').html('');
+
+            // $('.total_table').css('display', 'block');
+            $('.total_table').html('');
+
+
             // Check if both fields have values
             if (accountHead) {
                 $.ajax({
@@ -1759,7 +1764,7 @@
 
 
                             if (fixedasset.cfs_depreciation) {
-                                $('.depriciation_input').val(fixedasset.cfs_depreciation);
+                                $('.depriciation_input').val(fixedasset.cfs_depreciation + "%");
                             } else {
                                 $('.depriciation_input').val('');
                             }
@@ -1796,49 +1801,6 @@
         $('.mr_date').on('change', triggerDepreciationCalculation);
 
         $('.account_head_select').on('change', triggerDepreciationCalculation);
-
-
-
-
-
-
-        /*Time Frame section end*/
-
-
-
-        /*material recived not section start*/
-
-
-        /*$("body").on('change', '.material_received_note', function(){ 
-	        
-            var date = $(this).val();
- 
- 
-            $.ajax({
- 
-                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchPurchase",
- 
-                method : "POST",
- 
-                data: {Date: date},
- 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                 
-                    $('.time_frame_date').val(data.increment_date_date)
-                 
-                     
-                }
- 
- 
-            });
- 
- 
-        });*/
-
-
-        /*material receivec not section end*/
 
 
         /*reset reff no*/
@@ -1970,7 +1932,7 @@
             $('#AddDepreciation').find('input[type="text"], textarea').val(''); // Clear text inputs and textareas
             $('#AddDepreciation').find('input[type="number"]').val(''); // Clear number inputs
             $('#AddDepreciation').find('.fixed_asset').html(''); // Assuming fixed_asset is dynamically loaded HTML
-
+            $('.content_table').find('.selected_table').hide(); // Clear the assets table body
             $.ajax({
 
                 url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/AddAccess",
@@ -2054,88 +2016,6 @@
         })
         /*###*/
 
-
-
-
-
-
-
-
-        /*add selected product*/
-
-
-        /*$("body").on('click', '.cust_more_modal', function()
-        { 
-            if(!$("#purchase_form").valid())
-            {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-            }
-
-            if($('#purchase_form').attr('data-submit')=='false')
-            {
-
-             $('#purchase_form').submit();
-
-                if(!$("#purchase_form").valid())
-                {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-                }
-
-            }
-
-            var formData = new FormData($('#purchase_form')[0]);
-            var image = $('.image_file').prop('files')[0]; // Get the file from input field
-            formData.append('pr_file', image); // Append the file to FormData object
-
-           
-
-            $.ajax({
-                        url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/Add",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
-
-                            var data = JSON.parse(data);
-
-                            var purchase_voucher_id = data.purchase_voucher_id;
-
-                            $('.hidden_purchase_voucher_id').val(purchase_voucher_id);
-
-                            var purchase_id = data.purchase_order;
-
-                            $('#AddPurchaseVoucher').modal('hide');
-
-                            $('#SelectProduct').modal('show');
-
-                           
-                            $.ajax({
-
-                                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchProduct",
-
-                                method : "POST",
-
-                                data: {ID: purchase_id},
-                                
-                                success:function(data)
-                                {   
-                                    var data = JSON.parse(data);
-
-                                    $(".select_prod_add").html(data.product_detail);
-                         
-                                }  
-
-                            });
- 
-                            
-                        }
-
-                    });
-
-        });*/
 
 
         /*#######*/
@@ -2471,29 +2351,28 @@
 
 
 
-        $('.journal_datepicker').change(function(){
+        $('.journal_datepicker').change(function() {
 
-        var date = $(this).val();
+            var date = $(this).val();
 
-        var year = date.substring(0, 4);   // "2025"
+            var year = date.substring(0, 4); // "2025"
 
-        $.ajax({
+            $.ajax({
 
-        url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+date,
+                url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/" + date,
 
-        method : "GET",
+                method: "GET",
 
-        success:function(data)
-        {
+                success: function(data) {
 
-        //alert(data);
+                    //alert(data);
 
-        $('#uid').val(data);
+                    $('#uid').val(data);
 
-        }
+                }
 
-        });
-        
+            });
+
 
         });
 
@@ -2512,7 +2391,6 @@
         $("body").on('click', '.view_btn', function() {
             var id = $(this).data('id');
 
-            // Fetch the view data
             $.ajax({
                 url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/View",
                 method: "POST",
@@ -2522,50 +2400,46 @@
                 success: function(response) {
                     var data = JSON.parse(response);
 
-                    // Fetch the options for Select2 before trying to set the value
                     $.ajax({
                         url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchTypes",
                         method: "GET",
                         dataType: 'json',
                         success: function(fetchResponse) {
-                            // Clear and append new options
                             var select = $('.view_acc_head');
-                            select.empty(); // Clear existing options
+                            select.empty();
 
-                            // Populate select options
                             $.each(fetchResponse.result, function(index, item) {
                                 var option = new Option(item.ah_account_name, item.ah_id, false, false);
                                 select.append(option);
                             });
 
-                            // Set the selected option
                             if (data.account_head) {
-                                select.val(data.account_head).trigger('change'); // Set the value and trigger Select2 update
+                                select.val(data.account_head).trigger('change');
                             }
+                            select.prop('disabled', true).trigger('change');
 
-                            // Disable the Select2 dropdown
-                            select.prop('disabled', true).trigger('change'); // Disable it
-
-                            // Set other form fields
+                            // Set standard fields
                             $('.view_acq_date').val(data.acquired_date);
                             $('.view_currentbalance').val(data.balance_amt);
                             $('.view_debit_account_select').val(data.debit_account).trigger('change');
                             $('.view_credit_account_select').val(data.credit_account).trigger('change');
-                            $('.view_depriciation_input').val(data.depreciation+"%");
+                            $('.view_depriciation_input').val(data.depreciation + "%");
 
+                            // Populate Table and Totals
                             if (data.depreciation_det != '') {
-                                $('.view-assets-body').html(data.depreciation_det)
-                                $('.view_selected_table').css('display', 'block');
-
+                                $('.view-assets-body').html(data.depreciation_det);
+                                $('.view_total_table').html(data.total_sec); // Set total table
+                                $('.view_selected_table').css('display', 'table'); // Show table
+                            } else {
+                                $('.view_selected_table').css('display', 'none');
                             }
-                            // Show the modal
+
                             $('#ViewModal').modal("show");
                         }
                     });
                 }
             });
         });
-
 
 
         $("body").on('click', '.edit_btn', function() {
@@ -2619,7 +2493,7 @@
                                 $('.edit_currentbalance').val(data.balance_amt);
                                 $('.edit_debit_account_select').val(data.debit_account).trigger('change');
                                 $('.edit_credit_account_select').val(data.credit_account).trigger('change');
-                                $('.edit_depriciation_input').val(data.depreciation+"%");
+                                $('.edit_depriciation_input').val(data.depreciation + "%");
 
                                 $('.edit_debit_account_select').prop('disabled', true).trigger('change');
                                 $('.edit_credit_account_select').prop('disabled', true).trigger('change');

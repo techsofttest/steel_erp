@@ -229,7 +229,7 @@ class DepreciationCalculation extends BaseController
 
         // print_r($credit_balance);
 
-        $acchead_balance = $credit_balance->ending_balance;
+        $acchead_balance = abs($credit_balance->ending_balance);
 
 
         $data['acchead_balance'] = format_currency($acchead_balance);
@@ -286,18 +286,18 @@ class DepreciationCalculation extends BaseController
             $depreciation_percent = preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation); // Remove non-numeric characters
             $depreciation = floatval($depreciation_percent) / 100; // Convert to float
 
-            $depreciation_amount = round(floatval(($acchead_balance * $depreciation * $entitlement) / 365), 2);
+            $depreciation_amount = round(floatval((abs($acchead_balance) * $depreciation * $entitlement) / 365), 2);
 
             $total_amt += $depreciation_amount;
 
             $fixed_asset .= '<tr>
-                                <td>' . $j . '</td>
+                                <td class="text-center">' . $j . '</td>
                                 <input type="hidden" name="dpcd_asset_id[]" value="' . $asset->cfs_id . '" class="form-control"  readonly>
                                 <td><input type="text" name="dpcd_description[]" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
-                                <td><input type="text" name="dpcd_acquired_date[]" value="' . date('d-m-Y', strtotime($asset->cfs_acquired_date)) . '" class="form-control"  readonly></td>
+                                <td><input type="text" name="dpcd_acquired_date[]"  value="' . date('d-M-Y', strtotime($asset->cfs_acquired_date)) . '" class="form-control text-center"  readonly></td>
                                 <td><input type="text" name="dpcd_amount[]" value="' .  format_currency($fixed_amount) . '" class="form-control"  style="text-align: end;" readonly></td>
-                                <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation_percent) . '%" class="form-control" style="text-align: end;"  readonly></td>
-                                <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control" style="text-align: end;"  readonly></td>
+                                <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation_percent) . '%" class="form-control text-center" style="text-align: end;"  readonly></td>
+                                <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control" style="text-align: center;"  readonly></td>
                                 <td><input type="text" name="dpcd_depreciation_amt[]" value="' .  format_currency($depreciation_amount) . '" class="form-control" style="text-align: end;" readonly></td>
                             </tr>';
             $j++; // Increment row count
@@ -435,8 +435,8 @@ class DepreciationCalculation extends BaseController
 
             foreach ($products as $product) {
 
-                $data['product_detail'] .= '<tr class="add_prod_row add_prod_remove" id="' . $product->pvp_id . '">
-                                            <td class="si_no">' . $i . '</td>
+                $data['product_detail'] .= '<tr class="add_prod_row add_prod_remove " id="' . $product->pvp_id . '">
+                                            <td class="si_no text-center">' . $i . '</td>
                                             <td><input type="text" name="prp_sales_order[]" value="' . $product->pvp_sales_order . '" class="form-control" readonly></td>
                                             <td><input type="text" name="prp_prod_desc[]" value="' . $product->pvp_prod_dec . '" class="form-control" readonly></td>
                                             <td><input type="text" name="prp_debit[]" value="' . $product->ca_name . '" class="form-control" readonly></td>
@@ -588,62 +588,49 @@ class DepreciationCalculation extends BaseController
 
 
     public function View()
-    {
+{
+    $depreciation_calc = $this->common_model->SingleRow('pro_depreciation_calculation', array('dpc_id' => $this->request->getPost('ID')));
 
-        $depreciation_calc = $this->common_model->SingleRow('pro_depreciation_calculation', array('dpc_id' => $this->request->getPost('ID')));
+    $data['account_head']   = $depreciation_calc->dpc_account_head;
+    $data['acquired_date']  = date('d-M-Y', strtotime($depreciation_calc->dpc_acquired_date));
+    $data['balance_amt']    = format_currency($depreciation_calc->dpc_amount);
+    $data['debit_account']  = $depreciation_calc->dpc_debit_account;
+    $data['credit_account'] = $depreciation_calc->dpc_credit_account;
+    $data['depreciation']   = $depreciation_calc->dpc_depreciation;
 
-        $data['account_head']   = $depreciation_calc->dpc_account_head;
+    $depreciation_det = $this->common_model->FetchWhere('pro_depreciation_det', ['dpcd_depreciation_id' => $this->request->getPost('ID')]);
 
-        $data['acquired_date']  = date('d-M-Y', strtotime($depreciation_calc->dpc_acquired_date));
-
-        $data['balance_amt']    = format_currency($depreciation_calc->dpc_amount);
-
-        $data['debit_account']  = $depreciation_calc->dpc_debit_account;
-
-        $data['credit_account'] = $depreciation_calc->dpc_credit_account;
-
-        $data['depreciation'] = $depreciation_calc->dpc_depreciation;
-
-
-        // Fetch account head related charts of accounts
-        $depreciation_det = $this->common_model->FetchWhere('pro_depreciation_det', ['dpcd_depreciation_id' => $this->request->getPost('ID')]);
-
-        $dep_det = '';
-        $j = 1;
-        $total_amt = 0;
-        foreach ($depreciation_det as $det) {
-
-            $total_amt += $det->dpcd_depreciation_amt;
-
-            $dep_det .= '<tr>
-                                 <td>' . $j . '</td>
-                                 <td><input type="text" name="" value="' . $det->dpcd_description . '" class="form-control"  readonly></td>
-                                 <td><input type="text" name="" value="' . date('d-m-Y', strtotime($det->dpcd_acquired_date)) . '" class="form-control"  readonly></td>
-                                 <td><input type="text" name="" value="' . $det->dpcd_amount . '" class="form-control"  readonly></td>
-                                 <td><input type="text" name="" value="' . $det->dpcd_depreciation . '%" class="form-control"  readonly></td>
-                                 <td><input type="text" name="" value="' . $det->dpcd_entitlement . '" class="form-control"  readonly></td>
-                                 <td><input type="text" name="" value="' . $det->dpcd_depreciation_amt .  '" class="form-control"  readonly></td>
-                             </tr>';
-
-            $j++; // Increment row count
-        }
-
+    $dep_det = '';
+    $j = 1;
+    $total_amt = 0;
+    
+    foreach ($depreciation_det as $det) {
+        $total_amt += (float)$det->dpcd_depreciation_amt;
 
         $dep_det .= '<tr>
-        <td colspan="1"></td>
-        <td colspan="2" align="left" class="amount_in_words_add"></td>
-        <td align="right" colspan="3">Total</td>
-        <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
-        <th id="total_amount"> ' . format_currency($total_amt) . '</th>
-    </tr>';
-
-        // Set fixed_asset key in the response data
-        $data['depreciation_det'] = $dep_det;
-
-
-
-        echo json_encode($data);
+                        <td class="text-center">' . $j . '</td>
+                        <td><input type="text" value="' . $det->dpcd_description . '" class="form-control" readonly></td>
+                        <td><input type="text" value="' . date('d-M-Y', strtotime($det->dpcd_acquired_date)) . '" class="form-control text-center" readonly></td>
+                        <td><input type="text" value="' . format_currency($det->dpcd_amount) . '" class="form-control text-end" readonly></td>
+                        <td><input type="text" value="' . $det->dpcd_depreciation . '%" class="form-control text-center" readonly></td>
+                        <td><input type="text" value="' . $det->dpcd_entitlement . '" class="form-control text-center" readonly></td>
+                        <td><input type="text" value="' . format_currency($det->dpcd_depreciation_amt) . '" class="form-control text-end" readonly></td>
+                    </tr>';
+        $j++;
     }
+
+    $data['depreciation_det'] = $dep_det;
+
+    // Create the separate Total Table HTML
+    $data['total_sec'] = '<tbody>
+                            <tr>             
+                                <td align="right" class="total_label">Total</td>
+                                <td><input type="text" class="form-control text-end" readonly value="' . format_currency($total_amt) . '"></td>
+                            </tr>      
+                          </tbody>';
+
+    echo json_encode($data);
+}
 
 
     public function AddToJvRows()
@@ -667,99 +654,19 @@ class DepreciationCalculation extends BaseController
 
         $emp_journal = "";
 
-        $current_balance = $this->request->getPost( 'current_balance');
+        $current_balance = $this->request->getPost('current_balance');
         $dep_amount = floatval(str_replace(',', '',$this->request->getPost('depreciation')));
 
 
         $dep_amount = $dep_amount -  floatval(str_replace(',', '', $current_balance));
 
+        $dep_record = $this->common_model->SingleRow('pro_depreciation_calculation', ['dpc_id' => $this->request->getPost('ID')]);
 
-        // echo $dep_amount;
-        // exit;
-
-        //     $joins = array(
-
-        //         array(
-        //             'table' => 'hr_employees',
-        //             'pk' => 'emp_id',
-        //             'fk' => 'ts_emp_id',
-        //             ), 
-
-        //         array(
-        //             'table' => 'hr_divisions',
-        //             'pk' => 'div_id',
-        //             'fk' => 'emp_division',
-        //             'table2' => 'hr_employees',
-        //             ), 
-
-        //     );
+        $data['dep_date'] = date('d-M-Y', strtotime($dep_record->dpc_acquired_date));
 
         $depreciation_det = $this->common_model->FetchWhere('pro_depreciation_det', ['dpcd_depreciation_id' => $this->request->getPost('ID')]);
 
-        //     $emp_journal ="";
-
-        //     foreach($timesheets as $ts)
-        //     {
-
-        //         //Salary And Deductions
-        //             $basic_salary=0;
-        //             $total_leave=0;
-        //             $total_ot=0;
-
-        //             //Allowances
-        //             $house_rent_allow=0;
-        //             $transport_allow=0;
-        //             $telephone_allow=0;
-        //             $food_allow=0;
-        //             $other_allow=0;
-        //             $total_salary=0;
-
-        //             $staff_salary=0;
-        //             $salaries_wages=0;
-
-        //             foreach($timesheets as $ts)
-        //             {
-
-        //             if($ts->emp_division==2)
-        //             {
-        //             //staff_salary 
-        //             $staff_salary+= $ts->ts_cur_month_basic_salary;
-        //             }
-
-
-        //             if($ts->emp_division==1)
-        //             {
-        //             $salaries_wages+=$ts->ts_cur_month_basic_salary;
-        //             }
-
-        //             $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
-
-        //             $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
-
-        //             $basic_salary+=$ts->ts_cur_month_basic_salary;
-
-        //             $total_ot+=$ot;
-
-        //             $total_leave+=$leave;
-
-        //             $house_rent_allow+=$ts->ts_house_rent_allowance;
-
-        //             $transport_allow+=$ts->ts_transportation_allowance;
-
-        //             $telephone_allow+=$ts->ts_telephone_allowance;
-
-        //             $food_allow+=$ts->ts_food_allowance;
-
-        //             $other_allow+=$ts->ts_other_allowance;
-
-        //             $total_salary+=$ts->ts_cur_month_salary;
-
-        //     }
-
-
-
-
-        // }
+       
 
         $data['jv_rows'] = "";
 
