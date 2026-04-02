@@ -337,21 +337,22 @@ span.select2.customer_width, span.select2{
                                                             </td>
 
                                                             <!--<td class="rotate text-end" style="width:80px"><?php //echo format_currency($pur_vouc->po_amount);
-                                                                                   // $po_total += $pur_vouc->po_amount; ?></td>-->
+                                                                                   //$po_total += $pur_vouc->po_amount; ?></td>-->
                                                            <?php
-$po_total = 0;
+                                                            $po_total = 0;
 
-if (!empty($pur_vouc->purchase_order_products)) {
-    foreach ($pur_vouc->purchase_order_products as $prod) {
-        $po_total += (float)$prod->pop_amount;
-    }
-}
-$grand_total += $po_total;
-?>
+                                                            if (!empty($pur_vouc->purchase_order_products)) {
+                                                                foreach ($pur_vouc->purchase_order_products as $prod) {
+                                                                    $po_total += (float)$prod->pop_amount;
+                                                                }
+                                                            }
 
-<td class="rotate text-end" style="width:80px">
-    <?php echo format_currency($po_total); ?>
-</td>
+                                                            $grand_total += $po_total;
+                                                            ?>
+
+                                                            <td class="rotate text-end" style="width:80px">
+                                                                <?php echo format_currency($po_total); ?>
+                                                            </td>
 
                                                             <td class="rotate text-end" style="width:80px"><?php $booked_note = 0;
                                                                                     foreach ($pur_vouc->received_products as $notes) {

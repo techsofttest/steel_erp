@@ -313,10 +313,39 @@ span.select2.customer_width, span.select2{
 
                                             <tbody class="tbody_data">
                                                 <?php
+                                                //$filter_so = $this->request->getPost('sales_order'); // ✅ FIXED
                                                 if (!empty($purchase_order)) {
                                                     $i = 1;
-                                                    $total = 0;
-                                                    foreach ($purchase_order as $pur_order) { ?>
+                                                    //$total = 0;
+                                                    $grand_total = 0;
+                                                    foreach ($purchase_order as $pur_order) {   
+                                                    
+                                                         $po_total = 0;
+
+    if (!empty($pur_order->product_orders)) {
+        foreach ($pur_order->product_orders as $prod) {
+
+             // ✅ FILTER USING CORRECT NAME
+                if (!empty($filter_so)) {
+                    if (strtolower(trim($prod->prp_sales_order)) !== strtolower(trim($filter_so))) {
+                        continue;
+                    }
+                }
+
+                  $po_total += (float)$prod->prp_amount;
+        }
+    }
+
+   // $po_total = !empty($so_totals) ? array_sum($so_totals) : 0;
+
+    // ✅ OPTIONAL: skip row if no match
+    if (!empty($filter_so) && $po_total == 0) {
+        continue;
+    }
+
+    $grand_total += $po_total;
+                                                    
+                                                    ?>
                                                         <tr>
                                                             <td class="text-center" style="width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="width:70px"><?php echo date('d-M-Y', strtotime($pur_order->pr_date)); ?></td>
@@ -335,11 +364,15 @@ span.select2.customer_width, span.select2{
                                                                     <?php echo $pur_order->po_reffer_no ?? ''; ?>
                                                             </a></td>
                                                             
-                                                            <td class="text-end" style="width:80px"><?php echo format_currency($pur_order->pr_total_amount); $total +=$pur_order->pr_total_amount; ?></td>
+
+                                                            <!--<td class="text-end" style="width:80px"><?php //echo format_currency($pur_order->pr_total_amount); $total +=$pur_order->pr_total_amount; ?></td>-->
+
+
+                                                            <td class="text-end" style="width:80px"><?php echo format_currency($po_total);?></td>
                                                         </tr>
 
                                                 <?php $i++;
-                                                    } ?>
+                                                    }  ?>
                                                     <tr>
                                                      <th>Total</th>
                                                             <th></th>
@@ -347,7 +380,7 @@ span.select2.customer_width, span.select2{
                                                             <th></th>
                                                             <th></th>
                                                             <th></th>                                                        
-                                                            <th class="text-end"><?php echo format_currency($total); ?></th>
+                                                            <th class="text-end"><?php echo format_currency($grand_total); ?></th>
                                                             </tr>
                                               <?php   } ?>
   

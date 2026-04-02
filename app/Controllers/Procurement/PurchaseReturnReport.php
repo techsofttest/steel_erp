@@ -209,9 +209,13 @@ class PurchaseReturnReport extends BaseController
         );
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
+        
+         $data['filter_so'] = $data2; // or getGet()
+
 
         $data['purchase_order'] = $this->pro_model->ReturnCheckData($from_date, 'pr_date', $to_date, '', $data1, 'pr_vendor_name', $data2, 'prp_sales_order', $data5, 'prp_prod_desc', $data3, 'pr_lpo', 'pro_purchase_return_prod', $joins, 'prp_purchase_return_id', $joins1);
-
+        
+        //print_r($data['purchase_order']); exit();
 
         $new_order = [];
 
