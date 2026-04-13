@@ -60,12 +60,12 @@ class LPO_PVReport extends BaseController
         $cond = array('qd_customer' => $this->request->getPost('ID'));
 
         $joins = array(
+            
             array(
                 'table' => 'executives_sales_executive',
                 'pk'    => 'se_id',
                 'fk'    => 'qd_sales_executive',
             ),
-
 
         );
 

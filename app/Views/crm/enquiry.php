@@ -1311,38 +1311,84 @@
 
 
        /*Product Drop Down*/
-       function InitSelect2(){
-          $(".ser_product_det:last").select2({
-            placeholder: "Select Product",
-            theme : "default form-control- select_width",
-            dropdownParent: $('#AddEnquiry'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                   
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
+        /*function InitSelect2(){
+            $(".ser_product_det:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control- select_width",
+                dropdownParent: $('#AddEnquiry'),
+                ajax: {
+                    url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
+        }*/
+
+
+        function InitSelect2() {
+            $('body .ser_product_det').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width ",
+                    dropdownParent: $($(this).closest('.prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+
+                        },
+                    }
+                })
+
+            });
+
+
         }
+
+        
         
 
         /*function InitSelect2() {

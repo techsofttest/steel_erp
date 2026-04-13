@@ -488,7 +488,7 @@ class PurchaseReturn extends BaseController
             $data['product_detail'] .='<tr class="" id="'.$prod->pvp_id.'">
                                             
                                             <td class="si_no text-center">'.$i.'</td>
-                                            <td style="text-align: left;padding: 2px 5px;">'.$prod->pvp_prod_dec.'</td>
+                                            <td style="text-align: left;padding: 7px 10px;">'.$prod->pvp_prod_dec.'</td>
                                            
                                             <td class="text-center"><input type="checkbox" name="" id="'.$prod->pvp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                             

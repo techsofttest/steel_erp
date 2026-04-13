@@ -49,7 +49,7 @@
     }
     .select_prod_add td{
 
-        padding: 10px 10px !important;
+        /*padding: 5px 10px !important;*/
         vertical-align: middle;
     }
     .add_prod_row td{
@@ -65,8 +65,8 @@
     }
     .select2-container--default .select2-selection--single .select2-selection__rendered {
    
-   line-height: 18px;
-}
+        line-height: 18px;
+    }
 </style>
 
 <div class="tab-content text-muted">

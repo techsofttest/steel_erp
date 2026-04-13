@@ -1733,8 +1733,7 @@ span.select2.customer_width, span.select2 {
 
             var order = orderSelectElement.val();
 
-
-           
+ 
 
             if(total > order)
             {   
@@ -1746,9 +1745,7 @@ span.select2.customer_width, span.select2 {
                 $currencyNullElement.val(currencyNull);  
 
                 alertify.error('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
-                
-                
-
+              
             }
             
             TotalAmount();
