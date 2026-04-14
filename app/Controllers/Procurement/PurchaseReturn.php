@@ -521,6 +521,7 @@ class PurchaseReturn extends BaseController
             $cond = array('pvp_id' => $number);
 
             $joins1 = array(
+
                 array(
                     'table' => 'accounts_charts_of_accounts',
                     'pk'    => 'ca_id',
@@ -548,8 +549,6 @@ class PurchaseReturn extends BaseController
                 $originalPrice = $multipliedTotal - $per_amount;
 
                 //$originalPrice = ($product->pvp_rate * $current_qty) * (1 - ($product->pvp_discount / 100));
-
-               
 
 
 

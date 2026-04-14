@@ -492,7 +492,7 @@ class MaterialReceivedNote extends BaseController
             $data['product_detail'] .='<tr class="" id="'.$prod->pop_id.'">
                                             
                                             <td class="si_no text-center">'.$i.'</td>
-                                            <td style="text-align: left;padding: 10px 10px;">'.$prod->product_details.'</td>
+                                            <td style="text-align: left;padding: 5px 10px;">'.$prod->product_details.'</td>
                                             <td class="text-center"><input type="text" name="dpd_unit[]" value="'.$prod->pop_unit.'" class="form-control text-center" readonly></td>
                                             <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$prod->pop_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                           
