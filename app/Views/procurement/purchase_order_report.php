@@ -601,6 +601,7 @@ span.select2.customer_width, span.select2{
                 },
 
                 success: function (data) {
+                
                     var data = JSON.parse(data);
 
                     //console.log(data.prod_details);
@@ -794,7 +795,7 @@ span.select2.customer_width, span.select2{
                         page: params.page || 1,
                     };
                 },
-                processResults: function (data, params) {
+                /*processResults: function (data, params) {
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) {
@@ -803,6 +804,28 @@ span.select2.customer_width, span.select2{
                                 text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
                             };
                         }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }*/
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    let seen = {};
+                    let results = [];
+                    $.each(data.result, function (i, item) {
+                        // ✅ prevent duplicate sales order
+                        if (!seen[item.so_id]) {
+                            seen[item.so_id] = true;
+
+                            results.push({
+                                id: item.so_id,
+                                text: $.trim(item.so_reffer_no)
+                            });
+                        }
+                    });
+                    return {
+                        results: results,
                         pagination: {
                             more: (page * 10) <= data.total_count
                         }

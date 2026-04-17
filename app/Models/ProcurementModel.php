@@ -2744,4 +2744,70 @@ class ProcurementModel extends Model
 
         return $result;
     }
+
+
+    public function FetchPurchase($id){
+
+        $query = $this->db->table('pro_purchase_order');
+
+        $query->where('po_vendor_name', $id);
+       
+        $result = $query->get()->getResult();
+
+        $i = 0;
+
+        foreach ($result as $purchase) {
+            $result[$i]->product_details = $this->product_details($purchase->po_id);
+            $i++;
+        }
+
+        return $result;
+        
+
+    }
+
+    /*public function product_details($id){
+          
+        return $this->db->table('pro_purchase_order_product')
+               // ->select('DISTINCT crm_sales_orders.so_id, crm_sales_orders.so_reffer_no')
+                ->select('DISTINCT crm_sales_orders, crm_sales_orders.so_reffer_no', false)
+                //->select('*')
+                ->where('pop_purchase_order', $id)
+                ->join('crm_sales_orders', 'crm_sales_orders.so_id = pro_purchase_order_product.pop_sales_order', 'left')
+                ->groupBy('crm_sales_orders.so_id') 
+                ->get()
+                ->getResult();
+
+    }*/
+
+
+    /*public function product_details($id){
+
+       // $sales_table = $this->db->dbprefix('crm_sales_orders');
+         $sales_table = $this->db->prefixTable('crm_sales_orders');
+
+        return $this->db->table('pro_purchase_order_product')
+            ->distinct()
+            ->select("$sales_table.so_id, $sales_table.so_reffer_no")
+            ->where('pop_purchase_order', $id)
+            ->join($sales_table, "$sales_table.so_id = pro_purchase_order_product.pop_sales_order", 'left')
+            ->get()
+            ->getResult();
+    } */  
+    
+    
+    public function product_details($id){
+
+    $sales = $this->db->prefixTable('crm_sales_orders');
+    $pop   = $this->db->prefixTable('pro_purchase_order_product');
+
+    return $this->db->query("
+        SELECT DISTINCT $sales.so_id, $sales.so_reffer_no
+        FROM $pop
+        LEFT JOIN $sales ON $sales.so_id = $pop.pop_sales_order
+        WHERE $pop.pop_purchase_order = ?
+    ", [$id])->getResult();
+}
+
+
 }

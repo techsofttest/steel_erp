@@ -255,7 +255,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="pr_lpo" class="form-control input_length lpo_clz" value="" required readonly>   
+                                                                        <input type="text" name="pr_lpo" class="form-control input_length lpo_clz" value=""  readonly>   
 
                                                                     </div>
 
@@ -462,10 +462,10 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
-                                                    <th style="width: 85px !important;">Reference</th>
+                                                    <th style="width: 85px !important;">Vendor Ref</th>
                                                     <th style="width: 80px !important;">Date</th>
                                                     <th>Vendor Name</th>
-                                                    <th style="width: 85px !important;">Vendor Ref</th>
+                                                    <th style="width: 100px !important;">Vendor Inv Ref</th>
                                                     <th style="width: 85px !important;">Amount</th>
                                                     <th style="width: 70px !important;">Actions</th>
                                                 </tr>

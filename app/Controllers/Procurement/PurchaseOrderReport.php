@@ -852,21 +852,58 @@ class PurchaseOrderReport extends BaseController
 
         } else {
 
-            $cond = array('so_customer' => $vendor_id);
+            //$cond = array('so_customer' => $vendor_id);
 
             $joins1 = array(
-                /*array(
-                    'table' => 'crm_customer_creation',
-                    'pk'    => 'cc_id',
-                    'fk'    => 'so_customer',
-                ),*/
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'pop_sales_order',
+                ),
             );
 
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('crm_sales_orders', $cond,'so_reffer_no',$term, $joins1, 'so_reffer_no');
+            //$data['result'] = $this->pro_model->FetchLikeJoinBy('crm_sales_orders', $cond,'so_reffer_no',$term, $joins1, 'so_reffer_no');
+            
+            //$cond = array('po_vendor_name' => $vendor_id);
+
+            $purchase_order = $this->pro_model->FetchPurchase($vendor_id);
+
+            $result = [];
+
+            foreach($purchase_order as $po){
+                 
+                foreach($po->product_details as $prod_detail){
+
+                    $result[] = [
+                         
+                      'so_id'        => $prod_detail->so_id,
+                      'so_reffer_no' => $prod_detail->so_reffer_no,
+                            
+                    ];
+                }
+
+            }
+
+            /*$purchase_order = $this->common_model->SingleRow('pro_purchase_order', $cond);
+
+            $cond1 = array('pop_purchase_order' => $purchase_order->po_id);
+
+            $purchase_order_product = $this->common_model->SingleRow('pro_purchase_order_product',$cond1);
+
+            $cond2 = array('pop_sales_order' => $purchase_order_product->pop_sales_order);
+            
+            $data['result'] = $this->common_model->FetchWhereJoin('pro_purchase_order_product',$cond2,$joins1);*/
+
 
         }
+        
+        //print_r($data['result']); exit();
 
-        $data['total_count'] = count($data['result']);
+        //$data['total_count'] = count($data['result']);
+
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
 
         return json_encode($data);
 
