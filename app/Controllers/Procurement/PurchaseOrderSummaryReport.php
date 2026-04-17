@@ -682,7 +682,20 @@ class PurchaseOrderSummaryReport extends BaseController
             $end = ($page - 1) * $resultCount;
             $start = $end + $resultCount;
 
-            $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+           // $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+
+            $sales_order = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+
+            foreach($sales_order as $sales_ord){
+
+                $result[] = [
+                         
+                    'so_id'        => $sales_ord->so_id,
+                    'so_reffer_no' => $sales_ord->so_reffer_no,
+                            
+                ];
+            }
+
 
         } else {
 
@@ -696,11 +709,35 @@ class PurchaseOrderSummaryReport extends BaseController
                 ),*/
             );
 
-            $data['result'] = $this->pro_model->FetchLikeJoinBy('crm_sales_orders', $cond,'so_reffer_no',$term, $joins1, 'so_reffer_no');
+            //$data['result'] = $this->pro_model->FetchLikeJoinBy('crm_sales_orders', $cond,'so_reffer_no',$term, $joins1, 'so_reffer_no');
+
+            $purchase_order = $this->pro_model->FetchPurchase($vendor_id);
+
+            $result = [];
+
+            foreach($purchase_order as $po){
+                 
+                foreach($po->product_details as $prod_detail){
+
+                    $result[] = [
+                         
+                      'so_id'        => $prod_detail->so_id,
+                      'so_reffer_no' => $prod_detail->so_reffer_no,
+                            
+                    ];
+                }
+
+            }
+
+          
 
         }
 
-        $data['total_count'] = count($data['result']);
+        //$data['total_count'] = count($data['result']);
+
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
 
         return json_encode($data);
 

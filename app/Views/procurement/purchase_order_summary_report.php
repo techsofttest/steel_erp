@@ -748,6 +748,28 @@ span.select2.customer_width, span.select2{
                 },
                 processResults: function (data, params) {
                     var page = params.page || 1;
+                    let seen = {};
+                    let results = [];
+                    $.each(data.result, function (i, item) {
+                        // ✅ prevent duplicate sales order
+                        if (!seen[item.so_id]) {
+                            seen[item.so_id] = true;
+
+                            results.push({
+                                id: item.so_id,
+                                text: $.trim(item.so_reffer_no)
+                            });
+                        }
+                    });
+                    return {
+                        results: results,
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+                /*processResults: function (data, params) {
+                    var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) {
                             return {
@@ -759,7 +781,7 @@ span.select2.customer_width, span.select2{
                             more: (page * 10) <= data.total_count
                         }
                     };
-                }
+                }*/
 
             }
 
