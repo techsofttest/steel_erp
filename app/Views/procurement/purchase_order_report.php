@@ -795,20 +795,7 @@ span.select2.customer_width, span.select2{
                         page: params.page || 1,
                     };
                 },
-                /*processResults: function (data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) {
-                            return {
-                                id: item.so_id,
-                                text: $.trim(item.so_reffer_no)  // <--- trim whitespace here
-                            };
-                        }),
-                        pagination: {
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                }*/
+                
                 processResults: function (data, params) {
                     var page = params.page || 1;
                     let seen = {};
@@ -843,7 +830,7 @@ span.select2.customer_width, span.select2{
             dropdownParent: $('#PurchaseOrderReport'),
             ajax: {
                 url: "<?= base_url(); ?>Procurement/PurchaseOrderReport/FetchProducts",
-                type: "POST", // ✅ Make sure this is POST since controller expects POST
+               // type: "POST", // ✅ Make sure this is POST since controller expects POST
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -853,19 +840,26 @@ span.select2.customer_width, span.select2{
                     return {
                         term: params.term,
                         page: params.page || 1,
-                        salesorder: $('.sales_order').val() // ✅ send inside data function
+                        salesorder: $('.sales_order').val(), // ✅ send inside data function
+                        vendorId: $('.customer_clz ').val() // ✅ send inside data function
                     };
                 },
                 processResults: function (data, params) {
                     var page = params.page || 1;
                     return {
+                results: data.result, // ✅ already in correct format
+                pagination: {
+                    more: (page * 10) <= data.total_count
+                }
+            };
+                    /*return {
                         results: $.map(data.result, function (item) {
                             return { id: item.product_id, text: item.product_details };
                         }),
                         pagination: {
                             more: (page * 10) <= data.total_count
                         }
-                    };
+                    };*/
                 },
             }
         });

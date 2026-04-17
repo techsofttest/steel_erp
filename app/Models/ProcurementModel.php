@@ -2766,47 +2766,70 @@ class ProcurementModel extends Model
 
     }
 
-    /*public function product_details($id){
-          
-        return $this->db->table('pro_purchase_order_product')
-               // ->select('DISTINCT crm_sales_orders.so_id, crm_sales_orders.so_reffer_no')
-                ->select('DISTINCT crm_sales_orders, crm_sales_orders.so_reffer_no', false)
-                //->select('*')
-                ->where('pop_purchase_order', $id)
-                ->join('crm_sales_orders', 'crm_sales_orders.so_id = pro_purchase_order_product.pop_sales_order', 'left')
-                ->groupBy('crm_sales_orders.so_id') 
-                ->get()
-                ->getResult();
+   
+    public function product_details($id){
 
+        $sales = $this->db->prefixTable('crm_sales_orders');
+        $pop   = $this->db->prefixTable('pro_purchase_order_product');
+
+        return $this->db->query("
+            SELECT DISTINCT $sales.so_id, $sales.so_reffer_no
+            FROM $pop
+            LEFT JOIN $sales ON $sales.so_id = $pop.pop_sales_order
+            WHERE $pop.pop_purchase_order = ?
+        ", [$id])->getResult();
+
+    }
+
+
+    /*public function FetchPurchaseProd($vid,$sid){
+
+        $query = $this->db->table('pro_purchase_order');
+
+        $query->where('po_vendor_name', $vid);
+       
+        $result = $query->get()->getResult();
+
+        $i = 0;
+
+        foreach ($result as $purchase) {
+            $result[$i]->product_details = $this->prod_details($purchase->po_id,$sid);
+            $i++;
+        }
+
+        return $result;
     }*/
 
 
-    /*public function product_details($id){
+    /*public function prod_details($pid,$sid){
+         
+        $prod = $this->db->prefixTable('crm_products');
+        $pop   = $this->db->prefixTable('pro_purchase_order_product');
 
-       // $sales_table = $this->db->dbprefix('crm_sales_orders');
-         $sales_table = $this->db->prefixTable('crm_sales_orders');
+        return $this->db->query("
+            SELECT DISTINCT $prod.product_id, $prod.product_details
+            FROM $pop
+            LEFT JOIN $prod ON $prod.product_id = $pop.pop_prod_desc
+            WHERE $pop.pop_purchase_order = ?
+            AND $pop.pop_sales_order = ?
+        ", [$pid, $sid])->getResult();
+        
+    }*/
 
-        return $this->db->table('pro_purchase_order_product')
-            ->distinct()
-            ->select("$sales_table.so_id, $sales_table.so_reffer_no")
-            ->where('pop_purchase_order', $id)
-            ->join($sales_table, "$sales_table.so_id = pro_purchase_order_product.pop_sales_order", 'left')
-            ->get()
-            ->getResult();
-    } */  
-    
-    
-    public function product_details($id){
+    public function FetchPurchaseProd($vid, $sid){
 
-    $sales = $this->db->prefixTable('crm_sales_orders');
-    $pop   = $this->db->prefixTable('pro_purchase_order_product');
+    $prod = $this->db->prefixTable('crm_products');
+    $pop  = $this->db->prefixTable('pro_purchase_order_product');
+    $po   = $this->db->prefixTable('pro_purchase_order');
 
     return $this->db->query("
-        SELECT DISTINCT $sales.so_id, $sales.so_reffer_no
+        SELECT DISTINCT $prod.product_id, $prod.product_details
         FROM $pop
-        LEFT JOIN $sales ON $sales.so_id = $pop.pop_sales_order
-        WHERE $pop.pop_purchase_order = ?
-    ", [$id])->getResult();
+        LEFT JOIN $prod ON $prod.product_id = $pop.pop_prod_desc
+        LEFT JOIN $po ON $po.po_id = $pop.pop_purchase_order
+        WHERE $po.po_vendor_name = ?
+        AND $pop.pop_sales_order = ?
+    ", [$vid, $sid])->getResult();
 }
 
 

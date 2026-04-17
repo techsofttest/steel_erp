@@ -848,7 +848,19 @@ class PurchaseOrderReport extends BaseController
             $end = ($page - 1) * $resultCount;
             $start = $end + $resultCount;
 
-            $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+            //$data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+
+            $sales_order = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+
+            foreach($sales_order as $sales_ord){
+
+                $result[] = [
+                         
+                    'so_id'        => $sales_ord->so_id,
+                    'so_reffer_no' => $sales_ord->so_reffer_no,
+                            
+                ];
+            }
 
         } else {
 
@@ -884,23 +896,12 @@ class PurchaseOrderReport extends BaseController
 
             }
 
-            /*$purchase_order = $this->common_model->SingleRow('pro_purchase_order', $cond);
-
-            $cond1 = array('pop_purchase_order' => $purchase_order->po_id);
-
-            $purchase_order_product = $this->common_model->SingleRow('pro_purchase_order_product',$cond1);
-
-            $cond2 = array('pop_sales_order' => $purchase_order_product->pop_sales_order);
-            
-            $data['result'] = $this->common_model->FetchWhereJoin('pro_purchase_order_product',$cond2,$joins1);*/
+           
 
 
         }
         
-        //print_r($data['result']); exit();
-
-        //$data['total_count'] = count($data['result']);
-
+        
         $data['result'] = $result;
 
         $data['total_count'] = count($result);
@@ -909,29 +910,94 @@ class PurchaseOrderReport extends BaseController
 
     }
 
-    public function FetchProducts()
+    /*public function FetchProducts()
     {
 
         $salesorder = $this->request->getPost('salesorder');
 
         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+
         $term = !empty($_POST['term']) ? $_POST['term'] : "";
+
         $resultCount = 10;
+
         $end = ($page - 1) * $resultCount;
+
         $start = $end + $resultCount;
 
-        // if($salesorder != ''){
-        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-        //         array(   'table' => 'crm_products',
-        //             'pk'    => 'product_id',
-        //             'fk'    => 'spd_product_details',
-        //         )
-        //     ));
-        // }else{
         $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
-        // }
 
         $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }*/
+
+    public function FetchProducts(){
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+
+        $salesorder = !empty($_GET['salesorder']) ? $_GET['salesorder'] : "";
+        $vendorId = !empty($_GET['vendorId']) ? $_GET['vendorId'] : "";
+
+       $result = [];
+
+        if ($salesorder == "" || $vendorId == "") {
+
+            
+
+            $resultCount = 10;
+            $end = ($page - 1) * $resultCount;
+            $start = $end + $resultCount;
+
+           // $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
+
+           $products = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
+
+            foreach($products as $prod){
+                   
+                $result[] = [
+                         
+                      'id'      => $prod->product_id,
+                      'text'    => $prod->product_details,
+                            
+                ];
+                   
+            }
+
+        } else {
+
+                $cond1 = array('pop_sales_order' => $salesorder);
+
+                $purchase_order = $this->pro_model->FetchPurchaseProd($vendorId,$salesorder);
+
+                foreach($purchase_order as $po){
+                    
+                    $result[] = [
+                                
+                            'id'       => $po->product_id,
+                            'text'    => $po->product_details,
+                                    
+                    ];
+
+                }
+
+                
+
+            }
+
+            
+    
+          
+
+        //}
+        
+        
+        $data['result'] = $result;
+        
+
+        $data['total_count'] = count($result);
 
         return json_encode($data);
 
