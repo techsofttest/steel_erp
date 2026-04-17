@@ -378,6 +378,10 @@ class ProcurementModel extends Model
                 $cond_user[$data2_col] = $data2;
             }
 
+            if(!empty($data3)){
+                $cond_user[$data3_col] = $data3;
+            }
+
             // Create the query using the Query Builder
             $query = $this->db->table($table)->where($cond_user);
 
@@ -385,8 +389,8 @@ class ProcurementModel extends Model
 
             $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
 
-            // echo $this->db->getLastQuery();  // Will show the query without executing it
-            // exit;
+            //echo $this->db->getLastQuery();  // Will show the query without executing it
+           // exit;
 
             $i++;
         }
@@ -541,7 +545,13 @@ class ProcurementModel extends Model
             ];
 
             if (!empty($data1)) {
+
                 $cond_user[$data1_col] = $data1;
+            }
+
+            if(!empty($data2)){
+               
+               $cond_user[$data2_col] = $data2;
             }
 
             // Create the query using the Query Builder

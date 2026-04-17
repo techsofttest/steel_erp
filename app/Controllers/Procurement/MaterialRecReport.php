@@ -229,9 +229,18 @@ class MaterialRecReport extends BaseController
 
         $product_det_met = $this->common_model->SingleRow('crm_products', ['product_id' => $data2]);
 
+        if(!empty($product_det_met->product_details)){
+            
+            $data2 = $product_det_met->product_details;
+
+        }else{
+
+            $data2 = "";
+        }
+
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
 
-        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'rnp_sales_order', $product_det_met->	product_details , 'rnp_product_desc', $data3, 'mrn_vendor_name', $data4, 'rnp_purchase_id', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
+        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'rnp_sales_order', $data2 , 'rnp_product_desc', $data3, 'mrn_vendor_name', $data4, 'rnp_purchase_id', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
 
 
 

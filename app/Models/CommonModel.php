@@ -682,6 +682,8 @@ class CommonModel extends Model
         ->table($table)
         ->where($coloum1,$data1)
         ->get()
+        //echo $this->db->getLastQuery();
+        //exit();
         ->getResult();
     }
 
