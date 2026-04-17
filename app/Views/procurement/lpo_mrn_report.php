@@ -954,7 +954,29 @@ $(".sales_order").select2({
                         purchaseorder: $('.lpo_ref').val() // ✅ send inside data function
                     };
                 },
-                processResults: function(data, params) {
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    let seen = {};
+                    let results = [];
+                    $.each(data.result, function (i, item) {
+                        // ✅ prevent duplicate sales order
+                        if (!seen[item.product_id]) {
+                            seen[item.product_id] = true;
+
+                            results.push({
+                                id: item.product_id,
+                                text: $.trim(item.product_details)
+                            });
+                        }
+                    });
+                    return {
+                        results: results,
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                }
+                /*processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function(item) {
@@ -967,7 +989,7 @@ $(".sales_order").select2({
                             more: (page * 10) <= data.total_count
                         }
                     };
-                },
+                },*/
             }
         });
 

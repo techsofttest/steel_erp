@@ -877,9 +877,75 @@ class LPO_MRNReport extends BaseController
         $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
 
+        $result = [];
+
+        if ($salesorder == '' &&  $purchaseorder == "") {
+
+            $products = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end); 
+
+            foreach($products as $prod){
+                    
+                $result[] = [
+                         
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                            
+                ];
+
+            }
+
+        }else{
+           
+            
+
+            $sales_order = $this->common_model->SingleRow('crm_sales_orders', ['so_id' => $salesorder]);
+
+            $purchase_order = $this->common_model->SingleRow('pro_purchase_order', ['po_reffer_no' => $purchaseorder]);
+
+            $cond1 = array('rnp_sales_order' => $sales_order->so_reffer_no);
+
+            $cond2 =  array('rnp_purchase_id' => $purchase_order->po_id );
+
+            $joins = array(
+
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_details',
+                    'fk'    => 'rnp_product_desc',
+                ),
+
+            );
+
+            
+
+           
+            $material_received = $this->common_model->FetchProd('pro_material_received_note_prod',$cond1,$cond2,$joins);
+
+            
+
+            foreach($material_received as $mterial_rec){
+
+                $result[] = [
+                         
+                    'product_id'      => $mterial_rec->product_id,
+                    'product_details' => $mterial_rec->product_details,
+                            
+                ];
+
+            }
+
+        }
 
 
-        if ($salesorder != '') {
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
+
+        return json_encode($data);
+
+
+
+        /*if ($salesorder != '') {
             $page  = max(1, (int) $this->request->getVar('page'));
             $limit = 10;
             $offset = ($page - 1) * $limit;
@@ -897,6 +963,6 @@ class LPO_MRNReport extends BaseController
 
         $data['total_count'] = count($data['result']);
 
-        return json_encode($data);
+        return json_encode($data);*/
     }
 }
