@@ -847,7 +847,7 @@ class CommonModel extends Model
      
     /**/
 
-
+    //common_query
     public function FetchProd($table, $cond, $cond2, $joins)
     {
         $query = $this->db->table($table)

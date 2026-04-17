@@ -151,6 +151,8 @@ class MaterialRecReport extends BaseController
             $data2 = "";
         }
 
+        //print_r($data2); exit();
+
 
         if (!empty($_GET['vendor'])) {
             $data3 = $_GET['vendor'];
@@ -225,10 +227,11 @@ class MaterialRecReport extends BaseController
 
         );
 
+        $product_det_met = $this->common_model->SingleRow('crm_products', ['product_id' => $data2]);
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
 
-        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'rnp_sales_order', $data2, 'mrn_product_desc', $data3, 'mrn_vendor_name', $data4, 'rnp_purchase_id', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
+        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'rnp_sales_order', $product_det_met->	product_details , 'rnp_product_desc', $data3, 'mrn_vendor_name', $data4, 'rnp_purchase_id', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
 
 
 
@@ -909,7 +912,7 @@ class MaterialRecReport extends BaseController
     //     return json_encode($data);
     // }
 
-   public function FetchProducts()
+    public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
         $purchaseorder = $this->request->getPost('purchaseorder');
@@ -917,13 +920,61 @@ class MaterialRecReport extends BaseController
         $term = !empty($this->request->getVar('term')) ? $this->request->getVar('term') : "";
         $page = !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 0;
 
+
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
 
+        $result = [];
+
+        if ($salesorder == '' &&  $purchaseorder == "") {
+
+            $products = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end); 
+
+            foreach($products as $prod){
+                    
+                $result[] = [
+                         
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                            
+                ];
+
+            }
+
+        }else{
+           
+            $cond1 = array('rnp_sales_order' => $salesorder);
+
+            $cond2 =  array('rnp_purchase_id' => $purchaseorder);
+
+            $joins = array(
+
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_details',
+                    'fk'    => 'rnp_product_desc',
+                ),
+
+            );
+           
+            $material_received = $this->common_model->FetchProd('pro_material_received_note_prod',$cond1,$cond2,$joins);
+
+            foreach($material_received as $mterial_rec){
+
+                $result[] = [
+                         
+                    'product_id'      => $mterial_rec->product_id,
+                    'product_details' => $mterial_rec->product_details,
+                            
+                ];
+
+            }
+
+        }
 
 
-        if ($salesorder != '') {
+        /*if ($salesorder != '') {
             $page  = max(1, (int) $this->request->getVar('page'));
             $limit = 10;
             $offset = ($page - 1) * $limit;
@@ -934,12 +985,18 @@ class MaterialRecReport extends BaseController
             $data['total_count'] = 10; // or real count query
 
         } elseif ($purchaseorder != '') {
+
             $data['result'] = $this->pro_model->FetchDistinctProductsByPurchaseOrder($purchaseorder, $term);
+
         } else {
             $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
-        }
+        }*/
 
-        $data['total_count'] = count($data['result']);
+        //$data['total_count'] = count($data['result']);
+
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
 
         return json_encode($data);
     }
