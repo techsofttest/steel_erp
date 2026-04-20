@@ -2841,9 +2841,8 @@ class ProcurementModel extends Model
             FROM $pop
             LEFT JOIN $prod ON $prod.product_id = $pop.pop_prod_desc
             LEFT JOIN $po ON $po.po_id = $pop.pop_purchase_order
-            WHERE $pop.pop_sales_order = ?
-            AND $po.po_vendor_name = ?
-           
+            WHERE $po.po_vendor_name = ?
+            AND $pop.pop_sales_order = ?
         ", [$vid, $sid])->getResult();
     }
 
