@@ -2885,7 +2885,7 @@ class ProcurementModel extends Model
 
         foreach ($result as $purchase) {
 
-            $result[$i]->product_details = $this->PurchseVoucherProd($purchase->pv_id,$sid);
+            $result[$i]->product_details = $this->PurchseVoucherProd(!empty($puid) ? $purchase->pv_id : "",$sid);
 
             $i++;
 
