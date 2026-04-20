@@ -941,6 +941,10 @@ class ProcurementModel extends Model
         foreach ($result as $res) {
             $cond_user = ['pop_purchase_order' => $res->pop_purchase_order];
 
+            if (!empty($data3)) {
+                $cond_user[$data3_col] = $data3;
+            }
+
             // Create the query using the Query Builder
             $query = $this->db->table($table)->where($cond_user);
 
