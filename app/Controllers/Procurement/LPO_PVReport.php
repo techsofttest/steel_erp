@@ -1244,6 +1244,19 @@ if ($data6 != "" || $data7 != "") {
                 }
               
             }
+
+            // ✅ REMOVE DUPLICATES HERE
+            $unique = [];
+            $filtered = [];
+
+            foreach ($result as $item) {
+                if (!isset($unique[$item['product_id']])) {
+                    $unique[$item['product_id']] = true;
+                    $filtered[] = $item;
+                }
+            }
+
+            $result = $filtered;
         }
 
 

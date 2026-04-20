@@ -2899,35 +2899,6 @@ class ProcurementModel extends Model
     }
 
 
-    /*public function PurchseVoucherProd($pvid,$sid){
-        
-        $query = $this->db->table('pro_purchase_voucher_prod');
-
-        $query->select('pro_purchase_voucher_prod.*, prod.product_id, prod.product_details');
-
-        $query->join(
-            'crm_products prod',
-            'prod.product_details = pro_purchase_voucher_prod.pvp_prod_dec',
-            'left'
-        );
-
-        if(!empty($pvid)){
-
-            $query->where('pvp_reffer_id', $pvid);
-
-        }
-
-        $query->where('pvp_sales_order', $sid);
-
-        $result = $query->get()->getResult();
-
-        
-       
-        return $result;
-        
-    }*/
-
-
     public function PurchseVoucherProd($pvid,$sid){
         
         $table = $this->db->prefixTable('pro_purchase_voucher_prod');
@@ -2957,7 +2928,35 @@ class ProcurementModel extends Model
         return $result;
         
     }
+    
 
+     /*public function PurchseVoucherProd($pvid,$sid){
+        
+        $query = $this->db->table('pro_purchase_voucher_prod');
+
+        $query->select('pro_purchase_voucher_prod.*, prod.product_id, prod.product_details');
+
+        $query->join(
+            'crm_products prod',
+            'prod.product_details = pro_purchase_voucher_prod.pvp_prod_dec',
+            'left'
+        );
+
+        if(!empty($pvid)){
+
+            $query->where('pvp_reffer_id', $pvid);
+
+        }
+
+        $query->where('pvp_sales_order', $sid);
+
+        $result = $query->get()->getResult();
+
+        
+       
+        return $result;
+        
+    }*/
 
 
 
