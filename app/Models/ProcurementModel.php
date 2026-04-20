@@ -2919,7 +2919,12 @@ class ProcurementModel extends Model
 
         }
 
-        $query->where('pvp_sales_order', $sid);
+        if(!empty($sid)){
+
+            $query->where('pvp_sales_order', $sid);
+        }
+
+        
 
         $result = $query->get()->getResult();
 
