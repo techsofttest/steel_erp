@@ -853,10 +853,13 @@ class CommonModel extends Model
     public function FetchProd($table, $cond, $cond2, $joins)
     {
         $query = $this->db->table($table)
-            ->select('*')
-            ->where($cond)
-            ->where($cond2);
-
+            ->select('*');
+            if (!empty($cond)) {
+             $query->where($cond);
+            }
+            if (!empty($cond2)) {
+            $query->where($cond2);
+            }
         if (!empty($joins)) {
             foreach ($joins as $join) {
                 $query->join($join['table'], '' . $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');

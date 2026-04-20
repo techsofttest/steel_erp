@@ -952,10 +952,27 @@ class MaterialRecReport extends BaseController
             }
 
         }else{
-           
-            $cond1 = array('rnp_sales_order' => $salesorder);
+            
+            if(!empty($salesorder)){
 
-            $cond2 =  array('rnp_purchase_id' => $purchaseorder);
+                $cond1 = array('rnp_sales_order' => $salesorder);
+
+            }else{
+                
+                $cond1 = "";
+            }
+
+            if(!empty($purchaseorder)){
+
+                $cond2 =  array('rnp_purchase_id' => $purchaseorder);
+
+            }else{
+
+               $cond2 = "";
+            }
+            
+
+            
 
             $joins = array(
 

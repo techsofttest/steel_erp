@@ -902,9 +902,25 @@ class LPO_MRNReport extends BaseController
 
             $purchase_order = $this->common_model->SingleRow('pro_purchase_order', ['po_reffer_no' => $purchaseorder]);
 
-            $cond1 = array('rnp_sales_order' => $sales_order->so_reffer_no);
+            if(!empty($sales_order->so_reffer_no)){
 
-            $cond2 =  array('rnp_purchase_id' => $purchase_order->po_id );
+               $cond1 = array('rnp_sales_order' => $sales_order->so_reffer_no);
+
+            }else{
+
+               $cond1 = "";
+            }
+
+            if(!empty($purchase_order->po_id)){
+                 
+                $cond2 =  array('rnp_purchase_id' => $purchase_order->po_id );
+
+            }else{
+
+                $cond2 ="";
+            }
+
+           
 
             $joins = array(
 
@@ -916,8 +932,7 @@ class LPO_MRNReport extends BaseController
 
             );
 
-            
-
+          
            
             $material_received = $this->common_model->FetchProd('pro_material_received_note_prod',$cond1,$cond2,$joins);
 
@@ -944,25 +959,5 @@ class LPO_MRNReport extends BaseController
         return json_encode($data);
 
 
-
-        /*if ($salesorder != '') {
-            $page  = max(1, (int) $this->request->getVar('page'));
-            $limit = 10;
-            $offset = ($page - 1) * $limit;
-
-            $data['result'] = $this->pro_model
-                ->FetchDistinctProductsBySalesOrder($salesorder, $term, $limit, $offset);
-
-            $data['total_count'] = 10; // or real count query
-
-        } elseif ($purchaseorder != '') {
-            $data['result'] = $this->pro_model->FetchDistinctProductsByPurchaseOrder($purchaseorder, $term);
-        } else {
-            $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
-        }
-
-        $data['total_count'] = count($data['result']);
-
-        return json_encode($data);*/
     }
 }

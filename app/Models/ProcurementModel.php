@@ -863,6 +863,10 @@ class ProcurementModel extends Model
                 $cond_user[$data2_col] = $data2;
             }
 
+            if (!empty($data3)) {
+                $cond_user[$data3_col] = $data3;
+            }
+
 
             // Create the query using the Query Builder
             $query = $this->db->table($table)->where($cond_user);
@@ -2828,19 +2832,88 @@ class ProcurementModel extends Model
 
     public function FetchPurchaseProd($vid, $sid){
 
-    $prod = $this->db->prefixTable('crm_products');
-    $pop  = $this->db->prefixTable('pro_purchase_order_product');
-    $po   = $this->db->prefixTable('pro_purchase_order');
+        $prod = $this->db->prefixTable('crm_products');
+        $pop  = $this->db->prefixTable('pro_purchase_order_product');
+        $po   = $this->db->prefixTable('pro_purchase_order');
 
-    return $this->db->query("
-        SELECT DISTINCT $prod.product_id, $prod.product_details
-        FROM $pop
-        LEFT JOIN $prod ON $prod.product_id = $pop.pop_prod_desc
-        LEFT JOIN $po ON $po.po_id = $pop.pop_purchase_order
-        WHERE $po.po_vendor_name = ?
-        AND $pop.pop_sales_order = ?
-    ", [$vid, $sid])->getResult();
-}
+        return $this->db->query("
+            SELECT DISTINCT $prod.product_id, $prod.product_details
+            FROM $pop
+            LEFT JOIN $prod ON $prod.product_id = $pop.pop_prod_desc
+            LEFT JOIN $po ON $po.po_id = $pop.pop_purchase_order
+            WHERE $pop.pop_sales_order = ?
+            OR $po.po_vendor_name = ?
+           
+        ", [$vid, $sid])->getResult();
+    }
+
+    /*public function FetchPurchaseVoucher($pvid,$sid){
+
+        $prod = $this->db->prefixTable('crm_products');
+        $pop  = $this->db->prefixTable('pro_purchase_voucher_prod');
+        $po   = $this->db->prefixTable('pro_purchase_voucher');
+
+        return $this->db->query("
+            SELECT DISTINCT $prod.product_id, $prod.product_details
+            FROM $pop
+            LEFT JOIN $prod ON $prod.product_details = $pop.pop_prod_desc
+            LEFT JOIN $po ON $po.pv_id  = $pop.	pvp_reffer_id
+            WHERE $po.pv_id = ?
+            AND $pop.pvp_sales_order = ?
+        ", [$pvid, $sid])->getResult();
+
+    }*/
+
+    public function FetchPurchaseVoucher($puid,$sid){
+
+        $query = $this->db->table('pro_purchase_voucher');
+
+        $query->where('pv_purchase_order', $puid);
+       
+        $result = $query->get()->getResult();
+
+       
+
+        $i = 0;
+
+        foreach ($result as $purchase) {
+
+            $result[$i]->product_details = $this->PurchseVoucherProd($purchase->pv_id,$sid);
+
+            $i++;
+
+        }
+
+       
+        return $result;
+    }
+
+
+    public function PurchseVoucherProd($pvid,$sid){
+
+        $query = $this->db->table('pro_purchase_voucher_prod');
+
+        $query->select('pro_purchase_voucher_prod.*, prod.product_id, prod.product_details');
+
+        $query->join(
+            'crm_products prod',
+            'prod.product_details = pro_purchase_voucher_prod.pvp_prod_dec',
+            'left'
+        );
+
+
+        $query->where('pvp_reffer_id', $pvid);
+
+        $query->where('pvp_sales_order', $sid);
+
+        $result = $query->get()->getResult();
+       
+        return $result;
+        
+    }
+
+
+
 
 
 }

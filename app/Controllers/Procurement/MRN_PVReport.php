@@ -142,8 +142,11 @@ class MRN_PVReport extends BaseController
         }
         if (!empty($_GET['product'])) {
             $data5 = $_GET['product'];
+            $product_material = $this->common_model->SingleRow('crm_products', ['product_id' => $data5]);
+            $prod_mat = $product_material->product_details;
         } else {
             $data5 = "";
+            $prod_mat = "";
         }
         if (!empty($_GET['pending'])) {
             $data6 = $_GET['pending'];
@@ -169,8 +172,10 @@ class MRN_PVReport extends BaseController
             array('table' => 'pro_purchase_order_product', 'pk' => 'pop_id', 'fk' => 'rnp_purchase_prod_id'),
         );
 
+        
+
         // Fetch Data
-        $data['purchase_order'] = $this->pro_model->MRN_PVCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'mrn_vendor_name', $data2, 'rnp_sales_order', $data5, 'rnp_product_desc', $data3, 'mrn_purchase_order', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
+        $data['purchase_order'] = $this->pro_model->MRN_PVCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'mrn_vendor_name', $data2, 'rnp_sales_order', $prod_mat, 'rnp_product_desc', $data3, 'mrn_purchase_order', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
 
         $new_order = [];
 
@@ -1078,9 +1083,83 @@ class MRN_PVReport extends BaseController
         $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
 
+        $result = [];
+
+        if ($salesorder == '' &&  $purchaseorder == "") {
+
+            $products = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end); 
+
+            foreach($products as $prod){
+                    
+                $result[] = [
+                         
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                            
+                ];
+
+            }
+
+        }else{
+           
+            
+            if(!empty($salesorder)){
+
+                $cond1 = array('rnp_sales_order' => $salesorder);
+
+            }else{
+
+               $cond1 ="";
+
+            }
+            if(!empty($purchaseorder)){
+
+                $cond2 =  array('rnp_purchase_id' => $purchaseorder);
+
+            }else{
+
+                $cond2 = "";
+            }
+            
+
+            
+
+            $joins = array(
+
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_details',
+                    'fk'    => 'rnp_product_desc',
+                ),
+
+            );
+
+           
+            $material_received = $this->common_model->FetchProd('pro_material_received_note_prod',$cond1,$cond2,$joins);
+
+            
+
+            foreach($material_received as $mterial_rec){
+
+                $result[] = [
+                         
+                    'product_id'      => $mterial_rec->product_id,
+                    'product_details' => $mterial_rec->product_details,
+                            
+                ];
+
+            }
+
+        }
 
 
-        if ($salesorder != '') {
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
+
+        return json_encode($data);
+
+        /*if ($salesorder != '') {
             $page  = max(1, (int) $this->request->getVar('page'));
             $limit = 10;
             $offset = ($page - 1) * $limit;
@@ -1098,6 +1177,8 @@ class MRN_PVReport extends BaseController
 
         $data['total_count'] = count($data['result']);
 
-        return json_encode($data);
+        return json_encode($data);*/
+
+
     }
 }

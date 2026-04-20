@@ -1134,7 +1134,7 @@ if ($data6 != "" || $data7 != "") {
 
     public function FetchSalesOrder(){
 
-         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
         if ($lpo_ref == "") {
@@ -1143,15 +1143,24 @@ if ($data6 != "" || $data7 != "") {
             $start = $end + $resultCount;
             $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
         } else {
-            $cond = array('pop_purchase_order' => $lpo_ref);
+            //$cond = array('pop_purchase_order' => $lpo_ref);
+
+            $purchase_order = $this->common_model->SingleRow('pro_purchase_order', ['po_reffer_no' => $lpo_ref]);
+
+            $cond = array('pop_purchase_order' => $purchase_order->po_id );
+
             $joins1 = array(
-                 array(
+                array(
                 'table' => 'crm_sales_orders',
                 'pk'    => 'so_id',
                 'fk'    => 'pop_sales_order',
             ),
             );
             $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond,'so_reffer_no',$term, $joins1, 'pop_sales_order');
+            //print_r($lpo_ref); exit();
+           // $data['result'] = $this->common_model->FetchWhere('pro_purchase_order_product',$cond);
+
+
 
         
         }
@@ -1163,6 +1172,8 @@ if ($data6 != "" || $data7 != "") {
     public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
+
+        $purchaseorder = $this->request->getPost('purchaseorder');
        
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
@@ -1170,20 +1181,56 @@ if ($data6 != "" || $data7 != "") {
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        // if($salesorder != ''){
-        //      $data['result'] = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$salesorder),array(
-        //         array(   'table' => 'crm_products',
-        //             'pk'    => 'product_id',
-        //             'fk'    => 'spd_product_details',
-        //         )
-        //     ));
-        // }else{
-             $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
-        // }
 
-        $data['total_count'] = count($data['result']);
+        //$data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $result = [];
+
+        if ($salesorder == '' &&  $purchaseorder == "") {
+
+            $products  = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+            foreach($products as $prod){
+                    
+                $result[] = [
+                         
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                            
+                ];
+
+            }
+
+        }else{
+
+            $purchase_voucher = $this->pro_model->FetchPurchaseVoucher($purchaseorder,$salesorder);
+
+            foreach($purchase_voucher as $pur_vouch){
+
+                foreach($pur_vouch->product_details as $prod){
+
+                    $result[] = [
+                         
+                        'product_id'      => $prod->product_id,
+                        'product_details' => $prod->product_details,
+                            
+                    ];
+
+                }
+              
+            }
+        }
+
+
+
+       
+
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
 
         return json_encode($data);
+
 
     }
 
