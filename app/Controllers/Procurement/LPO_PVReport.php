@@ -1209,7 +1209,26 @@ if ($data6 != "" || $data7 != "") {
 
             $purchase_order   = $this->common_model->SingleRow('pro_purchase_order', array('po_reffer_no' => $purchaseorder ));
 
-            $purchase_voucher = $this->pro_model->FetchPurchaseVoucher($purchase_order->po_id,$sales_orders->so_reffer_no);
+            if(!empty($sales_orders->so_reffer_no)){
+
+                $sales_orders     = $sales_orders->so_reffer_no;
+                 
+            }else{
+               
+                $sales_orders     = "";
+               
+            }
+
+            if(!empty($purchase_order->po_id)){
+
+                $purchaseorder = $purchase_order->po_id;
+            }
+            else{
+
+                $purchaseorder = "";
+            }
+
+            $purchase_voucher = $this->pro_model->FetchPurchaseVoucher($purchaseorder,$sales_orders);
 
             foreach($purchase_voucher as $pur_vouch){
 

@@ -2904,8 +2904,11 @@ class ProcurementModel extends Model
             'left'
         );
 
+        if(!empty($pvid)){
 
-        $query->where('pvp_reffer_id', $pvid);
+            $query->where('pvp_reffer_id', $pvid);
+
+        }
 
         $query->where('pvp_sales_order', $sid);
 
