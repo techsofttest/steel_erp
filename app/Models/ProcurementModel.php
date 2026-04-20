@@ -2920,7 +2920,7 @@ class ProcurementModel extends Model
 
         $result = $query->get()->getResult();
 
-        echo $this->db->getLastQuery(); exit();
+        echo $this->db->getLastQuery(); 
        
         return $result;
         
