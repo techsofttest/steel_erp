@@ -2916,6 +2916,8 @@ class ProcurementModel extends Model
 
         $query->where('pvp_sales_order', $sid);
 
+        $query->groupBy('pro_purchase_voucher_prod.pvp_prod_dec');
+
         $result = $query->get()->getResult();
 
         //echo $this->db->getLastQuery(); exit();
