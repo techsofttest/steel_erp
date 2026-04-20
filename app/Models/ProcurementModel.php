@@ -2871,7 +2871,11 @@ class ProcurementModel extends Model
 
         $query = $this->db->table('pro_purchase_voucher');
 
-        $query->where('pv_purchase_order', $puid);
+        if(!empty($puid)){
+
+            $query->where('pv_purchase_order', $puid);
+
+        }
        
         $result = $query->get()->getResult();
 
