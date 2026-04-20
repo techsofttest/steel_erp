@@ -2905,11 +2905,11 @@ class ProcurementModel extends Model
 
         $query->where('pvp_sales_order', $sid);
 
-        //$result = $query->get()->getResult();
+        $result = $query->get()->getResult();
 
-         echo $this->db->getLastQuery(); exit();
+         //echo $this->db->getLastQuery(); exit();
        
-       // return $result;
+        return $result;
         
     }
 

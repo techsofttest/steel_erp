@@ -1184,6 +1184,8 @@ if ($data6 != "" || $data7 != "") {
 
         //$data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
 
+        //print_r($purchaseorder); exit();
+
         $result = [];
 
         if ($salesorder == '' &&  $purchaseorder == "") {
@@ -1203,7 +1205,11 @@ if ($data6 != "" || $data7 != "") {
 
         }else{
 
-            $purchase_voucher = $this->pro_model->FetchPurchaseVoucher($purchaseorder,$salesorder);
+            $sales_orders     = $this->common_model->SingleRow('crm_sales_orders', array('so_id' => $salesorder ));
+
+            $purchase_order   = $this->common_model->SingleRow('pro_purchase_order', array('po_reffer_no' => $purchaseorder ));
+
+            $purchase_voucher = $this->pro_model->FetchPurchaseVoucher($purchase_order->po_id,$sales_orders->so_reffer_no);
 
             foreach($purchase_voucher as $pur_vouch){
 
