@@ -2866,7 +2866,7 @@ class ProcurementModel extends Model
         ", [$pvid, $sid])->getResult();
 
     }*/
-
+    // common_use
     public function FetchPurchaseVoucher($puid,$sid){
 
         $query = $this->db->table('pro_purchase_voucher');

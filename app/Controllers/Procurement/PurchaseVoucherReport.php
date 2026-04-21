@@ -956,7 +956,7 @@ class PurchaseVoucherReport extends BaseController
 
 
 
-        if ($salesorder != '') {
+        /*if ($salesorder != '') {
             $page  = max(1, (int) $this->request->getVar('page'));
             $limit = 10;
             $offset = ($page - 1) * $limit;
@@ -972,7 +972,84 @@ class PurchaseVoucherReport extends BaseController
             $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
         }
 
-        $data['total_count'] = count($data['result']);
+        $data['total_count'] = count($data['result']);*/
+
+        $result = [];
+
+        if ($salesorder == '' &&  $purchaseorder == "") {
+
+            $products  = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+            foreach($products as $prod){
+                    
+                $result[] = [
+                         
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                            
+                ];
+
+            }
+
+        }else{
+
+           $sales_orders     = $this->common_model->SingleRow('crm_sales_orders', array('so_reffer_no' => $salesorder));
+
+        }
+
+        if(!empty($sales_orders->so_reffer_no)){
+
+            $sales_orders     = $sales_orders->so_reffer_no;
+                 
+        }else{
+               
+            $sales_orders     = "";
+               
+        }
+
+        if(!empty($purchaseorder)){
+
+            $purchaseorder = $purchaseorder;
+        }
+        else{
+
+            $purchaseorder = "";
+        }
+
+        $purchase_voucher = $this->pro_model->FetchPurchaseVoucher($purchaseorder,$sales_orders);
+
+        foreach($purchase_voucher as $pur_vouch){
+
+            foreach($pur_vouch->product_details as $prod){
+
+                $result[] = [
+                        
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                        
+                ];
+
+            }
+              
+        }
+
+        // ✅ REMOVE DUPLICATES HERE
+        $unique = [];
+        $filtered = [];
+
+        foreach ($result as $item) {
+            if (!isset($unique[$item['product_id']])) {
+                $unique[$item['product_id']] = true;
+                $filtered[] = $item;
+            }
+        }
+
+        $result = $filtered;
+
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
+
 
         return json_encode($data);
     }
