@@ -2934,34 +2934,36 @@ class ProcurementModel extends Model
         
     }
     
+    public function FetchPurchaseOrder($pid,$sid){
 
-     /*public function PurchseVoucherProd($pvid,$sid){
+        $query = $this->db->table('pro_purchase_order_product')
+         ->select('*');
+      
+        $query->join('crm_products','crm_products.product_id    = pro_purchase_order_product.pop_prod_desc','left');
+
         
-        $query = $this->db->table('pro_purchase_voucher_prod');
 
-        $query->select('pro_purchase_voucher_prod.*, prod.product_id, prod.product_details');
+        if(!empty($pid)){
 
-        $query->join(
-            'crm_products prod',
-            'prod.product_details = pro_purchase_voucher_prod.pvp_prod_dec',
-            'left'
-        );
-
-        if(!empty($pvid)){
-
-            $query->where('pvp_reffer_id', $pvid);
+            $query->where('pop_purchase_order', $pid);
 
         }
 
-        $query->where('pvp_sales_order', $sid);
+        if(!empty($sid)){
 
+            $query->where('pop_sales_order', $sid);
+
+        }
+
+       
         $result = $query->get()->getResult();
+       // echo $this->db->getLastQuery(); exit();
 
-        
        
         return $result;
-        
-    }*/
+
+
+    }
 
 
 
