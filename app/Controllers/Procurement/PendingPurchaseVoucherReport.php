@@ -218,9 +218,15 @@ class PendingPurchaseVoucherReport extends BaseController
                 if (!empty($sales_order)) {
                     $cond_user_amount['pop_sales_order'] = $sales_order->so_id;
                 }
-                
-                
+               
 
+            }
+
+            if(!empty($data5)){
+
+               
+                    $cond_user_amount['pop_prod_desc'] = $data5;
+               
             }
           
            

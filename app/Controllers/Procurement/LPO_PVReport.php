@@ -1205,9 +1205,9 @@ if ($data6 != "" || $data7 != "") {
 
         }else{
 
-            $sales_orders     = $this->common_model->SingleRow('crm_sales_orders', array('so_id' => $salesorder ));
+            $sales_orders     = $this->common_model->SingleRow('crm_sales_orders', array('so_id' => $salesorder));
 
-            $purchase_order   = $this->common_model->SingleRow('pro_purchase_order', array('po_reffer_no' => $purchaseorder ));
+            $purchase_order   = $this->common_model->SingleRow('pro_purchase_order', array('po_reffer_no' => $purchaseorder));
 
             if(!empty($sales_orders->so_reffer_no)){
 
