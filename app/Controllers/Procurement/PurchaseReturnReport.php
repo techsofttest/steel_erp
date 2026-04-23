@@ -861,9 +861,9 @@ class PurchaseReturnReport extends BaseController
         }
 
 
-   public function FetchSalesOrder(){
+    public function FetchSalesOrder(){
 
-         $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $lpo_ref = !empty($_GET['lpo_ref']) ? $_GET['lpo_ref'] : "";
         if ($lpo_ref == "") {
@@ -874,15 +874,14 @@ class PurchaseReturnReport extends BaseController
         } else {
             $cond = array('pop_purchase_order' => $lpo_ref);
             $joins1 = array(
-                 array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'pop_sales_order',
+                ),
             );
             $data['result'] = $this->pro_model->FetchLikeJoinBy('pro_purchase_order_product', $cond,'so_reffer_no',$term, $joins1, 'pop_sales_order');
 
-        
         }
         $data['total_count'] = count($data['result']);
         return json_encode($data);
@@ -890,7 +889,7 @@ class PurchaseReturnReport extends BaseController
     }
 
     
-     public function FetchProducts()
+    public function FetchProducts()
     {
         $salesorder = $this->request->getPost('salesorder');
         $purchaseorder = $this->request->getPost('purchaseorder');
@@ -902,25 +901,28 @@ class PurchaseReturnReport extends BaseController
         $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
 
-
-
         if ($salesorder != '') {
+
             $page  = max(1, (int) $this->request->getVar('page'));
             $limit = 10;
             $offset = ($page - 1) * $limit;
 
-            $data['result'] = $this->pro_model
-                ->FetchDistinctProductsBySalesOrder($salesorder, $term, $limit, $offset);
+            $data['result'] = $this->pro_model->FetchDistinctProductsBySalesOrder($salesorder, $term, $limit, $offset);
 
             $data['total_count'] = 10; // or real count query
 
         } elseif ($purchaseorder != '') {
+
             $data['result'] = $this->pro_model->FetchDistinctProductsByPurchaseOrder($purchaseorder, $term);
+
         } else {
+            
             $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
         }
 
         $data['total_count'] = count($data['result']);
+
+        
 
         return json_encode($data);
     }

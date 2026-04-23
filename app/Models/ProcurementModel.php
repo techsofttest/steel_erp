@@ -928,7 +928,7 @@ class ProcurementModel extends Model
             $query->groupBy($table . '.' . $group_by_col);
         }
 
-        $query->join('pro_purchase_voucher', 'pro_purchase_order.po_id = pro_purchase_voucher.pv_purchase_order', 'right');
+        $query->join('pro_purchase_voucher', 'pro_purchase_order.po_id = pro_purchase_voucher.pv_purchase_order', 'left');
 
         $result = $query->get()->getResult();
 
