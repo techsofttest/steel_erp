@@ -2936,6 +2936,69 @@ class ProcurementModel extends Model
         
     }
 
+    public function FetchPurchaseVoucherRp($puid,$sid){
+
+        $query = $this->db->table('pro_purchase_voucher');
+
+        if(!empty($puid)){
+
+            $query->where('pv_purchase_order', $puid);
+
+        }
+       
+        $result = $query->get()->getResult();
+
+        $i = 0;
+
+        foreach ($result as $purchase) {
+
+            $result[$i]->product_details = $this->PurchseVoucherProdRp(!empty($puid) ? $purchase->pv_id  : "",$sid);
+
+            $i++;
+
+        }
+
+       
+        return $result;
+
+    }
+
+
+    public function PurchseVoucherProdRp($pvid,$sid){
+        
+        $table = $this->db->prefixTable('pro_purchase_voucher_prod');
+
+        $query = $this->db->table($table);
+
+        $query->select("DISTINCT prod.product_id, prod.product_details, {$table}.*", false);
+
+        $query->join(
+            'crm_products prod',
+            'prod.product_details = pro_purchase_voucher_prod.pvp_prod_dec',
+            'left'
+        );
+
+        if(!empty($pvid)){
+
+            $query->where('pvp_reffer_id', $pvid);
+
+        }
+
+        if(!empty($sid)){
+
+            $query->where('pvp_sales_order', $sid);
+        }
+
+        
+
+        $result = $query->get()->getResult();
+
+        //echo $this->db->getLastQuery(); exit();
+       
+        return $result;
+        
+    }
+
    
     
     public function FetchPurchaseOrder($pid,$sid){

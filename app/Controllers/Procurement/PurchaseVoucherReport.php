@@ -1016,7 +1016,7 @@ class PurchaseVoucherReport extends BaseController
             $purchaseorder = "";
         }
 
-        $purchase_voucher = $this->pro_model->FetchPurchaseVoucher($purchaseorder,$sales_orders);
+        $purchase_voucher = $this->pro_model->FetchPurchaseVoucherRp($purchaseorder,$sales_orders);
 
         foreach($purchase_voucher as $pur_vouch){
 
