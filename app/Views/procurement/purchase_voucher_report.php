@@ -318,7 +318,7 @@
                                                     <col style="width:300px;">
                                                     <col style="width:100px;">
                                                     <col style="width:120px;">
-                                                    <col style="width:90px;">
+                                                    <col style="width:100px;">
                                                     <col style="width:500px;">
                                                     <col style="width:80px;">
                                                     <col style="width:80px;">
@@ -370,7 +370,7 @@
                                                                         <!-- 🔹 Added nested colgroup matching parent widths -->
                                                                         <colgroup>
                                                                             <col style="width:120px;"> <!-- MRN Ref -->
-                                                                            <col style="width:90px;"> <!-- Amount -->
+                                                                            <col style="width:100px;"> <!-- Amount -->
                                                                             <col style="width:500px;"> <!-- Product -->
                                                                             <col style="width:80px;"> <!-- Quantity -->
                                                                             <col style="width:80px;"> <!-- Rate -->
