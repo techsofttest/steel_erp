@@ -893,9 +893,11 @@ class ProcurementModel extends Model
             ->select('*');
         // Join additional tables if specified
         if (!empty($joins)) {
+
             foreach ($joins as $join) {
                 $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
             }
+            
         }
 
         if (!empty($from_date)) {
@@ -2869,14 +2871,14 @@ class ProcurementModel extends Model
     // common_use
     public function FetchPurchaseVoucher($puid,$sid){
 
-        $query = $this->db->table('pro_purchase_voucher');
+        $query = $this->db->table('pro_purchase_order');
 
         
 
 
         if(!empty($puid)){
 
-            $query->where('pv_purchase_order', $puid);
+            $query->where('po_id', $puid);
 
         }
        
@@ -2888,7 +2890,7 @@ class ProcurementModel extends Model
 
         foreach ($result as $purchase) {
 
-            $result[$i]->product_details = $this->PurchseVoucherProd(!empty($puid) ? $purchase->pv_id : "",$sid);
+            $result[$i]->product_details = $this->PurchseVoucherProd(!empty($puid) ? $purchase->po_id  : "",$sid);
 
             $i++;
 
@@ -2901,7 +2903,7 @@ class ProcurementModel extends Model
 
     public function PurchseVoucherProd($pvid,$sid){
         
-        $table = $this->db->prefixTable('pro_purchase_voucher_prod');
+        $table = $this->db->prefixTable('pro_purchase_order_product');
 
         $query = $this->db->table($table);
 
@@ -2909,30 +2911,32 @@ class ProcurementModel extends Model
 
         $query->join(
             'crm_products prod',
-            'prod.product_details = pro_purchase_voucher_prod.pvp_prod_dec',
+            'prod.product_id = pro_purchase_order_product.pop_prod_desc',
             'left'
         );
 
         if(!empty($pvid)){
 
-            $query->where('pvp_reffer_id', $pvid);
+            $query->where('pop_purchase_order', $pvid);
 
         }
 
         if(!empty($sid)){
 
-            $query->where('pvp_sales_order', $sid);
+            $query->where('pop_sales_order', $sid);
         }
 
         
 
         $result = $query->get()->getResult();
 
-        
+        //echo $this->db->getLastQuery(); exit();
        
         return $result;
         
     }
+
+   
     
     public function FetchPurchaseOrder($pid,$sid){
 
