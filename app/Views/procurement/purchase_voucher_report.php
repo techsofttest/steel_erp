@@ -423,6 +423,7 @@
                                                                         <col style="width:80px;">
                                                                     </colgroup>
                                                                     <tr>
+                                                                        
                                                                         <th></th>
                                                                         <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($total); ?></th>
                                                                         <th></th>
@@ -430,6 +431,7 @@
                                                                         <th></th>
                                                                         <th></th>
                                                                         <th class="text-end" style="white-space: nowrap;"><?php echo format_currency($pv_total); ?></th>
+
                                                                     </tr>
                                                                 </table>
                                                             </td>

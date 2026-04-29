@@ -1113,6 +1113,8 @@ class CrmReportModel extends Model
 
         $query->join('pro_purchase_return','pro_purchase_return.pr_id =pro_purchase_return_prod.prp_purchase_return_id','left');
 
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id = pro_purchase_return.pr_vendor_name','left');
+
         //$query->groupBy('pro_purchase_return.pr_reffer_id');
 
         $result = $query->get()->getResult();

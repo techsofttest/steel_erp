@@ -251,6 +251,7 @@
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         
                                                                         <label for="basicInput" class="form-label">Lpo Ref</label>
+                                                                        
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
@@ -1842,7 +1843,7 @@
 
                     $('.org_amount_total').val(data.total_amount);
 
-                    console.log(data.total_amount);
+                    //console.log(data.total_amount);
 
                     $('#SelectProduct').modal("hide");
 
@@ -1855,6 +1856,8 @@
                     $('#purchase_form').attr('data_fill','true');
 
                     $(".total_table").show();
+
+                    alertify.error(data.pending_amount_alert).delay(2).dismissOthers();
 
                 }
 
@@ -2035,8 +2038,54 @@ $("body").on('keyup', '.add_prod_qty', function() {
         alertify.error('Quantity should not be greater than ' + total_qty).dismissOthers();
     }
 
-     TotalAmount();
+    TotalAmount();
+
 });
+
+
+
+/**/
+
+$("body").on('keyup', '.add_prod_rate', function() { 
+
+    var $productSelect = $(this);
+
+    var $productSelectElement = $productSelect.closest('.add_prod_row').find('.add_prod_rate');
+    var rate = parseFloat($productSelectElement.val().replace(/,/g, "")) || 0;
+
+    var discount = parseFloat($productSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
+
+    var $quantitySelectElement = $productSelect.closest('.add_prod_row').find('.add_prod_qty');
+    var quantity = parseFloat($quantitySelectElement.val()) || 0;
+
+    var $totalprodSelectElement = $productSelect.closest('.add_prod_row').find('.add_prod_orginal_price');
+    var total_amount = parseFloat($totalprodSelectElement.val()) || 0;
+
+    var multipliedTotal = rate * quantity;
+    var per_amount = (discount / 100) * multipliedTotal;
+    var originalPrice = multipliedTotal - per_amount;
+
+    var formattedPrice = Number(originalPrice.toFixed(2)).toLocaleString("en-US", { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+    });
+
+    var $amountElement = $productSelect.closest('.add_prod_row').find('.add_prod_amount');
+    $amountElement.val(formattedPrice);
+
+    if (rate > total_amount) {
+        $productSelectElement.val("");  
+        $amountElement.val("");
+        alertify.error('Amount should not be greater than ' + total_amount).dismissOthers();
+    }
+
+    TotalAmount();
+
+
+});
+
+
+/**/
 
 
 

@@ -560,7 +560,7 @@ class PurchaseReturn extends BaseController
                                             <td style="text-align:left;padding: 0px 8px;">'.$product->ca_name.'</td>
                                             <td><input type="number" name="prp_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center"  required></td>
                                             <td><input type="text" name="prp_unit[]" value="'.$product->pvp_unit.'" class="form-control text-center" required readonly></td>
-                                            <td><input type="text" name="prp_rate[]" value="'.format_currency($product->pvp_rate).'"  class="form-control add_prod_rate text-end" required readonly></td>
+                                            <td><input type="text" name="prp_rate[]" value="'.format_currency($product->pvp_rate).'"  class="form-control add_prod_rate text-end" required ></td>
                                             <td><input type="text" name="prp_discount[]" value="'.$product->pvp_discount.'"  class="form-control add_discount text-center" required readonly></td>
                                             <td><input type="text" name="prp_amount[]" value="'.format_currency($originalPrice).'"  class="form-control add_prod_amount text-end" required readonly></td>
                                             <input type="hidden" name="prp_id[]" value="'.$product->pvp_id.'">
@@ -568,6 +568,7 @@ class PurchaseReturn extends BaseController
                                             <input type="hidden" name="prp_prod_desc[]" value="'.$product->pvp_prod_dec.'">
                                             <input type="hidden" name="prp_debit[]" value="'.$product->ca_name.'" class="form-control text-center" readonly>
                                             <input type="hidden" name="" value="'.$current_qty.'" class="add_prod_final_qty">
+                                            <input type="hidden" name="" value="'.$originalPrice.'" class="add_prod_orginal_price">
                                         </tr>';
  
                                     
@@ -580,12 +581,14 @@ class PurchaseReturn extends BaseController
                                     
             }
 
-           
+            
            
 
             //$new_amount = $voucher_single->pv_total - $voucher_single->pv_paid;
 
             $new_amount = $new_amount - $voucher_single->pv_paid;
+
+            $data['pending_amount_alert'] = "Only " . number_format($new_amount, 2) . " can be returned.";
            
             $data['total_amount'] = format_currency($new_amount);
 

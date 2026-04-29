@@ -140,9 +140,9 @@ class PurchaseVoucher extends BaseController
 
         $data['debit_accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');    
 
-        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');    
+        $data['products']       = $this->common_model->FetchAllOrder('crm_products','product_id','desc');    
             
-        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+        $data['products']       = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
         
         $join =  array(
             
@@ -155,12 +155,6 @@ class PurchaseVoucher extends BaseController
          
         );
 
-        //$data['material_received']   = $this->pro_model->FetchAllOrderJoin('pro_material_received_note','mrn_id','desc',$join,'mrn_purchase_order',array('mrn_status' => 0));   
-        
-       // $data['material_received']   = $this->pro_model->PurchaseVoucher('pro_material_received_note',$join); 
-
-       
-        
         $data['content'] = view('procurement/purchase-voucher',$data);
 
         return view('procurement/pro-module',$data);
@@ -1435,6 +1429,20 @@ class PurchaseVoucher extends BaseController
 
         $purchase_voucher = $this->common_model->SingleRow('pro_purchase_voucher',$cond);
 
+        $debit_invoices = $this->common_model->SingleRow('accounts_payment_debit_invoices',array('pdi_invoice' =>$purchase_voucher->pv_id));
+
+        if(!empty($debit_invoices)){
+             
+            $data['status'] = 0;
+           
+            $data['msg'] ="data in use can't delete";
+
+            echo json_encode($data);
+
+           exit();
+
+        }
+
 
         if(!empty($purchase_voucher->pv_purchase_order)){
  
@@ -1480,6 +1488,7 @@ class PurchaseVoucher extends BaseController
 
 
         }
+        
         else{
             
             $this->common_model->DeleteData('pro_purchase_voucher',$cond);
@@ -1493,10 +1502,6 @@ class PurchaseVoucher extends BaseController
             $data['msg'] ="Data Deleted Successfully";
 
         }
-        
-        
-         
-       
         
 
         echo json_encode($data);
