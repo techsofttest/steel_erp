@@ -2218,29 +2218,6 @@
         });
 
 
-        /*$("body").on("input", ".discount_clz_id", function () {
-            var $this = $(this);
-            var rawValue = $this.val().replace(/[^0-9.]/g, ""); 
-
-            
-            if ((rawValue.match(/\./g) || []).length > 1) {
-                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
-            }
-
-            $this.val(rawValue); 
-        });
-
-
-        $("body").on("blur", ".discount_clz_id", function () {
-            var $this = $(this);
-            var rawValue = $this.val().replace(/,/g, ""); 
-
-            if (rawValue !== "") {
-                var formattedValue = formatNumberWithCommas(rawValue);
-                $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); 
-            }
-        });*/
 
         $("body").on("input", ".discount_clz_id", function () {
 
@@ -2255,7 +2232,7 @@
             // Limit to 4 decimal places
             if (rawValue.indexOf(".") !== -1) {
                 var parts = rawValue.split(".");
-                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                parts[1] = parts[1].substring(0, 4); 
                 rawValue = parts[0] + "." + parts[1];
             }
 
@@ -2318,7 +2295,8 @@
 
 
 
-        $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+        //$("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+        $("body").on("input change", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
 
             var $this = $(this);
 
@@ -2329,6 +2307,7 @@
             // Remove commas before performing calculations
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
+           
 
             //var quantity = parseFloat(quantityElement.val().replace(/,/g, "")) || 0;
 

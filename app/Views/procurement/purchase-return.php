@@ -2073,14 +2073,15 @@ $("body").on('keyup', '.add_prod_rate', function() {
     var $amountElement = $productSelect.closest('.add_prod_row').find('.add_prod_amount');
     $amountElement.val(formattedPrice);
 
-    if (rate > total_amount) {
+    if(rate > total_amount) {
+
         $productSelectElement.val("");  
         $amountElement.val("");
-        alertify.error('Amount should not be greater than ' + total_amount).dismissOthers();
+        alertify.error('Amount should not be greater than' + total_amount).dismissOthers();
+        
     }
 
     TotalAmount();
-
 
 });
 
@@ -2112,12 +2113,13 @@ $("body").on('keyup', '.add_prod_rate', function() {
         // Format with commas
         //var formattedPrice = Number(rawPrice).toLocaleString(undefined, { maximumFractionDigits: 2 });
 
-         var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
              
-            console.log(formattedPrice);
+        console.log(formattedPrice);
 
         // Set formatted value in input
         $(".amount_total").val(formattedPrice);
+
     }
 
 
