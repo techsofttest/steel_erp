@@ -1542,7 +1542,7 @@
 
                             if(data.status === "false")
                             {
-                                alertify.error('Duplicate Reffer Number').delay(3).dismissOthers();
+                                alertify.error('Please Enter Product Details').delay(3).dismissOthers();
 
                             }
                            
@@ -2309,21 +2309,14 @@
             var quantity = parseFloat(quantityElement.val()) || 0;
            
 
-            //var quantity = parseFloat(quantityElement.val().replace(/,/g, "")) || 0;
-
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;
             var finalPrice = multipliedTotal - discountAmount;
 
-            // Format calculated price with commas
+            
             var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             
 
-
-
-
-            
-            //console.log(formattedPrice);
 
             var amountElement = $this.closest(".prod_row2").find(".amount_clz_id");
             amountElement.val(formattedPrice);
@@ -2333,39 +2326,7 @@
         });
 
         
-        /*$("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
-            
-            var $discountSelect = $(this);
-
-            var discount = parseFloat($discountSelect.closest('.prod_row2').find('.discount_clz_id').val())||0;
-
-            var $discountSelectElement = $discountSelect.closest('.prod_row2').find('.rate_clz_id');
-
-            var rate = $discountSelectElement.val();
-
-            var $quantitySelectElement = $discountSelect.closest('.prod_row2').find('.qtn_clz_id');
-
-            var quantity = parseFloat($quantitySelectElement.val())||0;
-
-            var parsedRate = parseFloat(rate);
-
-            var parsedQuantity = quantity; 
-
-            var multipliedTotal = parsedRate * parsedQuantity;
-
-            var per_amount = (discount/100)*multipliedTotal;
-
-            var orginalPrice = multipliedTotal - per_amount;
-
-            var orginalPrice = orginalPrice.toFixed(2); 
-           
-            var $amountElement = $discountSelect.closest('.prod_row2').find('.amount_clz_id');
-
-            $amountElement.val(orginalPrice);
-
-            TotalAmount();
-
-        });*/
+        
 
         /**/
 
@@ -2397,8 +2358,6 @@
 
             // Set formatted value in input
             $(".amount_total").val(formattedPrice);
-
-
 
         }
 
@@ -2816,7 +2775,7 @@
 
 
 
-        $("body").on("keyup", ".edit_add_discount, .edit_add_qty, .edit_add_rate", function () {
+        $("body").on("input change", ".edit_add_discount, .edit_add_qty, .edit_add_rate", function () {
             
             var $this = $(this);
 
@@ -2843,39 +2802,8 @@
             TotalAmount();
         });
 
-        /*$("body").on('keyup', '.edit_add_discount, .edit_add_qty, .edit_add_rate', function(){ 
-
-            var $discountSelect = $(this);
-
-            var discount = parseFloat($discountSelect.closest('.edit_add_prod_row').find('.edit_add_discount').val())||0;
-
-            var $discountSelectElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_rate');
-
-            var rate = $discountSelectElement.val();
-
-            var $quantitySelectElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_qty');
-
-            var quantity = parseFloat($quantitySelectElement.val())||0;
-
-            var parsedRate = parseFloat(rate);
-
-            var parsedQuantity = quantity; 
-
-            var multipliedTotal = parsedRate * parsedQuantity;
-
-            var per_amount = (discount/100)*multipliedTotal;
-
-            var orginalPrice = multipliedTotal - per_amount;
-
-            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
-            
-            var $amountElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_amount');
-
-            $amountElement.val(orginalPrice);
-
-            
-        });*/
-
+        
+        
         
 
         /*####*/
@@ -2886,20 +2814,8 @@
         function EditProdTotal()
         {
 
-            /*var total= 0;
-
-            $('body .edit_product_amount').each(function()
-            {
-                var sub_tot = parseFloat($(this).val());
-
-                total += parseFloat(sub_tot.toFixed(2))||0;
             
-            });
-
-            total = total.toFixed(2);
-
-            $('.edit_amount_total').val(total);*/
-
+        
 
             var total = 0;
 
@@ -3271,7 +3187,7 @@
 
 
 
-        $("body").on("keyup", ".edit_prod_discount, .edit_prod_qty, .edit_prod_rate", function () {
+        $("body").on("input change", ".edit_prod_discount, .edit_prod_qty, .edit_prod_rate", function () {
             
             var $this = $(this);
 
@@ -3296,37 +3212,8 @@
             
         });
 
-        /*$("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function(){ 
-
-            var $discountSelect = $(this);
-
-            var discount = parseFloat($discountSelect.closest('.edit_prod_row').find('.edit_prod_discount').val())||0;
-
-            var $discountSelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_rate');
-
-            var rate = $discountSelectElement.val();
-
-            var $quantitySelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_qty');
-
-            var quantity = parseFloat($quantitySelectElement.val())||0;
-
-            var parsedRate = parseFloat(rate);
-
-            var parsedQuantity = quantity; 
-
-            var multipliedTotal = parsedRate * parsedQuantity;
-
-            var per_amount = (discount/100)*multipliedTotal;
-
-            var orginalPrice = multipliedTotal - per_amount;
-
-            var orginalPrice = orginalPrice.toFixed(2); 
-
-            var $amountElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_amount');
-
-            $amountElement.val(orginalPrice);
-
-        });*/
+       
+        
 
 
         /*####*/
@@ -3430,9 +3317,17 @@
 
                     console.log(data.status);
 
+                    console.log(data.old_qty);
+
+                    console.log(qty);
+
                     if(data.status==="true")
-                    {
-                        if(data.old_qty > qty)
+                    {   
+                        var old_qty = parseFloat(data.old_qty) || 0;
+
+                        var new_qty = parseFloat(qty) || 0;
+
+                        if(old_qty > qty)
                         {
                             $('.edit_prod_qty').val("");
 
@@ -3440,8 +3335,6 @@
                 
                         }
                     }
-
-                    
 
                 
                 }

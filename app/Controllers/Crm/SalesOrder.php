@@ -176,8 +176,7 @@ class SalesOrder extends BaseController
     // add account head
     Public function Add()
     {  
-        
-        
+      
 
         $return['print'] = "";
 
@@ -190,8 +189,6 @@ class SalesOrder extends BaseController
             $quotation_ref =0;
         }
         
-
-        //$uid = $this->common_model->FetchNextId('crm_sales_orders',"SO");
 
         $sales_datas = $this->common_model->FetchWhere('crm_sales_orders',array('so_reffer_no' => $this->request->getPost('so_reffer_no')));
         
@@ -235,24 +232,19 @@ class SalesOrder extends BaseController
             'so_added_date'             => date('Y-m-d'),
         ];
 
-        
-        
+        if(!empty($_POST['spd_unit'])){
 
-        // Handle file upload
-        /*if ($_FILES['so_file']['name'] !== '') 
-		{   
-           
+            $sales_order_id = $this->common_model->InsertData('crm_sales_orders',$insert_data);
 
-            $soAttachFileName = $this->uploadFile('so_file','uploads/SalesOrder');
-            $insert_data['so_file'] = $soAttachFileName;
-        }*/
+        }
+        else{
 
-        $sales_order_id = $this->common_model->InsertData('crm_sales_orders',$insert_data);
+           $return['status'] = "false";
+        }
 
-
-
+       
         /*product table section start*/
-
+        $total_amount = 0; 
         if(!empty($_POST['spd_unit']))
         {
             $count =  count($_POST['spd_unit']);
@@ -273,6 +265,23 @@ class SalesOrder extends BaseController
                         $quot_prod_id = 0;
                     }
 
+                    /*calculation section start*/
+
+                    $quantity = (float) preg_replace('/[,]/', '', $_POST['spd_quantity'][$j]);
+
+                    $rate = (float) preg_replace('/[,]/', '', $_POST['spd_rate'][$j]);
+
+                    $discount = (float) $_POST['spd_discount'][$j];
+
+                    $multipliedTotal = $quantity * $rate;
+
+                    $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                    $finalAmount = $multipliedTotal - $discountAmount;
+
+                    /**/
+
+
                     $prod_data  	= array(  
                         
                         'spd_product_details'   =>  $_POST['spd_product_details'][$j],
@@ -280,15 +289,18 @@ class SalesOrder extends BaseController
                         'spd_quantity'          =>  preg_replace('/[,]/', '',$_POST['spd_quantity'][$j]),
                         'spd_rate'              =>  preg_replace('/[,]/', '',$_POST['spd_rate'][$j]),
                         'spd_discount'          =>  $_POST['spd_discount'][$j],
-                        'spd_amount'            =>  preg_replace('/[,]/', '',$_POST['spd_amount'][$j]),
+                        //'spd_amount'            =>  preg_replace('/[,]/', '',$_POST['spd_amount'][$j]),
+                        'spd_amount'             => number_format($finalAmount, 2, '.', ''),
                         'spd_quot_prod_id'      =>  $quot_prod_id,
                         'spd_sales_order'       =>  $sales_order_id,
     
                     );
 
-                    
+                    $total_amount += $finalAmount;
                     
                     $id = $this->common_model->InsertData('crm_sales_product_details',$prod_data);
+
+                    
 
                     if(!empty($_POST['quot_prod_id'][$j]))
                     {
@@ -316,25 +328,24 @@ class SalesOrder extends BaseController
                     if(!empty($_POST['print_btn']))
                     {
                        
-                       // $return['print'] =  base_url() . 'Crm/SalesOrder/Pdf/' . urlencode($sales_order_id);
-
                        $return['print'] =  $sales_order_id;
 
                     }
                    
             
                 } 
-            }
-        }
 
-        $return['status'] = "true";
+                $this->common_model->EditData(array('so_amount_total' => $total_amount),array('so_id' => $sales_order_id),'crm_sales_orders');
+
+            }
+
+            $return['status'] = "true";
+        }
         
+
+       
         
-        /*}
-        else
-        {
-            $return['status'] = "false";
-        }*/
+       
 
         echo json_encode($return);
 

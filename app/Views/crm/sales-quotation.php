@@ -3424,8 +3424,7 @@
             var rateElement = $this.closest(".prod_row").find(".rate_clz_id");
             var quantityElement = $this.closest(".prod_row").find(".qtn_clz_id");
 
-            // Remove commas before performing calculations
-           // var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+          
            var rate = parseFloat((rateElement.val() || "0").replace(/,/g, "")) || 0;
            var quantity = parseFloat(quantityElement.val()) || 0;
 
@@ -4775,6 +4774,7 @@
 
 
         $("body").on("keyup", ".edit_add_prod_dis, .edit_add_prod_qty, .edit_add_prod_rate", function () {
+
             var $this = $(this);
 
             var discount = parseFloat($this.closest(".edit_add_prod_det_row").find(".edit_add_prod_dis").val()) || 0;
@@ -4795,7 +4795,7 @@
             var amountElement = $this.closest(".edit_add_prod_det_row").find(".edit_add_prod_amount");
             amountElement.val(formattedPrice);
 
-            //TotalAmount();
+            
         });
          
 

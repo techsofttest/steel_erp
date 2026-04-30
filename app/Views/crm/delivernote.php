@@ -1696,22 +1696,22 @@ span.select2.customer_width, span.select2 {
 
             var deliverySelectElement = dataSelect.closest('.prod_row').find('.delivery_qty');
             
-            var delivery = parseFloat(deliverySelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+            var delivery = parseFloat(deliverySelectElement.val()) || 0; 
 
             var currentSelectElement = dataSelect.closest('.prod_row').find('.current_delivery');
 
-            var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+            var current = parseFloat(currentSelectElement.val()) || 0; 
 
 
             var dicountSelectElement = dataSelect.closest('.prod_row').find('.dicount_clz_id');
 
-            var discount = parseFloat(dicountSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+            var discount = parseFloat(dicountSelectElement.val()) || 0; 
 
             /**/
 
             var ratetSelectElement = dataSelect.closest('.prod_row').find('.rate_clz_id');
 
-            var rate = parseFloat(ratetSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+            var rate = parseFloat(ratetSelectElement.val()) || 0; 
                  
             var multipliedTotal = current *  rate;
 
@@ -1719,7 +1719,7 @@ span.select2.customer_width, span.select2 {
             
             var orginalPrice = multipliedTotal - per_amount;
 
-            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+            var orginalPrice = orginalPrice.toFixed(2); 
             
             var $amountElement = dataSelect.closest('.prod_row').find('.del_product_total');
 

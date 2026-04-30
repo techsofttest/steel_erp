@@ -1056,6 +1056,7 @@ class DeliverNote extends BaseController
 
                 
                 foreach($sales_order_details as $sales_det){
+                    
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                 <td class="si_no text-center" style="padding:10px;">'.$i.'</td>
                                                 <td style="overflow: visible;height: 100%;text-align: left;"><texarea type="text" name="" class="form-control" style="height: 100%;"></textarea>'.$sales_det->product_details.'</td>
@@ -1075,7 +1076,7 @@ class DeliverNote extends BaseController
                                                 <input type="hidden" name="total_prod_amount" value="" class="total_prod_amount">
                                                     ';
                                                     
-                                                    } $i++;
+                                                } $i++;
 
                
             }
