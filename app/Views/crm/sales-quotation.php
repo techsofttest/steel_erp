@@ -3950,7 +3950,7 @@
         });
         
 
-        $("body").on("keyup", ".edit_cost_qty, .edit_cost_rate", function () {
+        $("body").on("input change", ".edit_cost_qty, .edit_cost_rate", function () {
             var $this = $(this);
 
            
@@ -4177,7 +4177,7 @@
         });
 
 
-        $("body").on("keyup", ".edit_add_qty, .edit_add_rate", function () {
+        $("body").on("input change", ".edit_add_qty, .edit_add_rate", function () {
             var $this = $(this);
 
             
