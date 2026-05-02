@@ -2949,7 +2949,7 @@
  
                 //$(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td class='open-select2'><select class='form-select add_prod add_select2_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)' required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td class='open-select2'><select class='form-select add_prod add_select2_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)'  required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
 			}
             
@@ -3416,7 +3416,7 @@
 
         /* Product detail calculation */
         //$("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
-        $("body").on("input", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+        $("body").on("input change", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
 
             var $this = $(this);
 
@@ -3427,6 +3427,14 @@
           
            var rate = parseFloat((rateElement.val() || "0").replace(/,/g, "")) || 0;
            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            if (discount > 100)
+            {
+                discount = 100;
+
+                
+            }
+           
 
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;
@@ -3439,6 +3447,7 @@
             amountElement.val(formattedPrice);
 
             TotalAmount();
+
             
         });
 
@@ -3599,7 +3608,7 @@
         });
 
 
-        $("body").on("keyup", ".cost_qty_clz, .cost_rate_clz", function () {
+        $("body").on("input change", ".cost_qty_clz, .cost_rate_clz", function () {
             var $this = $(this);
 
            
@@ -4478,7 +4487,7 @@
 
 
 
-        $("body").on("keyup", ".edit_prod_dis, .edit_prod_qty, .edit_prod_rate", function () {
+        $("body").on("input change", ".edit_prod_dis, .edit_prod_qty, .edit_prod_rate", function () {
             var $this = $(this);
 
             var discount = parseFloat($this.closest(".edit_prod_row").find(".edit_prod_dis").val()) || 0;
@@ -4753,7 +4762,7 @@
             // Limit to 4 decimal places
             if (rawValue.indexOf(".") !== -1) {
                 var parts = rawValue.split(".");
-                parts[1] = parts[1].substring(0, 4); // 👈 change here (4 digits)
+                parts[1] = parts[1].substring(0, 4); 
                 rawValue = parts[0] + "." + parts[1];
             }
 
@@ -4773,7 +4782,7 @@
         });
 
 
-        $("body").on("keyup", ".edit_add_prod_dis, .edit_add_prod_qty, .edit_add_prod_rate", function () {
+        $("body").on("input change", ".edit_add_prod_dis, .edit_add_prod_qty, .edit_add_prod_rate", function () {
 
             var $this = $(this);
 

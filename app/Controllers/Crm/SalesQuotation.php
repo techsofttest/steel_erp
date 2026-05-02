@@ -259,6 +259,8 @@ class SalesQuotation extends BaseController
         ];
 
         $data['quotation_id'] = $this->common_model->InsertData('crm_quotation_details',$insert_data);
+        
+        $total_amount = 0;
 
         if(!empty($_POST['qpd_product_description']))
         {
@@ -276,6 +278,23 @@ class SalesQuotation extends BaseController
                     {
                         $enq_prod_id ="";
                     }
+                    
+                    /*calculation start*/
+
+                    $quantity = (float) preg_replace('/[,]/', '', $_POST['qpd_quantity'][$j]);
+
+                    $rate = (float) preg_replace('/[,]/', '', $_POST['qpd_rate'][$j]);
+
+                    $discount = (float) $_POST['qpd_discount'][$j];
+
+                    $multipliedTotal = $quantity * $rate;
+
+                    $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                    $finalAmount = $multipliedTotal - $discountAmount;
+
+                    /*calculation end*/
+
                     $insert_data  	= array(  
                         
                         'qpd_product_description'  =>  $_POST['qpd_product_description'][$j],
@@ -283,13 +302,14 @@ class SalesQuotation extends BaseController
                         'qpd_quantity'             =>  $_POST['qpd_quantity'][$j],
                         'qpd_rate'                 =>  preg_replace('/[,]/', '', $_POST['qpd_rate'][$j]),
                         'qpd_discount'             =>  $_POST['qpd_discount'][$j],
-                        'qpd_amount'               =>  preg_replace('/[,]/', '', $_POST['qpd_amount'][$j]),
+                        //'qpd_amount'             =>  preg_replace('/[,]/', '', $_POST['qpd_amount'][$j]),
+                        'qpd_amount'               =>  number_format($finalAmount, 2, '.', ''),
                         'qpd_enq_prod_id'          =>  $enq_prod_id,
                         'qpd_quotation_details'    =>  $data['quotation_id'],
     
                     );
                     
-                    
+                    $total_amount += $finalAmount;
                     
                     $id = $this->common_model->InsertData('crm_quotation_product_details',$insert_data);
                     
@@ -318,6 +338,8 @@ class SalesQuotation extends BaseController
             }
         }
 
+        $this->common_model->EditData(array('qd_id' => $data['quotation_id']),array('qd_sales_amount' => number_format($total_amount, 2, '.','')),'crm_quotation_details');
+
         echo json_encode($data);
 
     }
@@ -326,6 +348,7 @@ class SalesQuotation extends BaseController
     public function AddTab2()
     {   
        
+        $total_amount = 0; 
 
         if(!empty($_POST['qc_material']))
         {
@@ -337,40 +360,58 @@ class SalesQuotation extends BaseController
             {  
                 for($j=0;$j<=$count-1;$j++)
                 {
-                        
+                    /*calculation section start*/
+
+                    $quantity = (float) preg_replace('/[,]/', '', $_POST['qc_qty'][$j]);
+
+                    $rate = (float) preg_replace('/[,]/', '', $_POST['qc_rate'][$j]);
+
+
+                    $finalAmount = $quantity * $rate;
+
+                    
+
+                    /*calculation section end*/
+                    
                     $insert_data  	= array(  
                         
                         'qc_material'            =>  $_POST['qc_material'][$j],
                         'qc_unit'                =>  $_POST['qc_unit'][$j],
                         'qc_qty'                 =>  $_POST['qc_qty'][$j],
                         'qc_rate'                =>  preg_replace('/[,]/', '', $_POST['qc_rate'][$j]),
-                        'qc_amount'              =>  preg_replace('/[,]/', '', $_POST['qc_amount'][$j]),
-                        'qc_quotation_id'      =>  $quotation,
+                       // 'qc_amount'            =>  preg_replace('/[,]/', '', $_POST['qc_amount'][$j]),
+                       'qc_amount'               =>  number_format($finalAmount, 2, '.', ''),
+                        'qc_quotation_id'        =>  $quotation,
     
                     );
-                
+                    
+                    $total_amount += $finalAmount;
                     
                     $id = $this->common_model->InsertData('crm_quotation_cost_calculation',$insert_data);
 
-                   
             
                 } 
             }
 
             $cond = array('qd_id'=>$quotation);
 
-            
+            $ins_quot = $this->common_model->SingleRow('crm_quotation_details',$cond);
+
+           $perc_cost = $total_amount / $ins_quot->qd_sales_amount;
+
+            $percentage_cost = result * 100;
 
             $update_data = [
-                'qd_cost_amount'           => preg_replace('/[,]/', '',$this->request->getPost('qd_cost_amount')),
+               // 'qd_cost_amount'         => preg_replace('/[,]/', '',$this->request->getPost('qd_cost_amount')),
+                'qd_cost_amount'           => number_format($total_amount, 2, '.', ''),
                 'qd_cost_amount_in_words'  => $this->request->getPost('qd_cost_amount_in_words'),
-                'qd_percentage'            => $this->request->getPost('qd_percentage'),
+                'qd_percentage'            => $percentage_cost,
+                //'qd_percentage'            => $this->request->getPost('qd_percentage'),
             ];
 
 
             $this->common_model->EditData($update_data,$cond,'crm_quotation_details');
-            
-           
+          
         }
          
         $joins = array(
