@@ -399,7 +399,7 @@ class SalesQuotation extends BaseController
 
            $perc_cost = $total_amount / $ins_quot->qd_sales_amount;
 
-            $percentage_cost = result * 100;
+            $percentage_cost = $perc_cost * 100;
 
             $update_data = [
                // 'qd_cost_amount'         => preg_replace('/[,]/', '',$this->request->getPost('qd_cost_amount')),
