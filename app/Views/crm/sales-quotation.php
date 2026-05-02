@@ -2549,8 +2549,17 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
+
+                         var responseData = JSON.parse(data);
+
+                            if(responseData.status === "false"){
+
+                                alertify.error(responseData.msg).delay(3).dismissOthers();
+                                $('.once_form_submit').attr('disabled', false);
+                                return false;
+                            }
                             
-                            var responseData = JSON.parse(data);
+                           
                          
                             $(".quotation_hidden_id").val(responseData.quotation_id);
 

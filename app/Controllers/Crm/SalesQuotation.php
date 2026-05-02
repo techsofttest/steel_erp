@@ -177,6 +177,9 @@ class SalesQuotation extends BaseController
     // add account head
     Public function Add()
     {   
+        $status =0;
+        $data['msg'] ="";
+ 
         $ruid_check = $this->common_model->SingleRow('crm_quotation_details',array('qd_reffer_no' => $this->request->getPost('qd_reffer_no')));
         
         if(empty($ruid_check)){
@@ -261,6 +264,16 @@ class SalesQuotation extends BaseController
         if(!empty($_POST['qpd_product_description'])){
             
             $data['quotation_id'] = $this->common_model->InsertData('crm_quotation_details',$insert_data);
+
+        }else{
+
+            $data['status'] = "false";
+
+            $data['msg'] ="Please Add Products";
+
+            echo json_encode($data);
+
+           exit();
 
         }
 
