@@ -258,7 +258,13 @@ class SalesQuotation extends BaseController
             'qd_added_by'                   => 0,
         ];
 
-        $data['quotation_id'] = $this->common_model->InsertData('crm_quotation_details',$insert_data);
+        if(!empty($_POST['qpd_product_description'])){
+            
+            $data['quotation_id'] = $this->common_model->InsertData('crm_quotation_details',$insert_data);
+
+        }
+
+        
         
         $total_amount = 0;
 
