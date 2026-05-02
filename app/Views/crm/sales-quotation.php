@@ -3435,7 +3435,6 @@
                 
             }
            
-
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;
             var finalPrice = multipliedTotal - discountAmount;
