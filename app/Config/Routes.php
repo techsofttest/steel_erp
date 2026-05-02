@@ -38,6 +38,9 @@ $routes->post('Check', 'Auth::Check'); //For Posting
 $routes->get('Logout', 'Auth::Logout'); //For Posting
 
 
+$routes->post('log-js-error', 'ErrorLogger::log');
+
+
 
 // Route Group
 $routes->group('Admin', ['filter' => ['authGuard']], function($routes){

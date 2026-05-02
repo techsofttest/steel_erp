@@ -1005,4 +1005,28 @@ $(document).on('click', '.open-select2', function (e) {
 </script>
 
 
+<script>
+window.onerror = function(message, source, lineno, colno, error) {
+
+    fetch('/log-js-error', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            message: message,
+            source: source,
+            line: lineno,
+            column: colno,
+            stack: error ? error.stack : null,
+            url: window.location.href,
+            userAgent: navigator.userAgent
+        })
+    });
+
+    return false;
+};
+</script>
+
+
 
