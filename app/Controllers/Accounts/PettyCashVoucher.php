@@ -1853,52 +1853,71 @@ class PettyCashVoucher extends BaseController
         foreach ($invoices as $inv) {
 
             $joins_voucher = array(
-
                 array(
                     'table' => 'pro_purchase_voucher',
                     'pk' => 'pv_id',
                     'fk' => 'pcdi_invoice',
                 )
-
             );
 
-            $linked_voucher = $this->common_model->FetchWhereJoin('accounts_petty_cash_debit_invoices', array('pcdi_debit_id' => $inv->pci_id), $joins_voucher);
+            $linked_vouchers = $this->common_model->FetchWhereJoin('accounts_petty_cash_debit_invoices', array('pcdi_debit_id' => $inv->pci_id), $joins_voucher);
 
+            $po_advance_joins = array(
+                array(
+                    'table' => 'pro_purchase_order',
+                    'pk' => 'po_id',
+                    'fk' => 'pca_purchase_order',
+                ),
+            );
 
+            $advances = $this->common_model->FetchWhereJoin('accounts_petty_cash_advances', array('pca_debit_id' => $inv->pci_id), $po_advance_joins);
 
-            foreach($linked_voucher as $lv){
-
-            if ($first == true) {
-                $cus_name = $inv->ca_name;
-            } else {
-                $cus_name = "";
-            }
-
-
-            $invoice_sec .= "
-    
+            if (empty($linked_vouchers) && empty($advances)) {
+                // Show direct debit if no links or advances
+                $invoice_sec .= "
                     <tr>
-
-                    <td>{$cus_name}</td>
-
-                    <td>{$inv->pv_reffer_id}</td>
-
-                    <td>" .date('d-F-Y', strtotime($inv->pv_date)). "</td>
-
-                    <td>{$inv->pv_total}</td>
-
-                    <td>-</td>
-
-                    <td align='right'>{$inv->pci_payment_amount}</td>
-                    
+                        <td>{$inv->ca_name}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td align='right'>" . format_currency($inv->pci_amount) . "</td>
                     </tr>
+                ";
+            } else {
+                // Show linked vouchers
+                $first = true;
+                foreach ($linked_vouchers as $lv) {
+                    $cus_name = $first ? $inv->ca_name : "";
+                    $invoice_sec .= "
+                        <tr>
+                            <td>{$cus_name}</td>
+                            <td>{$lv->pv_reffer_id}</td>
+                            <td>" . date('d-M-Y', strtotime($lv->pv_date)) . "</td>
+                            <td>" . format_currency($lv->pv_total) . "</td>
+                            <td>-</td>
+                            <td align='right'>" . format_currency($lv->pcdi_payment_amount) . "</td>
+                        </tr>
+                    ";
+                    $first = false;
+                }
 
-            ";
-
-            $first = false;
-
+                // Show advances
+                foreach ($advances as $adv) {
+                    $cus_name = $first ? $inv->ca_name : "";
+                    $invoice_sec .= "
+                        <tr>
+                            <td>{$cus_name}</td>
+                            <td>{$adv->po_reffer_no} (Advance)</td>
+                            <td>" . date('d-M-Y', strtotime($adv->po_date)) . "</td>
+                            <td>" . format_currency($adv->po_amount) . "</td>
+                            <td>-</td>
+                            <td align='right'>" . format_currency($adv->pca_advance_amount) . "</td>
+                        </tr>
+                    ";
+                    $first = false;
+                }
             }
-
         }
 
 
