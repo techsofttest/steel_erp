@@ -721,6 +721,7 @@
             <tr>
 
                 <button class="btn btn-success submit_btn once_form_submit" name="main_submit" type="submit">Save</button>
+                <button style="margin:0px 4px;" class="btn btn-success submit_btn once_form_submit " name="save_and_print" id="save_and_print" type="submit">Save & Print</button>
                 <!--<td><button class="submit_btn">PDF</button></td>-->
             </tr>
         </table>
@@ -1427,6 +1428,12 @@
 
 
                             if (submitButtonName == "main_submit") {
+                                $('#AddModal').modal('hide');
+                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            }
+
+                            if (submitButtonName == "save_and_print") {
+                                window.open("<?php echo base_url(); ?>Accounts/PettyCashVoucher/Print/" + data.id, '_blank');
                                 $('#AddModal').modal('hide');
                                 alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             }

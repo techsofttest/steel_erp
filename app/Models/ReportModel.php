@@ -1589,8 +1589,8 @@ $query .= "UNION ALL
     {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
     {$pr_table}.pr_date AS transaction_date,
     NULL AS method,
-    {$pr_table}.pr_total_amount AS credit_amount,
-    NULL AS debit_amount,
+    {$pr_table}.pr_total_amount AS debit_amount,
+    NULL AS credit_amount,
     'Purchase Return' as voucher_type,
     {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
     {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name

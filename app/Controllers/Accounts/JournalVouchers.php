@@ -280,6 +280,7 @@ class JournalVouchers extends BaseController
         }
 
         $return['status'] = 1;
+        $return['id'] = $id;
 
         echo json_encode($return);    
 

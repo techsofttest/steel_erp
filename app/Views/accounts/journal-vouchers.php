@@ -198,6 +198,7 @@
             <tr>
 
                 <button class="btn btn-success submit_btn once_form_submit" name="main_submit" type="submit">Save</button>
+                <button style="margin:0px 4px;" class="btn btn-success submit_btn once_form_submit " name="save_and_print" id="save_and_print" type="submit">Save & Print</button>
                 <!--<td><button class="submit_btn">PDF</button></td>-->
             </tr>
         </table>
@@ -767,6 +768,17 @@
     
         /*account head add section*/ 
         $(function() {
+
+            var print_after_save = false;
+
+            $('#add_form .submit_btn').click(function(){
+                if($(this).attr('name') == 'save_and_print'){
+                    print_after_save = true;
+                } else {
+                    print_after_save = false;
+                }
+            });
+
             $('#add_form').validate({
                 rules: {
                     required: 'required',
@@ -815,6 +827,11 @@
                             alertify.error(data.error).delay(3).dismissOthers();
                             return false;
                                 
+                            }
+
+                            if(print_after_save)
+                            {
+                                window.open("<?php echo base_url(); ?>Accounts/JournalVouchers/Print/" + data.id, '_blank');
                             }
 
                             $('#add_form')[0].reset();
