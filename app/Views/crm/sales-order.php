@@ -928,7 +928,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text"   name="spd_unit" class="form-control text-center" required></td>
-                                                                <td><input type="number" name="spd_quantity" class="form-control edit_add_qty text-center" required></td>
+                                                                <td><input type="text" name="spd_quantity" class="form-control edit_add_qty text-center" required></td>
                                                                 <td><input type="text" name="spd_rate" class="form-control edit_add_rate text-end" required></td>
                                                                 <td><input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount text-center" required></td>
                                                                 <td><input type="text" name="spd_amount" class="form-control edit_add_amount text-end" ></td>
@@ -2065,7 +2065,7 @@
                 
                // $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                
-               $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td class='open-select2'><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]'   class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' step='0.0001' class='form-control discount_clz_id text-center' required=''></td><td><input type='text' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+               $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td class='open-select2'><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]'   class='form-control unit_clz_id text-center' required=''></td><td><input type='text' name='spd_quantity["+so+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' step='0.0001' class='form-control discount_clz_id text-center' required=''></td><td><input type='text' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
 			}
 
@@ -2292,6 +2292,52 @@
         
         /**/
 
+        $("body").on("input", ".qtn_clz_id", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".rate_clz_id", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
 
 
 
@@ -2773,6 +2819,51 @@
             }
         });*/
 
+        $("body").on("input", ".edit_add_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+        
+        $("body").on("input", ".edit_add_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
 
 
         $("body").on("input change", ".edit_add_discount, .edit_add_qty, .edit_add_rate", function () {
@@ -3184,6 +3275,53 @@
             }
             
         });*/
+
+        $("body").on("input", ".edit_prod_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".edit_prod_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
 
 
 
