@@ -2248,7 +2248,8 @@ InitProductSelectEdit();
        
 
 
-        $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+        $("body").on("input change", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+
             var $this = $(this);
 
             var discount = parseFloat($this.closest(".prod_row").find(".discount_clz_id").val()) || 0;
@@ -2260,7 +2261,8 @@ InitProductSelectEdit();
             var quantity = parseFloat(quantityElement.val()) || 0;
 
             /**/
-            console.log(quantity);
+
+            //console.log(quantity);
             var quantityRealElement = $this.closest(".prod_row").find(".hidden_sales_qty");
             var quantityReal = parseFloat(quantityRealElement.val()) || 0;
 
@@ -2268,11 +2270,12 @@ InitProductSelectEdit();
 
                 //$('.current_cliam_clz').val("")
 
-                alertify.error('Maximum quantity is ' + quantityReal).delay(3).dismissOthers();
+                alertify.error('Maximum quantity is' + quantityReal).delay(3).dismissOthers();
               
                 quantityElement.val('');
 
                 var amountElement = $this.closest(".prod_row").find(".amount_clz_id");
+                
                 amountElement.val('');
 
                 $('.amount_total').val('');
@@ -2298,6 +2301,7 @@ InitProductSelectEdit();
             amountElement.val(formattedPrice);
 
             TotalAmount();
+
         });
         
         /*$("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 

@@ -307,6 +307,8 @@ class ProFormaInvoice extends BaseController
     
                     );
 
+                    
+
                     $this->common_model->InsertData('crm_proforma_product',$insert_data);
 
                     /**/
@@ -976,11 +978,11 @@ class ProFormaInvoice extends BaseController
                 <td class="text-end edit_total_amount">'.format_currency($prod_det->pp_amount).'</td>
                 <td class="text-center">
                     <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                    
                 </td>
                 </tr>'; 
                 /*<a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>*/
                 $i++; 
+
             }
 
             //image section start

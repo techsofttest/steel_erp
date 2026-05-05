@@ -1101,7 +1101,7 @@ class SalesQuotation extends BaseController
                 <td  class="si_no "><input type="text"  value="'.$i.'" class="form-control " readonly></td>
                 <td class="open-select2"><select name="qpd_product_description['.$k.']" class="form-control add_select2_prod ">'.$options_product.'</select></td>
                 <td><input type="text" name="qpd_unit['.$k.']" value="'.$prod_det->pd_unit.'" class="form-control unit_clz_id text-center" required></td>
-                <td><input type="number" name="qpd_quantity['.$k.']" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
+                <td><input type="text" name="qpd_quantity['.$k.']" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
                 <td><input type="text" name="qpd_rate['.$k.']"  class="form-control rate_clz_id text-end" required></td>
                 <td><input type="text" name="qpd_discount['.$k.']" min="0" max="100"  onkeyup=MinMax(this)  class="form-control discount_clz_id text-center" required></td>
                 <td><input type="text" name="qpd_amount['.$k.']" class="form-control amount_clz_id text-end" readonly></td>
@@ -1804,7 +1804,7 @@ class SalesQuotation extends BaseController
             <td class="open-select2"><select name="qpd_product_description" class="form-control product_select2_edit">'.$options_product.'</select></td>
 
             <td><input type="text" name="qpd_unit"  value="'.$prod_det->qpd_unit.'" class="form-control text-center" required></td>
-            <td><input type="number" name="qpd_quantity" value="'.$prod_det->qpd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
+            <td><input type="text" name="qpd_quantity" value="'.$prod_det->qpd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
             <td><input type="text" name="qpd_rate" value="'.$rate.'" class="form-control edit_prod_rate text-end" required></td>
             <td><input type="text" name="qpd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$discount.'" class="form-control edit_prod_dis text-center" required></td>
             <td><input type="text" name="qpd_amount" value="'.$amount.'" class="form-control edit_prod_amount text-end" readonly></td>

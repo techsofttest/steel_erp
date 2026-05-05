@@ -672,7 +672,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text" name="qc_unit[0]"  class="form-control cost_unit_clz text-center" required></td>
-                                                                <td><input type="number" name="qc_qty[0]" class="form-control cost_qty_clz text-center" required></td>
+                                                                <td><input type="text" name="qc_qty[0]" class="form-control cost_qty_clz text-center" required></td>
                                                                 <td style="text-align: center;padding: 10px 10px;"><a href="javascript:void(0)" onclick="costVendor.call(this)">Click</a></td>
                                                                 <td><input type="text" name="qc_rate[0]"  class="form-control cost_rate_clz text-end" required autocomplete="new-password"></td>
                                                                 
@@ -1268,7 +1268,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text" name="qc_unit"  class="form-control edit_cost_unit text-center" required></td>
-                                                                <td><input type="number" name="qc_qty" class="form-control edit_cost_qty text-center" required></td>
+                                                                <td><input type="text" name="qc_qty" class="form-control edit_cost_qty text-center" required></td>
                                                                 <td style="text-align: center;padding: 10px 10px;background: #f5f5f56e;"><a href="javascript:void(0)" onclick="editcostVendor.call(this)">Click</a></td>
                                                                 <td><input type="text" name="qc_rate"  class="form-control edit_cost_rate text-end" required></td>
                                                                 
@@ -1360,7 +1360,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text" name="qc_unit"  class="form-control text-center" required></td>
-                                                                <td><input type="number" name="qc_qty" class="form-control edit_add_qty text-center" required></td>
+                                                                <td><input type="text" name="qc_qty" class="form-control edit_add_qty text-center" required></td>
                                                                 <td style="padding-top: 10px;" class="text-center"><a href="javascript:void(0)" onclick="editAddCostVendor.call(this)" class="text-center">Click</a></td>
                                                                 <td><input type="text" name="qc_rate"  class="form-control edit_add_rate text-end" required></td>
                                                                 
@@ -1519,7 +1519,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text" name="qpd_unit"  class="form-control text-center" required></td>
-                                                                <td><input type="number" name="qpd_quantity" class="form-control edit_add_prod_qty text-center" required></td>
+                                                                <td><input type="text" name="qpd_quantity" class="form-control edit_add_prod_qty text-center" required></td>
                                                                 <td><input type="text" name="qpd_rate" class="form-control edit_add_prod_rate text-end" required></td>
                                                                 <td><input type="text" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis text-center" required></td>
                                                                 
@@ -2958,7 +2958,7 @@
  
                 //$(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td class='open-select2'><select class='form-select add_prod add_select2_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)'  required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td class='open-select2'><select class='form-select add_prod add_select2_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='text' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required='' ></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)'  required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
 			}
             
@@ -3065,7 +3065,7 @@
 
                 //$(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no text-center' style='padding:10px 10px;'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz text-center' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz text-center' required=''></td><td style='text-align: center;padding: 10px 10px;'><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='text' name='qc_rate["+sq+"]' class='form-control cost_rate_clz text-end' required=''></td><td><input type='text' name='qc_amount["+sq+"]' class='form-control cost_amount_clz text-end' readonly></td><td class='remove-btncc text-center' colspan='6' style='padding:10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no text-center' style='padding:10px 10px;'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz text-center' required=''></td><td><input type='text' name='qc_qty["+sq+"]' class='form-control cost_qty_clz text-center' required=''></td><td style='text-align: center;padding: 10px 10px;'><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='text' name='qc_rate["+sq+"]' class='form-control cost_rate_clz text-end' required=''></td><td><input type='text' name='qc_amount["+sq+"]' class='form-control cost_amount_clz text-end' readonly></td><td class='remove-btncc text-center' colspan='6' style='padding:10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
                 
                 InitCostSelect();
@@ -3420,11 +3420,57 @@
             });
         }
 
+        $("body").on("input", ".qtn_clz_id", function () {
 
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".rate_clz_id", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
 
 
         /* Product detail calculation */
         //$("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+        
         $("body").on("input change", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
 
             var $this = $(this);
@@ -3441,7 +3487,6 @@
             {
                 discount = 100;
 
-                
             }
            
             var multipliedTotal = rate * quantity;
@@ -3613,6 +3658,53 @@
                 $this.val(formattedValue);
                
             }
+        });
+        
+        $("body").on("input", ".cost_qty_clz", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".cost_rate_clz", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
         });
 
 
@@ -3957,6 +4049,55 @@
                 
             }
         });
+
+
+        $("body").on("input", ".edit_cost_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".edit_cost_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
         
 
         $("body").on("input change", ".edit_cost_qty, .edit_cost_rate", function () {
@@ -4183,6 +4324,52 @@
                 $this.val(formattedValue);
                
             }
+        });
+
+        $("body").on("input", ".edit_add_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+        $("body").on("input", ".edit_add_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
         });
 
 
@@ -4493,6 +4680,52 @@
 
         });
 
+        $("body").on("input", ".edit_prod_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".edit_prod_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
 
 
         $("body").on("input change", ".edit_prod_dis, .edit_prod_qty, .edit_prod_rate", function () {
@@ -4788,6 +5021,54 @@
                 $this.val(formattedValue);
             }
         });
+
+
+        $("body").on("input", ".edit_add_prod_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+        $("body").on("input", ".edit_add_prod_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
 
 
         $("body").on("input change", ".edit_add_prod_dis, .edit_add_prod_qty, .edit_add_prod_rate", function () {

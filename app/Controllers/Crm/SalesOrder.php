@@ -486,7 +486,7 @@ class SalesOrder extends BaseController
             <td class="open-select2"><select name="spd_product_details['.$si.']" class="form-control droup_product add_prod">'.$options_product.'</select>
             </td>
             <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id text-center" required></td>
-            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'"   class="form-control qtn_clz_id text-center"  required></td>
+            <td> <input type="number" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'"   class="form-control qtn_clz_id text-center"  required></td>
             <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id text-end"   required></td>
             <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.0001"  class="form-control discount_clz_id text-center" required></td>
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id text-end" readonly></td>
@@ -744,7 +744,7 @@ class SalesOrder extends BaseController
         
         $material_requisition = $this->common_model->SingleRow('pro_material_requisition_prod',array('mrp_sales_order' => $this->request->getPost('ID')));
 
-        if((empty($delivery_note)) && (empty($cash_invoice)) && (empty($performa_invoice)  && (empty($material_requisition)) ))
+        if((empty($delivery_note)) && (empty($cash_invoice)) && (empty($performa_invoice)  && (empty($material_requisition))))
         {
             //change status in quotation and product table
            
@@ -769,7 +769,6 @@ class SalesOrder extends BaseController
 
             }
             
-
 
             $this->common_model->DeleteData('crm_sales_orders',$cond);
 
@@ -1280,13 +1279,32 @@ class SalesOrder extends BaseController
             $insert_data['spd_rate'] = preg_replace('/[,]/', '', $insert_data['spd_rate']);
         }
 
-        if (isset($insert_data['spd_amount'])) {
+        /*if (isset($insert_data['spd_amount'])) {
             $insert_data['spd_amount'] = preg_replace('/[,]/', '', $insert_data['spd_amount']);
-        }
+        }*/
 
         if (isset($insert_data['spd_quantity'])) {
             $insert_data['spd_quantity'] = preg_replace('/[,]/', '', $insert_data['spd_quantity']);
         }
+
+        /*calculation section start*/
+
+        $quantity = (float) preg_replace('/[,]/', '', $_POST['spd_quantity']);
+
+        $rate = (float) preg_replace('/[,]/', '', $_POST['spd_rate']);
+
+        $discount = (float) $_POST['spd_discount'];
+
+        $multipliedTotal = $quantity * $rate;
+
+        $discountAmount = ($discount / 100) * $multipliedTotal;
+
+        $finalAmount = $multipliedTotal - $discountAmount;
+        
+        $insert_data['spd_amount'] = number_format($finalAmount, 2, '.', '');
+
+
+        /*calculation section end*/
 
         $sales_det = $this->common_model->InsertData('crm_sales_product_details',$insert_data);
 
@@ -1389,11 +1407,12 @@ class SalesOrder extends BaseController
             <td class="open-select2"> <select name="spd_product_details" class="form-control product_select2_edit droup_product">'.$options_product.'</select></td>
 
             <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control text-center" required></td>
-            <td> <input type="text" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
-            <td> <input type="text" name="spd_rate" value="'.format_currency($prod_det->spd_rate).'" class="form-control edit_prod_rate text-end" required></td>
-            <td> <input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount text-center" required></td>
-            <td> <input type="text" name="spd_amount" value="'.format_currency($prod_det->spd_amount).'" class="form-control edit_prod_amount text-end" readonly></td>
-           <input type="hidden" name="spd_id" class="edit_prod_id" value="'.$prod_det->spd_id.'">
+            <td><input type="number" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
+            <td><input type="text" name="spd_rate" value="'.format_currency($prod_det->spd_rate).'" class="form-control edit_prod_rate text-end" required></td>
+            <td><input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount text-center" required></td>
+            <td><input type="text" name="spd_amount" value="'.format_currency($prod_det->spd_amount).'" class="form-control edit_prod_amount text-end" readonly></td>
+            <input type="hidden" name="spd_id" class="edit_prod_id" value="'.$prod_det->spd_id.'">
+
            </tr>'; 
 
             echo json_encode($data); 
@@ -1412,9 +1431,9 @@ class SalesOrder extends BaseController
         }
 
         
-        if (isset($update_data['spd_amount'])) {
+        /*if (isset($update_data['spd_amount'])) {
             $update_data['spd_amount'] = preg_replace('/[,]/', '', $update_data['spd_amount']);
-        }
+        }*/
 
         if (isset($update_data['spd_quantity'])) {
             $update_data['spd_quantity'] = preg_replace('/[,]/', '', $update_data['spd_quantity']);
@@ -1424,6 +1443,28 @@ class SalesOrder extends BaseController
             unset($update_data['spd_id']);
         }    
         $update_data['spd_deliver_flag'] =0;
+
+
+        /*calculation section start*/
+
+        $quantity = (float) preg_replace('/[,]/', '', $_POST['spd_quantity']);
+
+        $rate = (float) preg_replace('/[,]/', '', $_POST['spd_rate']);
+
+        $discount = (float) $_POST['spd_discount'];
+
+        $multipliedTotal = $quantity * $rate;
+
+        $discountAmount = ($discount / 100) * $multipliedTotal;
+
+        $finalAmount = $multipliedTotal - $discountAmount;
+
+        $update_data['spd_amount'] = number_format($finalAmount, 2, '.', '');
+
+
+        /*calculation section end*/
+
+
 
         $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
 
