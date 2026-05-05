@@ -2132,8 +2132,7 @@
         $(document).on("click", ".del_elem", function() {
             $(this).closest('.invoice_row').remove();
             cc--;
-            //totalCalcutate();                                                                           
-            //grossCalculate();
+            TotalAmount();                                                                           
             slno();
         });
 
@@ -3202,7 +3201,7 @@
 
                     $('#sel_invoices_edit').html(data.invoices);
 
-                    $('#total_amount_edit').html(data);
+                    $('#total_amount_edit').html(add_comma(data.total));
 
                     datatable.ajax.reload(null, false)
                 }

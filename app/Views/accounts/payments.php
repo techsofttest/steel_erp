@@ -1484,6 +1484,7 @@
         $(document).on("click", ".del_elem", function() {
             $(this).closest('.invoice_row').remove();
             cc--;
+            TotalAmount();
             slno();
         });
         /* Invoice Row Delete End */
