@@ -2353,6 +2353,13 @@
             // Remove commas before performing calculations
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
+
+            if (discount > 100)
+            {
+                discount = 100;
+
+            }
+           
            
 
             var multipliedTotal = rate * quantity;
@@ -2878,6 +2885,11 @@
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
 
+            if (discount > 100)
+            {
+                discount = 100;
+
+            }
            
 
             var multipliedTotal = rate * quantity;
@@ -3336,6 +3348,14 @@
             // Remove commas before performing calculations
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
+
+
+            if (discount > 100)
+            {
+                discount = 100;
+
+            }
+           
 
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;
