@@ -2049,7 +2049,7 @@
         $(document).on("click", ".del_elem", function() {
             $(this).closest('.invoice_row').remove();
             cc--;
-            //totalCalcutate();                                                                           
+            TotalAmount();                                                                           
             //grossCalculate();
             slno();
         });

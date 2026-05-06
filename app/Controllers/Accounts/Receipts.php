@@ -290,28 +290,16 @@ class Receipts extends BaseController
         if(!empty($this->request->getPost('r_credit_account')))
         {
 
-            // Find the total of negative values
-            $negativeTotal = array_sum(array_filter($_POST['inv_amount'], fn($value) => $value < 0));
-            
             for($i=0;$i<count($this->request->getPost('inv_amount'));$i++)
             {
 
-                //$check_credit = $this->common_model->SingleRow('accounts_receipt_invoices',array('ri_receipt' => $id,'ri_credit_account' => $_POST['r_credit_account'][$i]));
-
                 $insert_inv_data['ri_receipt'] = $id;
-
-                //$insert_inv_data['ri_date'] = $_POST['inv_date'][$i];
 
                 //Remove comma
                 $_POST['inv_amount'][$i] = str_replace(",","",$_POST['inv_amount'][$i]);
 
                 $insert_inv_data['ri_credit_account'] = $_POST['r_credit_account'][$i];
 
-                if($_POST['inv_amount'][$i]>0)
-                {
-                $_POST['inv_amount'][$i] = $_POST['inv_amount'][$i] - abs($negativeTotal);
-                }
-                
                 $insert_inv_data['ri_amount'] = $_POST['inv_amount'][$i];
 
                 if((empty($insert_inv_data['ri_amount'])) || empty($insert_inv_data['ri_credit_account']))
@@ -2341,9 +2329,11 @@ class Receipts extends BaseController
             $this->common_model->DeleteData('accounts_receipt_invoices',array('ri_id' => $main_id));
 
             
-            $this->FetchEditInvoices($receipt_id);
+            $data = $this->FetchEditInvoices($receipt_id, true);
 
-            $this->RecalculateReceipt($receipt_id);
+            $data['total'] = $this->RecalculateReceipt($receipt_id);
+
+            echo json_encode($data);
 
     }
         
@@ -2364,7 +2354,7 @@ class Receipts extends BaseController
     foreach($invoices as $invoice)
     {
 
-    $receipt_total = $receipt_total += $invoice->ri_amount;
+        $receipt_total += $invoice->ri_amount;
 
     }
 
@@ -2381,7 +2371,7 @@ class Receipts extends BaseController
 
 
 
-    public function FetchEditInvoices($receipt_id)
+    public function FetchEditInvoices($receipt_id, $return = false)
     {
 
 
@@ -2511,7 +2501,14 @@ class Receipts extends BaseController
         }
         
 
-    echo json_encode($data);
+        if($return)
+        {
+            return $data;
+        }
+        else
+        {
+            echo json_encode($data);
+        }
 
 
 
