@@ -2269,6 +2269,30 @@ InitProductSelectEdit();
         });
 
 
+        $("body").on("input", ".qtn_clz_id", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
         $("body").on("input change", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
 
             var $this = $(this);
