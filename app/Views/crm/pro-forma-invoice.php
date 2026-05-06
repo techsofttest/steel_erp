@@ -1301,7 +1301,7 @@ span.select2.customer_width, span.select2 {
                                                                 </td>
 
                                                                 <td><input type="text"   name="pp_unit" class="form-control text-center" required></td>
-                                                                <td><input type="number" name="pp_quantity" class="form-control edit_add_qty text-center" required></td>
+                                                                <td><input type="text" name="pp_quantity" class="form-control edit_add_qty text-center" required></td>
                                                                 <td><input type="text" name="pp_rate" class="form-control edit_add_rate text-end" required></td>
                                                                 <td><input type="text" name="pp_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount text-center" required></td>
                                                                 <td><input type="text" name="pp_amount" class="form-control edit_add_amount text-end" readonly></td>
@@ -1385,7 +1385,7 @@ span.select2.customer_width, span.select2 {
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text" name="pp_unit"  class="form-control forma_edit_unit text-center" required></td>
-                                                                <td><input type="number" name="pp_quantity" class="form-control forma_edit_qty text-center" required></td>
+                                                                <td><input type="text" name="pp_quantity" class="form-control forma_edit_qty text-center" required></td>
                                                                 <td><input type="text" name="pp_rate" class="form-control forma_edit_rate text-end" required></td>
                                                                 <td><input type="text" name="pp_discount"  min="0" max="100"  onkeyup="MinMax(this)" class="form-control forma_edit_discount text-center" required></td>
                                                                 
@@ -2245,7 +2245,28 @@ InitProductSelectEdit();
             }
         });*/
 
-       
+        $("body").on("input", ".rate_clz_id", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
 
 
         $("body").on("input change", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
@@ -2265,6 +2286,9 @@ InitProductSelectEdit();
             //console.log(quantity);
             var quantityRealElement = $this.closest(".prod_row").find(".hidden_sales_qty");
             var quantityReal = parseFloat(quantityRealElement.val()) || 0;
+
+            
+           
 
             if(quantity >  quantityReal){
 
@@ -2287,7 +2311,14 @@ InitProductSelectEdit();
                 return false
 
             }
-           
+
+            if (discount > 100)
+            {
+                discount = 100;
+
+            }
+
+            
             /**/
 
             var multipliedTotal = rate * quantity;
@@ -2596,7 +2627,7 @@ InitProductSelectEdit();
 
     /*check discount section start*/
 
-    $("body").on('keyup', '.discount_clz_id', function(){ 
+    /*$("body").on('keyup', '.discount_clz_id', function(){ 
 
 
         var dataSelect = $(this);
@@ -2620,7 +2651,7 @@ InitProductSelectEdit();
         }
       
 
-    });
+    });*/
 
 
     /*check discount section end*/
@@ -3069,7 +3100,52 @@ InitProductSelectEdit();
             }
         });
 
+        $("body").on("input", ".edit_add_qty", function () {
 
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".edit_add_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
 
         $("body").on("keyup", ".edit_add_discount, .edit_add_qty, .edit_add_rate", function () {
             var $this = $(this);
@@ -3316,7 +3392,52 @@ InitProductSelectEdit();
         });
 
 
+        $("body").on("input", ".forma_edit_qty", function () {
 
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".forma_edit_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            $this.val(rawValue);
+
+        });
 
 
         $("body").on("keyup", ".forma_edit_discount, .forma_edit_qty, .forma_edit_rate", function () {

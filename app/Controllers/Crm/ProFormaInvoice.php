@@ -283,6 +283,7 @@ class ProFormaInvoice extends BaseController
 
         $sales_order_id = $this->common_model->InsertData('crm_proforma_invoices',$insert_data);
 
+        $total_amount =0;
 
         if(!empty($_POST['pp_product_det']))
         {
@@ -292,7 +293,20 @@ class ProFormaInvoice extends BaseController
             {  
                 for($j=0;$j<=$count-1;$j++)
                 {
-                        
+                    
+                    $quantity = (float) preg_replace('/[,]/', '', $_POST['pp_quantity'][$j]);
+
+                    $rate = (float) preg_replace('/[,]/', '', $_POST['pp_rate'][$j]);
+
+                    $discount = (float) $_POST['pp_discount'][$j];
+
+                    $multipliedTotal = $quantity * $rate;
+
+                    $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                    $finalAmount = $multipliedTotal - $discountAmount;
+
+
                     $insert_data  	= array(  
                         
                         'pp_product_det'    =>  $_POST['pp_product_det'][$j],
@@ -300,14 +314,16 @@ class ProFormaInvoice extends BaseController
                         'pp_quantity'       =>  preg_replace('/[,]/', '',$_POST['pp_quantity'][$j]),
                         'pp_rate'           =>  preg_replace('/[,]/', '',$_POST['pp_rate'][$j]),
                         'pp_discount'       =>  $_POST['pp_discount'][$j],
-                        'pp_amount'         =>  preg_replace('/[,]/', '',$_POST['pp_amount'][$j]),
+                        //'pp_amount'       =>  preg_replace('/[,]/', '',$_POST['pp_amount'][$j]),
+                        'pp_amount'         =>  number_format($finalAmount, 2, '.', ''),
                         'pp_sales_prod_id'  =>  $_POST['pp_sales_order_prod_id'][$j],
                         'pp_proforma'       =>  $sales_order_id,
                        
     
                     );
 
-                    
+                    $total_amount += $finalAmount;
+
 
                     $this->common_model->InsertData('crm_proforma_product',$insert_data);
 
@@ -361,9 +377,21 @@ class ProFormaInvoice extends BaseController
             
                 } 
             }
+
+
+            $current_cliam = $this->request->getPost('pf_current_cliam');
+
+            $current_cliam_value = ($current_cliam / 100) * $total_amount;
+
+            $current_cliam_value = number_format($current_cliam_value, 2, '.', '');
+
+            $this->common_model->EditData(array('pf_total_amount' => $total_amount,'pf_current_claim_value' => $current_cliam_value),array('pf_id' => $sales_order_id),'crm_proforma_invoices');
+
+           
       
         }
 
+        
         echo json_encode($return);
 
     }
@@ -470,7 +498,7 @@ class ProFormaInvoice extends BaseController
             <td class="text-center">'.$i.'</td>
             <td>'.$prod_det->product_details.'</td>
             <td class="text-center">'.$prod_det->pp_unit.'</td>
-            <td class="text-center">'.round($prod_det->pp_quantity).'</td>
+            <td class="text-center">'.format_currency($prod_det->pp_quantity).'</td>
             <td class="text-end">'.format_currency($prod_det->pp_rate).'</td>
             <td class="text-center">'.$prod_det->pp_discount.'</td>
             <td class="text-end">'.format_currency($prod_det->pp_amount).'</td>
@@ -756,7 +784,7 @@ class ProFormaInvoice extends BaseController
                                             <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_quantity['.$j.']" value="'.$avaliable_qty.'" class="form-control qtn_clz_id text-center" required></td>
                                             <td><input type="text" name="pp_rate['.$j.']" value="'.format_currency($prod_det->spd_rate).'" class="form-control rate_clz_id text-end" required></td>
-                                            <td><input type="text" name="pp_discount['.$j.']" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id text-center" required></td>
+                                            <td><input type="text" name="pp_discount['.$j.']" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id text-center" min="0" max="100" onkeyup="MinMax(this)" required></td>
                                             <td><input type="text" name="pp_amount['.$j.']" value="'.format_currency($prod_det->spd_amount).'" class="form-control amount_clz_id text-end" readonly></td>
                                             <td class="row_remove remove-btnpp text-center" data-id="'.$prod_det->spd_id .'" style="padding: 10px 10px;"><i class="ri-close-line"></i></td>
                                             <input type="hidden" value="'.$avaliable_qty.'"   class="hidden_sales_qty">
@@ -972,7 +1000,7 @@ class ProFormaInvoice extends BaseController
                 <td class="si_no2 text-center">'.$i.'</td>
                 <td >'.$prod_det->product_details.'</td>
                 <td class="text-center">'.$prod_det->pp_unit.'</td>
-                <td class="text-center">'.round($prod_det->pp_quantity).'</td>
+                <td class="text-center">'.format_currency($prod_det->pp_quantity).'</td>
                 <td class="text-end">'.format_currency($prod_det->pp_rate).'</td>
                 <td class="text-center">'.$prod_det->pp_discount.'</td>
                 <td class="text-end edit_total_amount">'.format_currency($prod_det->pp_amount).'</td>
@@ -1033,9 +1061,31 @@ class ProFormaInvoice extends BaseController
                 $insert_data['pp_rate'] = preg_replace('/[,]/', '', $insert_data['pp_rate']);
             }
 
-            if (isset($insert_data['pp_amount'])) {
+            /*if (isset($insert_data['pp_amount'])) {
                 $insert_data['pp_amount'] = preg_replace('/[,]/', '', $insert_data['pp_amount']);
+            }*/
+
+            /*calculation start*/
+            
+            $quantity = (float) preg_replace('/[,]/', '', $_POST['pp_quantity']);
+
+            $rate = (float) preg_replace('/[,]/', '', $_POST['pp_rate']);
+
+            $discount = (float) $_POST['pp_discount'];
+
+            $multipliedTotal = $quantity * $rate;
+
+            $discountAmount = ($discount / 100) * $multipliedTotal;
+
+            $finalAmount = $multipliedTotal - $discountAmount;
+            
+            if (isset($insert_data['pp_amount'])) {
+
+                $insert_data['pp_amount'] = number_format($finalAmount, 2, '.', '');
+
             }
+
+            /*calculation end*/
 
             $proforma_prod_id = $this->common_model->InsertData('crm_proforma_product',$insert_data);
 
@@ -1142,7 +1192,7 @@ class ProFormaInvoice extends BaseController
 
             $data['unit']     = $proforma_prod->pp_unit;
 
-            $data['qty']      = round($proforma_prod->pp_quantity);
+            $data['qty']      = format_currency($proforma_prod->pp_quantity);
     
             $data['rate']     = format_currency($proforma_prod->pp_rate);
     
@@ -1170,9 +1220,9 @@ class ProFormaInvoice extends BaseController
                 $update_data['pp_rate'] = preg_replace('/[,]/', '', $update_data['pp_rate']);
             }
 
-            if (isset($update_data['pp_amount'])) {
+            /*if (isset($update_data['pp_amount'])) {
                 $update_data['pp_amount'] = preg_replace('/[,]/', '', $update_data['pp_amount']);
-            }
+            }*/
 
 
             if (array_key_exists('pp_id', $update_data)) 
@@ -1180,6 +1230,29 @@ class ProFormaInvoice extends BaseController
                 unset($update_data['pp_id']);
             }  
             
+
+            /*calculation start*/
+
+            $quantity = (float) preg_replace('/[,]/', '', $_POST['pp_quantity']);
+
+            $rate = (float) preg_replace('/[,]/', '', $_POST['pp_rate']);
+
+            $discount = (float) $_POST['pp_discount'];
+
+            $multipliedTotal = $quantity * $rate;
+
+            $discountAmount = ($discount / 100) * $multipliedTotal;
+
+            $finalAmount = $multipliedTotal - $discountAmount;
+
+            if (isset($update_data['pp_amount'])) {
+
+                $update_data['pp_amount'] = number_format($finalAmount, 2, '.', '');
+            }
+
+
+            /*calculation end*/
+
             $this->common_model->EditData($update_data,$cond,'crm_proforma_product');
 
             $single_prod_det1 = $this->common_model->SingleRow('crm_proforma_product',$cond);
