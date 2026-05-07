@@ -1184,8 +1184,17 @@ class ProFormaInvoice extends BaseController
                 $data['avaliable_qty'] = $avaliable_qty;
             
             }else{
+                
+               if(!empty($sales_order_prod->spd_quantity)){
 
-               $data['avaliable_qty'] = $sales_order_prod->spd_quantity;
+                    $data['avaliable_qty'] = $sales_order_prod->spd_quantity;
+
+                }else{
+
+                    $data['avaliable_qty'] = $proforma_prod->pp_quantity;
+                }
+                
+                
             }
 
 
@@ -1219,7 +1228,16 @@ class ProFormaInvoice extends BaseController
 
             $data['amount']   = format_currency($proforma_prod->pp_amount);
 
-            $data['sales_qty'] = $sales_order_prod->spd_quantity;
+            if(!empty($sales_order_prod->spd_quantity)){
+
+                $data['sales_qty'] = $sales_order_prod->spd_quantity;
+            }
+            else{
+
+                $data["sales_qty"] = "";
+            }
+
+            
 
            
     
@@ -1302,31 +1320,33 @@ class ProFormaInvoice extends BaseController
 
             $sales_prod_details = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $single_prod_det1->pp_sales_prod_id));
 
-            if($sales_prod_details->spd_quantity == $sales_prod_details->spd_performa_prod_qty){
-                 
-                $this->common_model->EditData(array('spd_performa_prod_qty_status' => '1'),array('spd_id' => $single_prod_det1->pp_sales_prod_id),'crm_sales_product_details');
+            if(!empty($sales_prod_details)){
+
+                if($sales_prod_details->spd_quantity == $sales_prod_details->spd_performa_prod_qty){
+                    
+                    $this->common_model->EditData(array('spd_performa_prod_qty_status' => '1'),array('spd_id' => $single_prod_det1->pp_sales_prod_id),'crm_sales_product_details');
 
 
+                }
+                else{
+                    
+                    $this->common_model->EditData(array('spd_performa_prod_qty_status' => '0'),array('spd_id' => $single_prod_det1->pp_sales_prod_id),'crm_sales_product_details');
+
+                }
+
+                $sales_prod1 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $sales_prod_details->spd_sales_order),array('spd_performa_prod_qty_status' => 1));
+                    
+                $sales_prod2 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $sales_prod_details->spd_sales_order));
+
+                if(count($sales_prod1) == count($sales_prod2)){
+
+                    $this->common_model->EditData(array('so_preforma_flag' => '1'),array('so_id' => $sales_prod_details->spd_sales_order),'crm_sales_orders');
+
+                }else{
+
+                    $this->common_model->EditData(array('so_preforma_flag' => '0'),array('so_id' => $sales_prod_details->spd_sales_order),'crm_sales_orders');
+                }
             }
-            else{
-                 
-                $this->common_model->EditData(array('spd_performa_prod_qty_status' => '0'),array('spd_id' => $single_prod_det1->pp_sales_prod_id),'crm_sales_product_details');
-
-            }
-
-            $sales_prod1 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $sales_prod_details->spd_sales_order),array('spd_performa_prod_qty_status' => 1));
-                   
-            $sales_prod2 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $sales_prod_details->spd_sales_order));
-
-            if(count($sales_prod1) == count($sales_prod2)){
-
-                $this->common_model->EditData(array('so_preforma_flag' => '1'),array('so_id' => $sales_prod_details->spd_sales_order),'crm_sales_orders');
-
-            }else{
-
-                $this->common_model->EditData(array('so_preforma_flag' => '0'),array('so_id' => $sales_prod_details->spd_sales_order),'crm_sales_orders');
-            }
-
             //$this->common_model->FetchWhere('crm_sales_product_details',array('spd_id' => $single_prod_det->pp_sales_prod_id));
 
             /*end*/
