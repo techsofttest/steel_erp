@@ -3439,6 +3439,11 @@
                 rawValue = parts[0] + "." + parts[1];
             }
 
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
             $this.val(rawValue);
 
         });
@@ -3677,6 +3682,11 @@
             if (parts[1]) {
                 parts[1] = parts[1].substring(0, 2);
                 rawValue = parts[0] + "." + parts[1];
+            }
+
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
             }
 
             $this.val(rawValue);
@@ -4070,6 +4080,11 @@
                 rawValue = parts[0] + "." + parts[1];
             }
 
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
             $this.val(rawValue);
 
         });
@@ -4343,6 +4358,11 @@
             if (parts[1]) {
                 parts[1] = parts[1].substring(0, 2);
                 rawValue = parts[0] + "." + parts[1];
+            }
+
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
             }
 
             $this.val(rawValue);
@@ -4699,6 +4719,11 @@
                 rawValue = parts[0] + "." + parts[1];
             }
 
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
             $this.val(rawValue);
 
         });
@@ -5048,6 +5073,11 @@
             if (parts[1]) {
                 parts[1] = parts[1].substring(0, 2);
                 rawValue = parts[0] + "." + parts[1];
+            }
+
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
             }
 
             $this.val(rawValue);

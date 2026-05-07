@@ -2288,6 +2288,12 @@ InitProductSelectEdit();
                 rawValue = parts[0] + "." + parts[1];
             }
 
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+
             $this.val(rawValue);
 
         });
@@ -2314,7 +2320,7 @@ InitProductSelectEdit();
             
            
 
-            if(quantity >  quantityReal){
+            if(quantity >  quantityReal && quantityReal !=0){
 
                 //$('.current_cliam_clz').val("")
 
@@ -2472,7 +2478,7 @@ InitProductSelectEdit();
             
            // $(".product-more2").append("<tr class='prod_row performa_row_lenght'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
            
-           $(".product-more2").append("<tr class='prod_row performa_row_lenght text-center'><td class='si_no'>"+pp+"</td><td class='open-select2'><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id text-center' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id text-center' required></td><td><input type='text' name='pp_rate["+prl+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id text-center' required></td><td><input type='text' name='pp_amount["+prl+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding: 10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+           $(".product-more2").append("<tr class='prod_row performa_row_lenght text-center'><td class='si_no'>"+pp+"</td><td class='open-select2'><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id text-center' required></td><td><input type='text' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id text-center' required></td><td><input type='text' name='pp_rate["+prl+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id text-center' required></td><td><input type='text' name='pp_amount["+prl+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding: 10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
         }
 
@@ -3143,6 +3149,12 @@ InitProductSelectEdit();
                 rawValue = parts[0] + "." + parts[1];
             }
 
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+
             $this.val(rawValue);
 
         });
@@ -3435,6 +3447,12 @@ InitProductSelectEdit();
                 rawValue = parts[0] + "." + parts[1];
             }
 
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+
             $this.val(rawValue);
 
         });
@@ -3484,6 +3502,11 @@ InitProductSelectEdit();
                 
                 
                 alertify.error('Maximun Quantity Avaliable  Is '+avaliableQty+'').delay(3).dismissOthers();
+
+                quantity = avaliableQty;
+
+                $this.val(avaliableQty);
+
                 return false;
 
             }

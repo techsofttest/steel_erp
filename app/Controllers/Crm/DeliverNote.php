@@ -309,6 +309,8 @@ class DeliverNote extends BaseController
 
                 $data['delivery_id'] = $delivery_id;
 
+                $total_amount = 0; 
+
                 if(!empty($_POST['dpd_prod_det']))
 		        {    
                     $count =  count($_POST['dpd_prod_det']);
@@ -324,6 +326,22 @@ class DeliverNote extends BaseController
                             //$sales_prod_id = $_POST['sales_prod_id'];
 
                             $new_deli_qty =  $delivery_qty + $current_qty;
+
+                            /*calculation start*/
+
+                            //$quantity = (float) preg_replace('/[,]/', '', $_POST['dpd_order_qty'][$j]);
+
+                            $rate = (float) preg_replace('/[,]/', '', $_POST['dpd_rate_qty'][$j]);
+
+                            $discount = (float) $_POST['dicount'][$j];
+
+                            $multipliedTotal = $current_qty * $rate;
+
+                            $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                            $finalAmount = $multipliedTotal - $discountAmount;
+
+                            /*calculation end*/
                             
                             $insert_data  	= array(  
                                 
@@ -331,7 +349,8 @@ class DeliverNote extends BaseController
                                 'dpd_unit'         =>  $_POST['dpd_unit'][$j],
                                 'dpd_order_qty'    =>  $_POST['dpd_order_qty'][$j],
                                 'dpd_so_id'        =>  $_POST['sales_prod_id'][$j],
-                                'dpd_total_amount' =>  $_POST['product_total'][$j],
+                                //'dpd_total_amount' =>  $_POST['product_total'][$j],
+                                'dpd_total_amount' =>  number_format($finalAmount, 2, '.', ''),
                                 'dpd_prod_rate'    =>  $_POST['dpd_rate_qty'][$j],
                                 'dpd_prod_dicount' =>  $_POST['dicount'][$j],
                                 'dpd_sales_ref_id' =>  $_POST['sales_order_id'][$j],
@@ -340,7 +359,8 @@ class DeliverNote extends BaseController
                                 'dpd_delivery_id'  =>  $delivery_id,
                                 
                             );
-
+                            
+                            $total_amount += $finalAmount;
 
                             $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
 
@@ -410,7 +430,9 @@ class DeliverNote extends BaseController
                         } 
                     }
 
-                   
+                    //$this->common_model->EditData($total_amount_update,array('dn_id' => $delivery_id),'crm_delivery_note');
+
+                    $this->common_model->EditData(array('dn_total_amount' => $total_amount),array('dn_id' => $delivery_id),'crm_delivery_note');
 		        }
 
                 $data['status'] = "true" ;
@@ -1064,7 +1086,7 @@ class DeliverNote extends BaseController
                                                 <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty text-center" readonly></td>
                                                 <td><input type="number" name="dpd_delivery_qty[]" value="'.$sales_det->spd_delivered_qty.'"  class="form-control delivery_qty text-center" readonly ></td>
-                                                <td><input type="number" name="dpd_current_qty[]"  class="form-control current_delivery text-center" required></td>
+                                                <td><input type="text" name="dpd_current_qty[]"  class="form-control current_delivery text-center"  min="1" required></td>
                                                 <input type="hidden" name="sales_prod_id[]" value="'.$sales_det->spd_id.'" class="form-control" required>
                                                 <input type="hidden" name="dpd_rate_qty[]" value="'.$sales_det->spd_rate.'" class="form-control rate_clz_id" required>
                                                 <input type="hidden" name="dicount[]" value="'.$sales_det->spd_discount.'" class="form-control dicount_clz_id" required>

@@ -323,6 +323,8 @@ class CreditInvoice extends BaseController
 
         $data['credit_invoice_id'] = $credit_invoice_id;
 
+        $total_amount = 0 ;
+
         if(!empty($_POST['ipd_prod_detl']))
 		{
             $count =  count($_POST['ipd_prod_detl']);
@@ -332,6 +334,22 @@ class CreditInvoice extends BaseController
                 for($j=0;$j<=$count-1;$j++)
                 {
                     $delivery_note = $this->common_model->SingleRow('crm_delivery_note',array('dn_reffer_no' => $_POST['ipd_delivery'][$j]));
+
+                    /*calculation section start*/
+
+                    $quantity = (float) preg_replace('/[,]/', '', $_POST['ipd_quantity'][$j]);
+
+                    $rate = (float) preg_replace('/[,]/', '', $_POST['ipd_rate'][$j]);
+
+                    $discount = (float) $_POST['ipd_discount'][$j];
+
+                    $multipliedTotal = $quantity * $rate;
+
+                    $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                    $finalAmount = $multipliedTotal - $discountAmount;
+
+                    /*callclation section end*/
                     
                     $contact_detail  	= array(  
 
@@ -340,7 +358,8 @@ class CreditInvoice extends BaseController
                         'ipd_quantity'         =>  $_POST['ipd_quantity'][$j],
                         'ipd_rate'             =>  preg_replace('/[,]/', '',$_POST['ipd_rate'][$j]),
                         'ipd_discount'         =>  $_POST['ipd_discount'][$j],
-                        'ipd_amount'           =>  preg_replace('/[,]/', '',$_POST['ipd_amount'][$j]),
+                        'ipd_amount'           =>  number_format($finalAmount, 2, '.', ''),
+                       // 'ipd_amount'           =>  preg_replace('/[,]/', '',$_POST['ipd_amount'][$j]),
                         'ipd_prod_id'          =>  $_POST['sales_order_product'][$j],
                         'ipd_delivery_prod_id' =>  $_POST['delivery_prod_id'][$j],
                         'ipd_credit_invoice'   =>  $credit_invoice_id,
@@ -349,7 +368,7 @@ class CreditInvoice extends BaseController
                     );
 
                    
-                
+                    $total_amount += $finalAmount;
                     
                     $id = $this->common_model->InsertData('crm_credit_invoice_prod_det',$contact_detail);
 
@@ -431,6 +450,8 @@ class CreditInvoice extends BaseController
             {
                 $data['advance_status'] = "false";
             }
+
+            $this->common_model->EditData(array('cci_total_amount' => $total_amount),array('cci_id' => $credit_invoice_id),'crm_credit_invoice');
 
 		}
 

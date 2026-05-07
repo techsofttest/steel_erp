@@ -1874,9 +1874,9 @@ span.select2.customer_width, span.select2 {
 
                         var qtyNull = $qtySelectElement.val("");
 
-                        var $qtyElement = $dataSelect.closest('.prod_row').find('.qtn_clz_id');
+                        //var $qtyElement = $dataSelect.closest('.prod_row').find('.qtn_clz_id');
 
-                        var $currencyNullElement = $dataSelect.closest('.prod_row').find('.qtn_clz_id'); // Define the element
+                        //var $currencyNullElement = $dataSelect.closest('.prod_row').find('.qtn_clz_id'); // Define the element
 
                         $currencyNullElement.val(qtyNull);
                     }
@@ -2339,7 +2339,37 @@ span.select2.customer_width, span.select2 {
         /*###*/
 
 
+        /*calculation section start*/
 
+        $("body").on("input", ".qtn_clz_id", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+
+            // minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+            $this.val(rawValue);
+
+        });
+
+        /*calculation section end*/
       
 
 

@@ -306,6 +306,17 @@ class ProFormaInvoice extends BaseController
 
                     $finalAmount = $multipliedTotal - $discountAmount;
 
+                    if(!empty($_POST['pp_sales_order_prod_id'][$j])){
+
+                        $per_sales_prod_id = $_POST['pp_sales_order_prod_id'][$j];
+                        
+                    }else{
+
+                        $per_sales_prod_id = 0;
+                    }
+
+                   
+
 
                     $insert_data  	= array(  
                         
@@ -316,7 +327,7 @@ class ProFormaInvoice extends BaseController
                         'pp_discount'       =>  $_POST['pp_discount'][$j],
                         //'pp_amount'       =>  preg_replace('/[,]/', '',$_POST['pp_amount'][$j]),
                         'pp_amount'         =>  number_format($finalAmount, 2, '.', ''),
-                        'pp_sales_prod_id'  =>  $_POST['pp_sales_order_prod_id'][$j],
+                        'pp_sales_prod_id'  =>  $per_sales_prod_id,
                         'pp_proforma'       =>  $sales_order_id,
                        
     
@@ -329,42 +340,46 @@ class ProFormaInvoice extends BaseController
 
                     /**/
 
-                    $sales_prod_sigle = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]));
+                    if(!empty($_POST['pp_sales_order_prod_id'][$j])){
+
+                        $sales_prod_sigle = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]));
 
                     
 
-                    $current_qty = $sales_prod_sigle->spd_performa_prod_qty;
+                        $current_qty = $sales_prod_sigle->spd_performa_prod_qty;
 
-                    $sales_qty = $sales_prod_sigle->spd_quantity;
+                        $sales_qty = $sales_prod_sigle->spd_quantity;
 
-                    $total_qty = $current_qty + preg_replace('/[,]/', '',$_POST['pp_quantity'][$j]);
+                        $total_qty = $current_qty + preg_replace('/[,]/', '',$_POST['pp_quantity'][$j]);
 
-                    $update_data = array(  
-                       
-                        'spd_performa_prod_qty'  =>  $total_qty,
-                     
-                    );
+                        $update_data = array(  
+                        
+                            'spd_performa_prod_qty'  =>  $total_qty,
+                        
+                        );
 
-                    $this->common_model->EditData($update_data,array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]),'crm_sales_product_details');
+                        $this->common_model->EditData($update_data,array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]),'crm_sales_product_details');
 
-                    $sales_prod_sigle1 = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]));
 
-                    if($sales_prod_sigle1->spd_performa_prod_qty == $sales_prod_sigle1->spd_quantity){
 
-                        $this->common_model->EditData(array('spd_performa_prod_qty_status' => '1'),array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]),'crm_sales_product_details');
+                        $sales_prod_sigle1 = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]));
 
-                    }
+                        if($sales_prod_sigle1->spd_performa_prod_qty == $sales_prod_sigle1->spd_quantity){
 
-                    $sales_prod1 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $sales_prod_sigle1->spd_sales_order),array('spd_performa_prod_qty_status' => 1));
+                            $this->common_model->EditData(array('spd_performa_prod_qty_status' => '1'),array('spd_id' => $_POST['pp_sales_order_prod_id'][$j]),'crm_sales_product_details');
+
+                        }
+
+                        $sales_prod1 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $sales_prod_sigle1->spd_sales_order),array('spd_performa_prod_qty_status' => 1));
+                    
+                        $sales_prod2 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $sales_prod_sigle1->spd_sales_order));
+                    
+                        if(count($sales_prod1) == count($sales_prod2)){
+
+                            $this->common_model->EditData(array('so_preforma_flag' => '1'),array('so_id' => $sales_prod_sigle1->spd_sales_order),'crm_sales_orders');
+                        }
                    
-                    $sales_prod2 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $sales_prod_sigle1->spd_sales_order));
-                
-                    if(count($sales_prod1) == count($sales_prod2)){
-
-                        $this->common_model->EditData(array('so_preforma_flag' => '1'),array('so_id' => $sales_prod_sigle1->spd_sales_order),'crm_sales_orders');
                     }
-                   
-
                     /**/
                     
                     if(!empty($_POST['print_btn']))
@@ -653,16 +668,20 @@ class ProFormaInvoice extends BaseController
             
             $sales_prod_data = $this->common_model->singleRow('crm_sales_product_details',array('spd_id' => $pre_prod->pp_sales_prod_id));
 
-            $update_data1 = [
+            if(!empty($sales_prod_data)){
 
-                'spd_performa_prod_qty'        => $sales_prod_data->spd_performa_prod_qty - $pre_prod->pp_quantity,
-    
-                'spd_performa_prod_qty_status' => 0,
-            ];
+                $update_data1 = [
 
-            $this->common_model->EditData($update_data1,array('spd_id' => $pre_prod->pp_sales_prod_id),'crm_sales_product_details');
+                    'spd_performa_prod_qty'        => $sales_prod_data->spd_performa_prod_qty - $pre_prod->pp_quantity,
+        
+                    'spd_performa_prod_qty_status' => 0,
+                ];
 
-            $this->common_model->EditData(array('so_preforma_flag' => 0),array('so_id' => $sales_prod_data->spd_sales_order),'crm_sales_orders');
+                $this->common_model->EditData($update_data1,array('spd_id' => $pre_prod->pp_sales_prod_id),'crm_sales_product_details');
+
+                $this->common_model->EditData(array('so_preforma_flag' => 0),array('so_id' => $sales_prod_data->spd_sales_order),'crm_sales_orders');
+
+            }
 
         }
 

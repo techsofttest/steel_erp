@@ -1363,7 +1363,7 @@ class SalesReturn extends BaseController
                                                         <td class="si_no text-center">'.$i.'</td>
                                                         <td style="text-align:left">'.$sales_det->product_details.'</td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sales_det->cipd_unit.'" class="form-control text-center" readonly></td>
-                                                        <td><input type="number" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id text-center" required></td>
+                                                        <td><input type="text" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id text-center" required></td>
                                                         <td><input type="text" name="srp_rate[]" value="'.format_currency($sales_det->cipd_rate).'"  class="form-control rate_clz_id text-end"  readonly></td>
                                                         <td><input type="text" name="srp_discount[]" value="'.$sales_det->cipd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
                                                         <td><input type="text" name="srp_amount[]" value="'.format_currency($orginalPrice).'" class="form-control amount_clz_id text-end" required readonly></td>
@@ -1429,7 +1429,7 @@ class SalesReturn extends BaseController
                                                         <td class="si_no text-center">'.$i.'</td>
                                                         <td style="text-align:left">'.$sale_det->product_details.'</td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sale_det->ipd_unit.'" class="form-control text-center" readonly></td>
-                                                        <td><input type="number" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id text-center" required></td>
+                                                        <td><input type="text" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id text-center" required></td>
                                                         <td><input type="text" name="srp_rate[]" value="'.format_currency($sale_det->ipd_rate).'"  class="form-control rate_clz_id text-end"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.$sale_det->ipd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
                                                         <td><input type="text" name="srp_amount[]" value="'.format_currency($orginalPrice).'" class="form-control amount_clz_id text-end" required readonly></td>

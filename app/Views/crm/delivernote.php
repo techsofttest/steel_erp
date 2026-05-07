@@ -1682,6 +1682,22 @@ span.select2.customer_width, span.select2 {
 
         /*###*/
 
+        $("body").on("input", ".current_delivery", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+           
+			
+			// minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+            $this.val(rawValue);
+
+        });
+
 
 
         /*product detail calculation*/
@@ -1740,9 +1756,9 @@ span.select2.customer_width, span.select2 {
                
                 var currencyNull = currentSelectElement.val("");
 
-                var $currencyNullElement = dataSelect.closest('.prod_row').find('.current_delivery');
+                //var $currencyNullElement = dataSelect.closest('.prod_row').find('.current_delivery');
 
-                $currencyNullElement.val(currencyNull);  
+               // $currencyNullElement.val(currencyNull);  
 
                 alertify.error('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
               
