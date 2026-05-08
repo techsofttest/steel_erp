@@ -2451,7 +2451,7 @@ class SalesQuotation extends BaseController
         </tr>
         
         <tr>
-            <td width="13%"></td>
+            <td width="10%"></td>
             <td>' . $quotation_details->cc_customer_name. '</td>
         </tr>
         <tr>

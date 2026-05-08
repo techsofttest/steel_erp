@@ -2298,7 +2298,60 @@ function formatNumberWithCommas4(value) {
 
         });*/
 
+        $("body").on("input", ".add_prod_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+			
+			// minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+            $this.val(rawValue);
+
+        });
+
+
+        $("body").on("input", ".add_prod_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+			
+            $this.val(rawValue);
+
+        });
+
         $("body").on('keyup', '.add_discount, .add_prod_qty, .add_prod_rate', function() { 
+
             var $discountSelect = $(this);
 
             var discount = parseFloat($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
@@ -2765,7 +2818,60 @@ function formatNumberWithCommas4(value) {
             });
         }
 
+        $("body").on("input", ".edit_prod_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+			
+			// minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+            $this.val(rawValue);
+
+        });
+
+        $("body").on("input", ".edit_prod_rate", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+			
+
+            $this.val(rawValue);
+
+        });
+
         $("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function() { 
+
             var $discountSelect = $(this);
 
             var discount = parseFloat($discountSelect.closest('.edit_single_prod_row').find('.edit_prod_discount').val()) || 0;
@@ -2784,6 +2890,12 @@ function formatNumberWithCommas4(value) {
 
             var $actqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_actual_qty');
             var act_qty = parseFloat($actqtySelectElement.val()) || 0;
+
+            if (discount > 100)
+            {
+                discount = 100;
+
+            }
 
             var multipliedTotal = rate * quantity;
             var per_amount = (discount / 100) * multipliedTotal;
@@ -2811,6 +2923,7 @@ function formatNumberWithCommas4(value) {
                 $quantitySelectElement.val("");  
                 alertify.error('Quantity should not be greater than ' + current_qty).dismissOthers();
             }
+            
         });
 
 

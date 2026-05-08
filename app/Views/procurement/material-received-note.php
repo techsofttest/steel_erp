@@ -1829,6 +1829,22 @@
 
         /*####*/
 
+        $("body").on("input", ".add_current_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+           
+			
+			// minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+            $this.val(rawValue);
+
+        });
+
 
 
         /*add current delivery start*/

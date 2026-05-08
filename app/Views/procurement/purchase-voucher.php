@@ -2574,6 +2574,34 @@ InitDebitSelectAdd1()
             }
         });*/
 
+        $("body").on("input", ".add_prod_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+			
+			// minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+            $this.val(rawValue);
+
+        });
+
         $("body").on("keyup", ".add_discount, .add_prod_qty, .add_prod_rate", function () {
             var $this = $(this);
 
@@ -2584,6 +2612,13 @@ InitDebitSelectAdd1()
             // Remove commas before performing calculations
             var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
             var quantity = parseFloat(quantityElement.val()) || 0;
+
+
+            if (discount > 100)
+            {
+                discount = 100;
+
+            }
 
             var multipliedTotal = rate * quantity;
             var discountAmount = (discount / 100) * multipliedTotal;
@@ -2977,7 +3012,7 @@ InitDebitSelectAdd1()
           */ 
          
           
-          $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td class='open-select2'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='text' step='0.0001' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+          $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td class='open-select2'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='text' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='text' step='0.0001' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
              
           
               
@@ -3180,6 +3215,34 @@ InitDebitSelectAdd1()
                 $this.val(formattedValue);
                 console.log("Formatted Output:", formattedValue); // Debugging
             }
+        });
+
+        $("body").on("input", ".edit_prod_qty", function () {
+
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, "");
+
+            // prevent multiple dots
+            let parts = rawValue.split(".");
+
+            if (parts.length > 2) {
+                rawValue = parts[0] + "." + parts[1];
+                parts = rawValue.split(".");
+            }
+
+            // limit 4 decimal places
+            if (parts[1]) {
+                parts[1] = parts[1].substring(0, 2);
+                rawValue = parts[0] + "." + parts[1];
+            }
+			
+			// minimum quantity = 1
+            if (rawValue !== "" && parseFloat(rawValue) < 1) {
+                rawValue = 1;
+            }
+
+            $this.val(rawValue);
+
         });
         
         $("body").on("keyup", ".edit_prod_dis, .edit_prod_qty, .edit_prod_rate", function () {

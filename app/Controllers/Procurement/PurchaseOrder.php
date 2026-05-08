@@ -265,6 +265,7 @@ class PurchaseOrder extends BaseController
             
             $purchase_id = $this->request->getPost('po_id');
 
+            $total_amount = 0;
 
             if(!empty($_POST['pop_qty']))
 		    {    
@@ -276,6 +277,22 @@ class PurchaseOrder extends BaseController
                     for($j=0;$j<=$count-1;$j++)
                     {
                         $delivered_qty =  $_POST['pop_qty'][$j] + $_POST['prod_delivered_qty'][$j];
+
+                        /*calculation section start*/
+
+                        $quantity = (float) preg_replace('/[,]/', '', $_POST['pop_qty'][$j]);
+
+                        $rate = (float) preg_replace('/[,]/', '', $_POST['pop_rate'][$j]);
+
+                        $discount = (float) $_POST['pop_discount'][$j];
+
+                        $multipliedTotal = $quantity * $rate;
+
+                        $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                        $finalAmount = $multipliedTotal - $discountAmount;
+
+	                    /**/
                     
                         $insert_data  	= array(  
                             
@@ -285,12 +302,15 @@ class PurchaseOrder extends BaseController
                             'pop_qty'                   =>  $_POST['pop_qty'][$j],
                             'pop_rate'                  =>  preg_replace('/[,]/', '',$_POST['pop_rate'][$j]),
                             'pop_discount'              =>  $_POST['pop_discount'][$j],
-                            'pop_amount'                =>  preg_replace('/[,]/', '',$_POST['pop_amount'][$j]),
+                            //'pop_amount'                =>  preg_replace('/[,]/', '',$_POST['pop_amount'][$j]),
+                            'pop_amount'                =>  number_format($finalAmount, 2, '.', ''),
                             'pop_material_req_prod_id'  =>  $_POST['material_req_prod_id'][$j],
                             'pop_purchase_order'        =>  $purchase_id,
                             'pop_delivered_order'       =>  0,
                             
                         );
+
+                        $total_amount += $finalAmount;
 
                         $this->common_model->InsertData('pro_purchase_order_product',$insert_data);
                         
@@ -323,6 +343,8 @@ class PurchaseOrder extends BaseController
 
                     } 
                 }
+
+                $this->common_model->EditData(array('po_amount' => $total_amount),array('po_id' => $purchase_id),'pro_purchase_order');
       
 		    }
 
@@ -971,7 +993,7 @@ class PurchaseOrder extends BaseController
             <td><input type="text"  name="pop_unit"  value="'.$pur_order_prod->pop_unit.'" class="form-control text-center"></td>
             <td> <input type="text" name="pop_qty" value="'.$pur_order_prod->pop_qty.'" class="form-control edit_prod_qty edit_qty_update text-center"></td>
             <td> <input type="text" name="pop_rate" value="'.$pur_order_prod->pop_rate.'" class="form-control edit_prod_rate text-end"></td>
-            <td> <input type="text" name="pop_discount" value="'.$pur_order_prod->pop_discount.'" class="form-control edit_prod_discount text-center" ></td>
+            <td> <input type="text" name="pop_discount" value="'.$pur_order_prod->pop_discount.'" class="form-control edit_prod_discount text-center" min="0" max="100" onkeyup="MinMax(this)"></td>
             <td> <input type="text" name="pop_amount" value="'.format_currency($pur_order_prod->pop_amount).'" class="form-control text-end edit_prod_amount" readonly></td>
             <input type="hidden" value="'.$marial_req->	mrp_qty.'" class="edit_total_qty">
             <input type="hidden" value="'.$marial_req->	mrp_delivered_qty.'" class="edit_delivered_qty">
@@ -993,9 +1015,25 @@ class PurchaseOrder extends BaseController
        
         if(empty($this->request->getPost('single_prod_sub'))){
 
+            /*calculation section start*/
+
+            $quantity = (float) preg_replace('/[,]/', '', $_POST['pop_qty']);
+
+            $rate = (float) preg_replace('/[,]/', '', $_POST['pop_rate']);
+
+            $discount = (float) $_POST['pop_discount'];
+
+            $multipliedTotal = $quantity * $rate;
+
+            $discountAmount = ($discount / 100) * $multipliedTotal;
+
+            $finalAmount = $multipliedTotal - $discountAmount;
+
+            /**/
+
             $update_data = [
 
-                'pop_unit'      => date('Y-m-d',strtotime($this->request->getPost('pop_unit'))),
+                'pop_unit'      => $this->request->getPost('pop_unit'),
 
                 'pop_qty'       => $this->request->getPost('pop_qty'),
 
@@ -1003,10 +1041,13 @@ class PurchaseOrder extends BaseController
 
                 'pop_discount'  => $this->request->getPost('pop_discount'),
 
-                'pop_amount'    => preg_replace('/[,]/', '',$this->request->getPost('pop_amount')),
+               // 'pop_amount'    => preg_replace('/[,]/', '',$this->request->getPost('pop_amount')),
+
+                'pop_amount'    => number_format($finalAmount, 2, '.', ''),
 
 
             ];
+
 
             $this->common_model->EditData($update_data, array('pop_id' => $this->request->getPost('pop_id')), 'pro_purchase_order_product');
 

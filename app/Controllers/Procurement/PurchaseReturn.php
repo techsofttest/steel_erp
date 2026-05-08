@@ -226,7 +226,7 @@ class PurchaseReturn extends BaseController
 
             
             $this->common_model->EditData($updated_data, array('pr_id' => $this->request->getPost('pr_id')),'pro_purchase_return');
-            
+            $total_amount = 0;
             if(!empty($_POST['prp_debit']))
 		    {    
                 
@@ -247,6 +247,22 @@ class PurchaseReturn extends BaseController
                             $sales_order = "";
                         }
 
+                        /*calculation section start*/
+
+                        $quantity = (float) preg_replace('/[,]/', '', $_POST['prp_qty'][$j]);
+
+                        $rate = (float) preg_replace('/[,]/', '', $_POST['prp_rate'][$j]);
+
+                        $discount = (float) $_POST['prp_discount'][$j];
+
+                        $multipliedTotal = $quantity * $rate;
+
+                        $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                        $finalAmount = $multipliedTotal - $discountAmount;
+
+                        /*calculation section end*/
+
                         $insert_data  	= array(  
                             
                             'prp_sales_order'         =>  $sales_order,
@@ -256,13 +272,15 @@ class PurchaseReturn extends BaseController
                             'prp_unit'                =>  $_POST['prp_unit'][$j],
                             'prp_rate'                =>  preg_replace('/[,]/', '',$_POST['prp_rate'][$j]),
                             'prp_discount'            =>  $_POST['prp_discount'][$j],
-                            'prp_amount'              =>  preg_replace('/[,]/', '',$_POST['prp_amount'][$j]),
+                            //'prp_amount'              =>  preg_replace('/[,]/', '',$_POST['prp_amount'][$j]),
+                            'prp_amount'              =>  number_format($finalAmount, 2, '.', ''),
                             'prp_voucher_prod_id'     =>  $_POST['prp_id'][$j],
                             'prp_voucher_id'          =>  $_POST['prp_voucher_id'][$j],
                             'prp_purchase_return_id'  =>  $this->request->getPost('pr_id'),
                             
                         );
-
+                        
+                        $total_amount += $finalAmount;
                        
                         $id = $this->common_model->InsertData('pro_purchase_return_prod',$insert_data);
 
@@ -313,6 +331,8 @@ class PurchaseReturn extends BaseController
             
                     } 
                 }
+
+                $this->common_model->EditData(array('pr_total_amount' => $total_amount),array('pr_id' => $purchase_return->pr_id),'pro_purchase_return');
       
 		    }
             
@@ -558,7 +578,7 @@ class PurchaseReturn extends BaseController
                                             <td><input type="text" name="prp_sales_order[]" value="'.$product->pvp_sales_order.'" class="form-control text-center" readonly></td>
                                             <td style="text-align:left;padding: 3px 5px;">'.$product->pvp_prod_dec.'</td>
                                             <td style="text-align:left;padding: 0px 8px;">'.$product->ca_name.'</td>
-                                            <td><input type="number" name="prp_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center"  required></td>
+                                            <td><input type="text" name="prp_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center"  required></td>
                                             <td><input type="text" name="prp_unit[]" value="'.$product->pvp_unit.'" class="form-control text-center" required readonly></td>
                                             <td><input type="text" name="prp_rate[]" value="'.format_currency($product->pvp_rate).'"  class="form-control add_prod_rate text-end" required ></td>
                                             <td><input type="text" name="prp_discount[]" value="'.$product->pvp_discount.'"  class="form-control add_discount text-center" required readonly></td>

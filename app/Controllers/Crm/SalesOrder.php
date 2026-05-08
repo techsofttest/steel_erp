@@ -1848,7 +1848,7 @@ class SalesOrder extends BaseController
                
                 <tr>
                 
-                    <td width="13%"></td>
+                    <td width="10%"></td>
                     
                     <td>'.$sales_order->cc_customer_name.'</td>
                 

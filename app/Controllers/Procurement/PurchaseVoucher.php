@@ -240,9 +240,10 @@ class PurchaseVoucher extends BaseController
 
             ];
             
-         
 
             $purchase_voucher = $this->common_model->InsertData('pro_purchase_voucher',$insert_data);
+            
+
 
             $data['purchase_voucher_id'] = $purchase_voucher;
 
@@ -258,7 +259,7 @@ class PurchaseVoucher extends BaseController
 
 
             // add product
-
+            $total_amount = 0;
             if(!empty($_POST['pvp_discount']))
 		    {    
                 
@@ -278,6 +279,22 @@ class PurchaseVoucher extends BaseController
                             $sales_data = "";
                         }
 
+                        /*calculation section start*/
+
+                        $quantity = (float) preg_replace('/[,]/', '', $_POST['pvp_qty'][$j]);
+
+                        $rate = (float) preg_replace('/[,]/', '', $_POST['pvp_rate'][$j]);
+
+                        $discount = (float) $_POST['pvp_discount'][$j];
+
+                        $multipliedTotal = $quantity * $rate;
+
+                        $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                        $finalAmount = $multipliedTotal - $discountAmount;
+
+	                    /**/
+
                         $insert_data2 = array(                              
                             
                             'pvp_sales_order'          =>  $sales_data,
@@ -287,9 +304,12 @@ class PurchaseVoucher extends BaseController
                             'pvp_unit'                 =>  $_POST['pvp_unit'][$j],
                             'pvp_rate'                 =>  preg_replace('/[,]/', '',$_POST['pvp_rate'][$j]),
                             'pvp_discount'             =>  $_POST['pvp_discount'][$j],
-                            'pvp_amount'               =>  preg_replace('/[,]/', '',$_POST['pvp_amount'][$j]),
+                            //'pvp_amount'               =>  preg_replace('/[,]/', '',$_POST['pvp_amount'][$j]),
+                            'pvp_amount'               =>  number_format($finalAmount, 2, '.', ''),
                             'pvp_reffer_id'            =>  $purchase_voucher,
                         );
+
+                        $total_amount += $finalAmount;
                         
                         $prodID = $this->common_model->InsertData('pro_purchase_voucher_prod',$insert_data2);
                         
@@ -298,6 +318,8 @@ class PurchaseVoucher extends BaseController
                         
                     } 
                 }
+
+                $this->common_model->EditData(array('pv_total' => $total_amount),array('pv_id' => $purchase_voucher ),'pro_purchase_voucher');
       
 		    }
 
@@ -352,6 +374,8 @@ class PurchaseVoucher extends BaseController
 
             
             $this->common_model->EditData($updated_data, array('pv_id' => $this->request->getPost('purchase_voucher_id')),'pro_purchase_voucher');
+
+            $total_amount = 0 ;
             
             if(!empty($_POST['pvp_discount']))
 		    {    
@@ -363,6 +387,21 @@ class PurchaseVoucher extends BaseController
                 
                     for($j=0;$j<=$count-1;$j++)
                     {
+                        /*calculation section start*/
+
+                        $quantity = (float) preg_replace('/[,]/', '', $_POST['pvp_qty'][$j]);
+
+                        $rate = (float) preg_replace('/[,]/', '', $_POST['pvp_rate'][$j]);
+
+                        $discount = (float) $_POST['pvp_discount'][$j];
+
+                        $multipliedTotal = $quantity * $rate;
+
+                        $discountAmount = ($discount / 100) * $multipliedTotal;
+
+                        $finalAmount = $multipliedTotal - $discountAmount;
+
+	                    /**/
                         
                         $insert_data4 = array(                              
                             
@@ -373,13 +412,14 @@ class PurchaseVoucher extends BaseController
                             'pvp_unit'                 =>  $_POST['pvp_unit'][$j],
                             'pvp_rate'                 =>  preg_replace('/[,]/', '',$_POST['pvp_rate'][$j]),
                             'pvp_discount'             =>  $_POST['pvp_discount'][$j],
-                            'pvp_amount'               =>  preg_replace('/[,]/', '',$_POST['pvp_amount'][$j]),
+                            //'pvp_amount'               =>  preg_replace('/[,]/', '',$_POST['pvp_amount'][$j]),
+                            'pvp_amount'               =>  number_format($finalAmount, 2, '.', ''),
                             'pvp_mat_rec_note_prod_id' =>  $_POST['rnp_id'][$j],
                             'pvp_mat_rec_id'           =>  $_POST['material_received_id'][$j],
                             'pvp_reffer_id'            =>  $this->request->getPost('purchase_voucher_id'),
                         );
 
-                        
+                        $total_amount += $finalAmount;
                         
                         $prodID = $this->common_model->InsertData('pro_purchase_voucher_prod',$insert_data4);
                         
@@ -409,6 +449,8 @@ class PurchaseVoucher extends BaseController
                         
                     } 
                 }
+
+                $this->common_model->EditData(array('pv_total' => $total_amount),array('pv_id' => $this->request->getPost('purchase_voucher_id') ),'pro_purchase_voucher');
       
 		    }
            
@@ -913,7 +955,7 @@ class PurchaseVoucher extends BaseController
         <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control text-center" readonly></td>
         <td> <input type="text" name="pvp_qty" value="'.$pur_vou_prod->pvp_qty.'" class="form-control edit_prod_qty text-center" ></td>
         <td> <input type="text" name="pvp_rate" value="'.$pur_vou_prod->pvp_rate.'" class="form-control edit_prod_rate text-end" ></td>
-        <td> <input type="text" name="pvp_discount" value="'.$pur_vou_prod->pvp_discount.'" class="form-control edit_prod_dis text-center" ></td>
+        <td> <input type="text" name="pvp_discount" value="'.$pur_vou_prod->pvp_discount.'" class="form-control edit_prod_dis text-center" min="0" max="100" onkeyup="MinMax(this)" step="0.0001"></td>
         <td> <input type="text" name="pvp_amount" value="'.$pur_vou_prod->pvp_amount.'" class="form-control edit_prod_amount text-end" readonly></td>
         <input type="hidden" name="pvp_id" value="'.$pur_vou_prod->pvp_id.'">
         </tr>';
@@ -1270,7 +1312,7 @@ class PurchaseVoucher extends BaseController
                                             <td class="text-center"><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty text-center"  required readonly></td>
                                             <td class="text-center"><input type="text" name="pvp_unit[]" value="'.$product->rnp_unit.'" class="form-control text-center" required readonly></td>
                                             <td class="text-center"><input type="text" name="pvp_rate[]" value="'.format_currency($product->rnp_rate).'"  class="form-control add_prod_rate text-end" required ></td>
-                                            <td class="text-center"><input type="text" step="0.0001" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount text-center" required ></td>
+                                            <td class="text-center"><input type="text" step="0.0001" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount text-center" required min="0" max="100" onkeyup="MinMax(this)"></td>
                                             <td class="text-center"><input type="text" name="pvp_amount[]" value="'.format_currency($product->rnp_amount).'"  class="form-control add_prod_amount text-end" required readonly></td>
                                             <input type="hidden" name="rnp_id[]" value="'.$product->rnp_id.'">
                                             <input type="hidden" name="material_received_id[]" value="'.$product->rnp_material_received_note.'">
@@ -1589,6 +1631,22 @@ class PurchaseVoucher extends BaseController
 
 
     public function UpdateSingleProd(){
+
+        /*calculation section start*/
+
+        $quantity = (float) preg_replace('/[,]/', '', $_POST['pvp_qty']);
+
+        $rate = (float) preg_replace('/[,]/', '', $_POST['pvp_rate']);
+
+        $discount = (float) $_POST['pvp_discount'];
+
+        $multipliedTotal = $quantity * $rate;
+
+        $discountAmount = ($discount / 100) * $multipliedTotal;
+
+        $finalAmount = $multipliedTotal - $discountAmount;
+
+	    /**/
            
         $update_data = [
              
@@ -1604,7 +1662,9 @@ class PurchaseVoucher extends BaseController
 
             'pvp_discount'    => $this->request->getPost('pvp_discount'),
 
-            'pvp_amount'      => preg_replace('/[,]/', '',$this->request->getPost('pvp_amount')),
+            //'pvp_amount'      => preg_replace('/[,]/', '',$this->request->getPost('pvp_amount')),
+
+            'pvp_amount'      => number_format($finalAmount, 2, '.', ''),
 
 
         ];
