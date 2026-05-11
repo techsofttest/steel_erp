@@ -56,10 +56,118 @@ class InvoiceReport extends BaseController
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
 
-        $data['total_count'] = count($data['result']);
+        $salesorder = $this->request->getPost('salesorder');
+
+        $result = [];
+
+        if ($salesorder == '') {
+      
+            //$data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+            $products = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end); 
+
+            foreach($products as $prod){
+                    
+                $result[] = [
+                         
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                            
+                ];
+
+            }
+
+        }else{
+
+            $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_sales_order' => $salesorder));
+
+            $credit_invoice = $this->common_model->SingleRow('crm_credit_invoice',array('cci_sales_order' => $salesorder));
+
+            if(!empty($cash_invoice)){
+
+                $cond1 = array('ci_sales_order' => $salesorder);
+
+                $cond2 = "";
+
+                $joins = array(
+
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'cipd_prod_det',
+                    ),
+
+                    array(
+                        'table' => 'crm_cash_invoice',
+                        'pk'    => 'ci_id',
+                        'fk'    => 'cipd_cash_invoice',
+                    ),
+
+                );
+
+                $cash_invoice = $this->common_model->FetchProd('crm_cash_invoice_prod_det',$cond1,$cond2,$joins);
+
+                foreach($cash_invoice as $cash_inv){
+
+                    $result[] = [
+                            
+                        'product_id'      => $cash_inv->product_id,
+                        'product_details' => $cash_inv->product_details,
+                                
+                    ];
+
+                }
+            }
+
+            if(!empty($credit_invoice)){
+
+                $cond1 = array('cci_sales_order' => $salesorder);
+
+                $cond2 = "";
+
+                $joins = array(
+
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'ipd_prod_detl',
+                    ),
+
+                    array(
+                        'table' => 'crm_credit_invoice',
+                        'pk'    => 'cci_id',
+                        'fk'    => 'ipd_credit_invoice',
+                    ),
+
+                );
+
+                $credit_invoice = $this->common_model->FetchProd('crm_credit_invoice_prod_det',$cond1,$cond2,$joins);
+               
+                foreach($credit_invoice as $credit_inv){
+
+                    $result[] = [
+                            
+                        'product_id'      => $credit_inv->product_id,
+                        'product_details' => $credit_inv->product_details,
+                                
+                    ];
+
+                }
+
+            }
+
+
+            $result = array_map("unserialize", array_unique(array_map("serialize", $result)));
+            
+
+        }
+
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
+
+        //$data['total_count'] = count($data['result']);
 
         return json_encode($data);
 
