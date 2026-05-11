@@ -200,9 +200,9 @@ class LPO_MRNReport extends BaseController
                 }
 
                 // 3. (Optional) If User selected a Product ($data5), apply that too so you don't get other items
-                if (!empty($data5)) {
+                /*if (!empty($data5)) {
                     $product_condition['pop_prod_desc'] = $data5;
-                }
+                }*/
 
                 // 4. Pass the specific $product_condition instead of just the PO ID
                // $pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', $product_condition, $joins2, 'pop_id');
