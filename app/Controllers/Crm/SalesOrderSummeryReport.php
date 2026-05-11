@@ -108,16 +108,82 @@ class SalesOrderSummeryReport extends BaseController
 
     public function FetchProducts()
     {
+        $salesorder = $this->request->getPost('salesorder');
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
 
-        $data['total_count'] = count($data['result']);
+        $result = [];
+
+        if ($salesorder == '') {
+
+            //$data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+            $products = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end); 
+
+            foreach($products as $prod){
+                    
+                $result[] = [
+                         
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                            
+                ];
+
+            }
+
+        }else{
+
+            if(!empty($salesorder)){
+
+                $cond1 = array('spd_sales_order' => $salesorder);
+
+            }else{
+                
+                $cond1 = "";
+            }
+
+            $cond2 = "";
+
+            $joins = array(
+
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'spd_product_details',
+                ),
+
+            );
+
+            $sales_details = $this->common_model->FetchProd('crm_sales_product_details',$cond1,$cond2,$joins);
+
+            $added_products = [];
+
+            foreach($sales_details as $sales_det){
+
+                if(!in_array($sales_det->product_id, $added_products)){
+
+                    $result[] = [
+                            
+                        'product_id'      => $sales_det->product_id,
+                        'product_details' => $sales_det->product_details,
+                                
+                    ];
+
+                    $added_products[] = $sales_det->product_id;
+
+                }
+            }
+        }
+
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
+
+        //$data['total_count'] = count($data['result']);
 
         return json_encode($data);
 

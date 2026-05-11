@@ -467,6 +467,7 @@
             dropdownParent: $('#SalesOrderReport'),
             ajax: {
                 url: "<?= base_url(); ?>Crm/SalesOrderSummeryReport/FetchProducts",
+                type: "POST", // ✅ Make sure this is POST since controller expects POST
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -476,6 +477,7 @@
                     return {
                         term: params.term,
                         page: params.page || 1,
+                        salesorder: $('.sales_order').val() // ✅ send inside data function
                     };
                 },
                 processResults: function(data, params) {
@@ -484,10 +486,18 @@
                     //var c = JSON.parse(data);
                     //console.log(data);
                     var page = params.page || 1;
-                    return {
+                    /*return {
                         results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
                         pagination: {
                         // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };*/
+                    return {
+                        results: $.map(data.result, function (item) {
+                            return { id: item.product_id, text: item.product_details };
+                        }),
+                        pagination: {
                             more: (page * 10) <= data.total_count
                         }
                     };
