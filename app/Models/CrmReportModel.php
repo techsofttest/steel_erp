@@ -345,6 +345,9 @@ class CrmReportModel extends Model
         $i = 0;
         foreach ($result as $res) {
             $cond_user = [$second_col => $res->dn_id];
+            if (!empty($data3)) {
+                $cond_user[$data3_col] = $data3;
+            }
             $result[$i]->delivery_product = $this->FetchWhereJoin($second_table,$cond_user,$joins1);
             $i++;
         }

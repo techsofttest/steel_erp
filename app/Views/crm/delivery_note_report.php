@@ -618,7 +618,9 @@
             dropdownParent: $('#DeliveryNoteReport'),
             ajax: {
                 url: "<?= base_url(); ?>Crm/DeliveryNoteReport/FetchProducts",
+                type: "POST", // ✅ Make sure this is POST since controller expects POST
                 dataType: 'json',
+                
                 delay: 250,
                 cache: false,
                 minimumInputLength: 1,
@@ -627,6 +629,7 @@
                     return {
                         term: params.term,
                         page: params.page || 1,
+                        salesorder: $('.sales_order').val() // ✅ send inside data function
                     };
                 },
                 processResults: function(data, params) {

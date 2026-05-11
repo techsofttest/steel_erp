@@ -83,10 +83,87 @@ class DeliveryNoteReport extends BaseController
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
 
-        $data['total_count'] = count($data['result']);
+        $salesorder = $this->request->getPost('salesorder');
+
+        
+
+        $result = [];
+
+        if ($salesorder == '') {
+      
+           //$data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+           $products = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
+           
+           foreach($products as $prod){
+                    
+                $result[] = [
+                         
+                    'product_id'      => $prod->product_id,
+                    'product_details' => $prod->product_details,
+                            
+                ];
+
+            }
+
+        }else{
+
+
+
+            if(!empty($salesorder)){
+
+                $cond1 = array('dn_sales_order_num' => $salesorder);
+
+            }else{
+                
+                $cond1 = "";
+            }
+
+            $cond2 = "";
+
+            $joins = array(
+
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'dpd_prod_det',
+                ),
+                array(
+                    'table' => 'crm_delivery_note',
+                    'pk'    => 'dn_id',
+                    'fk'    => 'dpd_delivery_id',
+                ),
+
+            );
+
+            $delivery_product = $this->common_model->FetchProd('crm_delivery_product_details',$cond1,$cond2,$joins);
+
+            $added_products = [];
+
+            foreach($delivery_product as $del_prod){
+
+                if(!in_array($del_prod->product_id, $added_products)){
+
+                    $result[] = [
+                            
+                        'product_id'      => $del_prod->product_id,
+                        'product_details' => $del_prod->product_details,
+                                
+                    ];
+
+                    $added_products[] = $del_prod->product_id;
+
+                }
+
+            }
+        }
+
+        $data['result'] = $result;
+
+        $data['total_count'] = count($result);
+
+        //$data['total_count'] = count($data['result']);
 
         return json_encode($data);
 
