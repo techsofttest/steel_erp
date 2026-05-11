@@ -324,7 +324,7 @@
                                                                 <td class="height_class <?= $border_class ?>" style="width:100px"></td>
                                                                 <td  class="p-0 <?= $border_class ?>" style="width:150px"></td>
                                                                 <td class="height_class <?= $border_class ?>" style="width:300px"></td>
-                                                                <td class="height_class <?= $border_class ?>" style="width:100px"></td>
+                                                                <!--<td class="height_class <?= $border_class ?>" style="width:100px"></td>-->
                                                                 <td class="height_class <?= $border_class ?>" style="width:120px"></td>
                                                                 <td class="height_class <?= $border_class ?>" style="width:100px"></td>
                                                                 <td class="height_class <?= $border_class ?> text-end" style="width:100px"></td>
