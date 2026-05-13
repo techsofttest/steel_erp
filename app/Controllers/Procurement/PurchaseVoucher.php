@@ -414,6 +414,7 @@ class PurchaseVoucher extends BaseController
                             'pvp_discount'             =>  $_POST['pvp_discount'][$j],
                             //'pvp_amount'               =>  preg_replace('/[,]/', '',$_POST['pvp_amount'][$j]),
                             'pvp_amount'               =>  number_format($finalAmount, 2, '.', ''),
+                            'pvp_amount'               =>  $finalAmount,
                             'pvp_mat_rec_note_prod_id' =>  $_POST['rnp_id'][$j],
                             'pvp_mat_rec_id'           =>  $_POST['material_received_id'][$j],
                             'pvp_reffer_id'            =>  $this->request->getPost('purchase_voucher_id'),

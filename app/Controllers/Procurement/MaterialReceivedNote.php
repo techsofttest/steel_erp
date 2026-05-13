@@ -289,7 +289,7 @@ class MaterialReceivedNote extends BaseController
                             'rnp_purchase_id'            =>  $_POST['purchase_org_id'][$j],
                             'rnp_purchase_prod_id'       =>  $_POST['purchase_id'][$j],
                             'rnp_discount'               =>  $_POST['discount'][$j],
-                            'rnp_amount'                 =>  $total_amount,
+                            'rnp_amount'                 =>  $orginalPrice,
                             'rnp_rate'                   =>  $_POST['rate'][$j],
                             
                         );

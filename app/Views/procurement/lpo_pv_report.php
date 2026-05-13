@@ -381,11 +381,13 @@
                                                                                                                                             } ?></td>
 
                                                                                 <td style="width:500px"> <?php echo $orders->product_details; ?> </td>
+                                                                                
                                                                                 <td class="text-center" style="width:80px"><?php echo format_currency($orders->pop_qty); ?></td>
 
                                                                                 <td class="text-end" style="width:80px"> <?php echo format_currency($orders->pop_rate); ?> </td>
 
                                                                                 <td class="text-end" style="width:80px"> <?php echo format_currency($orders->pop_discount); ?>%</td>
+                                                                                
                                                                                 <td class="text-end" style="width:80px"> 
                                                                                     <?php echo format_currency(($orders->pop_amount ?? 0));
                                                                                     $po_amount += $orders->pop_amount;
