@@ -536,6 +536,8 @@ $printedVendorNames = [];
                                                                     </tr>  
 
                                                                 <?php  } }
+                                                                
+                                                                /*
 
                                                                 if(!empty($sales_order->journal_voucher)){
 
@@ -550,7 +552,32 @@ $printedVendorNames = [];
                                                                         <?php }  ?>
                                                                     </tr>  
                                                                     
-                                                                    <?php } }
+                                                                    <?php } }*/
+
+                                                                /* journal voucher start*/
+
+                                                                $printedJV = [];
+                                                                if(!empty($sales_order->journal_voucher)){
+
+                                                                    
+
+                                                                    foreach($sales_order->journal_voucher as $jv){ 
+                                                                      if (!empty($jv->jv_voucher_no) && !in_array($jv->jv_voucher_no, $printedJV)) {        
+                                                                    ?> 
+                                                                       
+                                                                    <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                                                         
+                                                                        <td  style="width:100px" ><?php echo $jv->jv_voucher_no; ?> </td>
+                                                                        
+                                                                    
+                                                                    </tr>
+
+
+                                                                <?php $printedJV[] = $jv->jv_voucher_no;  }  } }
+
+                                                                /*journal voucher end*/
+
+                                                                
                                                                 
                                                                 
                                                                 ?>    

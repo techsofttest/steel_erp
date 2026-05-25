@@ -124,16 +124,19 @@
                                                                 <!--table section start-->
 
                                                                 <?php
+                                                                
                                                                 if (!empty($_GET['form_date'])) {
                                                                     $from_date = $_GET['form_date'];
                                                                 } else {
                                                                     $from_date = "";
                                                                 }
+
                                                                 if (!empty($_GET['to_date'])) {
                                                                     $to_date = $_GET['to_date'];
                                                                 } else {
                                                                     $to_date = "";
                                                                 }
+
                                                                 if (!empty($_GET['sales_order'])) {
                                                                     $customer = $_GET['sales_order'];
                                                                 } else {
