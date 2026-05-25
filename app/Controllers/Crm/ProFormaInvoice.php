@@ -1730,7 +1730,7 @@ class ProFormaInvoice extends BaseController
         
                                         <tr>
                                         
-                                            <td width="13%"> </td>
+                                            <td width="10%"> </td>
                                             
                                             <td >'.$proforma_invoice->cc_customer_name.'</td>
                                         
