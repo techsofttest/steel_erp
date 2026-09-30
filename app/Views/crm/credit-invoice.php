@@ -337,7 +337,7 @@ span.select2.customer_width, span.select2 {
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cci_project"  class="form-control project_clz input_length" required>
+                                                                        <input type="text" name="cci_project"  class="form-control project_clz input_length" >
                                                                     </div>
 
                                                                 </div> 
@@ -849,7 +849,7 @@ span.select2.customer_width, span.select2 {
                                         </div>
 
                                         <div class="col-col-md-9 col-lg-9">
-                                            <input type="text" name="cci_project"  class="form-control edit_project_clz input_length" required>
+                                            <input type="text" name="cci_project"  class="form-control edit_project_clz input_length" >
                                         </div>
 
                                     </div> 
