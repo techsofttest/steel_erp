@@ -69,6 +69,10 @@ class CrmReportModel extends Model
         foreach ($result as $res) {
 
             $cond_user = [$second_col => $res->qd_id];
+
+             if (!empty($data3)) {
+                $cond_user[$data3_col] = $data3;
+            }
             $result[$i]->quotation_product = $this->FetchWhereJoin($second_table, $cond_user,$joins1);
             $i++;
         }
@@ -212,7 +216,9 @@ class CrmReportModel extends Model
         $i = 0;
         foreach ($result as $res) {
             $cond_user = [$second_col => $res->so_id];
-
+            if (!empty($data4)) {
+                $cond_user[$data4_col] = $data4;
+            }
             $result[$i]->sales_products = $this->FetchProdSales($second_table,$cond_user,$joins1);
 
             
@@ -520,8 +526,17 @@ class CrmReportModel extends Model
         $i = 0;
         foreach ($result as $res) {
             
-            $result[$i]->quotation_product = $this->SalesQuotAnalysis('crm_quotation_product_details',array('qpd_quotation_details' => $res->qd_id));
-           
+            $cond_user = ['qpd_quotation_details' => $res->qd_id];
+
+            if (!empty($data3)) {
+                $cond_user[$data3_col] = $data3;
+            }
+            //$result[$i]->quotation_product = $this->FetchWhereJoin($second_table, $cond_user,$joins1);
+            //$i++;
+
+           // $result[$i]->quotation_product = $this->SalesQuotAnalysis('crm_quotation_product_details',array('qpd_quotation_details' => $res->qd_id));
+
+           $result[$i]->quotation_product = $this->SalesQuotAnalysis('crm_quotation_product_details',$cond_user);
             $i++;
         }
 
@@ -650,6 +665,10 @@ class CrmReportModel extends Model
         foreach ($result as $res) {
 
             $cond_user = ['dpd_delivery_id' => $res->dn_id];
+
+            if (!empty($data4)) {
+                $cond_user[$data4_col] = $data4;
+            }
 
             $result[$i]->delivery_products = $this->FetchDeliveredProd('crm_delivery_product_details',$cond_user);
 

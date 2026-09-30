@@ -210,11 +210,32 @@ class SalesSummery extends BaseController
                                 <td style='' width='100px'>{$sale_data->customer_name}</td>
                                 <td style='' width='100px' align='center'>{$sale_data->sales_order}</td>
                                 <td style='' width='100px' align='center'>{$sale_data->sales_lpo}</td>
-                                <td style='' width='100px' align='center'>{$sale_data->sales_exec}</td>
-                                <td style='' width='100px' align='right'>".format_currency($sale_data->amount)."</td>";
+                                <td style='' width='100px' align='center'>{$sale_data->sales_exec}</td>";
+
+                                  if($sale_data->amount_check == "sales return"){ 
+                                                             
+                                                           
+                                                            
+                                                            $pdf_data .="<td style='' width='100px' align='right'>-".format_currency($sale_data->amount)."</td>";
+
+                                                               $total_amount =    $total_amount -  $sale_data->amount; 
+
+
+                                                         } else{  
+
+                                                           
+
+                                                            $pdf_data .="<td style='' width='100px' align='right'>".format_currency($sale_data->amount)."</td>";
+
+                                                               $total_amount =   $sale_data->amount +  $total_amount; 
+                                                           
+                                                            
+                                                         } 
+                                                        
+                               
                                
 
-                                $total_amount =  $sale_data->amount + $total_amount;
+                                
 
                                
                                 

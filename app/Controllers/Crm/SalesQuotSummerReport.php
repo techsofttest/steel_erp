@@ -351,7 +351,7 @@ class SalesQuotSummerReport extends BaseController
                      
                     $pdf_data .="</tr>";
                 }
-                foreach($product_details as $prod_del)
+                /*foreach($product_details as $prod_del)
                 {
                     if($q!=1){
 
@@ -423,7 +423,7 @@ class SalesQuotSummerReport extends BaseController
 
                     $q++;
 
-                }
+                }*/
                 
                 if($q==1)
                 {
@@ -570,17 +570,9 @@ class SalesQuotSummerReport extends BaseController
         
             <th align="left">Sales Executive</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
-            <th align="left">Product</th>
-
-            <th align="left">Qty</th>
-
-            <th align="center">Rate</th>
-
-            <th align="center">Discount</th>
-
-            <th align="center">Amount</th>
+            
         
             
             </tr>
@@ -594,11 +586,7 @@ class SalesQuotSummerReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;" align="right"><b>'.format_currency($total_amount).'</b></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right"><b>'.format_currency($total_amount).'</b></td>
+              
                 
             </tr>    
            

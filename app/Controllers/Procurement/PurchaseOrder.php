@@ -302,7 +302,7 @@ class PurchaseOrder extends BaseController
                             'pop_qty'                   =>  $_POST['pop_qty'][$j],
                             'pop_rate'                  =>  preg_replace('/[,]/', '',$_POST['pop_rate'][$j]),
                             'pop_discount'              =>  $_POST['pop_discount'][$j],
-                            //'pop_amount'                =>  preg_replace('/[,]/', '',$_POST['pop_amount'][$j]),
+                            //'pop_amount'              =>  preg_replace('/[,]/', '',$_POST['pop_amount'][$j]),
                             'pop_amount'                =>  number_format($finalAmount, 2, '.', ''),
                             'pop_material_req_prod_id'  =>  $_POST['material_req_prod_id'][$j],
                             'pop_purchase_order'        =>  $purchase_id,

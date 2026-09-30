@@ -62,7 +62,7 @@ class SalesReturn extends BaseController
         $data = array();
 
         $i=1;
-        foreach($records as $record ){
+        foreach($records as $record){
             
             $action = '<a  href="javascript:void(0)" data-id="'.$record->sr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
             <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->sr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
@@ -80,6 +80,7 @@ class SalesReturn extends BaseController
             );
 
            $i++; 
+
         }
  
         ## Response

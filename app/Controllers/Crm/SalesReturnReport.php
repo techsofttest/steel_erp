@@ -293,9 +293,9 @@ class SalesReturnReport extends BaseController
                                 <td style='' align='center' width='100px'>{$inv_rep->so_reffer_no}</td>
                                 <td style='' align='center' width='80px'>{$inv_rep->sr_lpo_reff}</td>
                                 <td style='' align='center' width='80px'>{$inv_rep->se_name}</td>
-                                <td style='' align='center' width='100px' align='right'>{$inv_rep->so_amount_total}</td>";
+                                <td style='' align='center' width='100px' align='right'>{$inv_rep->sr_total}</td>";
 
-                                $sales_prod_amount = $inv_rep->so_amount_total + $sales_prod_amount;
+                                $sales_prod_amount = $inv_rep->sr_total + $sales_prod_amount;
 
 
                 $pdf_data .="</tr>";
