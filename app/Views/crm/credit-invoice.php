@@ -968,7 +968,7 @@ span.select2.customer_width, span.select2 {
                                         <td>Amount</td>
                                         
                                     </tr>
-
+ 
                                 </thead>
 
                                 <tbody class="edit_product_table"></tbody>

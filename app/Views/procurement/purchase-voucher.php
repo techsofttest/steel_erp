@@ -1212,7 +1212,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
-                                                    <th style="width: 100px !important;">Reference</th>
+                                                    <th style="width: 120px !important;">Reference</th>
                                                     <th style="width: 80px !important;">Date</th>
                                                     <th>Vendor</th>
                                                     <th style="width: 150px !important;">Purchase Order</th>
