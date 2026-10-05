@@ -143,23 +143,23 @@
     }
 
     table#DataTable th:nth-child(1),
-    table#DataTable th:nth-child(3),
-    table#DataTable th:nth-child(5),
+    table#DataTable th:nth-child(4),
     table#DataTable td:nth-child(1),
-    table#DataTable td:nth-child(3),
-    table#DataTable td:nth-child(5) {
+    table#DataTable td:nth-child(4) {
         text-align: center;
     }
 
-    table#DataTable th:nth-child(4),
+    table#DataTable th:nth-child(5),
     table#DataTable th:nth-child(6),
-    table#DataTable td:nth-child(4),
+    table#DataTable td:nth-child(5),
     table#DataTable td:nth-child(6) {
         text-align: end;
     }
 
     table#DataTable th:nth-child(2),
-    table#DataTable td:nth-child(2) {
+    table#DataTable th:nth-child(3),
+    table#DataTable td:nth-child(2),
+    table#DataTable td:nth-child(3) {
         text-align: start;
     }
 
@@ -493,10 +493,10 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort" style="width: 15px !important;">Sl no</th>
+                                                    <th>JV</th>
                                                     <th>Account head</th>
-                                                    <th style="width: 100px !important;">Acquired Date</th>
+                                                    <th style="width: 100px !important;">Date</th>
                                                     <th style="width: 100px;">Amount</th>
-                                                    <th style="width: 85px;">Depreciation</th>
                                                     <th style="width: 100px;">Actions</th>
                                                 </tr>
                                             </thead>
@@ -1366,7 +1366,7 @@
                     var debitAccount = $('#debit_account_select').val();
                     var depreciation = $('.edit_total_prod').val();
                     var current_balance = $('.currentbalance').val();
-                    var depDate = $('#dpc_acquired_date').val()
+                    var depDate = $('.dpc_acquired_date').val();
 
                     $.ajax({
                         url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Add",
@@ -1382,8 +1382,10 @@
                                 alertify.success('Data Added Successfully');
 
                                 // Fetch additional data for the second modal
+                                var depDateObj = new Date(depDate);
+                                var depYear = isNaN(depDateObj) ? depDate.split('-').pop() : depDateObj.getFullYear();
                                 $.ajax({
-                                    url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference",
+                                    url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/e/" + depYear,
                                     method: "GET",
                                     success: function(response) {
                                         $('#uid').val(response);
@@ -1890,6 +1892,9 @@
                         data: 'dpc_id'
                     },
                     {
+                        data: 'dpc_jv_no'
+                    },
+                    {
                         data: 'dpc_account_head'
                     },
                     {
@@ -1897,9 +1902,6 @@
                     },
                     {
                         data: 'dpc_amount'
-                    },
-                    {
-                        data: 'dpc_depreciation'
                     },
                     {
                         data: 'action'
