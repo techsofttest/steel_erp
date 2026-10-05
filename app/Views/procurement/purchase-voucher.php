@@ -1215,7 +1215,7 @@
                                                     <th style="width: 120px !important;">Reference</th>
                                                     <th style="width: 80px !important;">Date</th>
                                                     <th>Vendor</th>
-                                                    <th style="width: 100px !important;">Purchase Order</th>
+                                                    <th style="width: 150px !important;">Purchase Order</th>
                                                     <th style="width: 100px;">Total</th>
                                                     <th style="width: 70px;">Actions</th>
                                                 </tr>
