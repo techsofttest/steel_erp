@@ -2525,6 +2525,10 @@
 
         $("body").on('click', '.delete_btn', function() {
 
+            if (!confirm("Are you absolutely sure you want to delete?")) {
+                return false;
+            }
+
             var id = $(this).data('id');
 
             var rowToDelete = $(this).closest('tr');

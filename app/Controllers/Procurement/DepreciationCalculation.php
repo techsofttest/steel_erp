@@ -782,15 +782,10 @@ class DepreciationCalculation extends BaseController
         $dep_record = $this->common_model->SingleRow('pro_depreciation_calculation', ['dpc_id' => $id]);
         
         if($dep_record && !empty($dep_record->dpc_jv_id)) {
-            // Get the JV record ID using the voucher no
-            $jv_record = $this->common_model->SingleRow('accounts_journal_vouchers', ['jv_voucher_no' => $dep_record->dpc_jv_id]);
-            
-            if($jv_record) {
-                // Delete journal invoices (details)
-                $this->common_model->DeleteData('accounts_journal_invoices', ['ji_voucher_id' => $jv_record->jv_id]);
-                // Delete journal voucher
-                $this->common_model->DeleteData('accounts_journal_vouchers', ['jv_id' => $jv_record->jv_id]);
-            }
+            $data['status'] = 0;
+            $data['msg'] = "Please delete {$dep_record->dpc_jv_id} to remove!";
+            echo json_encode($data);
+            exit();
         }
 
         $cond = array('dpc_id' => $id);
