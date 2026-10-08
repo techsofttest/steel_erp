@@ -346,17 +346,17 @@ class DnToCreditInvoice extends BaseController
                 $new_date = date('d-M-Y',strtotime($del_note->dn_date));
                
                 $pdf_data .="<tr>
-                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$del_note->dn_reffer_no}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$del_note->cc_customer_name}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$del_note->so_reffer_no}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$del_note->dn_lpo_reference}</td>";
+                                <td style='' width='40px'>{$new_date}</td>
+                                <td style='' width='100px'>{$del_note->dn_reffer_no}</td>
+                                <td style='' width='100px'>{$del_note->cc_customer_name}</td>
+                                <td style='' width='100px'>{$del_note->so_reffer_no}</td>
+                                <td style='' width='100px'>{$del_note->dn_lpo_reference}</td>";
                                 
                                 $delivery_total  = $del_note->dn_total_amount + $delivery_total;
                                
-                                $pdf_data .="<td style='border-top: 2px solid' width='80px'>".format_currency($del_note->dn_total_amount)."</td>";
+                                $pdf_data .="<td style='' width='80px'>".format_currency($del_note->dn_total_amount)."</td>";
 
-                                $pdf_data .="<td colspan='7' align='left' class='p-0' style='border-top: 2px solid'>
+                                $pdf_data .="<td colspan='7' align='left' class='p-0' style='>
                                 
                                                 <table>";
 
@@ -523,7 +523,7 @@ class DnToCreditInvoice extends BaseController
         
         
         
-            <table width="100%" style="margin-top:10px;">
+            <table width="100%" style="margin-top:10px;border-bottom: 2px solid;">
             
         
             <tr width="100%">
@@ -541,19 +541,19 @@ class DnToCreditInvoice extends BaseController
         
             <tr>
             
-                <th align="left" width="40px">Date</th>
+                <th align="left" style="border-bottom: 2px solid;" width="40px">Date</th>
             
-                <th align="left" width="100px">Delivery Note</th>
+                <th align="left" style="border-bottom: 2px solid;" width="100px">Delivery Note</th>
             
-                <th align="left" width="100px">Customer</th>
+                <th align="left" style="border-bottom: 2px solid;" width="100px">Customer</th>
             
-                <th align="left" width="100px">Sales Order Ref</th>
+                <th align="left" style="border-bottom: 2px solid;" width="100px">Sales Order Ref</th>
             
-                <th align="left" width="100px">LPO Ref</th>
+                <th align="left" style="border-bottom: 2px solid;" width="100px">LPO Ref</th>
 
-                <th align="left" width="80px">Amount</th>
+                <th align="left" style="border-bottom: 2px solid;" width="80px">Amount</th>
 
-                <th colspan="7">
+                <th colspan="7" style="border-bottom: 2px solid;">
 
                     <table>
 
