@@ -327,7 +327,7 @@ class SalesQuotReport extends BaseController
             foreach($quotation_data as $quot_data)
             {   
                 $q=1;
-                $border="border-top: 2px solid";
+                $border="";
                 $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
                 
                 $total_amount = $total_amount + $quot_data->qd_sales_amount;
@@ -336,15 +336,15 @@ class SalesQuotReport extends BaseController
 
                 $new_date = date('d-M-Y',strtotime($quot_data->qd_date));
 
-                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
+                $pdf_data .= "<tr><td >{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
+                $pdf_data .= "<td >{$quot_data->qd_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
+                $pdf_data .= "<td >{$quot_data->cc_customer_name}</td>";
                 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
+                $pdf_data .= "<td >{$quot_data->se_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid' align='right'>{$amount}</td>";
+                $pdf_data .= "<td  align='right'>{$amount}</td>";
                 
                 
                 if($q!=1){
@@ -562,25 +562,25 @@ class SalesQuotReport extends BaseController
         
             <tr>
             
-            <th align="left">Date</th>
+            <th align="left" style="border-bottom: 2px solid;">Date</th>
         
-            <th align="left">Quotation Ref.</th>
+            <th align="left" style="border-bottom: 2px solid;">Quotation Ref.</th>
         
-            <th align="left">Customer</th>
+            <th align="left" style="border-bottom: 2px solid;">Customer</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="left" style="border-bottom: 2px solid;">Sales Executive</th>
         
-            <th align="left">Amount</th>
+            <th align="left" style="border-bottom: 2px solid;">Amount</th>
 
-            <th align="left">Product</th>
+            <th align="left" style="border-bottom: 2px solid;">Product</th>
 
-            <th align="left">Qty</th>
+            <th align="left" style="border-bottom: 2px solid;">Qty</th>
 
-            <th align="center">Rate</th>
+            <th align="center" style="border-bottom: 2px solid;">Rate</th>
 
-            <th align="center">Discount</th>
+            <th align="center" style="border-bottom: 2px solid;">Discount</th>
 
-            <th align="center">Amount</th>
+            <th align="center" style="border-bottom: 2px solid;">Amount</th>
         
             
             </tr>
