@@ -1042,6 +1042,9 @@ print_r($result);*/
 
         $result = $query->get()->getResult();
 
+        echo '<pre>';
+print_r($result);
+
         return $result;
 
 
