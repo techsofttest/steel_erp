@@ -488,12 +488,15 @@ $printedPV = [];
 
 if (!empty($sales_order->purchase_vouchers)) {
 
-    foreach ($sales_order->purchase_vouchers as $pv) {
+    $pvList = $sales_order->purchase_vouchers;
 
-        if (
-            !empty($pv->pv_reffer_id) &&
-            !in_array($pv->pv_reffer_id, $printedPV)
-        ) {
+    usort($pvList, function ($a, $b) {
+        return strcmp($a->pv_vendor_inv, $b->pv_vendor_inv);
+    });
+
+    foreach ($pvList as $pv) {
+
+        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
 ?>
             <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px"
                 class="text-center tr_height_eq">
