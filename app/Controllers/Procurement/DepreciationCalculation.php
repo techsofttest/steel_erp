@@ -65,10 +65,10 @@ class DepreciationCalculation extends BaseController
 
             $data[] = array(
                 "dpc_id"               => $i,
+                'dpc_jv_no'            => $record->dpc_jv_id ?? '-',
                 'dpc_account_head'     => $record->ah_account_name,
                 'dpc_acquired_date'    => date('d-M-Y', strtotime($record->dpc_acquired_date)),
                 'dpc_amount'           => $record->dpc_amount,
-                'dpc_depreciation'     => $record->dpc_depreciation,
                 "action"               => $action,
             );
             $i++;
@@ -737,6 +737,7 @@ class DepreciationCalculation extends BaseController
         <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $dep_amount . '">
         <input type="hidden" id="total_amount_debit" name="total_debit" value="">
         <input type="hidden" id="total_amount_credit" name="total_credit" value="">
+        <input type="hidden" id="dpc_id" name="dpc_id" value="' . $this->request->getPost('ID') . '">
     </tr>
 ';
 
@@ -775,11 +776,23 @@ class DepreciationCalculation extends BaseController
            exit();
         }
         
-        $cond = array('dpc_id' => $this->request->getPost('ID'));
+        $id = $this->request->getPost('ID');
+        
+        // Fetch the depreciation record to get the JV number
+        $dep_record = $this->common_model->SingleRow('pro_depreciation_calculation', ['dpc_id' => $id]);
+        
+        if($dep_record && !empty($dep_record->dpc_jv_id)) {
+            $data['status'] = 0;
+            $data['msg'] = "Please delete {$dep_record->dpc_jv_id} to remove!";
+            echo json_encode($data);
+            exit();
+        }
+
+        $cond = array('dpc_id' => $id);
 
         $this->common_model->DeleteData('pro_depreciation_calculation', $cond);
 
-        $cond = array('dpcd_depreciation_id' => $this->request->getPost('ID'));
+        $cond = array('dpcd_depreciation_id' => $id);
 
         $this->common_model->DeleteData('pro_depreciation_det', $cond);
 
@@ -909,11 +922,14 @@ class DepreciationCalculation extends BaseController
         //Insert Journal voucher
        
 
-         $juid = $this->common_model->FetchNextId('accounts_journal_vouchers','jv_id', "JV-{$this->data['accounting_year']}-",'');
+        $jv_date = date('Y-m-d', strtotime($this->request->getPost('jv_date')));
+        $jv_year = date('Y', strtotime($jv_date));
+
+        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers','jv_voucher_no', "JV-{$jv_year}-",'');
 
         $insert_journal['jv_voucher_no'] = $juid;
 
-        $insert_journal['jv_date'] = date('Y-m-d', strtotime($this->request->getPost('jv_date')));
+        $insert_journal['jv_date'] = $jv_date;
 
         $insert_journal['jv_debit_total'] = $this->request->getPost('total_debit');
 
@@ -923,6 +939,10 @@ class DepreciationCalculation extends BaseController
 
         $journal_id = $this->common_model->InsertData('accounts_journal_vouchers', $insert_journal);
 
+        $dpc_id = $this->request->getPost('dpc_id');
+        if(!empty($dpc_id)) {
+            $this->common_model->EditData(['dpc_jv_id' => $juid], ['dpc_id' => $dpc_id], 'pro_depreciation_calculation');
+        }
 
         //Insert Journal invoices
 
