@@ -328,10 +328,6 @@ if (!empty($sales_order->purchase_return_prod)) {
     }
 }
 
-echo '<pre>';
-print_r($vendor_names_pr);
-echo '</pre>';
-
 /*purchase return end*/
 
 
@@ -379,14 +375,14 @@ $printedVendorNames = [];
 
 <!--purchase return start--->
 
-<?php /*if (!empty($vendor_names_pr)) { ?>
+<?php if (!empty($vendor_names_pr)) { ?>
     <?php foreach ($vendor_names_pr as $vendor) { ?>
         <br>
         <span style="display: inline-block;height: 35px;">
             <?= $vendor; ?>
         </span>
     <?php } ?>
-<?php }*/ ?>
+<?php } ?>
 
 <!---purchase return end-->
 
