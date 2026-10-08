@@ -483,6 +483,7 @@ $printedVendorNames = [];
 
 <?php
                                      $printedPV = [];
+$previousVendor = '';
 
 if (!empty($sales_order->purchase_vouchers)) {
 
@@ -496,9 +497,27 @@ if (!empty($sales_order->purchase_vouchers)) {
         ) {
 
             $printedPV[] = $pv->pv_reffer_id;
+
+            // Get vendor name
+            $vendor = '';
+
+            if (!empty($pv->cc_customer_name)) {
+                $vendor = $pv->cc_customer_name;
+            }
+
             ?>
 
-            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px"
+                class="text-center tr_height_eq">
+
+                <td style="width:250px">
+                    <?php
+                    if ($vendor != $previousVendor) {
+                        echo $vendor;
+                        $previousVendor = $vendor;
+                    }
+                    ?>
+                </td>
 
                 <td style="width:100px">
                     <?= $pv->pv_vendor_inv ?>
