@@ -323,10 +323,14 @@ if (!empty($sales_order->purchase_return_prod)) {
 
             $printedPR[] = $prd->pr_reffer_id;
 
-            $vendor_names_pr[] = $prd->cc_customer_name;
+            $vendor_names_pr[] = $prd;
         }
     }
 }
+
+echo '<pre>';
+print_r($vendor_names_pr);
+echo '</pre>';
 
 /*purchase return end*/
 
@@ -375,14 +379,14 @@ $printedVendorNames = [];
 
 <!--purchase return start--->
 
-<?php if (!empty($vendor_names_pr)) { ?>
+<?php /*if (!empty($vendor_names_pr)) { ?>
     <?php foreach ($vendor_names_pr as $vendor) { ?>
         <br>
         <span style="display: inline-block;height: 35px;">
             <?= $vendor; ?>
         </span>
     <?php } ?>
-<?php } ?>
+<?php }*/ ?>
 
 <!---purchase return end-->
 
