@@ -490,8 +490,13 @@ if (!empty($sales_order->purchase_vouchers)) {
 
     $pvList = $sales_order->purchase_vouchers;
 
+    // Group same vendor together
     usort($pvList, function ($a, $b) {
-        return strcmp($a->pv_vendor_inv, $b->pv_vendor_inv);
+
+        return strcmp(
+            $a->cc_customer_name,
+            $b->cc_customer_name
+        );
     });
 
     foreach ($pvList as $pv) {
