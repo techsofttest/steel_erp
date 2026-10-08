@@ -952,7 +952,7 @@ echo '<pre>';
 echo "SO: " . $res->so_reffer_no . "\n";
 echo "COUNT: " . count($purchase_return) . "\n";
 print_r($purchase_return);
-exit;
+//exit;
 
             $result[$i]->petty_cash             = $this->FetchPettyCash('accounts_petty_cash_debits',array('pci_sales_order' => $res->so_id));
 
