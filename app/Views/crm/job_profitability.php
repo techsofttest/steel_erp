@@ -484,50 +484,27 @@ $printedVendorNames = [];
 
                                                             
 <?php
-$printedPV = [];
-$vendorInvoices = [];
 
-if (!empty($sales_order->purchase_vouchers)) {
+                                                                $printedPV = [];
+                                                                if(!empty($sales_order->purchase_vouchers)){
 
-    $pvList = $sales_order->purchase_vouchers;
+                                                                     $pvList = $sales_order->purchase_vouchers;
+                                                                     $rowCount = count($pvList);
+                                                                
+                                                                foreach ($pvList as $index => $pv) { 
+                                                                   if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {    
+                                                                ?> 
+                                                                                
+                                                                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
+                                                                    
+                                                                    <td  style="width:100px" ><?= $pv->pv_vendor_inv ?> </td>
+                                                                     
+                                                                </tr>
 
-    foreach ($pvList as $pv) {
+                                                                
 
-        if (
-            !empty($pv->pv_reffer_id) &&
-            !in_array($pv->pv_reffer_id, $printedPV)
-        ) {
+                                                            <?php $printedPV[] = $pv->pv_reffer_id; } }  }
 
-            $printedPV[] = $pv->pv_reffer_id;
-
-            $vendor = $pv->cc_customer_name;
-
-            if (!isset($vendorInvoices[$vendor])) {
-                $vendorInvoices[$vendor] = [];
-            }
-
-            $vendorInvoices[$vendor][] = $pv->pv_vendor_inv;
-        }
-    }
-}
-
-foreach ($vendorInvoices as $vendor => $invoices) {
-
-    foreach ($invoices as $invoice) {
-        ?>
-
-        <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px"
-            class="text-center tr_height_eq">
-
-            <td style="width:100px">
-                <?= $invoice ?>
-            </td>
-
-        </tr>
-
-        <?php
-    }
-}
 
 
 
