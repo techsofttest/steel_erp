@@ -487,7 +487,7 @@ $printedVendorNames = [];
 
                                                             
 
-<?php
+
 $printedPV = [];
 
 if (!empty($sales_order->purchase_vouchers)) {
@@ -512,7 +512,7 @@ if (!empty($sales_order->purchase_vouchers)) {
         }
     }
 }
-?>
+
 
 
 
