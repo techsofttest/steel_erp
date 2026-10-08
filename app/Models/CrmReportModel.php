@@ -941,7 +941,7 @@ class CrmReportModel extends Model
 
             $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucherData('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
 
-            $result[$i]->purchase_return_prod   = $this->FetchPurchaseReturnProd('pro_purchase_return_prod',array('prp_sales_order' => $res->so_reffer_no));
+            $result[$i]->purchase_return_prod   = $this->FetchPurchaseReturnProds('pro_purchase_return_prod',array('prp_sales_order' => $res->so_reffer_no));
 
             $result[$i]->petty_cash             = $this->FetchPettyCash('accounts_petty_cash_debits',array('pci_sales_order' => $res->so_id));
 
@@ -959,6 +959,55 @@ class CrmReportModel extends Model
         return $result;
      
     }
+
+
+    /*public function FetchPurchaseReturnProds($table,$cond){
+          
+        $query = $this->db->table($table)
+
+        ->select('*')
+
+        ->where($cond);
+
+        $query->join('pro_purchase_return','pro_purchase_return.pr_id =pro_purchase_return_prod.prp_purchase_return_id','left');
+
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id = pro_purchase_return.pr_vendor_name','left');
+
+        //$query->groupBy('pro_purchase_return.pr_reffer_id');
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+    }*/
+
+
+    public function FetchPurchaseReturnProds($table, $cond)
+{
+    $query = $this->db->table($table);
+
+    $query->select('*');
+
+    $query->join(
+        'pro_purchase_return',
+        'pro_purchase_return.pr_id = pro_purchase_return_prod.prp_purchase_return_id',
+        'left'
+    );
+
+    $query->join(
+        'crm_customer_creation',
+        'crm_customer_creation.cc_id = pro_purchase_return.pr_vendor_name',
+        'left'
+    );
+
+    $query->where($cond);
+
+    return $query->get()->getResult();
+}
+
+
+  
+
 
     public function FetchPurchaseVoucherData($table,$cond){
  
