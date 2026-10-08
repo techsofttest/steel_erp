@@ -283,12 +283,35 @@
 $printedPV = [];
 
 
-if (!empty($sales_order->purchase_vouchers)) {
+/*if (!empty($sales_order->purchase_vouchers)) {
     foreach ($sales_order->purchase_vouchers as $pv) {
         if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
             //$vendor_names[$pv->cc_customer_name] = true; 
             $vendor_names[] = $pv->cc_customer_name;
             $printedPV[] = $pv->pv_reffer_id;
+        }
+    }
+}*/
+
+if (!empty($sales_order->purchase_vouchers)) {
+
+    $groupedPV = [];
+
+    foreach ($sales_order->purchase_vouchers as $pv) {
+
+        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
+
+            $groupedPV[$pv->cc_customer_name][] = $pv;
+
+            $printedPV[] = $pv->pv_reffer_id;
+        }
+    }
+
+    foreach ($groupedPV as $vendorPVs) {
+
+        foreach ($vendorPVs as $pv) {
+
+            $vendor_names[] = $pv->cc_customer_name;
         }
     }
 }
