@@ -488,18 +488,7 @@ $printedPV = [];
 
 if (!empty($sales_order->purchase_vouchers)) {
 
-    $pvList = $sales_order->purchase_vouchers;
-
-    // Group same vendor together
-    usort($pvList, function ($a, $b) {
-
-        return strcmp(
-            $a->cc_customer_name,
-            $b->cc_customer_name
-        );
-    });
-
-    foreach ($pvList as $pv) {
+    foreach ($sales_order->purchase_vouchers as $pv) {
 
         if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
 ?>
@@ -516,6 +505,7 @@ if (!empty($sales_order->purchase_vouchers)) {
         }
     }
 }
+
 
 
 
