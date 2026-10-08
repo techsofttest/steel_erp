@@ -336,15 +336,15 @@ class SalesQuotSummerReport extends BaseController
 
                 $new_date = date('d-M-Y',strtotime($quot_data->qd_date));
 
-                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
+                $pdf_data .= "<tr><td style=''>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
+                $pdf_data .= "<td style=''>{$quot_data->qd_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
+                $pdf_data .= "<td style=''>{$quot_data->cc_customer_name}</td>";
                 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
+                $pdf_data .= "<td style=''>{$quot_data->se_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid' align='right'>{$amount}</td>";
+                $pdf_data .= "<td style='' align='right'>{$amount}</td>";
                 
                 
                 if($q!=1){
@@ -544,7 +544,7 @@ class SalesQuotSummerReport extends BaseController
         
         
         
-            <table width="100%" style="margin-top:10px;">
+            <table width="100%" style="margin-top:10px;border-bottom: 2px solid;">
             
         
             <tr width="100%">
@@ -557,20 +557,20 @@ class SalesQuotSummerReport extends BaseController
 
            
         
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;">
             
         
             <tr>
             
-            <th align="left">Date</th>
+            <th align="left" style="border-bottom: 2px solid;">Date</th>
         
-            <th align="left">Quotation Ref.</th>
+            <th align="left" style="border-bottom: 2px solid;">Quotation Ref.</th>
         
-            <th align="left">Customer</th>
+            <th align="left" style="border-bottom: 2px solid;">Customer</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="left" style="border-bottom: 2px solid;">Sales Executive</th>
         
-            <th align="right">Amount</th>
+            <th align="right" style="border-bottom: 2px solid;">Amount</th>
 
             
         
