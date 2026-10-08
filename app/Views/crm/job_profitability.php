@@ -482,7 +482,7 @@ $printedVendorNames = [];
                                                                 <!---->
 
 <?php
-                                                            $printedPV = [];
+                                     $printedPV = [];
 
 if (!empty($sales_order->purchase_vouchers)) {
 
@@ -490,8 +490,12 @@ if (!empty($sales_order->purchase_vouchers)) {
 
     foreach ($pvList as $pv) {
 
-        if (!empty($pv->pv_reffer_id)) {
+        if (
+            !empty($pv->pv_reffer_id) &&
+            !in_array($pv->pv_reffer_id, $printedPV)
+        ) {
 
+            $printedPV[] = $pv->pv_reffer_id;
             ?>
 
             <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
