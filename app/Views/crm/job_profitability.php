@@ -485,25 +485,32 @@ $printedVendorNames = [];
                                                             
 <?php
 
-                                                                $printedPV = [];
-                                                                if(!empty($sales_order->purchase_vouchers)){
+                                                            
+$printedPV = [];
 
-                                                                     $pvList = $sales_order->purchase_vouchers;
-                                                                     $rowCount = count($pvList);
-                                                                
-                                                                foreach ($pvList as $index => $pv) { 
-                                                                   if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {    
-                                                                ?> 
-                                                                                
-                                                                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
-                                                                    
-                                                                    <td  style="width:100px" ><?= $pv->pv_vendor_inv ?> </td>
-                                                                     
-                                                                </tr>
+if (!empty($sales_order->purchase_vouchers)) {
 
-                                                                
+    $pvList = $sales_order->purchase_vouchers;
 
-                                                            <?php $printedPV[] = $pv->pv_reffer_id; } }  }
+    foreach ($pvList as $index => $pv) {
+
+        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
+?>
+            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px"
+                class="text-center tr_height_eq">
+
+                <td style="width:100px">
+                    <?= $pv->pv_vendor_inv ?>
+                </td>
+
+            </tr>
+
+<?php
+            $printedPV[] = $pv->pv_reffer_id;
+        }
+    }
+}
+
 
 
 
