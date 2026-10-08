@@ -284,10 +284,17 @@ $printedPV = [];
 
 
 if (!empty($sales_order->purchase_vouchers)) {
+
     foreach ($sales_order->purchase_vouchers as $pv) {
-        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
-            //$vendor_names[$pv->cc_customer_name] = true; 
+
+        if (
+            !empty($pv->pv_reffer_id) &&
+            !in_array($pv->pv_reffer_id, $printedPV)
+        ) {
+
             $vendor_names[] = $pv->cc_customer_name;
+
+            // Unique by Purchase Voucher Reference
             $printedPV[] = $pv->pv_reffer_id;
         }
     }
@@ -340,7 +347,7 @@ $vendor_names_pr = array_unique($vendor_names_pr);
 $printedVendorNames = [];
 ?>
 
-<?php if (!empty($vendor_names)) { ?>
+<?php /*if (!empty($vendor_names)) { ?>
     <?php foreach ($vendor_names as $vendor) { ?>
         <br>
 
@@ -351,6 +358,32 @@ $printedVendorNames = [];
             <?php $printedVendorNames[] = $vendor; ?>
         <?php } else { ?>
             <span style="display: inline-block;height: 35px;">&nbsp;</span>
+        <?php } ?>
+
+    <?php } ?>
+<?php }*/ ?>
+
+<?php 
+$printedVendorNames = [];
+?>
+
+<?php if (!empty($vendor_names)) { ?>
+    <?php foreach ($vendor_names as $vendor) { ?>
+
+        <br>
+
+        <?php if (!in_array($vendor, $printedVendorNames)) { ?>
+
+            <span style="display: inline-block;height: 35px;">
+                <?= $vendor; ?>
+            </span>
+
+            <?php $printedVendorNames[] = $vendor; ?>
+
+        <?php } else { ?>
+
+            <span style="display: inline-block;height: 35px;">&nbsp;</span>
+
         <?php } ?>
 
     <?php } ?>
