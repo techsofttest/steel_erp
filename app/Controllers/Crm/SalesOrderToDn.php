@@ -376,16 +376,16 @@ class SalesOrderToDn extends BaseController
 
                 $new_date = date('d-m-Y', strtotime($sales_order->so_date));
                 $pdf_data .= "<tr>
-                                <td style='border-top: 2px solid' >{$new_date}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$sales_order->so_reffer_no}</td>
-                                <td style='border-top: 2px solid' >{$sales_order->cc_customer_name}</td>
-                                <td style='border-top: 2px solid' >{$sales_order->so_lpo}</td>
-                                <td style='border-top: 2px solid' >{$sales_order->se_name}</td>
-                                <td style='border-top: 2px solid' align='right' >{$sales_order_amount}</td>";
+                                <td  >{$new_date}</td>
+                                <td  width='100px'>{$sales_order->so_reffer_no}</td>
+                                <td  >{$sales_order->cc_customer_name}</td>
+                                <td  >{$sales_order->so_lpo}</td>
+                                <td  >{$sales_order->se_name}</td>
+                                <td  align='right' >{$sales_order_amount}</td>";
                                 
                                 $total_amount = $sales_order->so_amount_total + $total_amount;
                                 
-                                $pdf_data .= "<td colspan='3' align='left' class='p-0' style='border-top: 2px solid'>
+                                $pdf_data .= "<td colspan='3' align='left' class='p-0' >
                                     <table>";
                                         foreach ($sales_order->sales_products as $sales_prod) 
                                         {   
@@ -528,7 +528,7 @@ class SalesOrderToDn extends BaseController
         
         
         
-            <table width="100%" style="margin-top:10px;">
+            <table width="100%" style="margin-top:10px;border-bottom: 2px solid;">
             
         
             <tr width="100%">
@@ -541,24 +541,24 @@ class SalesOrderToDn extends BaseController
 
            
         
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;">
             
         
             <tr>
             
-            <th align="left"  style="border-top: 2px solid">Date</th>
+            <th align="left"  style="border-bottom: 2px solid;">Date</th>
         
-            <th align="left" width="100px" style="border-top: 2px solid">Sales Order</th>
+            <th align="left" width="100px" style="border-bottom: 2px solid;">Sales Order</th>
         
-            <th align="left"  style="border-top: 2px solid">Customer</th>
+            <th align="left" style="border-bottom: 2px solid;">Customer</th>
 
-            <th align="left"  style="border-top: 2px solid">LPO Ref</th>
+            <th align="left"  style="border-bottom: 2px solid;">LPO Ref</th>
         
-            <th align="left"  style="border-top: 2px solid">Sales Executive</th>
+            <th align="left"  style="border-bottom: 2px solid;">Sales Executive</th>
         
-            <th align="right"  style="border-top: 2px solid">Amount</th>
+            <th align="right"  style="border-bottom: 2px solid;">Amount</th>
 
-            <th colspan="3"  class="p-0" style="border-top: 2px solid">
+            <th colspan="3"  class="p-0" style="border-bottom: 2px solid;">
 
                <table>
                     <tr>
