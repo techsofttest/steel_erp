@@ -462,7 +462,7 @@ class InvoiceReport extends BaseController
                 $sale_data = $sales_orders[$key];
                 $next_ref = ($key + 1 < $count) ? $sales_orders[$key + 1]->reference : null;
                 $is_last_in_group = $sale_data->reference !== $next_ref;
-                $border_style = $is_last_in_group ? "border-bottom: 1px solid black;" : "";
+                $border_style = $is_last_in_group ? "" : "";
     
                 $new_date = date('d-M-Y', strtotime($sale_data->date));
     
