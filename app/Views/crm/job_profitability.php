@@ -308,8 +308,8 @@ if (!empty($sales_order->purchase_return_prod)) {
 }
 
 // Remove duplicate vendor names (extra safety)
-$vendor_names_pr = array_unique($vendor_names_pr);
-
+//$vendor_names_pr = array_unique($vendor_names_pr);
+$vendor_names_pr = $vendor_names_pr;
 /*purchase return end*/
 
 
