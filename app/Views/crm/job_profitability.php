@@ -375,14 +375,30 @@ $printedVendorNames = [];
 
 <!--purchase return start--->
 
-<?php if (!empty($vendor_names_pr)) { ?>
+<?php /*if (!empty($vendor_names_pr)) { ?>
     <?php foreach ($vendor_names_pr as $vendor) { ?>
         <br>
         <span style="display: inline-block;height: 35px;">
             <?= $vendor; ?>
         </span>
     <?php } ?>
-<?php } ?>
+<?php }*/ ?>
+
+<?php
+
+if (!empty($vendor_names_pr)) {
+
+    foreach ($vendor_names_pr as $vendor) {
+
+        echo '<br>';
+        echo '<span style="display: inline-block; height: 35px;">';
+        echo $vendor->cc_customer_name;
+        echo '</span>';
+    }
+}
+
+
+?>
 
 <!---purchase return end-->
 
