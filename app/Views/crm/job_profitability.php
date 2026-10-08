@@ -298,27 +298,20 @@ if (!empty($sales_order->purchase_vouchers)) {
 $printedPR = [];
 $vendor_names_pr = [];
 
-/*if (!empty($sales_order->purchase_return_prod)) {
+if (!empty($sales_order->purchase_return_prod)) {
     foreach ($sales_order->purchase_return_prod as $prd) {
         if (!empty($prd->pr_reffer_id) && !in_array($prd->pr_reffer_id, $printedPR)) {
             $vendor_names_pr[] = $prd->cc_customer_name;
             $printedPR[] = $prd->pr_reffer_id;
         }
     }
-}*/
-
-if (!empty($sales_order->purchase_return_prod)) {
-    foreach ($sales_order->purchase_return_prod as $prd) {
-       
-            $vendor_names_pr[] = $prd->cc_customer_name;
-            $printedPR[] = $prd->pr_reffer_id;
-        
-    }
 }
 
+
+
 // Remove duplicate vendor names (extra safety)
-//$vendor_names_pr = array_unique($vendor_names_pr);
-$vendor_names_pr = $vendor_names_pr;
+$vendor_names_pr = array_unique($vendor_names_pr);
+
 /*purchase return end*/
 
 

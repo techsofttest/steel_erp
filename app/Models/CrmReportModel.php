@@ -1010,7 +1010,13 @@ class CrmReportModel extends Model
         $query->where($cond);
 
         // IMPORTANT: don't use groupBy or distinct
-        return $query->get()->getResult();
+        //return $query->get()->getResult();
+
+        $result =$query->get()->getResult();
+
+        echo '<pre>';
+print_r($result);
+exit;
     }
 
   
