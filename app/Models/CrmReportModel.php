@@ -1018,7 +1018,7 @@ class CrmReportModel extends Model
 
         echo '<pre>';
 print_r($result);
-exit;
+//exit;
 
 
     }
