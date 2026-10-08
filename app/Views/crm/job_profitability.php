@@ -312,19 +312,13 @@ $vendor_names_pr = array_unique($vendor_names_pr);*/
 
 
 
-$printedPR = [];
 $vendor_names_pr = [];
 
 if (!empty($sales_order->purchase_return_prod)) {
 
     foreach ($sales_order->purchase_return_prod as $prd) {
 
-        if (!empty($prd->pr_reffer_id) && !in_array($prd->pr_reffer_id, $printedPR)) {
-
-            $printedPR[] = $prd->pr_reffer_id;
-
-            $vendor_names_pr[] = $prd;
-        }
+        $vendor_names_pr[] = $prd->cc_customer_name;
     }
 }
 
@@ -386,15 +380,9 @@ $printedVendorNames = [];
 
 <?php
 
-if (!empty($vendor_names_pr)) {
-
-    foreach ($vendor_names_pr as $vendor) {
-
-        echo '<br>';
-        echo '<span style="display: inline-block; height: 35px;">';
-        echo $vendor->cc_customer_name;
-        echo '</span>';
-    }
+foreach ($vendor_names_pr as $vendor) {
+    echo '<br>';
+    echo $vendor;
 }
 
 
