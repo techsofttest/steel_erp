@@ -983,35 +983,42 @@ class CrmReportModel extends Model
 
 
     public function FetchPurchaseReturnProds($table, $cond)
-{
-    $query = $this->db->table($table);
+   {
+        $query = $this->db->table($table);
 
-    $query->select('*');
+        $query->select('
+            pro_purchase_return_prod.*,
+            pro_purchase_return.pr_id,
+            pro_purchase_return.pr_reffer_id,
+            pro_purchase_return.pr_vendor_name,
+            crm_customer_creation.cc_id,
+            crm_customer_creation.cc_customer_name
+        ');
 
-    $query->join(
-        'pro_purchase_return',
-        'pro_purchase_return.pr_id = pro_purchase_return_prod.prp_purchase_return_id',
-        'left'
-    );
+        $query->join(
+            'pro_purchase_return',
+            'pro_purchase_return.pr_id = pro_purchase_return_prod.prp_purchase_return_id',
+            'left'
+        );
 
-    $query->join(
-        'crm_customer_creation',
-        'crm_customer_creation.cc_id = pro_purchase_return.pr_vendor_name',
-        'left'
-    );
+        $query->join(
+            'crm_customer_creation',
+            'crm_customer_creation.cc_id = pro_purchase_return.pr_vendor_name',
+            'left'
+        );
 
-    $query->where($cond);
+        $query->where($cond);
 
-    return $query->get()->getResult();
-}
-
+        // IMPORTANT: don't use groupBy or distinct
+        return $query->get()->getResult();
+    }
 
   
 
 
     public function FetchPurchaseVoucherData($table,$cond){
  
-         $query = $this->db->table($table)
+        $query = $this->db->table($table)
 
         ->select('*')
     
