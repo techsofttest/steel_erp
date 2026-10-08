@@ -481,54 +481,35 @@ $printedVendorNames = [];
 
                                                                 <!---->
 
-<?php
-                                     $printedPV = [];
-$previousVendor = '';
+
+                                                            
+                                                                <?php 
+$printedPV = [];
 
 if (!empty($sales_order->purchase_vouchers)) {
 
     $pvList = $sales_order->purchase_vouchers;
+    $rowCount = count($pvList);
 
-    foreach ($pvList as $pv) {
+    foreach ($pvList as $index => $pv) { 
 
-        if (
-            !empty($pv->pv_reffer_id) &&
-            !in_array($pv->pv_reffer_id, $printedPV)
-        ) {
+        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {    
+?> 
 
-            $printedPV[] = $pv->pv_reffer_id;
+<tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px" class="text-center tr_height_eq">
 
-            // Get vendor name
-            $vendor = '';
+    <td style="width:100px">
+        <?= $pv->pv_vendor_inv ?>
+    </td>
 
-            if (!empty($pv->cc_customer_name)) {
-                $vendor = $pv->cc_customer_name;
-            }
+</tr>
 
-            ?>
-
-            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px"
-                class="text-center tr_height_eq">
-
-                <td style="width:250px">
-                    <?php
-                    if ($vendor != $previousVendor) {
-                        echo $vendor;
-                        $previousVendor = $vendor;
-                    }
-                    ?>
-                </td>
-
-                <td style="width:100px">
-                    <?= $pv->pv_vendor_inv ?>
-                </td>
-
-            </tr>
-
-            <?php
-        }
-    }
+<?php 
+            $printedPV[] = $pv->pv_reffer_id; 
+        } 
+    } 
 }
+
 
 
                                                                 
