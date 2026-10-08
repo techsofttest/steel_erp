@@ -284,10 +284,17 @@ $printedPV = [];
 
 
 if (!empty($sales_order->purchase_vouchers)) {
+
     foreach ($sales_order->purchase_vouchers as $pv) {
-        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
-            //$vendor_names[$pv->cc_customer_name] = true; 
+
+        if (
+            !empty($pv->pv_reffer_id) &&
+            !in_array($pv->pv_reffer_id, $printedPV)
+        ) {
+
             $vendor_names[] = $pv->cc_customer_name;
+
+            // Unique by Purchase Voucher Reference
             $printedPV[] = $pv->pv_reffer_id;
         }
     }
@@ -340,7 +347,7 @@ $vendor_names_pr = array_unique($vendor_names_pr);
 $printedVendorNames = [];
 ?>
 
-<?php if (!empty($vendor_names)) { ?>
+<?php /*if (!empty($vendor_names)) { ?>
     <?php foreach ($vendor_names as $vendor) { ?>
         <br>
 
@@ -354,23 +361,98 @@ $printedVendorNames = [];
         <?php } ?>
 
     <?php } ?>
-<?php } ?>
+<?php }*/ ?>
 
+<?php if (!empty($vendor_names)) { ?>
+    <?php foreach ($vendor_names as $vendor) { ?>
+
+        <br>
+
+        <?php if (!in_array($vendor, $printedVendorNames)) { ?>
+
+            <span style="display: inline-block;height: 35px;">
+                <?= $vendor; ?>
+            </span>
+
+            <?php $printedVendorNames[] = $vendor; ?>
+
+        <?php } else { ?>
+
+            <span style="display: inline-block;height: 35px;">&nbsp;</span>
+
+        <?php } ?>
+
+    <?php } ?>
+<?php } ?>
     <!---->
 
 
 <!--purchase return start--->
 
-<?php if (!empty($vendor_names_pr)) { ?>
+<?php /*if (!empty($vendor_names_pr)) { ?>
     <?php foreach ($vendor_names_pr as $vendor) { ?>
         <br>
         <span style="display: inline-block;height: 35px;">
             <?= $vendor; ?>
         </span>
     <?php } ?>
-<?php } ?>
+<?php }*/ ?>
+
+<td style="width:300px; word-wrap: break-word; white-space: normal;">
+
+    <!-- Main Customer -->
+    <span style="display: inline-block;height: 38px;">
+        <?= $sales_order->cc_customer_name; ?>
+    </span>
+
+    <!-- Empty rows for Cash/Credit/Sales Return -->
+    <?php if (!empty($sales_order->purchase_vouchers)) { ?>
+
+        <?php for ($k = 1; $k < $total_ref_count; $k++) { ?>
+
+            <br>
+
+            <span style="display: inline-block;height: 35px;">
+                &nbsp;
+            </span>
+
+        <?php } ?>
+
+    <?php } ?>
 
 
+    <!-- Purchase Voucher Vendors -->
+    <?php if (!empty($vendor_names)) { ?>
+
+        <?php foreach ($vendor_names as $vendor) { ?>
+
+            <br>
+
+            <span style="display: inline-block;height: 35px;">
+                <?= $vendor; ?>
+            </span>
+
+        <?php } ?>
+
+    <?php } ?>
+
+
+    <!-- Purchase Return Vendors -->
+    <?php if (!empty($vendor_names_pr)) { ?>
+
+        <?php foreach ($vendor_names_pr as $vendor) { ?>
+
+            <br>
+
+            <span style="display: inline-block;height: 35px;">
+                <?= $vendor; ?>
+            </span>
+
+        <?php } ?>
+
+    <?php } ?>
+
+</td>
 
 <!---purchase return end-->
 
