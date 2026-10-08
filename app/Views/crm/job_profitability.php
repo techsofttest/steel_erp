@@ -488,20 +488,36 @@ $printedPV = [];
 
 if (!empty($sales_order->purchase_vouchers)) {
 
-    foreach ($sales_order->purchase_vouchers as $pv) {
+    $pvList = $sales_order->purchase_vouchers;
 
-        if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
+    // First group by vendor
+    $groupedPV = [];
+
+    foreach ($pvList as $pv) {
+
+        $vendor = $pv->cc_customer_name;
+
+        $groupedPV[$vendor][] = $pv;
+    }
+
+    // Print grouped invoices
+    foreach ($groupedPV as $vendor => $vendorPVs) {
+
+        foreach ($vendorPVs as $pv) {
+
+            if (!empty($pv->pv_reffer_id) && !in_array($pv->pv_reffer_id, $printedPV)) {
 ?>
-            <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px"
-                class="text-center tr_height_eq">
+                <tr style="background: unset;border-bottom: hidden !important;white-space: nowrap;width:100px"
+                    class="text-center tr_height_eq">
 
-                <td style="width:100px">
-                    <?= $pv->pv_vendor_inv ?>
-                </td>
+                    <td style="width:100px">
+                        <?= $pv->pv_vendor_inv ?>
+                    </td>
 
-            </tr>
+                </tr>
 <?php
-            $printedPV[] = $pv->pv_reffer_id;
+                $printedPV[] = $pv->pv_reffer_id;
+            }
         }
     }
 }
