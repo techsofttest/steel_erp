@@ -379,7 +379,7 @@ $printedVendorNames = [];
 <?php }*/ ?>
 
 <?php
-
+if (!empty($vendor_names_pr)) {
 foreach ($vendor_names_pr as $vendor) { ?>
    
    <br>
@@ -387,6 +387,7 @@ foreach ($vendor_names_pr as $vendor) { ?>
             <?= $vendor; ?>
         </span>
 <?php }
+}
 
 
 ?>
