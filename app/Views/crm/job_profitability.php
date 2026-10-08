@@ -381,8 +381,7 @@ $printedVendorNames = [];
 <?php
 
 foreach ($vendor_names_pr as $vendor) { ?>
-    //echo '<br>';
-   // echo $vendor;
+   
    <br>
         <span style="display: inline-block;height: 35px;">
             <?= $vendor; ?>
