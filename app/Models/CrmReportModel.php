@@ -941,7 +941,18 @@ class CrmReportModel extends Model
 
             $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucherData('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
 
-            $result[$i]->purchase_return_prod   = $this->FetchPurchaseReturnProds('pro_purchase_return_prod',array('prp_sales_order' => $res->so_reffer_no));
+           // $result[$i]->purchase_return_prod   = $this->FetchPurchaseReturnProds('pro_purchase_return_prod',array('prp_sales_order' => $res->so_reffer_no));
+
+            $purchase_return = $this->FetchPurchaseReturnProds(
+    'pro_purchase_return_prod',
+    array('prp_sales_order' => $res->so_reffer_no)
+);
+
+echo '<pre>';
+echo "SO: " . $res->so_reffer_no . "\n";
+echo "COUNT: " . count($purchase_return) . "\n";
+print_r($purchase_return);
+exit;
 
             $result[$i]->petty_cash             = $this->FetchPettyCash('accounts_petty_cash_debits',array('pci_sales_order' => $res->so_id));
 
@@ -955,6 +966,8 @@ class CrmReportModel extends Model
            
             $i++;
         }
+
+       
 
         return $result;
      
@@ -1017,6 +1030,8 @@ class CrmReportModel extends Model
         echo '<pre>';
 print_r($result);
 exit;*/
+
+
     }
 
   
