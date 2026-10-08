@@ -316,10 +316,10 @@ class JobSummery extends BaseController
                 $new_date = date('d-M-Y',strtotime($sale_data->so_date));
                
                 $pdf_data .="<tr>
-                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->so_reffer_no}</td>\
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->cc_customer_name}</td>
-                                <td colspan='1' align='left' class='p-0' style='border-top: 2px solid'>
+                                <td style='' width='40px'>{$new_date}</td>
+                                <td style='' width='100px'>{$sale_data->so_reffer_no}</td>\
+                                <td style='' width='100px'>{$sale_data->cc_customer_name}</td>
+                                <td colspan='1' align='left' class='p-0' style=''>
                                     <table>";
                                     
                                     if(!empty($sale_data->purchase_vouchers)){
@@ -343,16 +343,16 @@ class JobSummery extends BaseController
                                 
                                 </td>
 
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->so_lpo}</td>
+                                <td style='' width='100px'>{$sale_data->so_lpo}</td>
 
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->se_name}</td>
+                                <td style='' width='100px'>{$sale_data->se_name}</td>
 
-                                <td style='border-top: 2px solid' width='100px' align='right'> " . (is_numeric($sale_data->so_amount_total) ? format_currency($sale_data->so_amount_total) : 'N/A') . "</td>";
+                                <td style='' width='100px' align='right'> " . (is_numeric($sale_data->so_amount_total) ? format_currency($sale_data->so_amount_total) : 'N/A') . "</td>";
                                
 
                                 $revenue = $sale_data->so_amount_total + $revenue;
 
-                                $pdf_data .="<td colspan='3' align='left' class='p-0' style='border-top: 2px solid'>
+                                $pdf_data .="<td colspan='3' align='left' class='p-0' style=''>
                                      
                                     <table>";
                                     
@@ -614,7 +614,7 @@ class JobSummery extends BaseController
         
         
         
-            <table width="100%" style="margin-top:10px;">
+            <table width="100%" style="margin-top:10px;border-bottom: 2px solid;">
             
         
             <tr width="100%">
@@ -632,25 +632,25 @@ class JobSummery extends BaseController
         
             <tr>
             
-                <th align="center" width="40px">Date</th>
+                <th align="center" width="40px" style="border-bottom: 2px solid;">Date</th>
             
-                <th align="center" width="100px">Sales Order Ref</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid;">Sales Order Ref</th>
             
-                <th align="center" width="100px">Customer Name</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid;">Customer Name</th>
             
-                <th align="center" width="100px">Invoice Ref.</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid;">Invoice Ref.</th>
             
-                <th align="center" width="120px">LPO Ref</th>
+                <th align="center" width="120px" style="border-bottom: 2px solid;">LPO Ref</th>
 
-                <th align="center" width="80px">Sales Executive</th>
+                <th align="center" width="80px" style="border-bottom: 2px solid;">Sales Executive</th>
 
-                <th align="right" width="80px">Revenue</th>
+                <th align="right" width="80px" style="border-bottom: 2px solid;">Revenue</th>
 
-                <th align="right" width="100px">Expenses</th>
+                <th align="right" width="100px" style="border-bottom: 2px solid;">Expenses</th>
 
-                <th align="right" width="80px">Gross Profit</th>
+                <th align="right" width="80px" style="border-bottom: 2px solid;">Gross Profit</th>
 
-                <th align="right" width="80px">%</th>
+                <th align="right" width="80px" style="border-bottom: 2px solid;">%</th>
 
             
             </tr>
