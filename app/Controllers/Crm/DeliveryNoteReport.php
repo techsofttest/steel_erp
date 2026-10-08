@@ -401,23 +401,23 @@ class DeliveryNoteReport extends BaseController
 
                 $pdf_data .= "<tr>
                 
-                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
+                                <td style='' width='40px'>{$new_date}</td>
 
-                                <td style='border-top: 2px solid' width='100px'>{$del_note->dn_reffer_no}</td>
+                                <td style='' width='100px'>{$del_note->dn_reffer_no}</td>
 
-                                <td style='border-top: 2px solid' width='100px';>{$del_note->cc_customer_name}</td>
+                                <td style='' width='100px';>{$del_note->cc_customer_name}</td>
                                 
-                                <td style='border-top: 2px solid' width='100px'>{$del_note->so_reffer_no}</td>
+                                <td style='' width='100px'>{$del_note->so_reffer_no}</td>
 
-                                <td style='border-top: 2px solid' width='80px'>{$del_note->dn_lpo_reference}</td>";
+                                <td style='' width='80px'>{$del_note->dn_lpo_reference}</td>";
 
                                 $total_amount =  $del_note->dn_total_amount + $total_amount;
 
                                
 
-                                $pdf_data .= "<td style='border-top: 2px solid' width='80px' align='right'>".format_currency($del_note->dn_total_amount)."</td>
+                                $pdf_data .= "<td style='' width='80px' align='right'>".format_currency($del_note->dn_total_amount)."</td>
                                 
-                                <td colspan='6' align='left' class='p-0' style='border-top: 2px solid'>
+                                <td colspan='6' align='left' class='p-0' style=''>
                                     <table>";
 
                                     foreach($del_note->delivery_product as $delv_prod){
@@ -540,7 +540,7 @@ class DeliveryNoteReport extends BaseController
         
         
         
-            <table width="100%" style="margin-top:10px;">
+            <table width="100%" style="margin-top:10px;border-bottom: 2px solid;">
             
         
             <tr width="100%">
@@ -558,19 +558,19 @@ class DeliveryNoteReport extends BaseController
         
             <tr>
             
-            <th align="left" width="40px">Date</th>
+            <th align="left" width="40px" style="border-bottom: 2px solid;">Date</th>
         
-            <th align="left" width="100px">Delivery Note.</th>
+            <th align="left" width="100px" style="border-bottom: 2px solid;">Delivery Note.</th>
         
-            <th align="left" width="100px">Customer</th>
+            <th align="left" width="100px" style="border-bottom: 2px solid;">Customer</th>
         
-            <th align="left" width="100px">Sales Order </th>
+            <th align="left" width="100px" style="border-bottom: 2px solid;">Sales Order </th>
         
-            <th align="left" width="80px">LPO Ref</th>
+            <th align="left" width="80px" style="border-bottom: 2px solid;">LPO Ref</th>
 
-            <th align="right" width="80px">Amount</th>
+            <th align="right" width="80px" style="border-bottom: 2px solid;">Amount</th>
 
-            <th colspan="6" align="left" class="p-0">
+            <th colspan="6" align="left" class="p-0" style="border-bottom: 2px solid;">
 
                 <table>
                     <tr>

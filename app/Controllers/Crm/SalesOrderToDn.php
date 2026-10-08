@@ -376,16 +376,16 @@ class SalesOrderToDn extends BaseController
 
                 $new_date = date('d-m-Y', strtotime($sales_order->so_date));
                 $pdf_data .= "<tr>
-                                <td  >{$new_date}</td>
-                                <td  width='100px'>{$sales_order->so_reffer_no}</td>
-                                <td  >{$sales_order->cc_customer_name}</td>
-                                <td  >{$sales_order->so_lpo}</td>
-                                <td  >{$sales_order->se_name}</td>
-                                <td  align='right' >{$sales_order_amount}</td>";
+                                <td style='' >{$new_date}</td>
+                                <td style='' width='100px'>{$sales_order->so_reffer_no}</td>
+                                <td style='' >{$sales_order->cc_customer_name}</td>
+                                <td style='' >{$sales_order->so_lpo}</td>
+                                <td style='' >{$sales_order->se_name}</td>
+                                <td style='' align='right' >{$sales_order_amount}</td>";
                                 
                                 $total_amount = $sales_order->so_amount_total + $total_amount;
                                 
-                                $pdf_data .= "<td colspan='3' align='left' class='p-0' >
+                                $pdf_data .= "<td colspan='3' align='left' class='p-0' style=''>
                                     <table>";
                                         foreach ($sales_order->sales_products as $sales_prod) 
                                         {   
@@ -541,7 +541,7 @@ class SalesOrderToDn extends BaseController
 
            
         
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
             
         
             <tr>
@@ -550,7 +550,7 @@ class SalesOrderToDn extends BaseController
         
             <th align="left" width="100px" style="border-bottom: 2px solid;">Sales Order</th>
         
-            <th align="left" style="border-bottom: 2px solid;">Customer</th>
+            <th align="left"  style="border-bottom: 2px solid;">Customer</th>
 
             <th align="left"  style="border-bottom: 2px solid;">LPO Ref</th>
         
