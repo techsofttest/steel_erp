@@ -469,7 +469,7 @@ class SalesOrderReport extends BaseController
             foreach($sales_orders as $sales_order)
             {   
                 $q=1;
-                $border="border-top: 2px solid";
+                $border="";
                 $product_details = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$sales_order->so_id),$joins1);
                 
                 //$total_amount = $total_amount + $quot_data->qd_sales_amount;
@@ -478,17 +478,17 @@ class SalesOrderReport extends BaseController
 
                 $new_date = date('d-M-Y',strtotime($sales_order->so_date));
 
-                $pdf_data .= "<tr><td  align='center' style='border-top: 2px solid'>{$new_date}</td>";
+                $pdf_data .= "<tr><td  align='center' >{$new_date}</td>";
 
-                $pdf_data .= "<td align='center' style='border-top: 2px solid' width='100px'>{$sales_order->so_reffer_no}</td>";
+                $pdf_data .= "<td align='center'  width='100px'>{$sales_order->so_reffer_no}</td>";
 
-                $pdf_data .= "<td  align='center' style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>";
+                $pdf_data .= "<td  align='center' >{$sales_order->cc_customer_name}</td>";
                 
-                $pdf_data .= "<td  align='center' style='border-top: 2px solid'>{$sales_order->so_lpo}</td>";
+                $pdf_data .= "<td  align='center' >{$sales_order->so_lpo}</td>";
 
-                $pdf_data .= "<td align='center'  style='border-top: 2px solid' width='110px'>{$sales_order->se_name}</td>";
+                $pdf_data .= "<td align='center'   width='110px'>{$sales_order->se_name}</td>";
 
-                $pdf_data .= "<td align='right' style='border-top: 2px solid'>{$format_sales_amount}</td>";
+                $pdf_data .= "<td align='right' >{$format_sales_amount}</td>";
                
                 $total_amount = $sales_order->so_amount_total + $total_amount;
                 
@@ -679,27 +679,27 @@ class SalesOrderReport extends BaseController
         
             <tr>
             
-            <th align="center">Date</th>
+            <th align="center" style="border-bottom: 2px solid;">Date</th>
         
-            <th align="center" width="100px">Sales Order</th>
+            <th align="center" style="border-bottom: 2px solid;"  width="100px">Sales Order</th>
         
-            <th align="center">Customer</th>
+            <th align="center" style="border-bottom: 2px solid;">Customer</th>
 
-            <th align="center" width="80px">LPO Ref</th>
+            <th align="center" style="border-bottom: 2px solid;"  width="80px">LPO Ref</th>
         
-            <th align="center" widht="110px">Sales Executive</th>
+            <th align="center" style="border-bottom: 2px solid;" widht="110px">Sales Executive</th>
         
-            <th align="right">Amount</th>
+            <th align="right" style="border-bottom: 2px solid;">Amount</th>
 
-            <th align="center">Product</th>
+            <th align="center" style="border-bottom: 2px solid;">Product</th>
 
-            <th align="center">Quantity</th>
+            <th align="center" style="border-bottom: 2px solid;">Quantity</th>
 
-            <th align="right">Rate</th>
+            <th align="right" style="border-bottom: 2px solid;">Rate</th>
 
-             <th align="right">Discount</th>
+             <th align="right" style="border-bottom: 2px solid;">Discount</th>
 
-            <th align="right">Amount</th>
+            <th align="right" style="border-bottom: 2px solid;">Amount</th>
         
             
             </tr>
