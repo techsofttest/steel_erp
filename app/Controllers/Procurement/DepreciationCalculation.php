@@ -225,12 +225,12 @@ class DepreciationCalculation extends BaseController
         // Calculate account head balance
         $acchead_balance = 0;
 
-        $credit_balance = $this->pro_model->CreditBalance($data['fixedasset']->cfs_credit_account);
-
-        // print_r($credit_balance);
-
-        $acchead_balance = abs($credit_balance->ending_balance);
-
+        if (!empty($data['fixedasset']) && !empty($data['fixedasset']->cfs_credit_account)) {
+            $credit_balance = $this->pro_model->CreditBalance($data['fixedasset']->cfs_credit_account);
+            if (!empty($credit_balance) && isset($credit_balance->ending_balance)) {
+                $acchead_balance = abs($credit_balance->ending_balance);
+            }
+        }
 
         $data['acchead_balance'] = format_currency($acchead_balance);
 
@@ -240,83 +240,71 @@ class DepreciationCalculation extends BaseController
 
         // Prepare the HTML for fixed assets rows
         $fixed_asset = '';
-        $j = 1; // Start row count from 1
-
         $total_amt = 0;
+        $data['fixed_asset'] = '';
+        $data['total_Sec'] = '';
 
         $sel_date = $this->request->getPost('Date'); // Assuming 'Date' is in 'Y-m-d' format
 
-        foreach ($assets as $asset) {
+        if (!empty($sel_date) && !empty($assets)) {
+            $j = 1; // Start row count from 1
 
-            $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id) ?? 0;
+            foreach ($assets as $asset) {
 
-            // echo ' | '.$fixed_amount.'  |  ';
+                $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id) ?? 0;
 
-            $fixed_amount = (float)$fixed_amount;
-            $cfs_last_yr_depreciation = (float) preg_replace('/,/', '', $asset->cfs_last_yr_depreciation);
+                $fixed_amount = (float)$fixed_amount;
+                $cfs_last_yr_depreciation = (float) preg_replace('/,/', '', $asset->cfs_last_yr_depreciation);
 
+                $fixed_amount -= $cfs_last_yr_depreciation;
 
-            // echo $fixed_amount.' = '.$cfs_last_yr_depreciation;exit;
+                // Ensure $sel_date is in year format (extract only the year part)
+                $sel_year = date('Y-m-d', strtotime($sel_date));
 
-            $fixed_amount -= $cfs_last_yr_depreciation;
+                // Get the acquired year and set it to January 1st of that year
+                $acq_year = date('Y', strtotime($sel_date));
 
-            
-            // $fixed_amount -=  ($fixed_amount*$cfs_last_yr_depreciation)/100;
+                $acq_date = date('Y-m-d', strtotime($acq_year . '-01-01')); // January 1st of the acquired year
 
+                // Calculate the difference in days between the two dates
+                $diff_in_days = (strtotime($sel_date) - strtotime($acq_date)) / (60 * 60 * 24);
 
-            // Ensure $sel_date is in year format (extract only the year part)
-            $sel_year = date('Y-m-d', strtotime($sel_date));
+                // Output the difference in days
+                $entitlement = $diff_in_days + 1;
 
-            // Get the acquired year and set it to January 1st of that year
+                $acchead_balance = isset($fixed_amount) ? $fixed_amount : 0;
 
-            // $acq_year = date('Y', strtotime($asset->cfs_acquired_date));
+                $depreciation_percent = preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation); // Remove non-numeric characters
+                $depreciation = floatval($depreciation_percent) / 100; // Convert to float
 
-            $acq_year = date('Y', strtotime($sel_date));
+                $depreciation_amount = round(floatval((abs($acchead_balance) * $depreciation * $entitlement) / 365), 2);
 
-            $acq_date = date('Y-m-d', strtotime($acq_year . '-01-01')); // January 1st of the acquired year
+                $total_amt += $depreciation_amount;
 
-            // Calculate the difference in days between the two dates
-            $diff_in_days = (strtotime($sel_date) - strtotime($acq_date)) / (60 * 60 * 24);
+                $fixed_asset .= '<tr>
+                                    <td class="text-center">' . $j . '</td>
+                                    <input type="hidden" name="dpcd_asset_id[]" value="' . $asset->cfs_id . '" class="form-control"  readonly>
+                                    <td><input type="text" name="dpcd_description[]" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
+                                    <td><input type="text" name="dpcd_acquired_date[]"  value="' . date('d-M-Y', strtotime($asset->cfs_acquired_date)) . '" class="form-control text-center"  readonly></td>
+                                    <td><input type="text" name="dpcd_amount[]" value="' .  format_currency($fixed_amount) . '" class="form-control"  style="text-align: end;" readonly></td>
+                                    <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation_percent) . '%" class="form-control text-center" style="text-align: end;"  readonly></td>
+                                    <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control" style="text-align: center;"  readonly></td>
+                                    <td><input type="text" name="dpcd_depreciation_amt[]" value="' .  format_currency($depreciation_amount) . '" class="form-control" style="text-align: end;" readonly></td>
+                                </tr>';
+                $j++; // Increment row count
+            }
 
-            // Output the difference in days
-            $entitlement = $diff_in_days + 1;
+            // Set fixed_asset key in the response data
+            $data['fixed_asset'] = $fixed_asset;
 
-            $acchead_balance = isset($fixed_amount) ? $fixed_amount : 0;
-
-            $depreciation_percent = preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation); // Remove non-numeric characters
-            $depreciation = floatval($depreciation_percent) / 100; // Convert to float
-
-            $depreciation_amount = round(floatval((abs($acchead_balance) * $depreciation * $entitlement) / 365), 2);
-
-            $total_amt += $depreciation_amount;
-
-            $fixed_asset .= '<tr>
-                                <td class="text-center">' . $j . '</td>
-                                <input type="hidden" name="dpcd_asset_id[]" value="' . $asset->cfs_id . '" class="form-control"  readonly>
-                                <td><input type="text" name="dpcd_description[]" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
-                                <td><input type="text" name="dpcd_acquired_date[]"  value="' . date('d-M-Y', strtotime($asset->cfs_acquired_date)) . '" class="form-control text-center"  readonly></td>
-                                <td><input type="text" name="dpcd_amount[]" value="' .  format_currency($fixed_amount) . '" class="form-control"  style="text-align: end;" readonly></td>
-                                <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation_percent) . '%" class="form-control text-center" style="text-align: end;"  readonly></td>
-                                <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control" style="text-align: center;"  readonly></td>
-                                <td><input type="text" name="dpcd_depreciation_amt[]" value="' .  format_currency($depreciation_amount) . '" class="form-control" style="text-align: end;" readonly></td>
-                            </tr>';
-            $j++; // Increment row count
+            $data['total_Sec'] ='<tbody>
+                                    <tr>             
+                                        <td align="right" class="total_label amount_in_words_add">Total</td>
+                                         <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
+                                        <td  id="total_amount"><input type="text" name="" class="edit_total_prod form-control text-end" readonly value="' . format_currency($total_amt) . '"></td>
+                                    </tr>      
+                                </tbody>';
         }
-
-
-
-        // Set fixed_asset key in the response data
-        $data['fixed_asset'] = $fixed_asset;
-
-        $data['total_Sec'] ='<tbody>
-                                <tr>             
-                                    <td align="right" class="total_label amount_in_words_add">Total</td>
-                                     <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
-                                    <td  id="total_amount"><input type="text" name="" class="edit_total_prod form-control text-end" readonly value="' . format_currency($total_amt) . '"></td>
-                                </tr>      
-                            </tbody>';
-        
-        // exit;
 
         // Return the data as a JSON response
         echo json_encode($data);
@@ -980,7 +968,7 @@ class DepreciationCalculation extends BaseController
 
         $return['status'] = 1;
 
-
+        $return['journal_id'] = $journal_id;
 
         echo json_encode($return);
     }

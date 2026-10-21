@@ -172,6 +172,15 @@
         height: unset !important;
         padding: 0 !important;
     }
+
+    .add_more_container .form-control {
+        background: transparent !important;
+        height: 35px !important;
+    }
+
+    .add_more_container th {
+        padding: 5px !important;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -1247,10 +1256,10 @@
                                             </div>
 
 
-                                            <div class="col-col-md-12 col-lg-12 add_more_container">
+                                            <div class="col-col-md-12 col-lg-12">
 
 
-                                                <table class="table table-bordered" style="overflow-y:scroll;">
+                                                <table class="table table-bordered add_more_container" style="overflow-y:scroll;">
 
                                                     <thead>
                                                         <tr>
@@ -1289,6 +1298,7 @@
             -->
                                                             <tr>
 
+                                                                <button class="btn btn-success me-2 print_btn" name="" type="submit">Print</button>
                                                                 <button class="btn btn-success submit_btn" name="" type="submit">Save</button>
                                                                 <!--<td><button class="submit_btn">PDF</button></td>-->
                                                             </tr>
@@ -1426,6 +1436,12 @@
                 },
             });
 
+            var clickedBtn = null;
+            // Detect which submit button was clicked
+            $('#add_journal_form button[type=submit]').click(function() {
+                clickedBtn = $(this);
+            });
+
             // Handle the second modal form submission
             $('#add_journal_form').submit(function(e) {
                 e.preventDefault();
@@ -1446,6 +1462,13 @@
                             // Close all modals
                             $('#AddToJournalModal').modal('hide');
                             $('#AddDepreciationModal').modal('hide');
+
+                            if (clickedBtn && clickedBtn.hasClass('print_btn')) {
+                                var pdfWindow = window.open('<?= base_url() ?>Accounts/JournalVouchers/Print/' + response.journal_id, '_blank');
+                                pdfWindow.onload = function() {
+                                    pdfWindow.print();
+                                };
+                            }
                         }
                     },
                     error: function() {
@@ -1721,88 +1744,85 @@
         /*Time Frame section start*/
 
 
-        // Function to trigger AJAX if both date and account head are valid
-        // Trigger function when either date or account head changes
+        // Function to trigger AJAX when date or account head changes
+        // Both account head and date must be selected for the table to appear
         function triggerDepreciationCalculation() {
-            var date = $('.mr_date').val() || new Date().toISOString().slice(0, 10);
-            // Get the selected date
-            var accountHead = $('.account_head_select').val(); // Get the selected account head
-
+            var form = $('#AddDepreciation');
+            var date = form.find('.mr_date').val();
+            var accountHead = form.find('.account_head_select').val();
 
             // Display the table by selecting the correct class for the table
-            $('.selected_table').css('display', 'none');
+            form.find('.selected_table').css('display', 'none');
 
             // Populate the table's body with the data received from `fixed_asset`
-            $('.assets-body').html('');
+            form.find('.assets-body').html('');
 
-            // $('.total_table').css('display', 'block');
-            $('.total_table').html('');
+            form.find('.total_table').html('');
 
-
-            // Check if both fields have values
-            if (accountHead) {
-                $.ajax({
-                    url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Date",
-                    method: "POST",
-                    data: {
-                        AccountHead: accountHead,
-                        Date: date
-                    },
-                    success: function(data) {
-                        var parsedData = JSON.parse(data);
-
-                        $('.depriciation_input').val('');
-
-
-
-                        // Update fields based on the response
-                        if (parsedData.fixedasset) {
-                            // Do something with parsedData.fixedasset, if needed
-                            var fixedasset = parsedData.fixedasset;
-                            var totsec = parsedData.total_Sec;
-
-                            $('#debit_account_select').val(fixedasset.cfs_debit_account).trigger('change');
-                            $('#credit_account_select').val(fixedasset.cfs_credit_account).trigger('change');
-
-
-                            if (fixedasset.cfs_depreciation) {
-                                $('.depriciation_input').val(fixedasset.cfs_depreciation + "%");
-                            } else {
-                                $('.depriciation_input').val('');
-                            }
-
-                        }
-                        if (parsedData.hasOwnProperty('acchead_balance')) {
-                            // Do something with the account head balance, even if it's 0
-                            // alert(parsedData.acchead_balance);
-                            $('.currentbalance').val(parsedData.acchead_balance);
-                        }
-
-
-                        if (parsedData.fixed_asset && parsedData.fixed_asset != '') {
-                            // Display the table by selecting the correct class for the table
-                            $('.selected_table').css('display', 'block');
-
-                            // Populate the table's body with the data received from `fixed_asset`
-                            $('.assets-body').html(parsedData.fixed_asset);
-
-                            // $('.total_table').css('display', 'block');
-                            $('.total_table').html(parsedData.total_Sec);
-                        }
-
-
-
-
-                    }
-                });
+            if (!accountHead) {
+                form.find('.depriciation_input').val('');
+                form.find('#debit_account_select').val('').trigger('change');
+                form.find('#credit_account_select').val('').trigger('change');
+                form.find('.currentbalance').val('');
+                return;
             }
+
+            var postDate = (date && date.trim() !== '') ? date.trim() : '';
+
+            $.ajax({
+                url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Date",
+                method: "POST",
+                data: {
+                    AccountHead: accountHead,
+                    Date: postDate
+                },
+                success: function(data) {
+                    var parsedData = JSON.parse(data);
+
+                    form.find('.depriciation_input').val('');
+
+                    // Update fields based on the response
+                    if (parsedData.fixedasset) {
+                        var fixedasset = parsedData.fixedasset;
+
+                        form.find('#debit_account_select').val(fixedasset.cfs_debit_account).trigger('change');
+                        form.find('#credit_account_select').val(fixedasset.cfs_credit_account).trigger('change');
+
+                        if (fixedasset.cfs_depreciation) {
+                            form.find('.depriciation_input').val(fixedasset.cfs_depreciation + "%");
+                        } else {
+                            form.find('.depriciation_input').val('');
+                        }
+                    } else {
+                        form.find('#debit_account_select').val('').trigger('change');
+                        form.find('#credit_account_select').val('').trigger('change');
+                        form.find('.depriciation_input').val('');
+                    }
+
+                    if (parsedData.hasOwnProperty('acchead_balance')) {
+                        form.find('.currentbalance').val(parsedData.acchead_balance);
+                    }
+
+                    // Only show the table if BOTH account head and date are selected and table data is present
+                    var curDate = form.find('.mr_date').val();
+                    var curAccountHead = form.find('.account_head_select').val();
+
+                    if (curAccountHead && curDate && curDate.trim() !== '' && parsedData.fixed_asset && parsedData.fixed_asset != '') {
+                        form.find('.assets-body').html(parsedData.fixed_asset);
+                        form.find('.total_table').html(parsedData.total_Sec);
+                        form.find('.selected_table').show();
+                    } else {
+                        form.find('.selected_table').hide();
+                        form.find('.assets-body').html('');
+                        form.find('.total_table').html('');
+                    }
+                }
+            });
         }
 
         // Bind event handlers
-
-        $('.mr_date').on('change', triggerDepreciationCalculation);
-
-        $('.account_head_select').on('change', triggerDepreciationCalculation);
+        $('#AddDepreciation .mr_date').on('change input', triggerDepreciationCalculation);
+        $('#AddDepreciation .account_head_select').on('change', triggerDepreciationCalculation);
 
 
         /*reset reff no*/
