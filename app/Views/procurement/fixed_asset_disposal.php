@@ -150,7 +150,15 @@
     table#DataTable td:nth-child(3) {
         text-align: start;
     }
-        
+
+    .add_more_container .form-control {
+        background: transparent !important;
+        height: 35px !important;
+    }
+
+    .add_more_container th {
+        padding: 5px !important;
+    }
 </style>
 
 
@@ -170,7 +178,7 @@
                         <!--add enquiry modal start-->
                         <div class="modal fade" id="AddFixedAssetDisposal" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
-                                <form class="Dashboard-form class" id="AddAssetDisposal" data_fill="false">
+                                <form class="Dashboard-form class" id="AddAssetDisposal" data_fill="false" novalidate="novalidate">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Fixed Asset Displosal</h5>
@@ -189,7 +197,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center">
 
 
                                                                     <div class="col-col-md-3 col-lg-3">
@@ -211,7 +219,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center">
 
 
                                                                     <div class="col-col-md-3 col-lg-3">
@@ -234,7 +242,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center">
 
                                                                     <div class="col-col-md-3 col-lg-3">
 
@@ -272,7 +280,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Account</label>
@@ -303,7 +311,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Current Balance</label>
@@ -323,7 +331,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">GI Account</label>
@@ -419,7 +427,7 @@
                                                 <div style="float: right;">
                                                 <table class="table table-bordered table-striped enq_tab_submit menu">
                                                     <tbody><tr>
-                                                        <td><button type="submit">Generate JV</button></td>                                                     
+                                                        <td><button type="submit" id="save_to_jv_btn">Generate JV</button></td>                                                     
                                                     </tr>
                                                 </tbody></table>
                                             </div>
@@ -1179,6 +1187,130 @@
 
 
 
+<!-- Journal Voucher Modal Start -->
+
+<!-- Add Modal -->
+
+<div class="modal fade" id="AddToJournalModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <form class="Dashboard-form class" id="add_journal_form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generate Journal Voucher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="card">
+
+                                <div class="card-body">
+                                    <div class="live-preview">
+
+                                        <div class="row align-items-start justify-content-start">
+
+                                            <div class="col-lg-6">
+
+                                                <div class="row align-items-center mb-2">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Reference</label>
+
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <input type="text" id="uid" name="juid" class="form-control" readonly>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row align-items-center mb-2">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Date</label>
+
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <input type="text" id="jvdate" name="jv_date" class="form-control journal_datepicker datepicker_ap" value="" readonly required>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-col-md-12 col-lg-12">
+
+                                                <table class="table table-bordered add_more_container" style="overflow-y:scroll;">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sl No</th>
+                                                            <th>Account</th>
+                                                            <th width="10%">Debit</th>
+                                                            <th width="10%">Credit</th>
+                                                            <th>Narration</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody id="jv_rows">
+
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-lg-12 text-center">
+
+                                                    <div style="">
+                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                            <tr>
+                                                                <button class="btn btn-success me-2 print_btn" name="" type="submit">Print</button>
+                                                                <button class="btn btn-success submit_btn" name="" type="submit">Save</button>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <!--end row-->
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!--end col-->
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- Journal Voucher End -->
+
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
 
@@ -1187,18 +1319,48 @@
         /*add form*/
         $(function() {
             var form = $('#AddAssetDisposal');
+            var insertedId = null; // To store the ID of the inserted record
+            var isSecondModalSuccess = false; // Flag to determine if second modal was successful
 
             form.validate({
+                ignore: [],
                 rules: {
-                    required: 'required',
+                    dfs_account_head: "required",
+                    dfs_fixed_asset: "required",
+                    dfs_date_dispose: "required",
+                    dfs_credit_account: "required",
+                    dfs_debit_account: "required",
                 },
                 messages: {
-                    required: 'This field is required',
+                    dfs_account_head: "Account Head is required",
+                    dfs_fixed_asset: "Fixed Asset is required",
+                    dfs_date_dispose: "Disposal Date is required",
+                    dfs_credit_account: "Credit Account is required",
+                    dfs_debit_account: "GI Account is required",
                 },
-                errorPlacement: function(error, element) {}, // To Hide Validation Messages
+                errorPlacement: function(error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                invalidHandler: function(event, validator) {
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        alertify.error("Please fill in all required fields (Account Head, Fixed Asset, Date, Credit Account, GI Account)").delay(4).dismissOthers();
+                    }
+                },
                 submitHandler: function(currentForm) {
 
                     var formData = new FormData(currentForm);
+                    var creditAccount = form.find('select[name="dfs_credit_account"]').val();
+                    var debitAccount = form.find('select[name="dfs_debit_account"]').val();
+                    var disposeDate = form.find('input[name="dfs_date_dispose"]').val();
+                    var salePrice = form.find('input[name="dfs_sales_price"]').val();
+                    var profit = form.find('input[name="dfs_profit"]').val();
+                    var assetAmount = form.find('input[name="dfs_asset_amount"]').val();
+                    var assetBalance = form.find('input[name="dfs_asset_balance"]').val();
 
                     // Submit the form for the current tab
                     $.ajax({
@@ -1207,19 +1369,170 @@
                         data: formData,
                         processData: false, // Don't process the data
                         contentType: false, // Don't set content type
-                        //data: $(currentForm).serialize(),
-                        success: function(data) {
+                        success: function(response) {
+                            if (typeof response === 'string') {
+                                try {
+                                    response = JSON.parse(response);
+                                } catch(e) {}
+                            }
+                            if (response && response.status === 'success') {
+                                insertedId = response.id; // Store the inserted record ID
+                                datatable.ajax.reload(null, false);
+                                $('#AddFixedAssetDisposal').modal('hide');
+                                alertify.success('Data Added Successfully');
 
-                            $('#AddFixedAssetDisposal').modal('hide');
+                                // Fetch additional data for the second modal
+                                var depYear = new Date().getFullYear();
+                                if (disposeDate) {
+                                    var parts = disposeDate.split(/[-/]/);
+                                    if (parts.length === 3) {
+                                        depYear = parts[2].length === 4 ? parts[2] : (parts[0].length === 4 ? parts[0] : depYear);
+                                    }
+                                }
 
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                                $.ajax({
+                                    url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/e/" + depYear,
+                                    method: "GET",
+                                    success: function(refResponse) {
+                                        $('#uid').val(refResponse);
+                                    },
+                                });
 
-                            datatable.ajax.reload(null, false);
+                                $.ajax({
+                                    url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/AddToJvRows",
+                                    method: "POST",
+                                    data: {
+                                        dfs_credit_account: creditAccount,
+                                        dfs_debit_account: debitAccount,
+                                        dfs_date_dispose: disposeDate,
+                                        dfs_sales_price: salePrice,
+                                        dfs_profit: profit,
+                                        dfs_asset_amount: assetAmount,
+                                        dfs_asset_balance: assetBalance,
+                                        ID: insertedId,
+                                    },
+                                    success: function(jvResponse) {
+                                        $('#AddToJournalModal').modal('show');
 
+                                        if (jvResponse) {
+                                            var data = typeof jvResponse === 'string' ? JSON.parse(jvResponse) : jvResponse;
+                                            $('#jv_rows').html(data.jv_rows);
+                                            $('#jvdate').val(data.dep_date);
+                                            $('#total_amount_debit').val(data.total_debit);
+                                            $('#total_amount_credit').val(data.total_credit);
+                                        }
+                                    },
+                                    error: function() {
+                                        alertify.error('Error generating journal voucher rows');
+                                    }
+                                });
+                            } else {
+                                alertify.error(response && response.message ? response.message : 'Error saving disposal record');
+                            }
+                        },
+                        error: function() {
+                            alertify.error('Error saving data');
                         }
                     });
 
+                    return false;
+                }
+            });
 
+            // Revalidate on select change
+            $('#AddAssetDisposal select').on('change', function() {
+                if ($(this).val()) {
+                    $(this).valid();
+                }
+            });
+
+            // Direct button click handler
+            $('#save_to_jv_btn').on('click', function(e) {
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            var clickedBtn = null;
+            // Detect which submit button was clicked
+            $('#add_journal_form button[type=submit]').click(function() {
+                clickedBtn = $(this);
+            });
+
+            // Handle the second modal form submission
+            $('#add_journal_form').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/AddJournalVoucher",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        var response = typeof data === 'string' ? JSON.parse(data) : data;
+
+                        if (response.status == 1) {
+                            alertify.success(response.msg).delay(3).dismissOthers();
+
+                            isSecondModalSuccess = true; // Mark as successful
+                            insertedId = null; // Clear insertedId so hidden.bs.modal does not delete the record
+                            datatable.ajax.reload(null, false);
+
+                            // Close all modals
+                            $('#AddToJournalModal').modal('hide');
+                            $('#AddFixedAssetDisposal').modal('hide');
+
+                            if (clickedBtn && clickedBtn.hasClass('print_btn')) {
+                                var pdfWindow = window.open('<?= base_url() ?>Accounts/JournalVouchers/Print/' + response.journal_id, '_blank');
+                                pdfWindow.onload = function() {
+                                    pdfWindow.print();
+                                };
+                            }
+                        }
+                    },
+                    error: function() {
+                        alertify.error('Error submitting journal voucher.');
+                    },
+                });
+            });
+
+            // Handle second modal close
+            $('#AddToJournalModal').on('hidden.bs.modal', function() {
+                if (!isSecondModalSuccess && insertedId !== null) {
+                    // Reopen the first modal if the second modal submission was not successful
+                    $('#AddFixedAssetDisposal').modal('show');
+
+                    // Trigger delete operation for the inserted record
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/Delete",
+                        method: "POST",
+                        data: {
+                            ID: insertedId
+                        },
+                        success: function(response) {
+                            datatable.ajax.reload(null, false);
+                            alertify.error('Record deleted due to incomplete operation.');
+                            insertedId = null; // Reset the stored ID
+                        },
+                        error: function() {
+                            alertify.error('Error deleting the record.');
+                        },
+                    });
+                }
+
+                // Reset success flag
+                isSecondModalSuccess = false;
+            });
+        });
+
+        $('.journal_datepicker').change(function() {
+            var date = $(this).val();
+
+            $.ajax({
+                url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/" + date,
+                method: "GET",
+                success: function(data) {
+                    $('#uid').val(data);
                 }
             });
         });
@@ -1573,11 +1886,13 @@
 
         // Define the floatVal function
         function floatVal(value) {
-            return parseFloat(value) || 0; // Ensures valid float, defaults to 0 if invalid
+            if (typeof value === 'number') return value;
+            if (!value) return 0;
+            return parseFloat(String(value).replace(/,/g, '')) || 0; // Ensures valid float, handles commas, defaults to 0 if invalid
         }
 
         // jQuery event listener
-        $("body").on('input', '.add_sale_price', function() {
+        $("body").on('input blur change', '.add_sale_price', function() {
 
             var sale_price = $(this).val(); // Get sale price from input
 
@@ -1587,17 +1902,19 @@
 
             var profit = round(floatVal(sale_price) - (floatVal(amt) - floatVal(depric)), 2); // Calculate profit
 
-            $('.add_profit').val(profit); // Update profit input field
+            var profitFormatted = profit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            $('.add_profit').val(profitFormatted); // Update profit input field
 
             $('#total_amount_val').val(profit); // Update hidden total amount input
 
-            $('#total_amount').text(profit); // Update displayed total amount
+            $('#total_amount').text(profitFormatted); // Update displayed total amount
 
         });
 
 
         // jQuery event listener
-        $("body").on('input', '.edit_sale_price', function() {
+        $("body").on('input blur change', '.edit_sale_price', function() {
 
             var sale_price = $(this).val(); // Get sale price from input
 
@@ -1607,11 +1924,13 @@
 
             var profit = round(floatVal(sale_price) - (floatVal(amt) - floatVal(depric)), 2); // Calculate profit
 
-            $('.edit_profit').val(profit); // Update profit input field
+            var profitFormatted = profit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            $('.edit_profit').val(profitFormatted); // Update profit input field
 
             $('#edit_total_amount_val').val(profit); // Update hidden total amount input
 
-            $('#edit_total_amount').text(profit); // Update displayed total amount
+            $('#edit_total_amount').text(profitFormatted); // Update displayed total amount
 
         });
 
@@ -2086,6 +2405,10 @@
 
         $("body").on('click', '.delete_btn', function() {
 
+            if (!confirm("Are you absolutely sure you want to delete?")) {
+                return false;
+            }
+
             var id = $(this).data('id');
 
             var rowToDelete = $(this).closest('tr');
@@ -2101,26 +2424,23 @@
                 },
 
                 success: function(data) {
-                    //var data = JSON.parse(data);
+                    var response = typeof data === 'string' ? JSON.parse(data) : data;
                     
-                    if(data.status === 1){
+                    if (response.status === 1) {
 
                         rowToDelete.fadeOut(500, function() {
 
                             $(this).remove();
 
-                            alertify.success(data.msg).delay(2).dismissOthers();
+                            alertify.success(response.msg).delay(2).dismissOthers();
 
                             datatable.ajax.reload(null, false);
                         });
 
+                    } else {
+
+                        alertify.error(response.msg).delay(3).dismissOthers();
                     }
-                    else{
-
-                        alertify.error(data.msg).delay(2).dismissOthers();
-                    } 
-
-                    
 
                 }
 
