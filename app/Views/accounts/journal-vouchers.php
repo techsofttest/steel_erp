@@ -693,7 +693,11 @@
         $(document).on("click", ".del_elem", function() 
         {
             $(this).closest('.so_row').remove();
-            cc--;
+            cc = $('.so_row').length;
+            $('.so_row:last').find('.add_more').show();
+            if ($('.so_row').length === 1) {
+                $('.so_row:first').find('.del_elem').hide();
+            }
             totalCalcutate();   
             slno(); 
         });
@@ -1312,6 +1316,11 @@ $('.add_model_btn').click(function(){
  $('.account_select2').val('').trigger('change');
  
  $('.so_row_add').not(':first').remove();
+ 
+ $('.so_row_add:first').find('.add_more').show();
+ $('.so_row_add:first').find('.del_elem').hide();
+ cc = 1;
+ slno();
 
  $.ajax({
 
