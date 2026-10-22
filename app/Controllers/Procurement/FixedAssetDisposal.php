@@ -66,8 +66,8 @@ class FixedAssetDisposal extends BaseController
                 'dfs_description'      => $record->dfs_description,
                 'dfs_account_head'     => $record->ah_account_name,
                 'dfs_date_dispose'    => date('d-M-Y', strtotime($record->dfs_date_dispose)),
-                'dfs_sale_price'    => $record->dfs_sales_price,
-                'dfs_profit'    => $record->dfs_profit,
+                'dfs_sale_price'    =>  format_currency($record->dfs_sales_price),
+                'dfs_profit'    =>  format_currency($record->dfs_profit),
                 "action"         => $action,
             );
             $i++;
@@ -182,28 +182,205 @@ class FixedAssetDisposal extends BaseController
     // add account head
     public function Add()
     {
+        $db = \Config\Database::connect();
+        
+        // Ensure dfs_jv_id column exists
+        if (!$db->fieldExists('dfs_jv_id', 'pro_dispose_fixed_asset')) {
+            $forge = \Config\Database::forge();
+            $forge->addColumn('pro_dispose_fixed_asset', [
+                'dfs_jv_id' => [
+                    'type' => 'VARCHAR',
+                    'constraint' => 100,
+                    'null' => true,
+                    'default' => null,
+                ]
+            ]);
+        }
+
         $insert_data = $this->request->getPost();
 
+        if (isset($insert_data['total_receipt_amount'])) {
+            unset($insert_data['total_receipt_amount']);
+        }
+        if (isset($insert_data['dfs_sales_price'])) {
+            $insert_data['dfs_sales_price'] = str_replace(',', '', $insert_data['dfs_sales_price']);
+        }
+        if (isset($insert_data['dfs_asset_amount'])) {
+            $insert_data['dfs_asset_amount'] = str_replace(',', '', $insert_data['dfs_asset_amount']);
+        }
+        if (isset($insert_data['dfs_asset_balance'])) {
+            $insert_data['dfs_asset_balance'] = str_replace(',', '', $insert_data['dfs_asset_balance']);
+        }
+        if (isset($insert_data['dfs_profit'])) {
+            $insert_data['dfs_profit'] = str_replace(',', '', $insert_data['dfs_profit']);
+        }
+        if (isset($insert_data['dfs_depreciation'])) {
+            $insert_data['dfs_depreciation'] = str_replace(['%', ','], '', $insert_data['dfs_depreciation']);
+        }
 
+        if (!empty($this->request->getPost('dfs_date_dispose'))) {
+            $raw_dispose = str_replace('/', '-', $this->request->getPost('dfs_date_dispose'));
+            $time = strtotime($raw_dispose);
+            $insert_data['dfs_date_dispose'] = $time ? date('Y-m-d', $time) : date('Y-m-d');
+        }
+        if (!empty($this->request->getPost('dfs_acquired_date'))) {
+            $raw_acq = str_replace('/', '-', $this->request->getPost('dfs_acquired_date'));
+            $time = strtotime($raw_acq);
+            $insert_data['dfs_acquired_date'] = $time ? date('Y-m-d', $time) : null;
+        }
 
-        $insert_data['dfs_date_dispose'] = date('Y-m-d', strtotime($this->request->getPost('dfs_date_dispose')));
-        $insert_data['dfs_acquired_date'] = date('Y-m-d', strtotime($this->request->getPost('dfs_acquired_date')));
+        // Filter to only columns that actually exist in the table
+        $allowed_fields = $db->getFieldNames('pro_dispose_fixed_asset');
+        $filtered_data = [];
+        foreach ($insert_data as $key => $val) {
+            if (in_array($key, $allowed_fields)) {
+                $filtered_data[$key] = $val;
+            }
+        }
 
-        $id = $this->common_model->InsertData('pro_dispose_fixed_asset', $insert_data);
+        $id = $this->common_model->InsertData('pro_dispose_fixed_asset', $filtered_data);
 
+        if (!is_numeric($id) || $id <= 0) {
+            log_message('error', 'InsertData error in FixedAssetDisposal::Add: ' . json_encode($id));
+            echo json_encode(['status' => 'error', 'message' => 'Database error inserting disposal record.']);
+            exit;
+        }
 
-        // $coa_data['ca_name'] = $this->request->getPost('cfs_description');
+        echo json_encode(['status' => 'success', 'id' => $id]);
+        exit;
+    }
 
-        // $coa_data['ca_account_type'] = $this->request->getPost('cfs_account_head');
+    public function AddToJvRows()
+    {
+        $credit_acc_id = $this->request->getPost('dfs_credit_account');
+        $debit_acc_id = $this->request->getPost('dfs_debit_account');
 
-        // $coa_data['ca_customer'] = $id;
+        $credit_acc = !empty($credit_acc_id) ? $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_id' => $credit_acc_id]) : null;
+        $debit_acc = !empty($debit_acc_id) ? $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_id' => $debit_acc_id]) : null;
 
-        // $coa_data['ca_account_id'] = $this->request->getPost('cfs_account_id');
+        $sale_price = floatval(str_replace(',', '', $this->request->getPost('dfs_sales_price') ?? 0));
+        $profit = floatval(str_replace(',', '', $this->request->getPost('dfs_profit') ?? 0));
+        $asset_amount = floatval(str_replace(',', '', $this->request->getPost('dfs_asset_amount') ?? 0));
+        $asset_balance = floatval(str_replace(',', '', $this->request->getPost('dfs_asset_balance') ?? 0));
 
-        // $coa_data['ca_type'] = "FIXED_ASSET";
+        $jv_amount = 0;
+        if ($sale_price > 0) {
+            $jv_amount = $sale_price;
+        } elseif ($profit != 0) {
+            $jv_amount = abs($profit);
+        } elseif ($asset_balance > 0) {
+            $jv_amount = $asset_balance;
+        } elseif ($asset_amount > 0) {
+            $jv_amount = $asset_amount;
+        }
 
-        // $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
+        $dispose_record = $this->common_model->SingleRow('pro_dispose_fixed_asset', ['dfs_id' => $this->request->getPost('ID')]);
+        if (!empty($dispose_record) && !empty($dispose_record->dfs_date_dispose)) {
+            $data['dep_date'] = date('d-M-Y', strtotime($dispose_record->dfs_date_dispose));
+        } else {
+            $raw_date = $this->request->getPost('dfs_date_dispose');
+            $data['dep_date'] = !empty($raw_date) ? date('d-M-Y', strtotime($raw_date)) : date('d-M-Y');
+        }
 
+        $debit_name = $debit_acc ? $debit_acc->ca_name : 'GI Account';
+        $credit_name = $credit_acc ? $credit_acc->ca_name : 'Credit Account';
+
+        $data['jv_rows'] = "";
+        $data['total_credit'] = $data['total_debit'] = $jv_amount;
+
+        $j = 1;
+        $data['jv_rows'] .= '
+        <tr class="jv_row">
+            <th class="sl_no"> ' . $j . ' </th>
+            <th class="select2_parent" width="35%"> 
+                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($debit_name) . '" readonly>
+            </th>
+            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $jv_amount . '" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+            <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+        </tr>';
+
+        $j++;
+
+        $data['jv_rows'] .= '
+        <tr class="jv_row">
+            <th class="sl_no"> ' . $j . ' </th>
+            <th class="select2_parent" width="35%"> 
+                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($credit_name) . '" readonly>
+            </th>
+            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount text-end" value="' . $jv_amount . '" readonly></th>
+            <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+        </tr>';
+
+        $data['jv_rows'] .= '
+        <tr class="no-border">
+            <td colspan="" align="right" class="no-border"></td>
+            <td colspan="" align="right">Total</td>
+            <th id="total_amount_debit_disp" class="text-end">' . htmlspecialchars($jv_amount) . '</th>
+            <th id="total_amount_credit_disp" class="text-end">' . htmlspecialchars($jv_amount) . '</th>
+            <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $jv_amount . '">
+            <input type="hidden" id="total_amount_debit" name="total_debit" value="' . $jv_amount . '">
+            <input type="hidden" id="total_amount_credit" name="total_credit" value="' . $jv_amount . '">
+            <input type="hidden" id="dfs_id" name="dfs_id" value="' . $this->request->getPost('ID') . '">
+        </tr>';
+
+        echo json_encode($data);
+        exit;
+    }
+
+    public function AddJournalVoucher()
+    {
+        $jv_date = date('Y-m-d', strtotime($this->request->getPost('jv_date')));
+        $jv_year = date('Y', strtotime($jv_date));
+
+        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers', 'jv_voucher_no', "JV-{$jv_year}-", '');
+
+        $insert_journal['jv_voucher_no'] = $juid;
+        $insert_journal['jv_date'] = $jv_date;
+        $insert_journal['jv_debit_total'] = $this->request->getPost('total_debit');
+        $insert_journal['jv_credit_total'] = $this->request->getPost('total_credit');
+        $insert_journal['jv_added_date'] = date('Y-m-d');
+
+        $journal_id = $this->common_model->InsertData('accounts_journal_vouchers', $insert_journal);
+
+        $dfs_id = $this->request->getPost('dfs_id');
+        if (!empty($dfs_id)) {
+            $db = \Config\Database::connect();
+            if ($db->fieldExists('dfs_jv_id', 'pro_dispose_fixed_asset')) {
+                $this->common_model->EditData(['dfs_jv_id' => $juid], ['dfs_id' => $dfs_id], 'pro_dispose_fixed_asset');
+            }
+        }
+
+        // Insert Journal invoices
+        if ($this->request->getPost('jv_account')) {
+            for ($ji = 0; $ji < count($this->request->getPost('jv_account')); $ji++) {
+                $account = $this->request->getPost('jv_account')[$ji];
+                $account_data = $this->common_model->SingleRow('accounts_charts_of_accounts', array('ca_name' => $account));
+                $account_id = 0;
+                if (!empty($account_data))
+                    $account_id = $account_data->ca_id;
+
+                $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? $this->request->getPost('jv_debit')[$ji] : 0;
+                $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? $this->request->getPost('jv_credit')[$ji] : 0;
+                $narration = $this->request->getPost('jv_remarks')[$ji] ?? '';
+
+                $insert_journal_invoice['ji_voucher_id'] = $journal_id;
+                $insert_journal_invoice['ji_account'] = $account_id;
+                $insert_journal_invoice['ji_debit'] = $debit;
+                $insert_journal_invoice['ji_credit'] = $credit;
+                $insert_journal_invoice['ji_narration'] = $narration;
+
+                $this->common_model->InsertData('accounts_journal_invoices', $insert_journal_invoice);
+            }
+        }
+
+        $return['msg'] = "Added to journal";
+        $return['status'] = 1;
+        $return['journal_id'] = $journal_id;
+
+        echo json_encode($return);
+        exit;
     }
 
     public function FillData()
@@ -242,7 +419,7 @@ class FixedAssetDisposal extends BaseController
                                 <td><input type="text" name="dfs_acquired_date" value="' . $asset->cfs_acquired_date . '" class="form-control"  readonly></td>
                                 <td><input type="text" name="dfs_asset_amount" value="' . format_currency($fixed_amount) . '" class="form-control add_asset_amt rt-inp"  readonly></td>
                                 <td><input type="text" name="dfs_depreciation" value="' . preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation) . '%" class="form-control rt-inp"  readonly></td>
-                                <td><input type="text" step=".01" name="dfs_sales_price" value="" class="form-control add_sale_price rt-inp dec-inp"  ></td>
+                                <td><input type="text" name="dfs_sales_price" value="" class="form-control add_sale_price rt-inp dec-inp" autocomplete="off" ></td>
                                 <td><input type="text" name="dfs_profit" value="" class="form-control add_profit rt-inp"  readonly></td>
                             </tr>';
 
@@ -442,7 +619,7 @@ class FixedAssetDisposal extends BaseController
 
         $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
 
-        if($check_module->up_delete == 0){
+        if(!empty($check_module) && isset($check_module->up_delete) && $check_module->up_delete == 0){
 
            $data['status'] = 0;
            
@@ -453,16 +630,31 @@ class FixedAssetDisposal extends BaseController
            exit();
         }
 
-        $this->common_model->DeleteData('pro_dispose_fixed_asset', array('dfs_id' => $this->request->getPost('ID')));
+        $id = $this->request->getPost('ID');
 
-        $data['status'] =1;
+        // Fetch the disposal record to check for JV
+        $dispose_record = $this->common_model->SingleRow('pro_dispose_fixed_asset', ['dfs_id' => $id]);
 
-        $data['msg'] ="Data Deleted Successfully";
+        if ($dispose_record && !empty($dispose_record->dfs_jv_id)) {
+            // Check if the JV actually exists in the database
+            $jv_exists = $this->common_model->SingleRow('accounts_journal_vouchers', ['jv_voucher_no' => $dispose_record->dfs_jv_id]);
+
+            if ($jv_exists) {
+                $data['status'] = 0;
+                $data['msg'] = "Please delete {$dispose_record->dfs_jv_id} to remove!";
+                echo json_encode($data);
+                exit();
+            }
+        }
+
+        $this->common_model->DeleteData('pro_dispose_fixed_asset', array('dfs_id' => $id));
+
+        $data['status'] = 1;
+
+        $data['msg'] = "Data Deleted Successfully";
 
         echo json_encode($data);
-
-
-       // $this->common_model->DeleteData('accounts_charts_of_accounts', array('ca_customer' => $this->request->getPost('ID')));
+        exit();
     }
 
 
