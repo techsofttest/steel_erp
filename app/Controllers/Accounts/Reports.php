@@ -4213,10 +4213,9 @@ foreach ($data['transactions'] as $trn_credit) {
             
                 <td>
             
-                <h2 style="font-size:20px;">Al Fuzail Engineering Services WLL</h2>
-                <hr style="height:1px;border:none;color:white;background-color:white;margin-top:0">
-                <div><p style="font-size:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-                <p style="font-size:13px;margin-top:10px;" >Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
+                <div><p style="font-size:11px;margin-bottom:13px;" class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p style="font-size:11px;margin-bottom:13px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
 
                 </td>

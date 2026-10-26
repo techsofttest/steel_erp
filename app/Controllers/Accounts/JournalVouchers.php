@@ -15,7 +15,7 @@ class JournalVouchers extends BaseController
     {
 
         /*pagination start*/
-        $request = service('request');
+        $request = service('request');  
         $postData = $request->getPost();
         $dtpostData = $postData['data'];
         $response = array();
@@ -856,13 +856,13 @@ class JournalVouchers extends BaseController
     
     <td width="20%" align="center">'.$sales_order.'</td>
 
-    <td width="20%" align="center">'.$order->ca_account_id.'</td>
+    <td width="10%" align="center">'.$order->ca_account_id.'</td>
     
-    <td width="20%">'.$order->ca_name.'</td>
+    <td width="50%">'.$order->ca_name.'</td>
 
-    <td align="right" width="20%">'.(($debit > 0) ? format_currency((float)$debit) : '').'</td>
+    <td align="right" width="10%">'.(($debit > 0) ? format_currency((float)$debit) : '').'</td>
 
-    <td align="right" width="20%">'.(($credit > 0) ? format_currency((float)$credit) : '').'</td>
+    <td align="right" width="10%">'.(($credit > 0) ? format_currency((float)$credit) : '').'</td>
 
     </tr>';
 
@@ -910,15 +910,14 @@ class JournalVouchers extends BaseController
           }
         p
         {
-        font-size:12px;
+            font-size:11px;
+            margin-bottom: 13px;
         }
 
         table.border-bottom td
         {
-        border-bottom:1px solid !important;
+            border-bottom:1px solid !important;
         }
-
-
 
         </style>
     
@@ -928,7 +927,7 @@ class JournalVouchers extends BaseController
         
         <td>
     
-        <h2>Al Fuzail Engineering Services WLL</h2>
+        <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
         <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
         <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
         
@@ -941,7 +940,7 @@ class JournalVouchers extends BaseController
     
     
     
-        <table width="100%" style="margin-top:10px;">
+        <table width="100%" style="margin-top:10px;">   
         
     
         <tr width="100%">
@@ -1006,13 +1005,13 @@ class JournalVouchers extends BaseController
         
         <th align="center" width="20%" >Sales Order No</th>
     
-        <th align="center" width="20%">Account No</th>
+        <th align="center" width="10%">Account No</th>
     
-        <th align="center" width="20%">Account Description</th>
+        <th align="left" width="50%">Account Description</th>
     
-        <th align="right" width="20%">Debit</th>
+        <th align="right" width="10%">Debit</th>
     
-        <th align="right" width="20%">Credit</th>
+        <th align="right" width="10%">Credit</th>
     
         </tr>
 
@@ -1022,24 +1021,22 @@ class JournalVouchers extends BaseController
         <table  width="100%">
 
         '.$orders_sec.'
-
         
         </table>
-
 
         <table width="100%" style="margin-top:2px;border-top:1px solid;">
         
         <tr class="">
         
-        <th align="center" width="20%" ></th>
+        <th align="center" width="10%" ></th>
     
-        <th align="center" width="20%"></th>
+        <th align="center" width="10%"></th>
     
-        <th align="center" width="20%"></th>
+        <th align="center" width="60%"></th>
     
-        <th align="right" width="20%">'.format_currency($jv->jv_debit_total).'</th>
+        <th align="right" width="10%"></th>
     
-        <th align="right" width="20%">'.format_currency($jv->jv_credit_total).'</th>
+        <th align="right" width="10%"></th>
     
         </tr>
     
@@ -1060,7 +1057,7 @@ class JournalVouchers extends BaseController
         
         <tr>
         
-        <td colpsan="5" align="center"><b>Amount : '.currency_to_words($total_amount).'</b></td>
+        <td colspan="5" align="left" style="text-align:left;"><b>Amount : '.currency_to_words($total_amount).'</b></td>
     
         <td colspan="1" align="right" style="text-align:right;"><b>'.format_currency($total_amount).'</b></td>
     
@@ -1092,7 +1089,7 @@ class JournalVouchers extends BaseController
         $mpdf->WriteHTML($html);
         $mpdf->SetFooter($footer);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output();
+        $mpdf->Output($jv->jv_voucher_no . '.pdf', 'I');
     
         }
 

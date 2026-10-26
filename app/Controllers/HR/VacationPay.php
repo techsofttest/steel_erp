@@ -178,9 +178,7 @@ class VacationPay extends BaseController
 
                 $diff = (int)(abs(strtotime($date) - strtotime($emp->emp_vacation_pay_due_from)) / 86400);
                 
-                $entitlement = $diff + 1;
-
-                //$entitlement = round($diff + 1, 2);
+                $diff++;
 
                 //Entitlement Calc
                 //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
@@ -451,9 +449,7 @@ class VacationPay extends BaseController
 
                 $diff = (int)(abs(strtotime($date) - strtotime($emp->emp_vacation_pay_due_from)) / 86400);
                 
-                $entitlement = $diff + 1;
-
-                //$diff++;
+                $diff++;
 
                 //Entitlement Calc
                 //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));

@@ -1503,7 +1503,8 @@ select.timesheet-selectbox
                            
                    
 
-                        <button class="submit_btn btn btn-success" type="submit">Save</button>
+                        <button class="submit_btn btn btn-success" name="main_submit" type="submit">Save</button>
+                        <button style="margin:0px 4px;" class="submit_btn btn btn-success" name="save_and_print" id="save_and_print" type="submit">Save & Print</button>
                     
                        
 
@@ -2531,6 +2532,16 @@ select.timesheet-selectbox
 
         $(function() {
           
+            var print_after_save = false;
+
+            $('#timesheet_add_form .submit_btn').click(function(){
+                if($(this).attr('name') == 'save_and_print'){
+                    print_after_save = true;
+                } else {
+                    print_after_save = false;
+                }
+            });
+
             $('#timesheet_add_form').validate({
             
                 rules: {
@@ -2560,6 +2571,11 @@ select.timesheet-selectbox
                             {
                              alertify.error(data.msg).delay(3).dismissOthers();    
                              return false;
+                            }
+
+                            if(print_after_save && data.ts_id)
+                            {
+                                window.open("<?php echo base_url(); ?>HR/Timesheets/Print/" + data.ts_id, '_blank');
                             }
                             
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();

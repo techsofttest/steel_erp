@@ -539,6 +539,7 @@ class TimeSheets extends BaseController
         $this->common_model->EditData($insert_data,array('ts_id' => $timesheet_id),'hr_timesheets');
 
         $data['status']=1;
+        $data['ts_id'] = $timesheet_id;
 
         echo json_encode($data);
 
@@ -740,6 +741,7 @@ class TimeSheets extends BaseController
 
         }
 
+        $data['ts_id'] = $ts_id;
 
         echo json_encode($data);
 
@@ -1300,9 +1302,9 @@ class TimeSheets extends BaseController
         
         <td>
     
-        <h2>Al Fuzail Engineering Services WLL</h2>
-        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
-        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+        <h2 style="text-align:left; margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
+        <p style="font-size: 11px; margin-bottom: 13px;">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+        <p style="font-size: 11px; margin-bottom: 13px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
         
         
         </td>

@@ -1940,6 +1940,10 @@ class PettyCashVoucher extends BaseController
             padding-left: 5px;
             padding-right: 5px;
           }
+        p {
+            font-size:11px;
+            margin-bottom: 13px;
+        }
         </style>
     
         <table>
@@ -1948,7 +1952,7 @@ class PettyCashVoucher extends BaseController
         
         <td>
     
-        <h3>Al Fuzail Engineering Services WLL</h3>
+        <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
         <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
         <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
         
