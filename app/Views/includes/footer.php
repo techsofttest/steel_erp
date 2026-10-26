@@ -302,9 +302,15 @@
             */
 
             $('body').on('focus',".datepicker_ap", function(){
-            $(this).datepicker({ dateFormat: "dd-M-yy" });
-            $(this).attr("autocomplete", "off");
-            })
+                $(this).datepicker({
+                    dateFormat: "dd-M-yy", 
+                    changeMonth: true,
+                    changeYear: true, 
+                    yearRange: "<?= $accounting_year ?>:<?= $accounting_year + 1 ?>",
+                    minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
+                });
+                $(this).attr("autocomplete", "off");
+            });
 
 
 
