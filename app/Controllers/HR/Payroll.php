@@ -1146,24 +1146,24 @@ class Payroll extends BaseController
 
 
 
-    <td class="text-end">'.$ts->ts_leave+$ts->ts_unpaid_leave+$ts->ts_vacation+$ts->ts_medical_leave.'</td>
+    <td align="center">'.$ts->ts_leave+$ts->ts_unpaid_leave+$ts->ts_vacation+$ts->ts_medical_leave.'</td>
 
-    <td class="text-end">'.$ts->ts_medical_leave.'</td>
+    <td align="center">'.$ts->ts_medical_leave.'</td>
 
-    <td class="text-end">'.$ts->ts_leave+$ts->ts_unpaid_leave.'</td>
+    <td align="center">'.$ts->ts_leave+$ts->ts_unpaid_leave.'</td>
 
-    <td class="text-end">'.$ts->ts_vacation.'</td>
+    <td align="center">'.$ts->ts_vacation.'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation).'</td>
 
 
 
-    <td class="text-end">'.$ts->ts_normal_ot.'</td>
+    <td align="center">'.$ts->ts_normal_ot.'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_normal_ot).'</td>
 
 
-     <td class="text-end">'.$ts->ts_friday_ot.'</td>
+     <td align="center">'.$ts->ts_friday_ot.'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_friday_ot).'</td>
 
@@ -1176,8 +1176,6 @@ class Payroll extends BaseController
     <td class="text-end">'.format_currency($ts->ts_food_allowance).'</td>
 
     <td class="text-end">'.format_currency($ts->ts_other_allowance).'</td>
-
-    <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
 
@@ -1249,8 +1247,6 @@ class Payroll extends BaseController
     <td class="text-end">'.format_currency($pr->pr_food_allow).'</td>
 
     <td class="text-end">'.format_currency($pr->pr_other_allow).'</td>
-
-    <td class="text-end">'.format_currency($pr->pr_total_salary).'</td>
 
     <td class="text-end">'.format_currency($pr->pr_total_salary).'</td>
 
@@ -1377,7 +1373,15 @@ class Payroll extends BaseController
     
     $this->hr_model = new \App\Models\HRModel();
 
-    $pr = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
+    $payroll_joins = array(
+        array(
+            'table' => 'accounts_journal_vouchers',
+            'pk' => 'jv_id',
+            'fk' => 'pr_journal_id',
+        )
+    );
+    $pr = $this->common_model->SingleRowJoin('hr_payrolls',array('pr_id' => $id),$payroll_joins);
+    $payroll_uid = !empty($pr->jv_voucher_no) ? $pr->jv_voucher_no : ('Payroll-' . $pr->pr_id);
     $month = $pr->pr_month;        
     $year = $pr->pr_year;
 
@@ -1435,24 +1439,24 @@ class Payroll extends BaseController
 
 
 
-    <td class="text-end">'.$ts->ts_leave+$ts->ts_unpaid_leave+$ts->ts_vacation+$ts->ts_medical_leave.'</td>
+    <td align="center">'.$ts->ts_leave+$ts->ts_unpaid_leave+$ts->ts_vacation+$ts->ts_medical_leave.'</td>
 
-    <td class="text-end">'.$ts->ts_medical_leave.'</td>
+    <td align="center">'.$ts->ts_medical_leave.'</td>
 
-    <td class="text-end">'.$ts->ts_leave+$ts->ts_unpaid_leave.'</td>
+    <td align="center">'.$ts->ts_leave+$ts->ts_unpaid_leave.'</td>
 
-    <td class="text-end">'.$ts->ts_vacation.'</td>
+    <td align="center">'.$ts->ts_vacation.'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation).'</td>
 
 
 
-    <td class="text-end">'.$ts->ts_normal_ot.'</td>
+    <td align="center">'.$ts->ts_normal_ot.'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_normal_ot).'</td>
 
 
-     <td class="text-end">'.$ts->ts_friday_ot.'</td>
+     <td align="center">'.$ts->ts_friday_ot.'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_friday_ot).'</td>
 
@@ -1465,8 +1469,6 @@ class Payroll extends BaseController
     <td class="text-end">'.format_currency($ts->ts_food_allowance).'</td>
 
     <td class="text-end">'.format_currency($ts->ts_other_allowance).'</td>
-
-    <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
 
     <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
 
@@ -1538,8 +1540,6 @@ class Payroll extends BaseController
     <td class="text-end">'.format_currency($pr->pr_food_allow).'</td>
 
     <td class="text-end">'.format_currency($pr->pr_other_allow).'</td>
-
-    <td class="text-end">'.format_currency($pr->pr_total_salary).'</td>
 
     <td class="text-end">'.format_currency($pr->pr_total_salary).'</td>
 
@@ -1693,6 +1693,14 @@ class Payroll extends BaseController
     text-align:center;
     }
 
+    .text-end {
+      text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
     .section-title {
       font-weight: bold;
       margin-top: 30px;
@@ -1757,10 +1765,10 @@ class Payroll extends BaseController
           <tr class="header_tr">
             <th rowspan="2" style="padding:7px">Sl</th>
             <th rowspan="2" style="width:40px;">Employee ID</th>
-            <th rowspan="2" style="width:120px;">Name</th>
+            <th rowspan="2" style="width:130px;">Name</th>
             <th rowspan="2">QID/Visa</th>
             <th rowspan="2">Passport</th>
-            <th rowspan="2">Position</th>
+            <th rowspan="2" style="width:80px;">Position</th>
             <th rowspan="2">DOJ</th>
             <th rowspan="2">Department</th>
             <th rowspan="2">Basic Salary</th>
@@ -1774,13 +1782,12 @@ class Payroll extends BaseController
             <!-- Friday OT group -->
             <th colspan="2">OT Friday</th>
 
-            <th rowspan="2">HRA</th>
-            <th rowspan="2">Transp Allowance</th>
-            <th rowspan="2">Tel Allowance</th>
-            <th rowspan="2">Food Allowance</th>
-            <th rowspan="2">Other Allowance</th>
+            <th rowspan="2" style="width:40px;">HRA</th>
+            <th rowspan="2" style="width:40px;">Transp Allowance</th>
+            <th rowspan="2" style="width:40px;">Tel Allowance</th>
+            <th rowspan="2" style="width:40px;">Food Allowance</th>
+            <th rowspan="2" style="width:40px;">Other Allowance</th>
             <th rowspan="2">Total Salary (Qr)</th>
-            <th rowspan="2">Net Salary (Qr)</th>
         </tr>
 
         <tr class="header_tr">
@@ -1828,7 +1835,7 @@ class Payroll extends BaseController
 
     $this->response->setHeader('Content-Type', 'application/pdf');
 
-    $mpdf->Output();
+    $mpdf->Output($payroll_uid . '.pdf', 'I');
 
     }
 
