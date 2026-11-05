@@ -854,11 +854,11 @@ class JournalVouchers extends BaseController
 
     $orders_sec .='<tr>
     
-    <td width="20%" align="center">'.$sales_order.'</td>
+    <td width="12%" align="center">'.$sales_order.'</td>
 
     <td width="10%" align="center">'.$order->ca_account_id.'</td>
     
-    <td width="50%">'.$order->ca_name.'</td>
+    <td width="58%">'.$order->ca_name.'</td>
 
     <td align="right" width="10%">'.(($debit > 0) ? format_currency((float)$debit) : '').'</td>
 
@@ -871,15 +871,15 @@ class JournalVouchers extends BaseController
 
     $orders_sec .='<tr>
     
-    <td></td>
+    <td width="12%"></td>
 
-    <td></td>
+    <td width="10%"></td>
     
-    <td>'.$order->ji_narration.'</td>
+    <td width="58%">'.$order->ji_narration.'</td>
 
-    <td align="right"></td>
+    <td align="right" width="10%"></td>
 
-    <td align="right"></td>
+    <td align="right" width="10%"></td>
 
     </tr>';
 
@@ -1003,11 +1003,11 @@ class JournalVouchers extends BaseController
     
         <tr class="border-bottom">
         
-        <th align="center" width="20%" >Sales Order No</th>
+        <th align="center" width="12%" >Sales Order</th>
     
         <th align="center" width="10%">Account No</th>
     
-        <th align="left" width="50%">Account Description</th>
+        <th align="left" width="58%">Account Description</th>
     
         <th align="right" width="10%">Debit</th>
     
@@ -1024,24 +1024,6 @@ class JournalVouchers extends BaseController
         
         </table>
 
-        <table width="100%" style="margin-top:2px;border-top:1px solid;">
-        
-        <tr class="">
-        
-        <th align="center" width="10%" ></th>
-    
-        <th align="center" width="10%"></th>
-    
-        <th align="center" width="60%"></th>
-    
-        <th align="right" width="10%"></th>
-    
-        <th align="right" width="10%"></th>
-    
-        </tr>
-    
-        </table>
-
 
 
         ';
@@ -1053,13 +1035,15 @@ class JournalVouchers extends BaseController
        
         $footer = '
 
-        <table width="100%">
+        <table width="100%" style="border-top:1px solid;margin-bottom:10px;">
         
         <tr>
         
-        <td colspan="5" align="left" style="text-align:left;"><b>Amount : '.currency_to_words($total_amount).'</b></td>
+        <td width="80%" align="left" style="text-align:left;"><b>Amount : '.currency_to_words($total_amount).'</b></td>
+
+        <td width="10%" align="right" style="text-align:right;"><b>'.format_currency($jv->jv_debit_total).'</b></td>
     
-        <td colspan="1" align="right" style="text-align:right;"><b>'.format_currency($total_amount).'</b></td>
+        <td width="10%" align="right" style="text-align:right;"><b>'.format_currency($jv->jv_credit_total).'</b></td>
     
         </tr>
     

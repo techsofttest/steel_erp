@@ -166,13 +166,13 @@ class Indemnity extends BaseController
                $total_days = floor($diff_in_seconds / (60 * 60 * 24));
 
                // Entitlement calculation
-               $entitlement = ($total_days * 21) / 365;
+               $full_entitlement = ($total_days * 21) / 365;
 
-               $entitlement = round($entitlement,2);
+               $entitlement = round($full_entitlement,2);
 
                $year_salary = $emp->emp_basic_salary*12;
 
-               $indemnity = $year_salary/365*$entitlement;
+               $indemnity = $year_salary/365*$full_entitlement;
 
                //$amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
@@ -365,13 +365,13 @@ class Indemnity extends BaseController
                $total_days = floor($diff_in_seconds / (60 * 60 * 24));
 
                // Entitlement calculation
-               $entitlement = ($total_days * 21) / 365;
+               $full_entitlement = ($total_days * 21) / 365;
 
-               $entitlement = round($entitlement,2);
+               $entitlement = round($full_entitlement,2);
 
                $year_salary = $emp->emp_basic_salary*12;
 
-               $indemnity = $year_salary/365*$entitlement;
+               $indemnity = $year_salary/365*$full_entitlement;
 
                //$amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
 
@@ -731,7 +731,7 @@ class Indemnity extends BaseController
 
     body {
       margin: 40px;
-      font-size:9px;
+      font-size:6px;
     }
     h2 {
       text-align: center;
@@ -778,7 +778,7 @@ class Indemnity extends BaseController
     }
 
     th, td {
-      padding: 2px 2px;
+      padding: 2px 5px;
       text-align: left;
     }
 
@@ -899,12 +899,12 @@ class Indemnity extends BaseController
   <th align="center">Nationality</th>
   <th align="center">D O J</th>
   <th align="center">QID/Visa</th>
-  <th align="center">Basic Salary</th>
+  <th align="right">Basic Salary</th>
   <th align="center">Days/Year</th>
   <th align="center">Entitlement</th>
-  <th align="center">Amount - Qr</th>
-  <th align="center">Payment</th>
-  <th align="center">Balance</th>
+  <th align="right">Amount - Qr</th>
+  <th align="right">Payment</th>
+  <th align="right">Balance</th>
 </tr>
 
 
@@ -937,7 +937,7 @@ class Indemnity extends BaseController
 
     $this->response->setHeader('Content-Type', 'application/pdf');
 
-    $mpdf->Output();
+    $mpdf->Output('ID-' . $id . '.pdf', 'I');
 
     
 

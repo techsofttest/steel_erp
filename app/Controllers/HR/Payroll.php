@@ -1031,14 +1031,14 @@ class Payroll extends BaseController
         $account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_name' => $account));
 
         $account_id = 0;
-
+ 
         if(!empty($account_data))
         $account_id = $account_data->ca_id;
 
         $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? $this->request->getPost('jv_debit')[$ji] : 0;
         $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? $this->request->getPost('jv_credit')[$ji] : 0;
         $narration = $this->request->getPost('jv_remarks')[$ji];
-        
+         
         $insert_journal_invoice['ji_voucher_id'] = $journal_id;
         //$insert_journal_invoice['ji_sales_order_id'] = ''; // Populate if needed
         $insert_journal_invoice['ji_account'] = $account_id;
@@ -1373,15 +1373,8 @@ class Payroll extends BaseController
     
     $this->hr_model = new \App\Models\HRModel();
 
-    $payroll_joins = array(
-        array(
-            'table' => 'accounts_journal_vouchers',
-            'pk' => 'jv_id',
-            'fk' => 'pr_journal_id',
-        )
-    );
-    $pr = $this->common_model->SingleRowJoin('hr_payrolls',array('pr_id' => $id),$payroll_joins);
-    $payroll_uid = !empty($pr->jv_voucher_no) ? $pr->jv_voucher_no : ('Payroll-' . $pr->pr_id);
+    $pr = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
+    $payroll_id = $id;
     $month = $pr->pr_month;        
     $year = $pr->pr_year;
 
@@ -1587,7 +1580,10 @@ class Payroll extends BaseController
     <style>
     body {
       margin: 40px;
-      font-size:6px;
+      font-size: 12px;
+    }
+    th, td {
+      font-size: 12px;
     }
     h2 {
       text-align: center;
@@ -1765,13 +1761,13 @@ class Payroll extends BaseController
           <tr class="header_tr">
             <th rowspan="2" style="padding:7px">Sl</th>
             <th rowspan="2" style="width:40px;">Employee ID</th>
-            <th rowspan="2" style="width:130px;">Name</th>
-            <th rowspan="2">QID/Visa</th>
-            <th rowspan="2">Passport</th>
-            <th rowspan="2" style="width:80px;">Position</th>
+            <th rowspan="2" style="width:160px;">Name</th>
+            <th rowspan="2" style="width:60px;">QID/Visa</th>
+            <th rowspan="2" style="width:60px;">Passport</th>
+            <th rowspan="2" style="width:100px;">Position</th>
             <th rowspan="2">DOJ</th>
             <th rowspan="2">Department</th>
-            <th rowspan="2">Basic Salary</th>
+            <th rowspan="2" style="width:45px;">Basic Salary</th>
 
             <!-- Leave group -->
             <th colspan="5">Leave</th>
@@ -1787,7 +1783,7 @@ class Payroll extends BaseController
             <th rowspan="2" style="width:40px;">Tel Allowance</th>
             <th rowspan="2" style="width:40px;">Food Allowance</th>
             <th rowspan="2" style="width:40px;">Other Allowance</th>
-            <th rowspan="2">Total Salary (Qr)</th>
+            <th rowspan="2" style="width:55px;">Total Salary (Qr)</th>
         </tr>
 
         <tr class="header_tr">
@@ -1835,7 +1831,7 @@ class Payroll extends BaseController
 
     $this->response->setHeader('Content-Type', 'application/pdf');
 
-    $mpdf->Output($payroll_uid . '.pdf', 'I');
+    $mpdf->Output('PR-' . $id . '.pdf', 'I');
 
     }
 

@@ -644,6 +644,7 @@ class VacationTravel extends BaseController
 
     $this->hr_model = new \App\Models\HRModel();
 
+    $vt_id = $id;
 
     $vt_data = $this->hr_model->FetchVTPrint($id);
 
@@ -722,7 +723,7 @@ class VacationTravel extends BaseController
 
     $mpdf = new \Mpdf\Mpdf([
         'format' => 'A4-L',
-        'default_font_size' => 7, 
+        'default_font_size' => 9, 
         'margin_left' => 5, 
         'margin_right' => 5,
         'margin_top' => 2,
@@ -751,7 +752,7 @@ class VacationTravel extends BaseController
 
     body {
       margin: 40px;
-      font-size:7px;
+      font-size:6px;
     }
     h2 {
       text-align: center;
@@ -936,7 +937,7 @@ class VacationTravel extends BaseController
 
 <th align="center">Vacation Due</th>
 
-<th align="center">Ticket Rate</th>
+<th align="right">Ticket Rate</th>
 
 <th align="center">Utilised</th>
 
@@ -944,7 +945,7 @@ class VacationTravel extends BaseController
 
 <th align="center">Entitlement</th>
 
-<th align="center">Amount - Qr</th>
+<th align="right">Amount - Qr</th>
 
 
 </tr>
@@ -976,7 +977,7 @@ class VacationTravel extends BaseController
 
     $this->response->setHeader('Content-Type', 'application/pdf');
 
-    $mpdf->Output();
+    $mpdf->Output('VT-' . $id . '.pdf', 'I');
 
     }
 

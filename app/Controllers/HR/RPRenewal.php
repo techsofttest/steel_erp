@@ -795,7 +795,7 @@ class RPRenewal extends BaseController
 
     body {
       margin: 40px;
-      font-size:9px;
+      font-size:6px;
     }
     h2 {
       text-align: center;
@@ -843,7 +843,7 @@ class RPRenewal extends BaseController
     }
 
     th, td {
-      padding: 2px 2px;
+      padding: 2px 5px;
       text-align: left;
     }
 
@@ -964,11 +964,11 @@ class RPRenewal extends BaseController
   <th align="center">Nationality</th>
   <th align="center">D O J</th>
   <th align="center">QID / Visa</th>
-  <th align="center">ID Deduction</th>
+  <th align="right">ID Deduction</th>
   <th align="center">ID Expiry</th>
-  <th align="center">RP Charges</th>
+  <th align="right">RP Charges</th>
   <th align="center">Days</th>
-  <th align="center">Amount (QR)</th>
+  <th align="right">Amount (QR)</th>
 </tr>
 
 
@@ -1001,7 +1001,7 @@ class RPRenewal extends BaseController
 
     $this->response->setHeader('Content-Type', 'application/pdf');
 
-    $mpdf->Output();
+    $mpdf->Output('RP-' . $id . '.pdf', 'I');
 
     
 

@@ -183,15 +183,15 @@ class VacationPay extends BaseController
                 //Entitlement Calc
                 //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
 
-                $entitlement = $diff*$days_per_year/365; 
+                $full_entitlement = $diff*$days_per_year/365; 
 
-                $entitlement = number_format($entitlement,2,'.');
+                $entitlement = number_format($full_entitlement,2,'.');
 
                 //$entitlement = number_format(round($entitlement),2,'.');
 
-                $amount = $emp->emp_basic_salary*12/365*$entitlement; 
+                $daily_rate = round($emp->emp_basic_salary*12/365, 2);
 
-                $amount = round($amount);
+                $amount = round($daily_rate * $full_entitlement);
 
 
                 $data['emp_row'] .="
@@ -454,13 +454,13 @@ class VacationPay extends BaseController
                 //Entitlement Calc
                 //$diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
 
-                $entitlement = $diff*$days_per_year/365;
+                $full_entitlement = $diff*$days_per_year/365;
 
-                $entitlement = number_format($entitlement,2,'.');
+                $entitlement = number_format($full_entitlement,2,'.');
 
-                $amount = $emp->emp_basic_salary*12/365*$entitlement; 
+                $daily_rate = round($emp->emp_basic_salary*12/365, 2);
 
-                $amount = round($amount);
+                $amount = round($daily_rate * $full_entitlement);
 
 
                 $data['total_amount']+=$amount;
@@ -787,7 +787,7 @@ class VacationPay extends BaseController
 
     body {
       margin: 40px;
-      font-size:9px;
+      font-size:6px;
     }
     h2 {
       text-align: center;
@@ -834,7 +834,7 @@ class VacationPay extends BaseController
     }
 
     th, td {
-      padding: 2px 2px;
+      padding: 2px 5px;
       text-align: left;
     }
 
@@ -956,10 +956,10 @@ class VacationPay extends BaseController
   <th align="center">D O J</th>
   <th align="center">QID/Visa</th>
   <th align="center">Vacation Due From</th>
-  <th align="center">Basic Salary</th>
+  <th align="right">Basic Salary</th>
   <th align="center">Days/Year</th>
   <th align="center">Entitlement</th>
-  <th align="center">Amount - Qr</th>
+  <th align="right">Amount - Qr</th>
 </tr>
 
 
@@ -992,7 +992,7 @@ class VacationPay extends BaseController
 
     $this->response->setHeader('Content-Type', 'application/pdf');
 
-    $mpdf->Output();
+    $mpdf->Output('VP-' . $id . '.pdf', 'I');
 
     }
 
