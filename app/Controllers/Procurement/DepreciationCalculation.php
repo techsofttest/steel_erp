@@ -59,7 +59,8 @@ class DepreciationCalculation extends BaseController
 
         $i = 1;
         foreach ($records as $record) {
-            $action = '<a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="' . $record->dpc_id . '"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="' . $record->dpc_id . '"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" data-id="' . $record->dpc_id . '"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i> </a>
+            <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="' . $record->dpc_id . '"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
             // <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="' . $record->dpc_id . '" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 
@@ -68,7 +69,7 @@ class DepreciationCalculation extends BaseController
                 'dpc_jv_no'            => $record->dpc_jv_id ?? '-',
                 'dpc_account_head'     => $record->ah_account_name,
                 'dpc_acquired_date'    => date('d-M-Y', strtotime($record->dpc_acquired_date)),
-                'dpc_amount'           => $record->dpc_amount,
+                'dpc_amount'           => format_currency($record->dpc_amount),
                 "action"               => $action,
             );
             $i++;
@@ -164,12 +165,22 @@ class DepreciationCalculation extends BaseController
     // add account head
     public function Add()
     {
+        $total_depreciation_amt = 0;
+        $dep_amounts = $this->request->getPost('dpcd_depreciation_amt');
+        if (!empty($dep_amounts) && is_array($dep_amounts)) {
+            foreach ($dep_amounts as $amt) {
+                $total_depreciation_amt += floatval(str_replace(',', '', $amt));
+            }
+        } else {
+            $total_depreciation_amt = floatval(str_replace(',', '', $this->request->getPost('dpc_amount') ?? 0));
+        }
+
         $insert_data = [
             'dpc_acquired_date' => date('Y-m-d', strtotime($this->request->getPost('dpc_acquired_date'))),
             'dpc_account_head' => $this->request->getPost('dpc_account_head'),
             'dpc_debit_account' => $this->request->getPost('dpc_debit_account'),
             'dpc_credit_account' => $this->request->getPost('dpc_credit_account'),
-            'dpc_amount' => str_replace(',', '', $this->request->getPost('dpc_amount')),
+            'dpc_amount' => $total_depreciation_amt,
             'dpc_depreciation' => $this->request->getPost('dpc_depreciation'),
         ];
         // print_r($insert_data);exit;
@@ -254,7 +265,7 @@ class DepreciationCalculation extends BaseController
                 $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id) ?? 0;
 
                 $fixed_amount = (float)$fixed_amount;
-                $cfs_last_yr_depreciation = (float) preg_replace('/,/', '', $asset->cfs_last_yr_depreciation);
+                $cfs_last_yr_depreciation = preg_match('/[0-9,]+(?:\.[0-9]+)?/', (string)($asset->cfs_last_yr_depreciation ?? ''), $matches) ? (float) str_replace(',', '', $matches[0]) : 0.0;
 
                 $fixed_amount -= $cfs_last_yr_depreciation;
 
@@ -643,12 +654,12 @@ class DepreciationCalculation extends BaseController
         $emp_journal = "";
 
         $current_balance = $this->request->getPost('current_balance');
-        $dep_amount = floatval(str_replace(',', '',$this->request->getPost('depreciation')));
-
-
-        $dep_amount = $dep_amount -  floatval(str_replace(',', '', $current_balance));
+        $dep_amount = floatval(str_replace(',', '', $this->request->getPost('depreciation')));
 
         $dep_record = $this->common_model->SingleRow('pro_depreciation_calculation', ['dpc_id' => $this->request->getPost('ID')]);
+        if ($dep_record) {
+            $this->common_model->EditData(['dpc_amount' => $dep_amount], ['dpc_id' => $dep_record->dpc_id], 'pro_depreciation_calculation');
+        }
 
         $data['dep_date'] = date('d-M-Y', strtotime($dep_record->dpc_acquired_date));
 

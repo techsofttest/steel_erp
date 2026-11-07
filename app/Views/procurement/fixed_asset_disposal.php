@@ -395,9 +395,9 @@
                                                         <table class="table table-bordered table-striped delTable add_table view_selected_table"  style="display: none;">
                                                         <thead class="travelerinfo ">
                                                             <tr>
-                                                                <td style="width: 4%;">SI</td>
+                                                                <td style="width: 4%; text-align: center;" class="text-center">SI</td>
                                                                 <td>Description</td>
-                                                                <td style="width: 10%;">Date Acquired</td>
+                                                                <td style="width: 10%; text-align: center;" class="text-center">Date Acquired</td>
                                                                 <td style="width: 10%;">Amount</td>
                                                                 <td style="width: 10%;">Depreciation</td>
                                                                 <td style="width: 10%;">Sales Price</td>
@@ -871,9 +871,9 @@
                                     <tbody class="travelerinfo">
 
                                         <tr>
-                                            <td>Sl</td>
+                                            <td class="text-center" style="text-align: center;">Sl</td>
                                             <td>Description</td>
-                                            <td>Date Acquired</td>
+                                            <td class="text-center" style="text-align: center;">Date Acquired</td>
                                             <td>Amount</td>
                                             <td>Depreciation</td>
                                             <td>Sales Price</td>
@@ -885,9 +885,9 @@
                                     <tbody class="travelerinfo product-more2 view-dispose-body">
 
                                         <tr>
-                                            <td> 1 </td>
+                                            <td class="text-center" style="text-align: center;"> 1 </td>
                                             <td><input type="text" name="dfs_description" class="form-control view_description" readonly></td>
-                                            <td><input type="text" name="dfs_acquired_date" class="form-control view_acquired_date" readonly></td>
+                                            <td class="text-center"><input type="text" name="dfs_acquired_date" class="form-control view_acquired_date text-center" style="text-align: center;" readonly></td>
                                             <td><input type="text" name="dfs_asset_amount" class="form-control view_asset_amt" readonly></td>
                                             <td><input type="text" name="dfs_depreciation" class="form-control view_depreciation" readonly></td>
                                             <td><input type="number" name="dfs_sales_price" value="" class="form-control view_sale_price" readonly></td>
@@ -1126,9 +1126,9 @@
                                     <tbody class="travelerinfo">
 
                                         <tr>
-                                            <td>Sl</td>
+                                            <td class="text-center" style="text-align: center;">Sl</td>
                                             <td>Description</td>
-                                            <td>Date Acquired</td>
+                                            <td class="text-center" style="text-align: center;">Date Acquired</td>
                                             <td>Amount</td>
                                             <td>Depreciation</td>
                                             <td>Sales Price</td>
@@ -1141,9 +1141,9 @@
 
 
                                         <tr>
-                                            <td> 1 </td>
+                                            <td class="text-center" style="text-align: center;"> 1 </td>
                                             <td><input type="text" name="dfs_description" class="form-control edit_description" readonly></td>
-                                            <td><input type="text" name="dfs_acquired_date" class="form-control edit_acquired_date" readonly></td>
+                                            <td class="text-center"><input type="text" name="dfs_acquired_date" class="form-control edit_acquired_date text-center" style="text-align: center;" readonly></td>
                                             <td><input type="text" name="dfs_asset_amount" class="form-control edit_asset_amt" readonly></td>
                                             <td><input type="text" name="dfs_depreciation" class="form-control edit_depreciation" readonly></td>
                                             <td><input type="number" name="dfs_sales_price" value="" class="form-control edit_sale_price"></td>
@@ -1356,6 +1356,7 @@
                     var formData = new FormData(currentForm);
                     var creditAccount = form.find('select[name="dfs_credit_account"]').val();
                     var debitAccount = form.find('select[name="dfs_debit_account"]').val();
+                    var fixedAsset = form.find('select[name="dfs_fixed_asset"]').val();
                     var disposeDate = form.find('input[name="dfs_date_dispose"]').val();
                     var salePrice = form.find('input[name="dfs_sales_price"]').val();
                     var profit = form.find('input[name="dfs_profit"]').val();
@@ -1404,6 +1405,7 @@
                                     data: {
                                         dfs_credit_account: creditAccount,
                                         dfs_debit_account: debitAccount,
+                                        dfs_fixed_asset: fixedAsset,
                                         dfs_date_dispose: disposeDate,
                                         dfs_sales_price: salePrice,
                                         dfs_profit: profit,
@@ -1851,7 +1853,8 @@
                 method: "POST",
 
                 data: {
-                    Fixed: fixed_asset
+                    Fixed: fixed_asset,
+                    Date: $('input[name="dfs_date_dispose"]').val()
                 },
 
                 success: function(data) {
@@ -1874,9 +1877,16 @@
                         $('.total_table').html(total_Sec);
 
                     }
+                    $('.add_sale_price').trigger('input');
                 }
             });
 
+        });
+
+        $("body").on('change changeDate', 'input[name="dfs_date_dispose"]', function() {
+            if ($('.fixed_asset_select').val()) {
+                $('.fixed_asset_select').trigger('change');
+            }
         });
 
         // Define the round function

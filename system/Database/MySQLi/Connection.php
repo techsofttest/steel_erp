@@ -119,18 +119,20 @@ class Connection extends BaseConnection
             } else {
                 $this->mysqli->options(
                     MYSQLI_INIT_COMMAND,
-                    "SET SESSION sql_mode = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                    "SET SESSION sql_mode = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
                                         @@sql_mode,
-                                        'STRICT_ALL_TABLES,', ''),
-                                    ',STRICT_ALL_TABLES', ''),
-                                'STRICT_ALL_TABLES', ''),
-                            'STRICT_TRANS_TABLES,', ''),
-                        ',STRICT_TRANS_TABLES', ''),
-                    'STRICT_TRANS_TABLES', '')"
+                                        'ONLY_FULL_GROUP_BY,', ''),
+                                    ',ONLY_FULL_GROUP_BY', ''),
+                                'ONLY_FULL_GROUP_BY', ''),
+                                    'STRICT_ALL_TABLES,', ''),
+                                ',STRICT_ALL_TABLES', ''),
+                            'STRICT_ALL_TABLES', ''),
+                        'STRICT_TRANS_TABLES,', ''),
+                    ',STRICT_TRANS_TABLES', ''),
+                'STRICT_TRANS_TABLES', '')"
                 );
             }
         }
-
         if (is_array($this->encrypt)) {
             $ssl = [];
 
