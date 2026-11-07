@@ -252,77 +252,187 @@ class FixedAssetDisposal extends BaseController
 
     public function AddToJvRows()
     {
-        $credit_acc_id = $this->request->getPost('dfs_credit_account');
-        $debit_acc_id = $this->request->getPost('dfs_debit_account');
+        $dispose_id = $this->request->getPost('ID');
+        $dispose_record = !empty($dispose_id) ? $this->common_model->SingleRow('pro_dispose_fixed_asset', ['dfs_id' => $dispose_id]) : null;
+
+        $credit_acc_id = $this->request->getPost('dfs_credit_account') ?? ($dispose_record->dfs_credit_account ?? null);
+        $debit_acc_id = $this->request->getPost('dfs_debit_account') ?? ($dispose_record->dfs_debit_account ?? null);
+        $fixed_asset_id = $this->request->getPost('dfs_fixed_asset') ?? ($dispose_record->dfs_fixed_asset ?? null);
 
         $credit_acc = !empty($credit_acc_id) ? $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_id' => $credit_acc_id]) : null;
         $debit_acc = !empty($debit_acc_id) ? $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_id' => $debit_acc_id]) : null;
+        $fixed_asset = !empty($fixed_asset_id) ? $this->common_model->SingleRow('pro_create_fixed_asset', ['cfs_id' => $fixed_asset_id]) : null;
 
-        $sale_price = floatval(str_replace(',', '', $this->request->getPost('dfs_sales_price') ?? 0));
-        $profit = floatval(str_replace(',', '', $this->request->getPost('dfs_profit') ?? 0));
-        $asset_amount = floatval(str_replace(',', '', $this->request->getPost('dfs_asset_amount') ?? 0));
-        $asset_balance = floatval(str_replace(',', '', $this->request->getPost('dfs_asset_balance') ?? 0));
+        $sale_price = floatval(str_replace(',', '', $this->request->getPost('dfs_sales_price') ?? ($dispose_record->dfs_sales_price ?? 0)));
+        $profit = floatval(str_replace(',', '', $this->request->getPost('dfs_profit') ?? ($dispose_record->dfs_profit ?? 0)));
+        $asset_amount = floatval(str_replace(',', '', $this->request->getPost('dfs_asset_amount') ?? ($dispose_record->dfs_asset_amount ?? 0)));
+        $asset_balance = floatval(str_replace(',', '', $this->request->getPost('dfs_asset_balance') ?? ($dispose_record->dfs_asset_balance ?? 0)));
 
-        $jv_amount = 0;
-        if ($sale_price > 0) {
-            $jv_amount = $sale_price;
-        } elseif ($profit != 0) {
-            $jv_amount = abs($profit);
-        } elseif ($asset_balance > 0) {
-            $jv_amount = $asset_balance;
-        } elseif ($asset_amount > 0) {
-            $jv_amount = $asset_amount;
-        }
-
-        $dispose_record = $this->common_model->SingleRow('pro_dispose_fixed_asset', ['dfs_id' => $this->request->getPost('ID')]);
         if (!empty($dispose_record) && !empty($dispose_record->dfs_date_dispose)) {
             $data['dep_date'] = date('d-M-Y', strtotime($dispose_record->dfs_date_dispose));
         } else {
             $raw_date = $this->request->getPost('dfs_date_dispose');
-            $data['dep_date'] = !empty($raw_date) ? date('d-M-Y', strtotime($raw_date)) : date('d-M-Y');
+            $data['dep_date'] = !empty($raw_date) ? date('d-M-Y', strtotime(str_replace('/', '-', $raw_date))) : date('d-M-Y');
         }
 
-        $debit_name = $debit_acc ? $debit_acc->ca_name : 'GI Account';
-        $credit_name = $credit_acc ? $credit_acc->ca_name : 'Credit Account';
+        // 1. Accumulated Depreciation Account (from credit account field)
+        $accum_depr_name = $credit_acc ? $credit_acc->ca_name : 'Accumulated Depreciation - Furniture & Fixtures';
+
+        // 2. Profit / Loss on Sale of Fixed Asset
+        $loss_acc_name = 'Loss On Sale Of Fixed Asset';
+        $profit_acc_name = 'Profit On Sale Of Fixed Asset';
+        $db = \Config\Database::connect();
+        $found_loss = $db->table('accounts_charts_of_accounts')
+            ->like('ca_name', 'Loss On Sale Of Fixed Asset')
+            ->orLike('ca_name', 'Loss On Disposal Of Fixed Assets')
+            ->get()->getRow();
+        if ($found_loss) {
+            $loss_acc_name = $found_loss->ca_name;
+        }
+        $found_profit = $db->table('accounts_charts_of_accounts')
+            ->like('ca_name', 'Profit On Sale Of Fixed Asset')
+            ->get()->getRow();
+        if ($found_profit) {
+            $profit_acc_name = $found_profit->ca_name;
+        }
+
+        // 3. Reallocation Account (from debit/GI account field)
+        $reallocation_name = $debit_acc ? $debit_acc->ca_name : 'Reallocation';
+
+        // 4. Asset Account (e.g. Steel file cabinet)
+        $asset_acc_name = '';
+        if (!empty($fixed_asset)) {
+            if (!empty($fixed_asset->cfs_account_id)) {
+                $asset_acc = $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_account_id' => $fixed_asset->cfs_account_id]);
+                if ($asset_acc) {
+                    $asset_acc_name = $asset_acc->ca_name;
+                }
+            }
+            if (empty($asset_acc_name) && !empty($fixed_asset->cfs_id)) {
+                $asset_acc = $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_customer' => $fixed_asset->cfs_id]);
+                if ($asset_acc) {
+                    $asset_acc_name = $asset_acc->ca_name;
+                }
+            }
+            if (empty($asset_acc_name) && !empty($fixed_asset->cfs_description)) {
+                $asset_acc = $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_name' => $fixed_asset->cfs_description]);
+                if ($asset_acc) {
+                    $asset_acc_name = $asset_acc->ca_name;
+                }
+            }
+        }
+        if (empty($asset_acc_name) && !empty($dispose_record->dfs_description)) {
+            $asset_acc = $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_name' => $dispose_record->dfs_description]);
+            if ($asset_acc) {
+                $asset_acc_name = $asset_acc->ca_name;
+            } else {
+                $asset_acc_name = $dispose_record->dfs_description;
+            }
+        }
+        if (empty($asset_acc_name)) {
+            $asset_acc_name = 'Steel file cabinet';
+        }
 
         $data['jv_rows'] = "";
-        $data['total_credit'] = $data['total_debit'] = $jv_amount;
-
+        $total_debit = 0;
+        $total_credit = 0;
         $j = 1;
+
+        // Row 1: Accumulated Depreciation - Furniture & Fixtures (Debit)
+        $row1_debit = ($asset_balance > 0) ? number_format($asset_balance, 2, '.', '') : '';
+        if ($asset_balance > 0) {
+            $total_debit += $asset_balance;
+        }
         $data['jv_rows'] .= '
         <tr class="jv_row">
             <th class="sl_no"> ' . $j . ' </th>
             <th class="select2_parent" width="35%"> 
-                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($debit_name) . '" readonly>
+                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($accum_depr_name) . '" readonly>
             </th>
-            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $jv_amount . '" readonly></th>
+            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $row1_debit . '" readonly></th>
             <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
             <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
         </tr>';
-
         $j++;
+
+        // Row 2: Loss on Sale of Fixed Asset (Debit) OR Profit on Sale of Fixed Asset (Credit)
+        $is_profit = ($profit > 0);
+        $pl_account = $is_profit ? $profit_acc_name : $loss_acc_name;
+        $pl_amt_val = ($profit != 0) ? number_format(abs($profit), 2, '.', '') : '';
+
+        $row2_debit = (!$is_profit && $profit != 0) ? $pl_amt_val : '';
+        $row2_credit = ($is_profit && $profit != 0) ? $pl_amt_val : '';
+
+        if (!$is_profit && $profit != 0) {
+            $total_debit += abs($profit);
+        } elseif ($is_profit && $profit != 0) {
+            $total_credit += abs($profit);
+        }
 
         $data['jv_rows'] .= '
         <tr class="jv_row">
             <th class="sl_no"> ' . $j . ' </th>
             <th class="select2_parent" width="35%"> 
-                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($credit_name) . '" readonly>
+                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($pl_account) . '" readonly>
             </th>
-            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" readonly></th>
-            <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount text-end" value="' . $jv_amount . '" readonly></th>
+            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $row2_debit . '" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="number" step="0.01" class="form-control credit_amount text-end" value="' . $row2_credit . '" readonly></th>
             <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
         </tr>';
+        $j++;
+
+        // Row 3: Reallocation (Debit) - blank if Sales price is Zero
+        $realloc_acc_val = ($sale_price > 0) ? $reallocation_name : '';
+        $row3_debit = ($sale_price > 0) ? number_format($sale_price, 2, '.', '') : '';
+        if ($sale_price > 0) {
+            $total_debit += $sale_price;
+        }
+
+        $data['jv_rows'] .= '
+        <tr class="jv_row">
+            <th class="sl_no"> ' . $j . ' </th>
+            <th class="select2_parent" width="35%"> 
+                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($realloc_acc_val) . '" readonly>
+            </th>
+            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $row3_debit . '" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+            <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+        </tr>';
+        $j++;
+
+        // Row 4: Credit Account is Steel Cabinet (Asset Account)
+        $row4_credit = ($asset_amount > 0) ? number_format($asset_amount, 2, '.', '') : '';
+        if ($asset_amount > 0) {
+            $total_credit += $asset_amount;
+        }
+
+        $data['jv_rows'] .= '
+        <tr class="jv_row">
+            <th class="sl_no"> ' . $j . ' </th>
+            <th class="select2_parent" width="35%"> 
+                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($asset_acc_name) . '" readonly>
+            </th>
+            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="number" step="0.01" class="form-control credit_amount text-end" value="' . $row4_credit . '" readonly></th>
+            <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+        </tr>';
+
+        $total_debit_formatted = number_format($total_debit, 2, '.', '');
+        $total_credit_formatted = number_format($total_credit, 2, '.', '');
+
+        $data['total_debit'] = $total_debit_formatted;
+        $data['total_credit'] = $total_credit_formatted;
 
         $data['jv_rows'] .= '
         <tr class="no-border">
             <td colspan="" align="right" class="no-border"></td>
             <td colspan="" align="right">Total</td>
-            <th id="total_amount_debit_disp" class="text-end">' . htmlspecialchars($jv_amount) . '</th>
-            <th id="total_amount_credit_disp" class="text-end">' . htmlspecialchars($jv_amount) . '</th>
-            <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $jv_amount . '">
-            <input type="hidden" id="total_amount_debit" name="total_debit" value="' . $jv_amount . '">
-            <input type="hidden" id="total_amount_credit" name="total_credit" value="' . $jv_amount . '">
-            <input type="hidden" id="dfs_id" name="dfs_id" value="' . $this->request->getPost('ID') . '">
+            <th id="total_amount_debit_disp" class="text-end">' . htmlspecialchars($total_debit_formatted) . '</th>
+            <th id="total_amount_credit_disp" class="text-end">' . htmlspecialchars($total_credit_formatted) . '</th>
+            <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $total_debit_formatted . '">
+            <input type="hidden" id="total_amount_debit" name="total_debit" value="' . $total_debit_formatted . '">
+            <input type="hidden" id="total_amount_credit" name="total_credit" value="' . $total_credit_formatted . '">
+            <input type="hidden" id="dfs_id" name="dfs_id" value="' . htmlspecialchars($dispose_id ?? '') . '">
         </tr>';
 
         echo json_encode($data);
@@ -355,15 +465,25 @@ class FixedAssetDisposal extends BaseController
         // Insert Journal invoices
         if ($this->request->getPost('jv_account')) {
             for ($ji = 0; $ji < count($this->request->getPost('jv_account')); $ji++) {
-                $account = $this->request->getPost('jv_account')[$ji];
-                $account_data = $this->common_model->SingleRow('accounts_charts_of_accounts', array('ca_name' => $account));
-                $account_id = 0;
-                if (!empty($account_data))
-                    $account_id = $account_data->ca_id;
-
-                $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? $this->request->getPost('jv_debit')[$ji] : 0;
-                $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? $this->request->getPost('jv_credit')[$ji] : 0;
+                $account = trim($this->request->getPost('jv_account')[$ji] ?? '');
+                $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? floatval(str_replace(',', '', $this->request->getPost('jv_debit')[$ji])) : 0;
+                $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? floatval(str_replace(',', '', $this->request->getPost('jv_credit')[$ji])) : 0;
                 $narration = $this->request->getPost('jv_remarks')[$ji] ?? '';
+
+                if (empty($account) || ($debit == 0 && $credit == 0)) {
+                    continue;
+                }
+
+                $account_data = $this->common_model->SingleRow('accounts_charts_of_accounts', array('ca_name' => $account));
+                if (empty($account_data)) {
+                    $db = \Config\Database::connect();
+                    $account_data = $db->table('accounts_charts_of_accounts')->like('ca_name', $account)->get()->getRow();
+                }
+
+                $account_id = 0;
+                if (!empty($account_data)) {
+                    $account_id = $account_data->ca_id;
+                }
 
                 $insert_journal_invoice['ji_voucher_id'] = $journal_id;
                 $insert_journal_invoice['ji_account'] = $account_id;
@@ -402,21 +522,32 @@ class FixedAssetDisposal extends BaseController
         // Fetch the fixed asset data
         $data['fixedasset'] = $asset = $this->common_model->SingleRowJoin('pro_create_fixed_asset', $cond, $joins);
 
-        $fixed_asset_bal = floatval($this->pro_model->FixedAssetBalance($fixed)); // Get the fixed asset balance
-        $fixed_asset_depr = floatval($data['fixedasset']->cfs_depreciation); // Get the depreciation percentage
-        
-        // Add the depreciation percentage of the asset balance to the balance itself
-        $data['asset_balance'] = number_format($fixed_asset_bal + ($fixed_asset_bal * $fixed_asset_depr / 100), 2);
-        
+        $fixed_amount = floatval($this->pro_model->FetchFixedPurchases($asset->cfs_account_id) ?? 0);
+        $depreciation_rate = floatval(preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation)) / 100;
 
-        $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id);
+        $dispose_date_post = $this->request->getPost('Date');
+        $dispose_time = !empty($dispose_date_post) ? strtotime(str_replace('/', '-', $dispose_date_post)) : time();
+        $dispose_date = date('Y-m-d', $dispose_time);
+
+        $acq_date = date('Y-m-d', strtotime($asset->cfs_acquired_date));
+        $disp_year = date('Y', $dispose_time);
+        $year_start = $disp_year . '-01-01';
+
+        $calc_from = ($acq_date > $year_start) ? $acq_date : $year_start;
+        $diff_days = round((strtotime($dispose_date) - strtotime($calc_from)) / (60 * 60 * 24));
+        if ($diff_days < 0) {
+            $diff_days = 0;
+        }
+
+        $depreciation_amount = round(($fixed_amount * $depreciation_rate * $diff_days) / 365, 2);
+        $data['asset_balance'] = number_format($depreciation_amount, 2, '.', '');
 
         $asset_det = '';
 
         $asset_det .= '<tr>
-                                <td> 1 </td>
+                                <td class="text-center" style="text-align: center;"> 1 </td>
                                 <td><input type="text" name="dfs_description" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
-                                <td><input type="text" name="dfs_acquired_date" value="' . $asset->cfs_acquired_date . '" class="form-control"  readonly></td>
+                                <td class="text-center"><input type="text" name="dfs_acquired_date" value="' . $asset->cfs_acquired_date . '" class="form-control text-center" style="text-align: center;" readonly></td>
                                 <td><input type="text" name="dfs_asset_amount" value="' . format_currency($fixed_amount) . '" class="form-control add_asset_amt rt-inp"  readonly></td>
                                 <td><input type="text" name="dfs_depreciation" value="' . preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation) . '%" class="form-control rt-inp"  readonly></td>
                                 <td><input type="text" name="dfs_sales_price" value="" class="form-control add_sale_price rt-inp dec-inp" autocomplete="off" ></td>

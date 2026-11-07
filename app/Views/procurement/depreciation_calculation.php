@@ -1246,7 +1246,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" id="jvdate" name="jv_date" class="form-control journal_datepicker datepicker_ap" value="" readonly required>
+                                                        <input type="text" id="jvdate" name="jv_date" class="form-control journal_datepicker datepicker" value="" required>
 
                                                     </div>
 
@@ -2373,28 +2373,24 @@
 
 
 
-        $('.journal_datepicker').change(function() {
+        $('.journal_datepicker').on('change input', function() {
 
             var date = $(this).val();
-
-            var year = date.substring(0, 4); // "2025"
+            if (!date) return;
 
             $.ajax({
 
-                url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/" + date,
+                url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/e/" + encodeURIComponent(date),
 
                 method: "GET",
 
                 success: function(data) {
-
-                    //alert(data);
 
                     $('#uid').val(data);
 
                 }
 
             });
-
 
         });
 

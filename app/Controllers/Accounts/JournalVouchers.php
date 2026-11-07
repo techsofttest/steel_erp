@@ -157,9 +157,14 @@ class JournalVouchers extends BaseController
     {
     $year = $this->data['accounting_year'];
     }
+    elseif(preg_match('/^\d{4}$/', trim($year)))
+    {
+    $year = trim($year);
+    }
     else
     {
-    $year = date('Y',strtotime($year));
+    $timestamp = strtotime($year);
+    $year = ($timestamp !== false) ? date('Y', $timestamp) : $this->data['accounting_year'];
     }
 
     $uid = $this->common_model->FetchNextId('accounts_journal_vouchers','jv_voucher_no',"JV-{$year}-",$year);
