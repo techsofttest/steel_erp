@@ -895,7 +895,7 @@ class JournalVouchers extends BaseController
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5, 
-            'margin_top' => 7,
+            'margin_top' => 3,
         ]);
     
         $html ='
@@ -928,7 +928,7 @@ class JournalVouchers extends BaseController
         <td>
     
         <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
-        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+        <p style="margin-bottom: 20px;">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
         <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
         
         
