@@ -933,8 +933,8 @@ class JournalVouchers extends BaseController
         <td>
     
         <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
-        <p >Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
-        <p style="line-height: 28px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+        <p style="line-height: 28px;">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+        <p >Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
         
         
         </td>
