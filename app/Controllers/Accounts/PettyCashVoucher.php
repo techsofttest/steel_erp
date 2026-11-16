@@ -1840,7 +1840,14 @@ class PettyCashVoucher extends BaseController
                 'table' => 'accounts_charts_of_accounts',
                 'pk' => 'ca_id',
                 'fk' => 'pci_debit_account',
-            )
+            ),
+
+            array(
+                'table' => 'crm_sales_orders',
+                'pk' => 'so_id',
+                'fk' => 'pci_sales_order',
+                'type' => 'LEFT',
+            ),
 
         );
 
@@ -1848,75 +1855,28 @@ class PettyCashVoucher extends BaseController
 
         $invoice_sec = "";
 
-        $first = true;
-
         foreach ($invoices as $inv) {
 
-            $joins_voucher = array(
-                array(
-                    'table' => 'pro_purchase_voucher',
-                    'pk' => 'pv_id',
-                    'fk' => 'pcdi_invoice',
-                )
-            );
+            $sales_order = !empty($inv->so_order_no) ? $inv->so_order_no : '-';
 
-            $linked_vouchers = $this->common_model->FetchWhereJoin('accounts_petty_cash_debit_invoices', array('pcdi_debit_id' => $inv->pci_id), $joins_voucher);
+            $invoice_sec .= "
+                <tr>
+                    <td width='20%' align='center'>{$sales_order}</td>
+                    <td width='15%' align='center'>{$inv->ca_account_id}</td>
+                    <td width='50%'>{$inv->ca_name}</td>
+                    <td width='15%' align='right'>" . format_currency($inv->pci_amount) . "</td>
+                </tr>
+            ";
 
-            $po_advance_joins = array(
-                array(
-                    'table' => 'pro_purchase_order',
-                    'pk' => 'po_id',
-                    'fk' => 'pca_purchase_order',
-                ),
-            );
-
-            $advances = $this->common_model->FetchWhereJoin('accounts_petty_cash_advances', array('pca_debit_id' => $inv->pci_id), $po_advance_joins);
-
-            if (empty($linked_vouchers) && empty($advances)) {
-                // Show direct debit if no links or advances
+            if (!empty($inv->pci_narration)) {
                 $invoice_sec .= "
                     <tr>
-                        <td>{$inv->ca_name}</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td align='right'>" . format_currency($inv->pci_amount) . "</td>
+                        <td width='20%'></td>
+                        <td width='15%'></td>
+                        <td width='50%' style='color:#555;'><em>{$inv->pci_narration}</em></td>
+                        <td width='15%'></td>
                     </tr>
                 ";
-            } else {
-                // Show linked vouchers
-                $first = true;
-                foreach ($linked_vouchers as $lv) {
-                    $cus_name = $first ? $inv->ca_name : "";
-                    $invoice_sec .= "
-                        <tr>
-                            <td>{$cus_name}</td>
-                            <td>{$lv->pv_reffer_id}</td>
-                            <td>" . date('d-M-Y', strtotime($lv->pv_date)) . "</td>
-                            <td>" . format_currency($lv->pv_total) . "</td>
-                            <td>-</td>
-                            <td align='right'>" . format_currency($lv->pcdi_payment_amount) . "</td>
-                        </tr>
-                    ";
-                    $first = false;
-                }
-
-                // Show advances
-                foreach ($advances as $adv) {
-                    $cus_name = $first ? $inv->ca_name : "";
-                    $invoice_sec .= "
-                        <tr>
-                            <td>{$cus_name}</td>
-                            <td>{$adv->po_reffer_no} (Advance)</td>
-                            <td>" . date('d-M-Y', strtotime($adv->po_date)) . "</td>
-                            <td>" . format_currency($adv->po_amount) . "</td>
-                            <td>-</td>
-                            <td align='right'>" . format_currency($adv->pca_advance_amount) . "</td>
-                        </tr>
-                    ";
-                    $first = false;
-                }
             }
         }
 
@@ -1927,6 +1887,7 @@ class PettyCashVoucher extends BaseController
             'default_font_size' => 9,
             'margin_left' => 5,
             'margin_right' => 5,
+            'margin_top' => 2,
         ]);
 
 
@@ -1934,285 +1895,92 @@ class PettyCashVoucher extends BaseController
         $html = '
     
         <style>
-        th, td {
-            padding-top: 5px;
-            padding-bottom: 5px;
-            padding-left: 5px;
-            padding-right: 5px;
-          }
+        td {
+            padding-top: 4px;
+            padding-bottom: 4px;
+            padding-left: 4px;
+            padding-right: 4px;
+            font-size:12px;
+        }
         p {
             font-size:11px;
-            margin-bottom: 13px;
+        }
+        table.border-bottom td {
+            border-bottom:1px solid !important;
         }
         </style>
     
         <table>
-        
         <tr>
-        
         <td>
-    
         <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
-        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
-        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
-        
-        
+        <span style="font-size:11px;">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</span><br>
+        <span style="font-size:5px;">&nbsp;</span><br>
+        <span style="font-size:11px;">Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</span>
         </td>
-        
         </tr>
-    
         </table>
-
     
         <table width="100%" style="margin-top:10px;">
-        
         <tr width="100%">
-        
-        <td align="right"><h3>Payment Voucher</h3></td>
-    
+        <td align="right"><h2>Payment Voucher</h2></td>
         </tr>
-    
         </table>
     
-    
-        <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;">
-    
-
+        <table width="100%" style="margin-top:1px;border-top:1px solid;border-bottom:1px solid;">
         <tr>
-        
-        <td width="120px">
-        
-        Reference : 
-        
-        </td>
-
-
-        <td width="120px">
-        
-        ' . $pcv->pcv_voucher_no . '
-
-        </td>
-
-
-
-        <td></td>
-        <td></td>
-        
-            
-        <td width="120px" align="left">
-        
-        Paid By : 
-    
-        </td>
-
-        <td width="120px">
-        
-        '.$pcv->rm_name.'
-
-        </td>
-      
-        
+            <td width="50%">Reference : ' . $pcv->pcv_voucher_no . '</td>
+            <td width="50%" align="right">Paid By : ' . $pcv->rm_name . '</td>
         </tr>
-        
-
         <tr>
-
-        
-        <td>
-        
-        Date : 
-        
-        </td>
-
-
-        <td>
-        
-        ' . date('d M Y', strtotime($pcv->pcv_date)) . '
-
-        </td>
-
-
-        <td></td>
-        <td></td>
-
-        
-            
-        <td align="left">
-        
-        Cheque : 
-
-        </td>
-
-
-        <td>
-        
-        '.$cheque_no.'
-        
-        </td>
-
-
-        
+            <td width="50%">Date : ' . date('d M Y', strtotime($pcv->pcv_date)) . '</td>
+            <td width="50%" align="right">Cheque : ' . $cheque_no . '</td>
         </tr>
-
-
-      
-    
-    
         <tr>
-        
-        <td >
-        
-        Credit Account :
-        
-        </td>
-
-
-        <td>
-
-        </td>
-
-
-        <td></td>
-        <td></td>
-        
-            
-        <td align="left">
-        
-        Cheque Date : 
-
-        </td>
-        
+            <td width="50%">Credit Account : ' . $pcv->ca_account_id . ' - ' . $pcv->ca_name . '</td>
+            <td width="50%" align="right">Cheque Date : ' . $cheque_date . '</td>
         </tr>
-
-
-
-    
-        <tr>
-
-        
-        <td >
-        
-        Division : 
-        
-        </td>
-
-
-        <td>
-        
-        
-
-        </td>
-
-
-        <td></td>
-        <td></td>
-
-            
-        <td  align="left">
-
-        Bank : 
-    
-        </td>
-
-
-        <td>
-        
-
-        </td>
-
-
-        
-        </tr>
-        
-        
         </table>
-    
-    
-    
-        <table  width="100%" style="margin-top:2px;">
-        
-        <tr  style="border-bottom:3px solid;">
-        
-        <th align="left">Debit Account</th>
-    
-        <th align="left">Reference</th>
-    
-        <th align="left">Invoice Date</th>
-    
-        <th align="left">Invoice Amount</th>
-    
-        <th align="left">Due Date</th>
-    
-        <th align="left">Payment</th>
-    
+
+        <table width="100%" style="margin-top:2px;border-bottom:1px solid;">
+        <tr class="border-bottom">
+            <th align="center" width="20%">Sales Order</th>
+            <th align="center" width="15%">Account No</th>
+            <th align="left"  width="50%">Account Description</th>
+            <th align="right" width="15%">Amount</th>
         </tr>
-    
-    
-    
+        </table>
+
+        <table width="100%">
         ' . $invoice_sec . '
-    
-    
-    
-        <tr style="padding-top:20px;">
-        
-        <td colspan="5">Reallocation</td>
-    
-        <td>0.00</td>
-        
-        </tr>
-
-    
-        <tr style="padding-top:20px;">
-        
-        <td colspan="5">Discount</td>
-    
-        <td>0.00</td>
-        
-        </tr>
-    
-        
         </table>
-    
+
         ';
 
         $footer = '
 
-        <table width="100%">
-        
+        <table width="100%" style="border-top:1px solid;margin-bottom:10px;">
         <tr>
-        
-        <td colpsan="5" align="center"><b>Amount : ' . currency_to_words($total_amount) . '</b></td>
-    
-        <td colspan="1" align="right" style="text-align:right;"><b>' . format_currency($pcv->pcv_total) . '</b></td>
-    
+            <td width="80%" align="left"><b>Amount : ' . currency_to_words($total_amount) . '</b></td>
+            <td width="20%" align="right" style="text-align:right;"><b>' . format_currency($pcv->pcv_total) . '</b></td>
         </tr>
-    
         </table>
-    
-    
-        <table>
-        
+
+        <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
-    
-        <td width="25%" style="padding-right:60px;">Prepared by : (print)</td>
-    
-        <td width="25%" style="padding-right:60px;">Received by:</td>
-    
-        <td width="25%" style="padding-right:60px;">Finance Manager</td>
-    
-        <td width="25%" style="padding-right:60px;">CEO</td>
-    
+            <td width="33.33%" style="text-align:center;">Prepared by : (print)</td>
+            <td width="33.33%" style="text-align:center;">Finance Manager</td>
+            <td width="33.33%" style="text-align:center;">CEO</td>
         </tr>
-    
         </table>
-    
+
         ';
 
 
         $mpdf->WriteHTML($html);
         $mpdf->SetFooter($footer);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output();
+        $mpdf->Output($pcv->pcv_voucher_no . '.pdf', 'I');
     }
 
 

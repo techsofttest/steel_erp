@@ -900,7 +900,7 @@ class JournalVouchers extends BaseController
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5, 
-            'margin_top' => 3,
+            'margin_top' => 2,
         ]);
     
         $html ='
