@@ -119,33 +119,45 @@ class ProcurementModel extends Model
 
     public function FetchFixedPurchases($vendor)
     {
-        // Select the table and columns
-        $query = $this->db->table('pro_purchase_voucher');
+        // 1. Sum from Purchase Vouchers (PV)
+        $query_pv = $this->db->table('pro_purchase_voucher');
+        $query_pv->select('SUM(pvp_amount) AS total', FALSE);
+        $query_pv->join('pro_purchase_voucher_prod', 'pro_purchase_voucher_prod.pvp_reffer_id = pro_purchase_voucher.pv_id', 'left');
+        $query_pv->join('accounts_charts_of_accounts', 'accounts_charts_of_accounts.ca_id = pro_purchase_voucher_prod.pvp_debit', 'left');
+        $query_pv->groupStart()
+            ->where('accounts_charts_of_accounts.ca_account_id', $vendor)
+            ->orWhere('accounts_charts_of_accounts.ca_id', $vendor)
+            ->groupEnd();
+        $pv_result = $query_pv->get()->getRow();
+        $pv_total = floatval($pv_result->total ?? 0);
 
-        // Summing pv_total from the pro_purchase_voucher
-        $query->select('SUM(pvp_amount) AS total', FALSE);
+        // 2. Sum from Journal Vouchers (JV)
+        $query_jv = $this->db->table('accounts_journal_vouchers');
+        $query_jv->select('SUM(ji_debit - ji_credit) AS total', FALSE);
+        $query_jv->join('accounts_journal_invoices', 'accounts_journal_invoices.ji_voucher_id = accounts_journal_vouchers.jv_id', 'left');
+        $query_jv->join('accounts_charts_of_accounts', 'accounts_charts_of_accounts.ca_id = accounts_journal_invoices.ji_account', 'left');
+        $query_jv->groupStart()
+            ->where('accounts_charts_of_accounts.ca_account_id', $vendor)
+            ->orWhere('accounts_charts_of_accounts.ca_id', $vendor)
+            ->groupEnd();
+        $jv_result = $query_jv->get()->getRow();
+        $jv_total = floatval($jv_result->total ?? 0);
 
-        // Joining pro_purchase_voucher_prod table
-        $query->join('pro_purchase_voucher_prod', 'pro_purchase_voucher_prod.pvp_reffer_id = pro_purchase_voucher.pv_id', 'left');
+        // 3. Sum from Petty Cash Vouchers (PCV)
+        $query_pcv = $this->db->table('accounts_petty_cash_voucher');
+        $query_pcv->select('SUM(pci_amount) AS total', FALSE);
+        $query_pcv->join('accounts_petty_cash_debits', 'accounts_petty_cash_debits.pci_voucher_id = accounts_petty_cash_voucher.pcv_id', 'left');
+        $query_pcv->join('accounts_charts_of_accounts', 'accounts_charts_of_accounts.ca_id = accounts_petty_cash_debits.pci_debit_account', 'left');
+        $query_pcv->groupStart()
+            ->where('accounts_charts_of_accounts.ca_account_id', $vendor)
+            ->orWhere('accounts_charts_of_accounts.ca_id', $vendor)
+            ->groupEnd();
+        $pcv_result = $query_pcv->get()->getRow();
+        $pcv_total = floatval($pcv_result->total ?? 0);
 
-        // Joining accounts_charts_of_accounts table
-        $query->join('accounts_charts_of_accounts', 'accounts_charts_of_accounts.ca_id = pro_purchase_voucher_prod.pvp_debit', 'left');
+        $grand_total = $pv_total + $jv_total + $pcv_total;
 
-        // Filtering by vendor ID
-        $query->where('ca_account_id', $vendor);
-
-        // Get the result row
-        $result = $query->get()->getRow();
-
-        // Handling potential null results
-        $max = isset($result->total) ? $result->total : 0;
-
-        // Debugging: Show the last query for verification
-        // echo $this->db->getLastQuery();
-        // exit;
-
-        // Return the max total or 0 if no valid result
-        return $max > 0 ? $max : 0;
+        return $grand_total > 0 ? $grand_total : 0;
     }
 
     public function FetchAllOrderJoin($table, $order_key, $order, $joins, $group_by_col)

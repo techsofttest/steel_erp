@@ -1842,9 +1842,14 @@
 
 
 
-        $("body").on('change', '.fixed_asset_select', function() {
+        $("body").on('change', '#AddAssetDisposal select[name="dfs_fixed_asset"]', function() {
 
             var fixed_asset = $(this).val();
+            if (!fixed_asset) {
+                return;
+            }
+
+            var dispose_date = $('#AddAssetDisposal input[name="dfs_date_dispose"]').val();
 
             $.ajax({
 
@@ -1854,7 +1859,7 @@
 
                 data: {
                     Fixed: fixed_asset,
-                    Date: $('input[name="dfs_date_dispose"]').val()
+                    Date: dispose_date
                 },
 
                 success: function(data) {
@@ -1862,30 +1867,33 @@
                     var fixedData = data.fixedasset;
                     var total_Sec = data.total_Sec;
 
-                    $('.add_current_balance').val(data.asset_balance);
-                    $('.asset_credit_acc').val(fixedData.cfs_credit_account).trigger('change');
+                    if (fixedData) {
+                        $('.add_current_balance').val(data.asset_balance);
+                        $('.asset_credit_acc').val(fixedData.cfs_credit_account).trigger('change');
 
-                    // $('.edit_gi_account').val(null).trigger('change');
+                        // $('.edit_gi_account').val(null).trigger('change');
 
-                    // $('.view-assets-body').html('');
+                        // $('.view-assets-body').html('');
 
-                    if (data.asset_det != '') {
-                        $('.view-assets-body').html(data.asset_det);
-                        $('.view_selected_table').css('display', 'block');
+                        if (data.asset_det != '') {
+                            $('.view-assets-body').html(data.asset_det);
+                            $('.view_selected_table').css('display', 'block');
 
-               
-                        $('.total_table').html(total_Sec);
+                   
+                            $('.total_table').html(total_Sec);
 
+                        }
+                        $('.add_sale_price').trigger('input');
                     }
-                    $('.add_sale_price').trigger('input');
                 }
             });
 
         });
 
-        $("body").on('change changeDate', 'input[name="dfs_date_dispose"]', function() {
-            if ($('.fixed_asset_select').val()) {
-                $('.fixed_asset_select').trigger('change');
+        $("body").on('change changeDate input', '#AddAssetDisposal input[name="dfs_date_dispose"]', function() {
+            var fixed_asset = $('#AddAssetDisposal select[name="dfs_fixed_asset"]').val();
+            if (fixed_asset) {
+                $('#AddAssetDisposal select[name="dfs_fixed_asset"]').trigger('change');
             }
         });
 

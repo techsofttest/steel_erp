@@ -339,7 +339,7 @@ class FixedAssetDisposal extends BaseController
         $j = 1;
 
         // Row 1: Accumulated Depreciation - Furniture & Fixtures (Debit)
-        $row1_debit = ($asset_balance > 0) ? number_format($asset_balance, 2, '.', '') : '';
+        $row1_debit = ($asset_balance > 0) ? format_currency($asset_balance) : '';
         if ($asset_balance > 0) {
             $total_debit += $asset_balance;
         }
@@ -349,8 +349,8 @@ class FixedAssetDisposal extends BaseController
             <th class="select2_parent" width="35%"> 
                 <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($accum_depr_name) . '" readonly>
             </th>
-            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $row1_debit . '" readonly></th>
-            <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+            <th class="p-0"><input name="jv_debit[]" type="text" class="form-control debit_amount text-end" value="' . $row1_debit . '" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" readonly></th>
             <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
         </tr>';
         $j++;
@@ -358,7 +358,7 @@ class FixedAssetDisposal extends BaseController
         // Row 2: Loss on Sale of Fixed Asset (Debit) OR Profit on Sale of Fixed Asset (Credit)
         $is_profit = ($profit > 0);
         $pl_account = $is_profit ? $profit_acc_name : $loss_acc_name;
-        $pl_amt_val = ($profit != 0) ? number_format(abs($profit), 2, '.', '') : '';
+        $pl_amt_val = ($profit != 0) ? format_currency(abs($profit)) : '';
 
         $row2_debit = (!$is_profit && $profit != 0) ? $pl_amt_val : '';
         $row2_credit = ($is_profit && $profit != 0) ? $pl_amt_val : '';
@@ -375,15 +375,15 @@ class FixedAssetDisposal extends BaseController
             <th class="select2_parent" width="35%"> 
                 <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($pl_account) . '" readonly>
             </th>
-            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $row2_debit . '" readonly></th>
-            <th class="p-0"><input name="jv_credit[]" type="number" step="0.01" class="form-control credit_amount text-end" value="' . $row2_credit . '" readonly></th>
+            <th class="p-0"><input name="jv_debit[]" type="text" class="form-control debit_amount text-end" value="' . $row2_debit . '" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="' . $row2_credit . '" readonly></th>
             <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
         </tr>';
         $j++;
 
         // Row 3: Reallocation (Debit) - blank if Sales price is Zero
         $realloc_acc_val = ($sale_price > 0) ? $reallocation_name : '';
-        $row3_debit = ($sale_price > 0) ? number_format($sale_price, 2, '.', '') : '';
+        $row3_debit = ($sale_price > 0) ? format_currency($sale_price) : '';
         if ($sale_price > 0) {
             $total_debit += $sale_price;
         }
@@ -394,14 +394,14 @@ class FixedAssetDisposal extends BaseController
             <th class="select2_parent" width="35%"> 
                 <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($realloc_acc_val) . '" readonly>
             </th>
-            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $row3_debit . '" readonly></th>
-            <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+            <th class="p-0"><input name="jv_debit[]" type="text" class="form-control debit_amount text-end" value="' . $row3_debit . '" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" readonly></th>
             <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
         </tr>';
         $j++;
 
         // Row 4: Credit Account is Steel Cabinet (Asset Account)
-        $row4_credit = ($asset_amount > 0) ? number_format($asset_amount, 2, '.', '') : '';
+        $row4_credit = ($asset_amount > 0) ? format_currency($asset_amount) : '';
         if ($asset_amount > 0) {
             $total_credit += $asset_amount;
         }
@@ -412,13 +412,13 @@ class FixedAssetDisposal extends BaseController
             <th class="select2_parent" width="35%"> 
                 <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($asset_acc_name) . '" readonly>
             </th>
-            <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" readonly></th>
-            <th class="p-0"><input name="jv_credit[]" type="number" step="0.01" class="form-control credit_amount text-end" value="' . $row4_credit . '" readonly></th>
+            <th class="p-0"><input name="jv_debit[]" type="text" class="form-control debit_amount text-end" readonly></th>
+            <th class="p-0"><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="' . $row4_credit . '" readonly></th>
             <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
         </tr>';
 
-        $total_debit_formatted = number_format($total_debit, 2, '.', '');
-        $total_credit_formatted = number_format($total_credit, 2, '.', '');
+        $total_debit_formatted = format_currency($total_debit);
+        $total_credit_formatted = format_currency($total_credit);
 
         $data['total_debit'] = $total_debit_formatted;
         $data['total_credit'] = $total_credit_formatted;
@@ -429,9 +429,9 @@ class FixedAssetDisposal extends BaseController
             <td colspan="" align="right">Total</td>
             <th id="total_amount_debit_disp" class="text-end">' . htmlspecialchars($total_debit_formatted) . '</th>
             <th id="total_amount_credit_disp" class="text-end">' . htmlspecialchars($total_credit_formatted) . '</th>
-            <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $total_debit_formatted . '">
-            <input type="hidden" id="total_amount_debit" name="total_debit" value="' . $total_debit_formatted . '">
-            <input type="hidden" id="total_amount_credit" name="total_credit" value="' . $total_credit_formatted . '">
+            <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $total_debit . '">
+            <input type="hidden" id="total_amount_debit" name="total_debit" value="' . $total_debit . '">
+            <input type="hidden" id="total_amount_credit" name="total_credit" value="' . $total_credit . '">
             <input type="hidden" id="dfs_id" name="dfs_id" value="' . htmlspecialchars($dispose_id ?? '') . '">
         </tr>';
 
@@ -448,8 +448,8 @@ class FixedAssetDisposal extends BaseController
 
         $insert_journal['jv_voucher_no'] = $juid;
         $insert_journal['jv_date'] = $jv_date;
-        $insert_journal['jv_debit_total'] = $this->request->getPost('total_debit');
-        $insert_journal['jv_credit_total'] = $this->request->getPost('total_credit');
+        $insert_journal['jv_debit_total'] = floatval(str_replace(',', '', $this->request->getPost('total_debit') ?? 0));
+        $insert_journal['jv_credit_total'] = floatval(str_replace(',', '', $this->request->getPost('total_credit') ?? 0));
         $insert_journal['jv_added_date'] = date('Y-m-d');
 
         $journal_id = $this->common_model->InsertData('accounts_journal_vouchers', $insert_journal);
@@ -506,6 +506,15 @@ class FixedAssetDisposal extends BaseController
     public function FillData()
     {
         $fixed = $this->request->getPost('Fixed');
+        if (empty($fixed)) {
+            echo json_encode([
+                'fixedasset' => null,
+                'asset_balance' => '0.00',
+                'asset_det' => '',
+                'total_Sec' => ''
+            ]);
+            exit;
+        }
 
         // Define condition for query
         $cond = ['cfs_id' => $fixed];
@@ -521,25 +530,46 @@ class FixedAssetDisposal extends BaseController
 
         // Fetch the fixed asset data
         $data['fixedasset'] = $asset = $this->common_model->SingleRowJoin('pro_create_fixed_asset', $cond, $joins);
+        if (!$asset) {
+            echo json_encode([
+                'fixedasset' => null,
+                'asset_balance' => '0.00',
+                'asset_det' => '',
+                'total_Sec' => ''
+            ]);
+            exit;
+        }
 
         $fixed_amount = floatval($this->pro_model->FetchFixedPurchases($asset->cfs_account_id) ?? 0);
         $depreciation_rate = floatval(preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation)) / 100;
 
         $dispose_date_post = $this->request->getPost('Date');
-        $dispose_time = !empty($dispose_date_post) ? strtotime(str_replace('/', '-', $dispose_date_post)) : time();
-        $dispose_date = date('Y-m-d', $dispose_time);
+        if (!empty($dispose_date_post)) {
+            $dispose_time = strtotime(str_replace('/', '-', $dispose_date_post));
+            if ($dispose_time) {
+                $dispose_date = date('Y-m-d', $dispose_time);
+                $acq_date = date('Y-m-d', strtotime($asset->cfs_acquired_date));
+                $disp_year = date('Y', $dispose_time);
+                $year_start = $disp_year . '-01-01';
 
-        $acq_date = date('Y-m-d', strtotime($asset->cfs_acquired_date));
-        $disp_year = date('Y', $dispose_time);
-        $year_start = $disp_year . '-01-01';
+                $calc_from = ($acq_date > $year_start) ? $acq_date : $year_start;
+                $diff_days = round((strtotime($dispose_date) - strtotime($calc_from)) / (60 * 60 * 24));
+                $is_month_end = ($dispose_date === date('Y-m-t', $dispose_time));
+                if ($is_month_end) {
+                    $diff_days += 1;
+                }
+                if ($diff_days < 0) {
+                    $diff_days = 0;
+                }
 
-        $calc_from = ($acq_date > $year_start) ? $acq_date : $year_start;
-        $diff_days = round((strtotime($dispose_date) - strtotime($calc_from)) / (60 * 60 * 24));
-        if ($diff_days < 0) {
-            $diff_days = 0;
+                $depreciation_amount = round(($fixed_amount * $depreciation_rate * $diff_days) / 365, 2);
+            } else {
+                $depreciation_amount = 0.00;
+            }
+        } else {
+            $depreciation_amount = 0.00;
         }
 
-        $depreciation_amount = round(($fixed_amount * $depreciation_rate * $diff_days) / 365, 2);
         $data['asset_balance'] = number_format($depreciation_amount, 2, '.', '');
 
         $asset_det = '';

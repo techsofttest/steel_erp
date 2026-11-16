@@ -175,12 +175,15 @@ class DepreciationCalculation extends BaseController
             $total_depreciation_amt = floatval(str_replace(',', '', $this->request->getPost('dpc_amount') ?? 0));
         }
 
+        $current_bal = floatval(str_replace(',', '', $this->request->getPost('dpc_amount') ?? 0));
+        $net_dep_amt = round($total_depreciation_amt - $current_bal, 2);
+
         $insert_data = [
             'dpc_acquired_date' => date('Y-m-d', strtotime($this->request->getPost('dpc_acquired_date'))),
             'dpc_account_head' => $this->request->getPost('dpc_account_head'),
             'dpc_debit_account' => $this->request->getPost('dpc_debit_account'),
             'dpc_credit_account' => $this->request->getPost('dpc_credit_account'),
-            'dpc_amount' => $total_depreciation_amt,
+            'dpc_amount' => $net_dep_amt,
             'dpc_depreciation' => $this->request->getPost('dpc_depreciation'),
         ];
         // print_r($insert_data);exit;
@@ -656,6 +659,8 @@ class DepreciationCalculation extends BaseController
         $current_balance = $this->request->getPost('current_balance');
         $dep_amount = floatval(str_replace(',', '', $this->request->getPost('depreciation')));
 
+        $dep_amount = round($dep_amount - floatval(str_replace(',', '', $current_balance)), 2);
+
         $dep_record = $this->common_model->SingleRow('pro_depreciation_calculation', ['dpc_id' => $this->request->getPost('ID')]);
         if ($dep_record) {
             $this->common_model->EditData(['dpc_amount' => $dep_amount], ['dpc_id' => $dep_record->dpc_id], 'pro_depreciation_calculation');
@@ -674,6 +679,7 @@ class DepreciationCalculation extends BaseController
          $j = 1;
         // foreach ($depreciation_det as $dept) {
 
+            $formatted_dep = format_currency($dep_amount);
 
             $data['jv_rows'] .= '
 
@@ -682,14 +688,14 @@ class DepreciationCalculation extends BaseController
                                   <th class="select2_parent" width="35%"> 
                                   <input type="text" class="form-control" name="jv_account[]" value="' .  $debit_acc->ca_name . '" readonly>
                                   </th>
-                                  <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount text-end" value="' . $dep_amount  . '" readonly></th>
-                                  <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+                                  <th class="p-0"><input name="jv_debit[]" type="text" class="form-control debit_amount text-end" value="' . $formatted_dep  . '" readonly></th>
+                                  <th class="p-0"><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" readonly></th>
                                   <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
                                   
       </tr>
       ';
       
-      $data['total_debit'] = $dep_amount;
+      $data['total_debit'] = $formatted_dep;
 
        $j++;
     //     }
@@ -709,9 +715,9 @@ class DepreciationCalculation extends BaseController
 
                                 </th>
 
-                                <th class="p-0"><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount"  readonly></th>
+                                <th class="p-0"><input name="jv_debit[]" type="text" class="form-control debit_amount text-end"  readonly></th>
 
-                                <th class="p-0"><input name="jv_credit[]" type="number" class="form-control credit_amount text-end" value="' . $dep_amount . '" readonly></th>
+                                <th class="p-0"><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" value="' . $formatted_dep . '" readonly></th>
                                 
                                 <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
@@ -720,7 +726,7 @@ class DepreciationCalculation extends BaseController
     
     ';
 
-    $data['total_credit'] = $dep_amount;
+    $data['total_credit'] = $formatted_dep;
 
         $data['jv_rows'] .= '
     <tr class="no-border">
@@ -729,13 +735,13 @@ class DepreciationCalculation extends BaseController
 
         <td colspan="" align="right">Total</td>
                                    
-        <th id="total_amount_debit_disp" class="text-end">'.htmlspecialchars($dep_amount).'</th>
+        <th id="total_amount_debit_disp" class="text-end">'.$formatted_dep.'</th>
 
-        <th  id="total_amount_credit_disp" class="text-end">'.htmlspecialchars($dep_amount).'</th>
+        <th  id="total_amount_credit_disp" class="text-end">'.$formatted_dep.'</th>
         
         <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $dep_amount . '">
-        <input type="hidden" id="total_amount_debit" name="total_debit" value="">
-        <input type="hidden" id="total_amount_credit" name="total_credit" value="">
+        <input type="hidden" id="total_amount_debit" name="total_debit" value="' . $formatted_dep . '">
+        <input type="hidden" id="total_amount_credit" name="total_credit" value="' . $formatted_dep . '">
         <input type="hidden" id="dpc_id" name="dpc_id" value="' . $this->request->getPost('ID') . '">
     </tr>
 ';
@@ -935,9 +941,9 @@ class DepreciationCalculation extends BaseController
 
         $insert_journal['jv_date'] = $jv_date;
 
-        $insert_journal['jv_debit_total'] = $this->request->getPost('total_debit');
+        $insert_journal['jv_debit_total'] = floatval(str_replace(',', '', $this->request->getPost('total_debit') ?? 0));
 
-        $insert_journal['jv_credit_total'] = $this->request->getPost('total_credit');
+        $insert_journal['jv_credit_total'] = floatval(str_replace(',', '', $this->request->getPost('total_credit') ?? 0));
 
         $insert_journal['jv_added_date'] = date('Y-m-d');
 
@@ -961,8 +967,8 @@ class DepreciationCalculation extends BaseController
             if (!empty($account_data))
                 $account_id = $account_data->ca_id;
 
-            $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? $this->request->getPost('jv_debit')[$ji] : 0;
-            $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? $this->request->getPost('jv_credit')[$ji] : 0;
+            $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? floatval(str_replace(',', '', $this->request->getPost('jv_debit')[$ji])) : 0;
+            $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? floatval(str_replace(',', '', $this->request->getPost('jv_credit')[$ji])) : 0;
             $narration = $this->request->getPost('jv_remarks')[$ji];
 
             $insert_journal_invoice['ji_voucher_id'] = $journal_id;
