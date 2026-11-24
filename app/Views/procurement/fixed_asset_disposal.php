@@ -339,11 +339,12 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         <select class="form-select add_assigned_to debit_account_select" name="dfs_debit_account" required>
-                                                                            <option value="" selected disabled>GI Account</option>
+                                                                            <option value="" disabled>GI Account</option>
                                                                             <?php
                                                                             foreach ($charts_of_account as $chart_account) {
+                                                                                $is_realloc = (strcasecmp(trim($chart_account->ca_name), 'Reallocation') === 0) ? 'selected' : '';
                                                                             ?>
-                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
+                                                                                <option value="<?php echo $chart_account->ca_id; ?>" <?php echo $is_realloc; ?>><?php echo $chart_account->ca_name; ?></option>
                                                                             <?php
                                                                             }
                                                                             ?>
@@ -1640,7 +1641,8 @@
                 data: function(params) {
                     return {
                         term: params.term, // Search term
-                        page: params.page || 1 // Pagination
+                        page: params.page || 1, // Pagination
+                        acc_head: $('.add_account_head_select').val()
                     };
                 },
                 processResults: function(data, params) {
@@ -1685,7 +1687,8 @@
                 data: function(params) {
                     return {
                         term: params.term, // Search term
-                        page: params.page || 1 // Pagination
+                        page: params.page || 1, // Pagination
+                        acc_head: $('.edit_account_head_select').val()
                     };
                 },
                 processResults: function(data, params) {

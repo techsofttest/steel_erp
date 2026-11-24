@@ -134,16 +134,49 @@ class FixedAssetDisposal extends BaseController
 
     public function FetchFixedAsset()
     {
-
-        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $page = !empty($_GET['page']) ? (int)$_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? trim($_GET['term']) : "";
+        $acc_head = !empty($_GET['acc_head']) ? trim($_GET['acc_head']) : "";
+        $exclude_dfs_id = !empty($_GET['dfs_id']) ? (int)$_GET['dfs_id'] : 0;
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;
-        $start = $end + $resultCount;
+        $end = ($page > 1) ? ($page - 1) * $resultCount : 0;
 
-        $data['result'] = $this->common_model->FetchAllLimit('pro_create_fixed_asset', 'cfs_description', 'asc', $term, $start, $end);
+        $db = \Config\Database::connect();
 
-        $data['total_count'] = count($data['result']);
+        // Get all disposed fixed asset IDs to exclude them from the dropdown
+        $disposed_builder = $db->table('pro_dispose_fixed_asset')
+            ->select('dfs_fixed_asset')
+            ->where('dfs_fixed_asset IS NOT NULL', null, false);
+
+        if (!empty($exclude_dfs_id)) {
+            $disposed_builder->where('dfs_id !=', $exclude_dfs_id);
+        }
+
+        $disposed_rows = $disposed_builder->get()->getResultArray();
+        $disposed_ids = !empty($disposed_rows) ? array_filter(array_column($disposed_rows, 'dfs_fixed_asset')) : [];
+
+        $builder = $db->table('pro_create_fixed_asset')
+            ->select('*');
+
+        if (!empty($term)) {
+            $builder->like('cfs_description', $term);
+        }
+
+        if (!empty($acc_head)) {
+            $builder->where('cfs_account_head', $acc_head);
+        }
+
+        if (!empty($disposed_ids)) {
+            $builder->whereNotIn('cfs_id', $disposed_ids);
+        }
+
+        $total_builder = clone $builder;
+        $data['total_count'] = $total_builder->countAllResults();
+
+        $data['result'] = $builder->orderBy('cfs_description', 'asc')
+            ->limit($resultCount, $end)
+            ->get()
+            ->getResult();
 
         return json_encode($data);
     }
@@ -296,8 +329,14 @@ class FixedAssetDisposal extends BaseController
             $profit_acc_name = $found_profit->ca_name;
         }
 
-        // 3. Reallocation Account (from debit/GI account field)
-        $reallocation_name = $debit_acc ? $debit_acc->ca_name : 'Reallocation';
+        // 3. Reallocation Account
+        $reallocation_name = 'Reallocation';
+        $found_realloc = $db->table('accounts_charts_of_accounts')
+            ->like('ca_name', 'Reallocation')
+            ->get()->getRow();
+        if ($found_realloc) {
+            $reallocation_name = $found_realloc->ca_name;
+        }
 
         // 4. Asset Account (e.g. Steel file cabinet)
         $asset_acc_name = '';
@@ -381,24 +420,21 @@ class FixedAssetDisposal extends BaseController
         </tr>';
         $j++;
 
-        // Row 3: Reallocation (Debit) - blank if Sales price is Zero
-        $realloc_acc_val = ($sale_price > 0) ? $reallocation_name : '';
-        $row3_debit = ($sale_price > 0) ? format_currency($sale_price) : '';
+        // Row 3: Reallocation (Debit) - only included if Sales price is greater than Zero
         if ($sale_price > 0) {
             $total_debit += $sale_price;
+            $data['jv_rows'] .= '
+            <tr class="jv_row">
+                <th class="sl_no"> ' . $j . ' </th>
+                <th class="select2_parent" width="35%"> 
+                    <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($reallocation_name) . '" readonly>
+                </th>
+                <th class="p-0"><input name="jv_debit[]" type="text" class="form-control debit_amount text-end" value="' . format_currency($sale_price) . '" readonly></th>
+                <th class="p-0"><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" readonly></th>
+                <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+            </tr>';
+            $j++;
         }
-
-        $data['jv_rows'] .= '
-        <tr class="jv_row">
-            <th class="sl_no"> ' . $j . ' </th>
-            <th class="select2_parent" width="35%"> 
-                <input type="text" class="form-control" name="jv_account[]" value="' . htmlspecialchars($realloc_acc_val) . '" readonly>
-            </th>
-            <th class="p-0"><input name="jv_debit[]" type="text" class="form-control debit_amount text-end" value="' . $row3_debit . '" readonly></th>
-            <th class="p-0"><input name="jv_credit[]" type="text" class="form-control credit_amount text-end" readonly></th>
-            <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-        </tr>';
-        $j++;
 
         // Row 4: Credit Account is Steel Cabinet (Asset Account)
         $row4_credit = ($asset_amount > 0) ? format_currency($asset_amount) : '';

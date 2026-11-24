@@ -218,20 +218,26 @@ class DepreciationCalculation extends BaseController
 
         $acchead = $this->request->getPost('AccountHead');
 
-        // Define condition for query
-        $cond = ['cfs_account_head' => $acchead];
+        $db = \Config\Database::connect();
 
-        // Joins array for fetching related data
-        $joins = array(
-            array(
-                'table' => 'accounts_account_heads',
-                'pk'    => 'ah_id',
-                'fk'    => 'cfs_account_head',
-            )
-        );
+        // Get all disposed fixed asset IDs to exclude them from depreciation calculation
+        $disposed_rows = $db->table('pro_dispose_fixed_asset')
+            ->select('dfs_fixed_asset')
+            ->where('dfs_fixed_asset IS NOT NULL', null, false)
+            ->get()->getResultArray();
+        $disposed_ids = !empty($disposed_rows) ? array_filter(array_column($disposed_rows, 'dfs_fixed_asset')) : [];
 
-        // Fetch the fixed asset data
-        $data['fixedasset'] = $this->common_model->SingleRowJoin('pro_create_fixed_asset', $cond, $joins);
+        // Fetch the fixed asset data (preferring active, non-disposed assets)
+        $asset_builder = $db->table('pro_create_fixed_asset')
+            ->join('accounts_account_heads', 'accounts_account_heads.ah_id = pro_create_fixed_asset.cfs_account_head', 'left')
+            ->where('cfs_account_head', $acchead);
+
+        if (!empty($disposed_ids)) {
+            $active_single = (clone $asset_builder)->whereNotIn('cfs_id', $disposed_ids)->get()->getRow();
+            $data['fixedasset'] = $active_single ?? $asset_builder->get()->getRow();
+        } else {
+            $data['fixedasset'] = $asset_builder->get()->getRow();
+        }
 
         // Fetch account head related charts of accounts
         // $chartsofacc = $this->common_model->FetchWhere('accounts_charts_of_accounts', ['ca_account_type' => $acchead]);
@@ -248,9 +254,16 @@ class DepreciationCalculation extends BaseController
 
         $data['acchead_balance'] = format_currency($acchead_balance);
 
-        $cond = ['cfs_account_head' => $acchead];
-        // Fetching fixed assets with the same condition
-        $assets = $this->pro_model->FetchWhereOrder('pro_create_fixed_asset', $cond, 'cfs_id', 'desc');
+        // Fetching active (non-disposed) fixed assets under this account head
+        $assets_builder = $db->table('pro_create_fixed_asset')
+            ->where('cfs_account_head', $acchead)
+            ->orderBy('cfs_id', 'desc');
+
+        if (!empty($disposed_ids)) {
+            $assets_builder->whereNotIn('cfs_id', $disposed_ids);
+        }
+
+        $assets = $assets_builder->get()->getResult();
 
         // Prepare the HTML for fixed assets rows
         $fixed_asset = '';
